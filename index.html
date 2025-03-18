@@ -98,64 +98,630 @@
             font-weight: 600;
             border-radius: 8px;
             transition: background-color 0.3s ease;
-            position: relative; /* Ensure it stays in the flow of the document */
-            z-index: 10; /* Ensure it is above other content */
+        }
+
+        .hero-content a.cta-button:hover {
+            background-color: var(--wood-dark);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 2rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+            align-items: start;
+        }
+
+        .services-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .services-text {
+            padding: 0.5rem 0;
+        }
+
+        .image-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid var(--wood-light);
+            height: 315px;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(139, 69, 19, 0.8));
+            padding: 1rem;
+            color: var(--white);
+        }
+
+        header {
+            background-color: var(--wood-dark);
+            color: var(--white);
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border-bottom: 4px solid var(--wood-light);
+            transition: top 0.3s;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: var(--white);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+        }
+
+        p, ul, li {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 4rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        section {
+            background-color: var(--white);
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid var(--wood-light);
+            position: relative;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 12px;
+            background: linear-gradient(45deg, transparent 0%, rgba(222, 184, 135, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        ul {
+            list-style-position: outside;
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+
+        .services-text ul {
+            margin-top: 0.5rem;
+        }
+
+        .services-text li {
+            margin-bottom: 0.25rem;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        form {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
+            border-radius: 16px;
+            border: 2px solid var(--wood-light);
+        }
+
+        form label {
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        form input, form textarea, form select {
+            padding: 1rem;
+            border: 2px solid var(--wood-light);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+            width: 100%;
+        }
+
+        form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        form input:focus, form textarea:focus, form select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
+            transform: translateY(-2px);
+        }
+
+        form button {
+            padding: 1.2rem 2.5rem;
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--wood-dark);
+            margin-top: 1rem;
+        }
+
+        form button:hover {
+            background-color: var(--wood-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        select[multiple] {
+            height: 150px;
+        }
+
+        #video {
+            text-align: center;
+        }
+
+        iframe {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 315px;
+            border: 2px solid var(--wood-light);
+        }
+
+        footer {
+            background-color: var(--wood-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 4px solid var(--wood-light);
+        }
+
+        footer .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        footer .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-links a:hover {
+            color: var(--accent-color);
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 0.5rem 0; /* Reduce padding for the header */
-            }
-
             .header-content {
-                padding: 0 1rem; /* Reduce padding for header content */
-                flex-direction: column; /* Stack items vertically */
-                align-items: center; /* Center align items */
+                flex-direction: column;
+                align-items: center;
             }
 
             nav ul {
-                flex-direction: column; /* Stack navigation items vertically */
-                align-items: center; /* Center align items */
-                gap: 0.5rem; /* Reduce gap between items */
-            }
-
-            nav ul li a {
-                font-size: 1rem; /* Smaller font size for mobile */
-                padding: 0.5rem; /* Reduce padding for links */
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
             }
 
             .hero {
-                height: 50vh; /* Adjust height for mobile */
-                margin: -2rem -1rem 1rem; /* Adjust margins */
+                height: 50vh;
+                margin: -2rem -1rem 1rem;
             }
 
             .hero h1 {
-                font-size: 2.5rem; /* Smaller font size for mobile */
+                font-size: 2.5rem;
             }
 
             .hero p {
-                font-size: 1.1rem; /* Smaller font size for mobile */
+                font-size: 1.1rem;
+                padding: 0 1rem;
             }
 
-            .hero-content a.cta-button {
-                position: fixed; /* Fix the button at the top */
-                top: 1rem; /* Position it at the top */
-                right: 1rem; /* Position it to the right */
-                margin: 0; /* Remove margin */
-                width: auto; /* Adjust width as needed */
-                font-size: 1rem; /* Adjust font size for mobile */
-                padding: 0.8rem 1.5rem; /* Adjust padding for mobile */
-                background-color: var(--accent-color);
-                color: var(--white);
-                text-decoration: none;
-                font-weight: 600;
-                border-radius: 8px;
-                transition: background-color 0.3s ease;
-                z-index: 10; /* Ensure it is above other content */
+            main {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            h4 {
+                font-size: 1.2rem;
+            }
+
+            .image-grid, .services-content, .testimonials-grid, .chord-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .image-card {
+                height: auto;
+            }
+
+            iframe {
+                height: 250px;
+            }
+
+            form {
+                padding: 1rem;
+            }
+
+            form input, form textarea, form select {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+
+            form button {
+                padding: 1rem 2rem;
+                width: 100%;
+            }
+
+            .checkbox-options {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .checkbox-label {
+                padding: 0.75rem;
+            }
+
+            .level-progression {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .level {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                min-width: unset;
+            }
+
+            ul {
+                padding-left: 1.2rem;
+            }
+
+            li {
+                margin-bottom: 0.5rem;
+            }
+
+            .services-text {
+                height: auto !important;
+                padding: 0;
+            }
+
+            .testimonial-card {
+                padding: 1rem;
+            }
+
+            .chord-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
         }
 
-        /* Other existing styles remain unchanged */
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--wood-dark);
+        }
+
+        .level-progression {
+            display: flex;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+            padding: 1.25rem;
+            background: linear-gradient(45deg, var(--wood-dark), var(--wood-light));
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-progression::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h20v20H0z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .level {
+            color: var(--white);
+            font-weight: 600;
+            text-align: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            border: 2px solid rgba(255,255,255,0.2);
+            min-width: 120px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .level:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--white);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .level:hover {
+            transform: translateY(-3px);
+            background: rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .level-progression {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .level {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .level:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -20px;
+                transform: translateX(50%);
+            }
+        }
+
+        .checkbox-group {
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-label:hover {
+            background-color: rgba(222, 184, 135, 0.1);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
+            border: 2px solid var(--wood-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-card .stars {
+            color: #FFD700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-card .review-text {
+            font-style: italic;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .testimonial-card .reviewer {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .testimonial-card .date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .chord-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .chord-item {
+            text-align: center;
+        }
+
+        .chord-item p {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: rgba(222, 184, 135, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .chord-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid var(--wood-light);
+            background: white;
+            padding: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: block;
+        }
+
+        .chord-item img:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .chord-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        section {
+            padding-top: 80px;
+            margin-top: -80px;
+        }
     </style>
 </head>
 <body>
@@ -224,7 +790,7 @@
             <h2 style="text-align: center;">Services</h2>
             <div class="services-content">
                 <div class="image-card">
-                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/234507642_327550118897171_1096896925913925851_n.jpg" alt="Mike Nelson with guitar">
+                    <img src="234507642_327550118897171_1096896925913925851_n.jpg" alt="Mike Nelson with guitar">
                     <div class="image-overlay"></div>
                 </div>
                 <div class="services-text">
@@ -254,7 +820,7 @@
                     </ul>
                 </div>
                 <div class="image-card">
-                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/406198630_10161793432483561_664022961094242044_n.jpg" alt="Mike Nelson with guitar">
+                    <img src="406198630_10161793432483561_664022961094242044_n.jpg" alt="Mike Nelson with guitar">
                     <div class="image-overlay"></div>
                 </div>
                 <div class="services-text" style="text-align: left; margin-top: 1rem; display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem;">
@@ -453,7 +1019,7 @@
                 </div>
                 <div class="image-card">
                     <a href="#major-scale-guitar-shapes-guide">
-                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/Screenshot%202025-03-18%20at%201.47.16%20AM.png" alt="Major Scale Modes & Arpeggios Guitar Shapes Guide Cover" style="width: 100%; height: 100%; object-fit: contain; border: none; box-shadow: none;">
+                        <img src="Screenshot 2025-03-18 at 1.47.16 AM.png" alt="Major Scale Modes & Arpeggios Guitar Shapes Guide Cover" style="width: 100%; height: 100%; object-fit: contain; border: none; box-shadow: none;">
                         <div class="image-overlay"></div>
                     </a>
                 </div>
@@ -463,19 +1029,11 @@
             <div class="image-grid">
                 <div>
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">How to Read Chord Diagrams</h4>
-                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" 
-                            title="How to Read Chord Diagrams" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div>
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Scales and the Guitar</h4>
-                    <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" 
-                            title="Scales and the Guitar" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -515,6 +1073,64 @@
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/G%20Major.png" alt="G Major Chord" title="G Major">
                         <p>G Major</p>
                     </div>
+                    
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/A7.png" alt="A7 Chord" title="A7">
+                        <p>A7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Am7.png" alt="Am7 Chord" title="Am7">
+                        <p>Am7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/A%20Maj7.png" alt="AMaj7 Chord" title="AMaj7">
+                        <p>AMaj7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/C7.png" alt="C7 Chord" title="C7">
+                        <p>C7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Cmaj7.png" alt="CMaj7 Chord" title="CMaj7">
+                        <p>CMaj7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/D7.png" alt="D7 Chord" title="D7">
+                        <p>D7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Dm7.png" alt="Dm7 Chord" title="Dm7">
+                        <p>Dm7</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Dmaj7.png" alt="DMaj7 Chord" title="DMaj7">
+                        <p>DMaj7</p>
+                    </div>
+                    
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Asus2.png" alt="Asus2 Chord" title="Asus2">
+                        <p>Asus2</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Asus4.png" alt="Asus4 Chord" title="Asus4">
+                        <p>Asus4</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Csus2.png" alt="Csus2 Chord" title="Csus2">
+                        <p>Csus2</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Csus4.png" alt="Csus4 Chord" title="Csus4">
+                        <p>Csus4</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Dsus2.png" alt="Dsus2 Chord" title="Dsus2">
+                        <p>Dsus2</p>
+                    </div>
+                    <div class="chord-item">
+                        <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Dsus4.png" alt="Dsus4 Chord" title="Dsus4">
+                        <p>Dsus4</p>
+                    </div>
                 </div>
 
                 <h4 style="color: var(--primary-color); margin: 2rem 0 1rem; font-family: 'Playfair Display', serif;">Barre Chords</h4>
@@ -548,6 +1164,7 @@
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/2.%20Barre%20Chords/Asus4%20Shape%20Barre%20Chord.png" alt="Asus4 Shape Barre Chord" title="Asus4 Shape">
                         <p>Asus4 Shape</p>
                     </div>
+                    
                     <div class="chord-item">
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/2.%20Barre%20Chords/E%20Major%20Shape%20Barre%20Chord.png" alt="E Major Shape Barre Chord" title="E Major Shape">
                         <p>E Major Shape</p>
@@ -592,18 +1209,7 @@
         </div>
     </footer>
     <script>
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('nav ul li a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            });
-        });
+        // Remove old form handler as Formspree will handle it
     </script>
 </body>
 </html>
