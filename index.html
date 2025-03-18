@@ -393,7 +393,12 @@
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 0.2rem 0;
+            }
+
             .header-content {
+                padding: 0 1rem;
                 flex-direction: column;
                 align-items: center;
             }
@@ -401,7 +406,17 @@
             nav ul {
                 flex-direction: column;
                 align-items: center;
-                gap: 1rem;
+                gap: 0.5rem;
+            }
+
+            nav ul li {
+                margin: 0;
+            }
+
+            nav ul li a {
+                font-size: 1rem;
+                padding: 0.3rem 0.5rem;
+                line-height: 1.2;
             }
 
             .hero {
