@@ -784,6 +784,38 @@
             font-weight: normal;
             display: block;
         }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 60px; /* Adjust based on header height */
+                left: 0;
+                width: 100%;
+                background-color: var(--wood-dark);
+                display: grid; /* Change to grid layout */
+                grid-template-columns: repeat(2, 1fr); /* Two columns */
+                gap: 0.5rem; /* Space between items */
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999; /* Ensure it appears above other content */
+                padding: 0.5rem 0; /* Reduce vertical padding */
+            }
+
+            .nav-links.active {
+                transform: translateY(0); /* Show menu when active */
+            }
+
+            .nav-links li {
+                text-align: center; /* Center align text */
+                margin: 0; /* Remove margin */
+                padding: 0.5rem 0; /* Add some padding for touch targets */
+            }
+
+            .hamburger {
+                display: flex; /* Show hamburger on mobile */
+            }
+        }
     </style>
 </head>
 <body>
@@ -1099,6 +1131,35 @@
                     <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
+        </section>
+        <section id="blog">
+            <h2 style="text-align: center;">Blog</h2>
+            <article>
+                <h3>Reading Guitar Tab</h3>
+                <p><strong>Understanding guitar tab goes beyond simply knowing the order of the notes. It is essential to grasp the underlying concepts of timing, finger placement, and musical theory to fully express yourself on the guitar. This knowledge not only enhances your playing but also allows you to interpret music more effectively, making you a more versatile musician.</strong></p>
+                
+                <h4>Level 1: Basic Tab Reading</h4>
+                <p><strong>Identify the Strings:</strong> The six horizontal lines represent the guitar strings (low E at the bottom, high E at the top).</p>
+                <p><strong>Read from Left to Right:</strong> Tabs are read horizontally, so play the notes in the order they appear.</p>
+                <p><strong>Fret Numbers Indicate Finger Placement:</strong> The numbers tell you which fret to press; for example, "0" means an open string.</p>
+                <p><strong>Basic Symbols:</strong> Recognize essential symbols like hammer-ons ("h"), pull-offs ("p"), slides ("/" for sliding up and "\\" for sliding down), bends (arrow symbols), vibrato ("~"), muted or ghost notes ("x"), and duration markers ("----|").</p>
+                <p><strong>Additional Resources:</strong> Utilize sites like Songsterr and YouTube for playthroughs and tutorials.</p>
+
+                <h4>Level 2: Rhythmic Notation</h4>
+                <p><strong>Understanding Timing & Duration Indicators:</strong> Look at rhythmic notation to determine how long each note or chord lasts. The number of lines on the stem of a note indicates its duration—for example, one line might represent an eighth note, two lines a quarter note, three lines a half note, and so on (values may vary by tab, so refer to any provided legend).</p>
+                <p><strong>Understanding Subdivisions:</strong> Grasp how each beat divides into smaller units. For example, in common time, a quarter note can be subdivided into two eighth notes or four sixteenth notes. This understanding enhances your rhythmic feel and helps ensure that you're playing with accurate timing.</p>
+
+                <h4>Level 3: Knowing Chord and Scale Shapes</h4>
+                <p><strong>Pattern Recognition:</strong> Familiar chord and scale shapes help you quickly identify the correct fingering, even when some notes are omitted—like seeing pieces of a puzzle come together.</p>
+                <p><strong>Efficiency in Learning:</strong> Relying on shapes you already know reduces the need for extensive memorization.</p>
+                <p><strong>Common Pitfalls:</strong> Guitarists who view tabs note-by-note often use incorrect fingering, and relying solely on tabs without understanding shapes can result in holding notes for an incorrect duration.</p>
+
+                <h4>Level 4: Music Theory</h4>
+                <p><strong>Key and Chord Relationships:</strong> Understanding the key of a song and its associated chords helps predict and make sense of the notes in tabs.</p>
+                <p><strong>Critical Listening and Analysis:</strong> Applying music theory is especially important when your ear doesn't serve you correctly, ensuring you can interpret the music as intended.</p>
+
+                <p>This four-level model guides you from the basics of reading tabs, through mastering rhythmic notation (including subdivisions), to recognizing chord and scale shapes, and finally applying music theory for a comprehensive interpretation of the music.</p>
+            </article>
         </section>
     </main>
     <footer>
