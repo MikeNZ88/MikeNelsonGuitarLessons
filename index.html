@@ -51,7 +51,7 @@
         }
 
         .hero {
-            height: 60vh;
+            height: 40vh;
             background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80');
             background-size: cover;
             background-position: center;
@@ -62,7 +62,7 @@
             color: var(--white);
             margin: -4rem -2rem 1rem;
             position: relative;
-            padding-top: 120px;
+            padding-top: 80px;
         }
 
         .hero::before {
@@ -416,24 +416,24 @@
 
             nav ul {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr); /* Keep 3 columns */
-                gap: 1rem; /* Space between items */
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
                 position: relative;
-                top: 60px; /* Adjust based on header height */
+                top: 60px;
                 left: 0;
                 width: 100%;
                 background-color: var(--wood-dark);
-                z-index: 999; /* Ensure it appears above other content */
-                padding: 2rem; /* Increase vertical padding for touch targets (doubled) */
-                max-height: 800px; /* Set a max height for the menu (doubled) */
-                overflow-y: auto; /* Allow scrolling if items exceed max height */
+                z-index: 999;
+                padding: 2rem;
+                max-height: 800px;
+                overflow-y: auto;
             }
 
             nav ul li {
-                text-align: center; /* Center align text */
-                margin: 0; /* Remove margin */
-                padding: 1rem; /* Increase padding for touch targets */
-                font-size: 1.2rem; /* Increase font size for better readability */
+                text-align: center;
+                margin: 0;
+                padding: 1rem;
+                font-size: 1.2rem;
             }
 
             nav ul li a {
