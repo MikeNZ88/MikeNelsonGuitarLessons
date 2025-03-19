@@ -412,17 +412,26 @@
             .header-content {
                 padding: 0 1rem;
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
             }
 
             nav ul {
-                flex-direction: column;
-                align-items: center;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.5rem;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: var(--wood-dark);
+                z-index: 999;
+                padding: 0.5rem 0;
             }
 
             nav ul li {
+                text-align: center;
                 margin: 0;
+                padding: 0.5rem;
             }
 
             nav ul li a {
@@ -814,7 +823,7 @@
             }
 
             .hamburger {
-                display: flex; /* Show hamburger on mobile */
+                display: none;
             }
         }
 
