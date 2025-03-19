@@ -34,9 +34,6 @@
             background-attachment: fixed;
             background-size: cover;
             background-position: center;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         body::before {
@@ -52,9 +49,6 @@
 
         .hero {
             height: 60vh;
-            background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -62,7 +56,6 @@
             color: var(--white);
             margin: -4rem -2rem 1rem;
             position: relative;
-            padding-top: 0;
         }
 
         .hero::before {
@@ -80,8 +73,6 @@
             z-index: 2;
             max-width: 800px;
             padding: 0 2rem;
-            margin-top: 0;
-            margin-bottom: auto;
             color: var(--white);
             display: flex;
             flex-direction: column;
@@ -102,68 +93,6 @@
 
         .hero-content a.cta-button:hover {
             background-color: var(--wood-dark);
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--white);
-            margin-bottom: 2rem;
-        }
-
-        .image-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin: 2rem 0;
-            align-items: start;
-        }
-
-        .services-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            align-items: start;
-        }
-
-        .services-text {
-            padding: 0.5rem 0;
-        }
-
-        .image-card {
-            position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 2px solid var(--wood-light);
-            height: 315px;
-        }
-
-        .image-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center 20%;
-            transition: transform 0.3s ease;
-        }
-
-        .image-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(139, 69, 19, 0.8));
-            padding: 1rem;
-            color: var(--white);
         }
 
         header {
@@ -188,26 +117,17 @@
             align-items: center;
         }
 
-        header h1 {
-            color: var(--white);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-color);
-        }
-
-        p, ul, li {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
+        nav {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
         }
 
         nav ul {
             list-style: none;
             display: flex;
-            justify-content: center;
-            gap: 2rem;
+            flex-direction: column;
+            gap: 1rem;
             margin: 0;
             padding: 0;
         }
@@ -215,7 +135,6 @@
         nav ul li {
             margin: 0;
             text-align: center;
-            flex: 1;
         }
 
         nav ul li a {
@@ -226,6 +145,7 @@
             font-size: 1.2rem;
             display: block;
             text-align: center;
+            padding: 0.5rem;
         }
 
         nav ul li a:hover {
@@ -248,18 +168,6 @@
             position: relative;
         }
 
-        section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 12px;
-            background: linear-gradient(45deg, transparent 0%, rgba(222, 184, 135, 0.1) 100%);
-            pointer-events: none;
-        }
-
         h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -275,134 +183,6 @@
             line-height: 1.5;
         }
 
-        ul {
-            list-style-position: outside;
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.4rem;
-            line-height: 1.5;
-        }
-
-        .services-text ul {
-            margin-top: 0.5rem;
-        }
-
-        .services-text li {
-            margin-bottom: 0.25rem;
-        }
-
-        strong {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        form {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
-            border-radius: 16px;
-            border: 2px solid var(--wood-light);
-        }
-
-        form label {
-            font-weight: 500;
-            color: var(--primary-color);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        form input, form textarea, form select {
-            padding: 1rem;
-            border: 2px solid var(--wood-light);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            background-color: var(--white);
-            width: 100%;
-        }
-
-        form textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        form input:focus, form textarea:focus, form select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
-            transform: translateY(-2px);
-        }
-
-        form button {
-            padding: 1.2rem 2.5rem;
-            background-color: var(--accent-color);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid var(--wood-dark);
-            margin-top: 1rem;
-        }
-
-        form button:hover {
-            background-color: var(--wood-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        select[multiple] {
-            height: 150px;
-        }
-
-        #video {
-            text-align: center;
-        }
-
-        iframe {
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
-            height: 315px;
-            border: 2px solid var(--wood-light);
-        }
-
-        footer {
-            background-color: var(--wood-dark);
-            color: var(--white);
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            border-top: 4px solid var(--wood-light);
-        }
-
-        footer .social-links {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        footer .social-links a {
-            color: var(--white);
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        footer .social-links a:hover {
-            color: var(--accent-color);
-        }
-
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
@@ -413,14 +193,6 @@
             header h1 {
                 font-size: 1.8rem;
                 margin-bottom: 0.5rem;
-            }
-
-            nav {
-                width: 100%;
-                max-width: 33%;
-                margin: 0 auto;
-                max-height: 25vh;
-                overflow-y: auto;
             }
 
             nav ul {
@@ -487,6 +259,7 @@
 
             iframe {
                 height: 250px;
+                width: 100%;
             }
 
             form {
@@ -502,47 +275,6 @@
                 padding: 1rem 2rem;
                 width: 100%;
             }
-
-            .checkbox-options {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-
-            .checkbox-label {
-                padding: 0.75rem;
-            }
-
-            .level-progression {
-                padding: 1rem;
-                margin: 1rem 0;
-            }
-
-            .level {
-                padding: 0.6rem 1rem;
-                font-size: 0.9rem;
-                min-width: unset;
-            }
-
-            ul {
-                padding-left: 1.2rem;
-            }
-
-            li {
-                margin-bottom: 0.5rem;
-            }
-
-            .services-text {
-                height: auto !important;
-                padding: 0;
-            }
-
-            .testimonial-card {
-                padding: 1rem;
-            }
-
-            .chord-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
         }
 
         a {
@@ -554,217 +286,6 @@
         a:hover {
             color: var(--wood-dark);
         }
-
-        .level-progression {
-            display: flex;
-            justify-content: space-between;
-            margin: 1.5rem 0;
-            padding: 1.25rem;
-            background: linear-gradient(45deg, var(--wood-dark), var(--wood-light));
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .level-progression::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h20v20H0z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
-            opacity: 0.3;
-        }
-
-        .level {
-            color: var(--white);
-            font-weight: 600;
-            text-align: center;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            background: rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            border: 2px solid rgba(255,255,255,0.2);
-            min-width: 120px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        .level:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--white);
-            font-size: 1.5rem;
-            z-index: 2;
-        }
-
-        .level:hover {
-            transform: translateY(-3px);
-            background: rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.4);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        @media (max-width: 768px) {
-            .level-progression {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-            
-            .level {
-                width: 100%;
-                min-width: unset;
-            }
-
-            .level:not(:last-child)::after {
-                content: '↓';
-                right: 50%;
-                top: auto;
-                bottom: -20px;
-                transform: translateX(50%);
-            }
-        }
-
-        .checkbox-group {
-            margin-bottom: 1rem;
-        }
-
-        .checkbox-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.2s ease;
-        }
-
-        .checkbox-label:hover {
-            background-color: rgba(222, 184, 135, 0.1);
-        }
-
-        .checkbox-label input[type="checkbox"] {
-            width: 1.2rem;
-            height: 1.2rem;
-            cursor: pointer;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .testimonial-card {
-            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
-            border: 2px solid var(--wood-light);
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .testimonial-card .stars {
-            color: #FFD700;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .testimonial-card .review-text {
-            font-style: italic;
-            margin: 1rem 0;
-            line-height: 1.6;
-        }
-
-        .testimonial-card .reviewer {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .testimonial-card .date {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .testimonials-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-        }
-
-        .chord-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin: 1rem 0;
-        }
-
-        .chord-item {
-            text-align: center;
-        }
-
-        .chord-item p {
-            margin-top: 0.5rem;
-            margin-bottom: 0;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 0.95rem;
-            background: rgba(222, 184, 135, 0.1);
-            padding: 0.3rem 0.6rem;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .chord-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            border: 2px solid var(--wood-light);
-            background: white;
-            padding: 0.5rem;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: block;
-        }
-
-        .chord-item img:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        @media (max-width: 768px) {
-            .chord-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 1rem;
-            }
-        }
-
-        .header-content h1 {
-            font-size: 1.8rem;
-            margin: 0;
-            text-align: left;
-        }
-
-        .header-content span {
-            font-size: 1rem;
-            font-weight: normal;
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -774,17 +295,20 @@
                 Mike Nelson<br>
                 <span style="font-size: 1.2rem; font-weight: normal;">Guitar Lessons</span>
             </h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
+            <button class="hamburger" aria-label="Toggle navigation">
+                &#9776;
+            </button>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
-                <li><a href="#services">Services</a></li>
+                    <li><a href="#services">Services</a></li>
                     <li><a href="#testimonials">Reviews</a></li>
                     <li><a href="#how-lessons-work">Approach</a></li>
-                <li><a href="#curriculum">Curriculum</a></li>
-                <li><a href="#resources">Resources</a></li>
-            </ul>
-        </nav>
+                    <li><a href="#curriculum">Curriculum</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
     <div class="hero">
@@ -795,8 +319,8 @@
         </div>
     </div>
     <main>
-    <section id="about">
-        <h2>About Mike</h2>
+        <section id="about">
+            <h2>About Mike</h2>
             <div class="image-grid">
                 <div class="image-card">
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
@@ -809,7 +333,6 @@
         <section id="how-lessons-work">
             <h2 style="text-align: center;">My Approach to Lessons</h2>
             <p>Lessons usually focus on a specific song chosen by the student—or by me if it is useful to develop specific skills. Technique and theory are discussed in the context of the song. There are also dedicated lessons solely for technique and theory. The type of lesson and content depends on your goals and the style of playing you wish to develop.</p>
-            
             <h3>Song Lessons</h3>
             <ul>
                 <li><strong>Quick Check-In:</strong> A brief chat to see how your song practice is going and identify any challenges.</li>
@@ -818,25 +341,22 @@
                 <li><strong>Immediate Feedback:</strong> Targeted, hands-on corrections help you make quick progress.</li>
                 <li><strong>Practice Instructions:</strong> Dedicate focused time to practicing the song section, applying the techniques we worked on, and reviewing any theory concepts discussed.</li>
             </ul>
-
             <h3>Theory-Focused Lessons</h3>
             <ul>
                 <li><strong>Music Theory Concepts:</strong> These sessions explore scales, chord structures, rhythmic concepts, and common forms (e.g., 12 bar blues) to build a solid foundation for your musical intuition.</li>
                 <li><strong>Application:</strong> Learn how to apply these concepts in your playing through songwriting and improvisation.</li>
             </ul>
-
             <h3>Technique-Focused Lessons</h3>
             <ul>
                 <li>These sessions concentrate on refining your technical skills through targeted exercises and drills. These may be new techniques or ones you are developing.</li>
             </ul>
-
             <p style="margin-top: 1.5rem;">This comprehensive approach ensures that every lesson—whether focused on a song, theory, or technique—contributes to your overall development as a guitarist.</p>
-    </section>
-    <section id="services">
+        </section>
+        <section id="services">
             <h2 style="text-align: center;">Services</h2>
             <div class="services-content">
                 <div class="image-card">
-                    <img src="images/234507642_327550118897171_1096896925913925851_n.jpg" alt="Mike Nelson with guitar">
+                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/234507642_327550118897171_1096896925913925851_n.jpg" alt="Mike Nelson with guitar">
                     <div class="image-overlay"></div>
                 </div>
                 <div class="services-text">
@@ -866,7 +386,7 @@
                     </ul>
                 </div>
                 <div class="image-card">
-                    <img src="406198630_10161793432483561_664022961094242044_n.jpg" alt="Mike Nelson with guitar">
+                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/406198630_10161793432483561_664022961094242044_n.jpg" alt="Mike Nelson with guitar">
                     <div class="image-overlay"></div>
                 </div>
                 <div class="services-text" style="text-align: left; margin-top: 1rem; display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem;">
@@ -981,8 +501,8 @@
                 <textarea id="message" name="message" required></textarea>
                 <button type="submit">Send</button>
             </form>
-    </section>
-    <section id="curriculum">
+        </section>
+        <section id="curriculum">
             <h2 style="text-align: center;">Guitar Curriculum</h2>
             <div class="level-progression">
                 <div class="level">Beginner</div>
@@ -991,70 +511,70 @@
                 <div class="level">Advanced Intermediate</div>
                 <div class="level">Advanced</div>
             </div>
-        <h3>Curriculum Overview</h3>
+            <h3>Curriculum Overview</h3>
             <p>Each level is organized under the following categories:</p>
-        <ul>
-            <li>Chord Fundamentals</li>
-            <li>Melodic/Single Note Playing</li>
-            <li>Rhythmic Development</li>
-            <li>Music Theory</li>
-            <li>Fretboard & Reading Skills</li>
-            <li>Technique</li>
-        </ul>
-        <h3>Beginner (Foundations)</h3>
-        <p>Key Skills:</p>
-        <ul>
-            <li><strong>Chord Fundamentals:</strong> Master basic open chords such as A, Am, C, D, Dm, E, Em, and G, focusing on smooth, clean transitions.</li>
-            <li><strong>Melodic/Single Note Playing:</strong> Practice simple melodies on one or two strings to build finger strength and accuracy.</li>
-            <li><strong>Rhythmic Development:</strong> Use simple strumming patterns (quarter notes and basic eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
-            <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
-            <li><strong>Fretboard & Reading Skills:</strong> Practice identifying note names along the E string using targeted exercises and basic fretboard diagrams; develop the ability to interpret chord charts and lyric sheets.</li>
-            <li><strong>Technique:</strong> Master an effective, comfortable pick grip and focus on correct hand placement.</li>
-        </ul>
-        <h3>Advanced Beginner (Building Blocks)</h3>
-        <p>Key Skills:</p>
-        <ul>
-            <li><strong>Chord Fundamentals:</strong> Continue working with basic chords and introduce additional open chords and open 7th chords (e.g., A7, D7) with wider transitions.</li>
-            <li><strong>Melodic/Single Note Playing:</strong> Practice and refine single‑note melodies; begin integrating simple multi‑string riffs.</li>
-            <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation.</li>
-            <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams; begin exploring foundational forms like the 12‑bar blues.</li>
-            <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and enhance skills in reading chord and lyric sheets.</li>
-            <li><strong>Technique:</strong> Continue to master an effective, comfortable pick grip and proper hand placement.</li>
-        </ul>
-        <h3>Intermediate (Progressing)</h3>
-        <p>Key Skills:</p>
-        <ul>
-            <li><strong>Chord Fundamentals:</strong> Introduce and practice barre chords; refine overall chord transitions.</li>
-            <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency using single‑note patterns (covering the Pentatonic, major, and relative minor scales) to build speed, accuracy, and vocabulary.</li>
-            <li><strong>Rhythmic Development:</strong> Enhance chord transitions with varied rhythmic patterns (e.g., sixteenth notes, triplets) and practice with a metronome for precise timing.</li>
-            <li><strong>Music Theory:</strong> Study intervals and diatonic harmony using practical, tab‑based examples and written explanations.</li>
-            <li><strong>Fretboard & Reading Skills:</strong> Develop proficiency in reading chord, lyric, and tablature sheets.</li>
-            <li><strong>Technique:</strong> Focus on executing hammer‑ons, pull‑offs, slides, palm muting, and incorporate ghost notes for added rhythmic and tonal variation.</li>
-        </ul>
-        <h3>Advanced Intermediate (Refining Skills)</h3>
-        <p>Key Skills:</p>
-        <ul>
-            <li><strong>Chord Fundamentals:</strong> Continue refining complex chord transitions with increased speed and precision.</li>
-            <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales, modes, and arpeggio exercises.</li>
-            <li><strong>Rhythmic Development:</strong> Integrate complex rhythmic patterns (e.g., sixteenth notes, triplets, syncopation) for enhanced expressive timing.</li>
-            <li><strong>Music Theory:</strong> Deepen your understanding of modal concepts and chord substitutions through practical examples and detailed written materials.</li>
-            <li><strong>Fretboard & Reading Skills:</strong> Maintain proficiency in reading advanced tablature and chord charts.</li>
-            <li><strong>Technique:</strong> Master advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
-        </ul>
-        <h3>Advanced (Mastery)</h3>
-        <p>Key Skills:</p>
-        <ul>
-            <li><strong>Chord Mastery:</strong> Master advanced chord shapes, including extended and altered chords.</li>
-            <li><strong>Scale Mastery:</strong> Explore advanced scales (diminished, whole tone, harmonic minor, melodic minor, and their modes) and integrate them into solos and improvisation.</li>
-            <li><strong>Musical Expression:</strong> Develop nuanced performance with dynamic variation, precise alternate picking, and expressive phrasing.</li>
-            <li><strong>Advanced Rhythmic Development:</strong> Practice intricate subdivisions (complex sixteenth note passages, triplets, dotted rhythms) within sophisticated arrangements.</li>
-            <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams.</li>
-            <li><strong>Fretboard & Reading Skills:</strong> Continue advanced reading of complex tablature and chord charts.</li>
-            <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing.</li>
-        </ul>
-    </section>
-    <section id="resources">
-        <h2>Resources</h2>
+            <ul>
+                <li>Chord Fundamentals</li>
+                <li>Melodic/Single Note Playing</li>
+                <li>Rhythmic Development</li>
+                <li>Music Theory</li>
+                <li>Fretboard & Reading Skills</li>
+                <li>Technique</li>
+            </ul>
+            <h3>Beginner (Foundations)</h3>
+            <p>Key Skills:</p>
+            <ul>
+                <li><strong>Chord Fundamentals:</strong> Master basic open chords such as A, Am, C, D, Dm, E, Em, and G, focusing on smooth, clean transitions.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Practice simple melodies on one or two strings to build finger strength and accuracy.</li>
+                <li><strong>Rhythmic Development:</strong> Use simple strumming patterns (quarter notes and basic eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
+                <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Practice identifying note names along the E string using targeted exercises and basic fretboard diagrams; develop the ability to interpret chord charts and lyric sheets.</li>
+                <li><strong>Technique:</strong> Master an effective, comfortable pick grip and focus on correct hand placement.</li>
+            </ul>
+            <h3>Advanced Beginner (Building Blocks)</h3>
+            <p>Key Skills:</p>
+            <ul>
+                <li><strong>Chord Fundamentals:</strong> Continue working with basic chords and introduce additional open chords and open 7th chords (e.g., A7, D7) with wider transitions.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Practice and refine single‑note melodies; begin integrating simple multi‑string riffs.</li>
+                <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation.</li>
+                <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams; begin exploring foundational forms like the 12‑bar blues.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and enhance skills in reading chord and lyric sheets.</li>
+                <li><strong>Technique:</strong> Continue to master an effective, comfortable pick grip and proper hand placement.</li>
+            </ul>
+            <h3>Intermediate (Progressing)</h3>
+            <p>Key Skills:</p>
+            <ul>
+                <li><strong>Chord Fundamentals:</strong> Introduce and practice barre chords; refine overall chord transitions.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency using single‑note patterns (covering the Pentatonic, major, and relative minor scales) to build speed, accuracy, and vocabulary.</li>
+                <li><strong>Rhythmic Development:</strong> Enhance chord transitions with varied rhythmic patterns (e.g., sixteenth notes, triplets) and practice with a metronome for precise timing.</li>
+                <li><strong>Music Theory:</strong> Study intervals and diatonic harmony using practical, tab‑based examples and written explanations.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Develop proficiency in reading chord, lyric, and tablature sheets.</li>
+                <li><strong>Technique:</strong> Focus on executing hammer‑ons, pull‑offs, slides, palm muting, and incorporate ghost notes for added rhythmic and tonal variation.</li>
+            </ul>
+            <h3>Advanced Intermediate (Refining Skills)</h3>
+            <p>Key Skills:</p>
+            <ul>
+                <li><strong>Chord Fundamentals:</strong> Continue refining complex chord transitions with increased speed and precision.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales, modes, and arpeggio exercises.</li>
+                <li><strong>Rhythmic Development:</strong> Integrate complex rhythmic patterns (e.g., sixteenth notes, triplets, syncopation) for enhanced expressive timing.</li>
+                <li><strong>Music Theory:</strong> Deepen your understanding of modal concepts and chord substitutions through practical examples and detailed written materials.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Maintain proficiency in reading advanced tablature and chord charts.</li>
+                <li><strong>Technique:</strong> Master advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
+            </ul>
+            <h3>Advanced (Mastery)</h3>
+            <p>Key Skills:</p>
+            <ul>
+                <li><strong>Chord Mastery:</strong> Master advanced chord shapes, including extended and altered chords.</li>
+                <li><strong>Scale Mastery:</strong> Explore advanced scales (diminished, whole tone, harmonic minor, melodic minor, and their modes) and integrate them into solos and improvisation.</li>
+                <li><strong>Musical Expression:</strong> Develop nuanced performance with dynamic variation, precise alternate picking, and expressive phrasing.</li>
+                <li><strong>Advanced Rhythmic Development:</strong> Practice intricate subdivisions (complex sixteenth note passages, triplets, dotted rhythms) within sophisticated arrangements.</li>
+                <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Continue advanced reading of complex tablature and chord charts.</li>
+                <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing.</li>
+            </ul>
+        </section>
+        <section id="resources">
+            <h2>Resources</h2>
             <div class="services-content">
                 <div class="services-text" style="height: 315px; display: flex; flex-direction: column; justify-content: space-between; padding: 1rem 0;">
                     <div>
@@ -1065,12 +585,11 @@
                 </div>
                 <div class="image-card">
                     <a href="#major-scale-guitar-shapes-guide">
-                        <img src="Screenshot 2025-03-18 at 1.47.16 AM.png" alt="Major Scale Modes & Arpeggios Guitar Shapes Guide Cover" style="width: 100%; height: 100%; object-fit: contain; border: none; box-shadow: none;">
+                        <img src="https://example.com/path/to/your/image.png" alt="Major Scale Modes & Arpeggios Guitar Shapes Guide Cover" style="width: 100%; height: 100%; object-fit: contain; border: none; box-shadow: none;">
                         <div class="image-overlay"></div>
                     </a>
                 </div>
             </div>
-            
             <h3 style="margin-top: 2rem;">Video Lessons</h3>
             <div class="image-grid">
                 <div>
@@ -1082,7 +601,6 @@
                     <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-
             <h3 style="margin-top: 2rem;">Chord Diagrams</h3>
             <div style="margin-top: 1.5rem;">
                 <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Open Chords</h4>
@@ -1119,7 +637,6 @@
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/G%20Major.png" alt="G Major Chord" title="G Major">
                         <p>G Major</p>
                     </div>
-                    
                     <div class="chord-item">
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/A7.png" alt="A7 Chord" title="A7">
                         <p>A7</p>
@@ -1152,7 +669,6 @@
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Dmaj7.png" alt="DMaj7 Chord" title="DMaj7">
                         <p>DMaj7</p>
                     </div>
-                    
                     <div class="chord-item">
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/1.%20Open%20Chords/Asus2.png" alt="Asus2 Chord" title="Asus2">
                         <p>Asus2</p>
@@ -1178,7 +694,6 @@
                         <p>Dsus4</p>
                     </div>
                 </div>
-
                 <h4 style="color: var(--primary-color); margin: 2rem 0 1rem; font-family: 'Playfair Display', serif;">Barre Chords</h4>
                 <p>Barre chords are formed by using the index finger as a movable capo, allowing you to shift open chord shapes up and down the neck. The A-shape and E-shape barre chords are especially versatile, enabling you to play major, minor, suspended chords, and the three most common types of 7th chords.</p>
                 <div class="chord-grid">
@@ -1210,7 +725,6 @@
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/2.%20Barre%20Chords/Asus4%20Shape%20Barre%20Chord.png" alt="Asus4 Shape Barre Chord" title="Asus4 Shape">
                         <p>Asus4 Shape</p>
                     </div>
-                    
                     <div class="chord-item">
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/2.%20Barre%20Chords/E%20Major%20Shape%20Barre%20Chord.png" alt="E Major Shape Barre Chord" title="E Major Shape">
                         <p>E Major Shape</p>
@@ -1229,22 +743,20 @@
                     </div>
                     <div class="chord-item">
                         <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/2.%20Barre%20Chords/Emaj7%20Shape%20Barre%20Chord.png" alt="EMaj7 Shape Barre Chord" title="EMaj7 Shape">
-                        <img src="2. Barre Chords/Emaj7 Shape Barre Chord.png" alt="EMaj7 Shape Barre Chord" title="EMaj7 Shape">
                         <p>EMaj7 Shape</p>
                     </div>
                 </div>
             </div>
-
             <p style="text-align: center; margin-top: 1rem;">
                 <a href="https://www.youtube.com/@MikeNelsonGuitar" target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1.2rem;">
                     Visit my YouTube channel for more lessons <span style="font-size: 1rem;">▶</span>
                 </a>
             </p>
-    </section>
+        </section>
         <section id="major-scale-guitar-shapes-guide">
             <h2 style="text-align: center;">Major Scale Guitar Shapes Guide</h2>
             <iframe src="THE MAJOR SCALE MODES & ARPEGGIOS-GUITAR SHAPES GUIDE.pdf#view=two" width="100%" height="800px" style="border: none;"></iframe>
-    </section>
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 Mike Nelson Guitar Lessons</p>
