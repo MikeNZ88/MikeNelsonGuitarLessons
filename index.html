@@ -415,7 +415,9 @@
             }
 
             nav ul {
-                display: block;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
                 position: relative;
                 top: 60px;
                 left: 0;
@@ -423,19 +425,407 @@
                 background-color: var(--wood-dark);
                 z-index: 999;
                 padding: 2rem;
-                max-height: none;
-                overflow-y: visible;
+                max-height: 800px;
+                overflow-y: auto;
             }
 
             nav ul li {
                 text-align: center;
                 margin: 0;
                 padding: 1rem;
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+            }
+
+            nav ul li a {
+                font-size: 1rem;
+                padding: 0.3rem 0.5rem;
+                line-height: 1.2;
+            }
+
+            .hero {
+                height: 50vh;
+                padding-top: 120px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+                padding: 0 1rem;
+            }
+
+            main {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+
+            h4 {
+                font-size: 1.2rem;
+            }
+
+            .image-grid, .services-content, .testimonials-grid, .chord-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin: 1.5rem 0;
+            }
+
+            .image-card {
+                height: auto;
+            }
+
+            iframe {
+                height: 250px;
+            }
+
+            form {
+                padding: 1rem;
+            }
+
+            form input, form textarea, form select {
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+
+            form button {
+                padding: 1rem 2rem;
+                width: 100%;
+            }
+
+            .checkbox-options {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .checkbox-label {
+                padding: 0.75rem;
+            }
+
+            .level-progression {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .level {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                min-width: unset;
+            }
+
+            ul {
+                padding-left: 1.2rem;
+            }
+
+            li {
+                margin-bottom: 0.5rem;
+            }
+
+            .services-text {
+                height: auto !important;
+                padding: 0;
+            }
+
+            .testimonial-card {
+                padding: 1rem;
+            }
+
+            .chord-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            header h1 {
+                margin: 0;
+                font-size: 1.8rem;
+            }
+
+            header h1 span {
+                font-size: 1.2rem;
+                font-weight: normal;
+            }
+
+            nav ul {
+                justify-content: center;
+                padding: 0;
+            }
+
+            nav ul li {
+                flex: none;
+            }
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--wood-dark);
+        }
+
+        .level-progression {
+            display: flex;
+            justify-content: space-between;
+            margin: 1.5rem 0;
+            padding: 1.25rem;
+            background: linear-gradient(45deg, var(--wood-dark), var(--wood-light));
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-progression::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h20v20H0z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .level {
+            color: var(--white);
+            font-weight: 600;
+            text-align: center;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            border: 2px solid rgba(255,255,255,0.2);
+            min-width: 120px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .level:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--white);
+            font-size: 1.5rem;
+            z-index: 2;
+        }
+
+        .level:hover {
+            transform: translateY(-3px);
+            background: rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .level-progression {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .level {
+                width: 100%;
+                min-width: unset;
+            }
+
+            .level:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: -20px;
+                transform: translateX(50%);
+            }
+        }
+
+        .checkbox-group {
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s ease;
+        }
+
+        .checkbox-label:hover {
+            background-color: rgba(222, 184, 135, 0.1);
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            cursor: pointer;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
+            border: 2px solid var(--wood-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-card .stars {
+            color: #FFD700;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-card .review-text {
+            font-style: italic;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        .testimonial-card .reviewer {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .testimonial-card .date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .chord-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .chord-item {
+            text-align: center;
+        }
+
+        .chord-item p {
+            margin-top: 0.5rem;
+            margin-bottom: 0;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: rgba(222, 184, 135, 0.1);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .chord-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid var(--wood-light);
+            background: white;
+            padding: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: block;
+        }
+
+        .chord-item img:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .chord-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        .header-content h1 {
+            font-size: 1.8rem;
+            margin: 0;
+            text-align: left;
+        }
+
+        .header-content span {
+            font-size: 1rem;
+            font-weight: normal;
+            display: block;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 60px; /* Adjust based on header height */
+                left: 0;
+                width: 100%;
+                background-color: var(--wood-dark);
+                display: grid; /* Change to grid layout */
+                grid-template-columns: repeat(3, 1fr); /* Three columns */
+                gap: 0.5rem; /* Space between items */
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999; /* Ensure it appears above other content */
+                padding: 0.5rem 0; /* Reduce vertical padding */
+            }
+
+            .nav-links.active {
+                transform: translateY(0); /* Show menu when active */
+            }
+
+            .nav-links li {
+                text-align: center; /* Center align text */
+                margin: 0; /* Remove margin */
+                padding: 0.5rem; /* Add padding for touch targets */
             }
 
             .hamburger {
-                display: flex;
+                display: none;
             }
         }
 
@@ -500,23 +890,23 @@
 <body>
     <header>
         <div class="header-content">
-            <nav>
+        <nav>
                 <div class="hamburger" id="hamburger">
                     <div class="line"></div>
                     <div class="line"></div>
                     <div class="line"></div>
                 </div>
                 <ul class="nav-links" id="nav-links">
-                    <li><a href="#about">About</a></li>
+                <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li><a href="#services">Services</a></li>
+                <li><a href="#services">Services</a></li>
                     <li><a href="#testimonials">Reviews</a></li>
                     <li><a href="#how-lessons-work">Approach</a></li>
-                    <li><a href="#curriculum">Curriculum</a></li>
-                    <li><a href="#resources">Resources</a></li>
+                <li><a href="#curriculum">Curriculum</a></li>
+                <li><a href="#resources">Resources</a></li>
                     <li><a href="#blog">Blog</a></li>
-                </ul>
-            </nav>
+            </ul>
+        </nav>
         </div>
     </header>
     <div class="hero">
@@ -525,8 +915,8 @@
         </div>
     </div>
     <main>
-        <section id="about">
-            <h2>About Mike</h2>
+    <section id="about">
+        <h2>About Mike</h2>
             <div class="image-grid">
                 <div class="image-card">
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
@@ -563,8 +953,8 @@
             </ul>
 
             <p style="margin-top: 1.5rem;">This comprehensive approach ensures that every lesson—whether focused on a song, theory, or technique—contributes to your overall development as a guitarist.</p>
-        </section>
-        <section id="services">
+    </section>
+    <section id="services">
             <h2 style="text-align: center;">Services</h2>
             <div class="services-content">
                 <div class="image-card">
@@ -708,8 +1098,8 @@
                 <textarea id="message" name="message" required></textarea>
                 <button type="submit">Send</button>
             </form>
-        </section>
-        <section id="curriculum">
+    </section>
+    <section id="curriculum">
             <h2 style="text-align: center;">Guitar Curriculum</h2>
             <div class="level-progression">
                 <div class="level">Beginner</div>
@@ -718,70 +1108,70 @@
                 <div class="level">Advanced Intermediate</div>
                 <div class="level">Advanced</div>
             </div>
-            <h3>Curriculum Overview</h3>
+        <h3>Curriculum Overview</h3>
             <p>Each level is organized under the following categories:</p>
-            <ul>
-                <li>Chord Fundamentals</li>
-                <li>Melodic/Single Note Playing</li>
-                <li>Rhythmic Development</li>
-                <li>Music Theory</li>
-                <li>Fretboard & Reading Skills</li>
-                <li>Technique</li>
-            </ul>
-            <h3>Beginner (Foundations)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Master basic open chords such as A, Am, C, D, Dm, E, Em, and G, focusing on smooth, clean transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Practice simple melodies on one or two strings to build finger strength and accuracy.</li>
-                <li><strong>Rhythmic Development:</strong> Use simple strumming patterns (quarter notes and basic eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
-                <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Practice identifying note names along the E string using targeted exercises and basic fretboard diagrams; develop the ability to interpret chord charts and lyric sheets.</li>
-                <li><strong>Technique:</strong> Master an effective, comfortable pick grip and focus on correct hand placement.</li>
-            </ul>
-            <h3>Advanced Beginner (Building Blocks)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue working with basic chords and introduce additional open chords and open 7th chords (e.g., A7, D7) with wider transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Practice and refine single‑note melodies; begin integrating simple multi‑string riffs.</li>
-                <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation.</li>
-                <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams; begin exploring foundational forms like the 12‑bar blues.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and enhance skills in reading chord and lyric sheets.</li>
-                <li><strong>Technique:</strong> Continue to master an effective, comfortable pick grip and proper hand placement.</li>
-            </ul>
-            <h3>Intermediate (Progressing)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Introduce and practice barre chords; refine overall chord transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency using single‑note patterns (covering the Pentatonic, major, and relative minor scales) to build speed, accuracy, and vocabulary.</li>
-                <li><strong>Rhythmic Development:</strong> Enhance chord transitions with varied rhythmic patterns (e.g., sixteenth notes, triplets) and practice with a metronome for precise timing.</li>
-                <li><strong>Music Theory:</strong> Study intervals and diatonic harmony using practical, tab‑based examples and written explanations.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Develop proficiency in reading chord, lyric, and tablature sheets.</li>
-                <li><strong>Technique:</strong> Focus on executing hammer‑ons, pull‑offs, slides, palm muting, and incorporate ghost notes for added rhythmic and tonal variation.</li>
-            </ul>
-            <h3>Advanced Intermediate (Refining Skills)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue refining complex chord transitions with increased speed and precision.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales, modes, and arpeggio exercises.</li>
-                <li><strong>Rhythmic Development:</strong> Integrate complex rhythmic patterns (e.g., sixteenth notes, triplets, syncopation) for enhanced expressive timing.</li>
-                <li><strong>Music Theory:</strong> Deepen your understanding of modal concepts and chord substitutions through practical examples and detailed written materials.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Maintain proficiency in reading advanced tablature and chord charts.</li>
-                <li><strong>Technique:</strong> Master advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
-            </ul>
-            <h3>Advanced (Mastery)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Mastery:</strong> Master advanced chord shapes, including extended and altered chords.</li>
-                <li><strong>Scale Mastery:</strong> Explore advanced scales (diminished, whole tone, harmonic minor, melodic minor, and their modes) and integrate them into solos and improvisation.</li>
-                <li><strong>Musical Expression:</strong> Develop nuanced performance with dynamic variation, precise alternate picking, and expressive phrasing.</li>
-                <li><strong>Advanced Rhythmic Development:</strong> Practice intricate subdivisions (complex sixteenth note passages, triplets, dotted rhythms) within sophisticated arrangements.</li>
-                <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Continue advanced reading of complex tablature and chord charts.</li>
-                <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing.</li>
-            </ul>
-        </section>
-        <section id="resources">
-            <h2>Resources</h2>
+        <ul>
+            <li>Chord Fundamentals</li>
+            <li>Melodic/Single Note Playing</li>
+            <li>Rhythmic Development</li>
+            <li>Music Theory</li>
+            <li>Fretboard & Reading Skills</li>
+            <li>Technique</li>
+        </ul>
+        <h3>Beginner (Foundations)</h3>
+        <p>Key Skills:</p>
+        <ul>
+            <li><strong>Chord Fundamentals:</strong> Master basic open chords such as A, Am, C, D, Dm, E, Em, and G, focusing on smooth, clean transitions.</li>
+            <li><strong>Melodic/Single Note Playing:</strong> Practice simple melodies on one or two strings to build finger strength and accuracy.</li>
+            <li><strong>Rhythmic Development:</strong> Use simple strumming patterns (quarter notes and basic eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
+            <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
+            <li><strong>Fretboard & Reading Skills:</strong> Practice identifying note names along the E string using targeted exercises and basic fretboard diagrams; develop the ability to interpret chord charts and lyric sheets.</li>
+            <li><strong>Technique:</strong> Master an effective, comfortable pick grip and focus on correct hand placement.</li>
+        </ul>
+        <h3>Advanced Beginner (Building Blocks)</h3>
+        <p>Key Skills:</p>
+        <ul>
+            <li><strong>Chord Fundamentals:</strong> Continue working with basic chords and introduce additional open chords and open 7th chords (e.g., A7, D7) with wider transitions.</li>
+            <li><strong>Melodic/Single Note Playing:</strong> Practice and refine single‑note melodies; begin integrating simple multi‑string riffs.</li>
+            <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation.</li>
+            <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams; begin exploring foundational forms like the 12‑bar blues.</li>
+            <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and enhance skills in reading chord and lyric sheets.</li>
+            <li><strong>Technique:</strong> Continue to master an effective, comfortable pick grip and proper hand placement.</li>
+        </ul>
+        <h3>Intermediate (Progressing)</h3>
+        <p>Key Skills:</p>
+        <ul>
+            <li><strong>Chord Fundamentals:</strong> Introduce and practice barre chords; refine overall chord transitions.</li>
+            <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency using single‑note patterns (covering the Pentatonic, major, and relative minor scales) to build speed, accuracy, and vocabulary.</li>
+            <li><strong>Rhythmic Development:</strong> Enhance chord transitions with varied rhythmic patterns (e.g., sixteenth notes, triplets) and practice with a metronome for precise timing.</li>
+            <li><strong>Music Theory:</strong> Study intervals and diatonic harmony using practical, tab‑based examples and written explanations.</li>
+            <li><strong>Fretboard & Reading Skills:</strong> Develop proficiency in reading chord, lyric, and tablature sheets.</li>
+            <li><strong>Technique:</strong> Focus on executing hammer‑ons, pull‑offs, slides, palm muting, and incorporate ghost notes for added rhythmic and tonal variation.</li>
+        </ul>
+        <h3>Advanced Intermediate (Refining Skills)</h3>
+        <p>Key Skills:</p>
+        <ul>
+            <li><strong>Chord Fundamentals:</strong> Continue refining complex chord transitions with increased speed and precision.</li>
+            <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales, modes, and arpeggio exercises.</li>
+            <li><strong>Rhythmic Development:</strong> Integrate complex rhythmic patterns (e.g., sixteenth notes, triplets, syncopation) for enhanced expressive timing.</li>
+            <li><strong>Music Theory:</strong> Deepen your understanding of modal concepts and chord substitutions through practical examples and detailed written materials.</li>
+            <li><strong>Fretboard & Reading Skills:</strong> Maintain proficiency in reading advanced tablature and chord charts.</li>
+            <li><strong>Technique:</strong> Master advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
+        </ul>
+        <h3>Advanced (Mastery)</h3>
+        <p>Key Skills:</p>
+        <ul>
+            <li><strong>Chord Mastery:</strong> Master advanced chord shapes, including extended and altered chords.</li>
+            <li><strong>Scale Mastery:</strong> Explore advanced scales (diminished, whole tone, harmonic minor, melodic minor, and their modes) and integrate them into solos and improvisation.</li>
+            <li><strong>Musical Expression:</strong> Develop nuanced performance with dynamic variation, precise alternate picking, and expressive phrasing.</li>
+            <li><strong>Advanced Rhythmic Development:</strong> Practice intricate subdivisions (complex sixteenth note passages, triplets, dotted rhythms) within sophisticated arrangements.</li>
+            <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams.</li>
+            <li><strong>Fretboard & Reading Skills:</strong> Continue advanced reading of complex tablature and chord charts.</li>
+            <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing.</li>
+        </ul>
+    </section>
+    <section id="resources">
+        <h2>Resources</h2>
             <div class="services-content">
                 <div class="services-text" style="height: 315px; display: flex; flex-direction: column; justify-content: space-between; padding: 1rem 0;">
                     <div>
@@ -805,7 +1195,7 @@
                     <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
-        </section>
+    </section>
         <section id="blog">
             <h2 style="text-align: center;">Blog</h2>
             <article>
@@ -834,7 +1224,7 @@
 
                 <p>This four-level model guides you from the basics of reading tabs, through mastering rhythmic notation (including subdivisions), to recognizing chord and scale shapes, and finally applying music theory for a comprehensive interpretation of the music.</p>
             </article>
-        </section>
+    </section>
     </main>
     <footer>
         <p>&copy; 2024 Mike Nelson Guitar Lessons</p>
