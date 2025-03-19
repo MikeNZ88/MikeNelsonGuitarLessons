@@ -169,7 +169,7 @@
         header {
             background-color: var(--wood-dark);
             color: var(--white);
-            padding: 1.5rem 0;
+            padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -406,7 +406,7 @@
 
         @media (max-width: 768px) {
             header {
-                padding: 0.2rem 0;
+                padding: 0.5rem 0;
             }
 
             .header-content {
@@ -815,6 +815,21 @@
             .hamburger {
                 display: flex; /* Show hamburger on mobile */
             }
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger .line {
+            width: 30px;
+            height: 3px;
+            background-color: var(--white);
+            margin: 4px 0;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
