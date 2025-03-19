@@ -215,6 +215,7 @@
         nav ul li {
             margin: 0;
             text-align: center;
+            flex: 1;
         }
 
         nav ul li a {
@@ -416,21 +417,21 @@
 
             nav ul {
                 display: grid;
-                grid-template-columns: repeat(3, 1fr); /* Change to 3 columns */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.5rem;
-                position: relative;
-                top: 60px; /* Adjust based on header height */
+                position: absolute;
+                top: 60px;
                 left: 0;
                 width: 100%;
                 background-color: var(--wood-dark);
-                z-index: 999; /* Ensure it appears above other content */
-                padding: 1rem 0; /* Vertical padding for touch targets */
+                z-index: 999;
+                padding: 0.5rem 0;
             }
 
             nav ul li {
-                text-align: center; /* Center align text */
-                margin: 0; /* Remove margin */
-                padding: 0.5rem; /* Add padding for touch targets */
+                text-align: center;
+                margin: 0;
+                padding: 0.5rem;
             }
 
             nav ul li a {
@@ -803,7 +804,7 @@
                 width: 100%;
                 background-color: var(--wood-dark);
                 display: grid; /* Change to grid layout */
-                grid-template-columns: repeat(3, 1fr); /* Three columns */
+                grid-template-columns: repeat(2, 1fr); /* Two columns */
                 gap: 0.5rem; /* Space between items */
                 transform: translateY(-100%);
                 transition: transform 0.3s ease;
