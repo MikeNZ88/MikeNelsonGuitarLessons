@@ -794,7 +794,12 @@
                 <span style="font-size: 1.2rem; font-weight: normal;">Guitar Lessons</span>
             </h1>
             <nav>
-                <ul>
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <ul class="nav-links" id="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="#services">Services</a></li>
@@ -1109,7 +1114,12 @@
         </p>
     </footer>
     <script>
-        // Remove old form handler as Formspree will handle it
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>
