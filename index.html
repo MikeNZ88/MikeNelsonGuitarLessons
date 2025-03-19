@@ -535,6 +535,33 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column; /* Stack items vertically */
+                align-items: center; /* Center items horizontally */
+                text-align: center; /* Center text */
+            }
+
+            header h1 {
+                margin: 0; /* Remove margin for better alignment */
+                font-size: 1.8rem; /* Adjust font size if necessary */
+            }
+
+            header h1 span {
+                font-size: 1.2rem; /* Keep the span size consistent */
+                font-weight: normal;
+            }
+
+            nav ul {
+                justify-content: center; /* Center the navigation items */
+                padding: 0; /* Remove padding */
+            }
+
+            nav ul li {
+                flex: none; /* Prevent flex-grow to keep items centered */
+            }
+        }
+
         a {
             color: var(--accent-color);
             text-decoration: none;
