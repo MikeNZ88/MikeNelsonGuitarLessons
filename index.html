@@ -875,95 +875,18 @@
             margin: 1.2rem 0 0.5rem;
             color: var(--primary-color);
         }
-
-        /* Mobile Menu Styles */
-        .menu-icon {
-            font-size: 2rem;
-            cursor: pointer;
-            display: block;
-        }
-
-        nav {
-            display: none;
-            width: 100%;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            background-color: #8B4513;
-        }
-
-        nav li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        nav li a {
-            display: block;
-            padding: 1rem 2rem;
-            color: #fff;
-            text-decoration: none;
-            transition: background 0.3s ease;
-        }
-
-        nav li a:hover {
-            background-color: #D2691E;
-        }
-
-        /* Active class for showing mobile nav with animation */
-        nav.active {
-            display: block;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Desktop Styles */
-        @media (min-width: 768px) {
-            .menu-icon {
-                display: none;
-            }
-            nav {
-                display: block;
-                width: auto;
-            }
-            nav ul {
-                flex-direction: row;
-                background-color: transparent;
-            }
-            nav li {
-                border: none;
-            }
-            nav li a {
-                padding: 1rem;
-                font-size: 1.1rem;
-            }
-            nav li a:hover {
-                background-color: transparent;
-                color: #D2691E;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="logo">Mike Nelson<br><span style="font-size: 1rem; font-weight: normal;">Guitar Lessons</span></div>
-            <div class="menu-icon" id="menu-icon">&#9776;</div>
-            <nav id="nav-links">
-                <ul>
+            <nav>
+                <div class="hamburger" id="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+                <ul class="nav-links" id="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="#services">Services</a></li>
@@ -1306,12 +1229,12 @@
         </p>
     </footer>
     <script>
-        const menuIcon = document.getElementById('menu-icon');
-        const nav = document.getElementById('nav-links');
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
 
-        menuIcon.addEventListener('click', () => {
-            nav.classList.toggle('active');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
     </script>
 </body>
-</html>
+</html>c
