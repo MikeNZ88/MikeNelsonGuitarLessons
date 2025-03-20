@@ -1153,6 +1153,10 @@
                 </ul>
             </article>
         </section>
+        <section id="events">
+            <h2 style="text-align: center;">Available Lesson Times</h2>
+            <div id="events-container"></div> <!-- This is where the events will be displayed -->
+        </section>
     </main>
     <footer>
         <p>&copy; 2024 Mike Nelson Guitar Lessons</p>
@@ -1201,7 +1205,7 @@
         }
 
         function displayEvents(events) {
-            const eventsContainer = document.getElementById('events');
+            const eventsContainer = document.getElementById('events-container');
             eventsContainer.innerHTML = ''; // Clear previous events
 
             if (events.length === 0) {
