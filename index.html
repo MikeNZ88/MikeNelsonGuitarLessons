@@ -627,7 +627,7 @@
         .checkbox-group {
             display: flex;
             flex-direction: column; /* Stack checkboxes vertically */
-            align-items: center; /* Center checkboxes horizontally */
+            align-items: flex-start; /* Align checkboxes to the left */
             margin-bottom: 1rem;
         }
 
@@ -635,11 +635,12 @@
             display: flex;
             align-items: center; /* Align checkbox and label text */
             margin-bottom: 0.5rem; /* Space between checkboxes */
-            justify-content: center; /* Center the label text */
+            justify-content: flex-start; /* Align label text to the left */
+            width: 100%; /* Ensure labels take full width */
         }
 
         .checkbox-label input {
-            margin-right: 0.5rem;
+            margin-right: 0.5rem; /* Space between checkbox and label text */
         }
 
         .stars {
