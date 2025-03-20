@@ -930,41 +930,21 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
                 
-                <label for="mon">Monday:</label>
-                <select id="mon" name="mon" required>
+                <p style="text-align: center;">Please select at least one day of availability:</p>
+
+                <label for="availability">Availability:</label>
+                <select id="availability" name="availability" required>
                     <option value="">Select Availability</option>
-                    <option value="before5">Before 5pm</option>
-                    <option value="after5">After 5pm</option>
-                    <option value="both">Both</option>
+                    <option value="mon">Monday</option>
+                    <option value="tues">Tuesday</option>
+                    <option value="weds">Wednesday</option>
+                    <option value="thurs">Thursday</option>
+                    <option value="fri">Friday</option>
                 </select>
 
-                <label for="tues">Tuesday:</label>
-                <select id="tues" name="tues" required>
-                    <option value="">Select Availability</option>
-                    <option value="before5">Before 5pm</option>
-                    <option value="after5">After 5pm</option>
-                    <option value="both">Both</option>
-                </select>
-
-                <label for="weds">Wednesday:</label>
-                <select id="weds" name="weds" required>
-                    <option value="">Select Availability</option>
-                    <option value="before5">Before 5pm</option>
-                    <option value="after5">After 5pm</option>
-                    <option value="both">Both</option>
-                </select>
-
-                <label for="thurs">Thursday:</label>
-                <select id="thurs" name="thurs" required>
-                    <option value="">Select Availability</option>
-                    <option value="before5">Before 5pm</option>
-                    <option value="after5">After 5pm</option>
-                    <option value="both">Both</option>
-                </select>
-
-                <label for="fri">Friday:</label>
-                <select id="fri" name="fri" required>
-                    <option value="">Select Availability</option>
+                <label for="time">Time:</label>
+                <select id="time" name="time" required>
+                    <option value="">Select Time</option>
                     <option value="before5">Before 5pm</option>
                     <option value="after5">After 5pm</option>
                     <option value="both">Both</option>
@@ -977,17 +957,6 @@
                     <option value="beginner">Beginner with some experience</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
-                </select>
-
-                <label for="years">Years Playing:</label>
-                <select id="years" name="years" required>
-                    <option value="">Please select</option>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5+</option>
                 </select>
 
                 <label for="age">Age Group:</label>
@@ -1006,8 +975,8 @@
                     <option value="online">Online (Zoom/Skype) - $30/30min</option>
                 </select>
 
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" required></textarea>
+                <label for="message">Message (optional):</label>
+                <textarea id="message" name="message"></textarea>
                 
                 <button type="submit">Send</button>
             </form>
