@@ -629,6 +629,26 @@
         .reviewer {
             color: var(--wood-light); /* Use the wooden color for reviewer names */
         }
+
+        .video-phone-container {
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
+            margin-top: 1.5rem; /* Add some space above */
+        }
+
+        @media (min-width: 768px) {
+            .video-phone-container {
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
+                align-items: flex-start; /* Align items to the top */
+            }
+
+            #video {
+                margin-left: 1rem; /* Add space between phone and video */
+                flex: 1; /* Allow video to take available space */
+            }
+        }
     </style>
 </head>
 <body>
@@ -659,8 +679,12 @@
             </div>
             <p>I am an experienced guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!</p>
             
-            <h3 style="text-align: center;">How to Read Chord Diagrams</h3>
-            <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 315px;"></iframe>
+            <div class="video-phone-container">
+                <p style="text-align: center;">You can call me on <a href="tel:022-127-2154" style="font-weight: 600;">022 127 2154</a></p>
+                <div id="video">
+                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 315px;"></iframe>
+                </div>
+            </div>
         </section>
         <section id="how-lessons-work">
             <h2 style="text-align: center;">My Approach to Lessons</h2>
