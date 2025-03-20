@@ -433,8 +433,17 @@
         }
 
         @media (max-width: 768px) {
-            header {
-                padding: 0.5rem 0;
+            body {
+                padding: 0;
+            }
+
+            .hero {
+                padding-top: 40px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
             }
 
             .header-content {
@@ -443,53 +452,40 @@
                 align-items: flex-start;
             }
 
-            .nav-links {
-                position: absolute;
-                top: 60px;
-                left: 0;
+            nav {
                 width: 100%;
-                background-color: var(--wood-dark);
-                display: none;
-                flex-direction: column;
-                z-index: 999;
-                padding: 0;
-            }
-
-            .nav-links.active {
-                display: flex;
             }
 
             nav ul {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                padding: 0;
-                margin: 0;
+                display: flex;
+                flex-direction: column;
                 width: 100%;
             }
 
-            nav li {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            section {
+                padding: 1rem;
+                margin: 0.5rem 0;
             }
 
-            nav li a {
-                display: block;
-                padding: 0.5rem;
-                color: #fff;
-                text-decoration: none;
-                transition: background 0.3s ease;
+            .services-content {
+                grid-template-columns: 1fr;
+            }
+
+            .image-card {
+                height: auto;
+            }
+
+            iframe {
                 width: 100%;
+                height: auto;
             }
 
-            nav li a:hover {
-                background-color: #D2691E;
+            form {
+                padding: 1rem;
             }
 
-            .hamburger {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
+            footer {
+                padding: 1rem;
             }
         }
 
