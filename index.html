@@ -36,7 +36,6 @@
             background-position: center;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body::before {
@@ -181,6 +180,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            padding: 0 1rem;
         }
 
         .logo {
@@ -227,7 +227,7 @@
         nav {
             display: none;
             width: 100%;
-            background-color: #8B4513;
+            background-color: var(--wood-dark);
         }
 
         nav.active {
@@ -274,8 +274,8 @@
 
         main {
             max-width: 1200px;
-            margin: 4rem auto 4rem;
-            padding: 0 2rem;
+            margin: 4rem auto;
+            padding: 0 1rem;
         }
 
         section {
@@ -286,7 +286,6 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border: 2px solid var(--wood-light);
             width: 100%;
-            box-sizing: border-box;
         }
 
         section::before {
