@@ -127,14 +127,17 @@
         }
 
         .services-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            align-items: start;
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
+            margin: 2rem 0; /* Add margin for spacing */
         }
 
-        .services-text {
-            padding: 0.5rem 0;
+        .services-content > div {
+            flex: 1; /* Allow items to grow */
+            margin: 1rem; /* Add margin between items */
+            max-width: 400px; /* Set a max width for larger screens */
+            text-align: center; /* Center text */
         }
 
         .image-card {
@@ -468,7 +471,7 @@
             }
 
             .services-content {
-                grid-template-columns: 1fr;
+                flex-direction: column; /* Stack images vertically if needed */
             }
 
             .image-card {
@@ -593,6 +596,10 @@
             #video {
                 margin-left: 1rem; /* Add space between photo and video */
                 flex: 1; /* Allow video to take available space */
+            }
+            .services-content {
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
             }
         }
 
@@ -721,9 +728,6 @@
         <section id="services">
             <h2 style="text-align: center;">Services</h2>
             <div class="services-content">
-                <div class="image-card">
-                    <div class="image-overlay"></div>
-                </div>
                 <div class="services-text">
                     <h3 style="margin-top: 0;">In-Person Lessons</h3>
                     <p>All in-person lessons are priced at $30 for 30 minutes at my address in Pukerua Bay, or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
@@ -736,8 +740,6 @@
                         <li>Friday: 2pm - 8pm</li>
                     </ul>
                 </div>
-            </div>
-            <div class="services-content" style="margin-top: 2rem;">
                 <div class="services-text">
                     <h3 style="margin-top: 0;">Online Lessons</h3>
                     <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
@@ -749,11 +751,6 @@
                         <li>Available during regular teaching hours</li>
                         <li>Great for students outside the local area</li>
                     </ul>
-                </div>
-                <div class="services-text" style="text-align: left; margin-top: 1rem; display: flex; align-items: center; justify-content: flex-start; gap: 0.5rem;">
-                    <a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank" style="color: var(--accent-color); font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem;">
-                        <i class="fab fa-facebook" style="font-size: 1.5rem; color: var(--accent-color);"></i> Follow on Facebook
-                    </a>
                 </div>
             </div>
         </section>
