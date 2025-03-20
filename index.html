@@ -786,6 +786,21 @@
             border-radius: 12px; /* Optional: Add border radius for styling */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
         }
+
+        .image-grid {
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
+            margin: 2rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .image-grid {
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
+                align-items: flex-start; /* Align items to the top */
+            }
+        }
     </style>
 </head>
 <body>
@@ -979,66 +994,66 @@
         </section>
         <section id="curriculum">
             <h2 style="text-align: center;">Guitar Curriculum</h2>
-            <h3>Curriculum Overview</h3>
-            <p>Each level is organized under the following categories:</p>
+
+            <h3>Beginner Level 1: "First Time Strummer"</h3>
+            <p>You're just starting out—getting your hands on strumming, basic chords, and simple rhythms. It's all about having fun with your first sounds and exploring the basics of guitar playing.</p>
+            <h4>Key Skills:</h4>
             <ul>
-                <li>Chord Fundamentals</li>
-                <li>Melodic/Single Note Playing</li>
-                <li>Rhythmic Development</li>
-                <li>Music Theory</li>
-                <li>Fretboard & Reading Skills</li>
-                <li>Technique</li>
-            </ul>
-            <h3>Beginner (Foundations)</h3>
-            <p>Key Skills:</p>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Master basic open chords such as A, Am, C, D, Dm, E, Em, and G, focusing on smooth, clean transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Practice simple melodies on one or two strings to build finger strength and accuracy.</li>
-                <li><strong>Rhythmic Development:</strong> Use simple strumming patterns (quarter notes and basic eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
+                <li><strong>Chord Fundamentals:</strong> Learn open major and minor chords (A, Am, C, D, Dm, E, Em, and G).</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Use simple melodies on one or two strings to build finger strength and accuracy.</li>
+                <li><strong>Rhythmic Development:</strong> Use basic strumming patterns (quarter notes and simple eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
                 <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Practice identifying note names along the E string using targeted exercises and basic fretboard diagrams; develop the ability to interpret chord charts and lyric sheets.</li>
-                <li><strong>Technique:</strong> Master an effective, comfortable pick grip and focus on correct hand placement.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Use targeted exercises and basic fretboard diagrams to identify note names along the E string, and develop the ability to interpret chord charts and lyric sheets.</li>
+                <li><strong>Technique:</strong> Develop an effective, comfortable pick grip and incorporate proper hand placement.</li>
             </ul>
-            <h3>Advanced Beginner (Building Blocks)</h3>
-            <p>Key Skills:</p>
+
+            <h3>Beginner Level 2: "Campfire Crooner"</h3>
+            <p>You've learned a few songs and can serenade friends around a campfire, building your confidence with simple song structures and expressive playing.</p>
+            <h4>Key Skills:</h4>
             <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue working with basic chords and introduce additional open chords and open 7th chords (e.g., A7, D7).</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Practice and refine single‑note melodies; begin integrating simple multi‑string riffs.</li>
-                <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation.</li>
-                <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams; begin exploring foundational forms like the 12‑bar blues.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and enhance skills in reading chord and lyric sheets.</li>
-                <li><strong>Technique:</strong> Continue to master an effective, comfortable pick grip and proper hand placement.</li>
+                <li><strong>Chord Fundamentals:</strong> Continue working with open chords and introduce additional chords—including Major 7, Minor 7, and Dominant 7—while developing chord changes.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Refine single‑note melodies and begin integrating simple multi‑string riffs. Develop clarity and precision in your playing.</li>
+                <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation and develop your rhythmic feel.</li>
+                <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams. Begin exploring foundational forms like the 12‑bar blues.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and develop your ability to read chord and lyric sheets.</li>
+                <li><strong>Technique:</strong> Continue developing a comfortable pick grip and incorporate proper hand placement.</li>
             </ul>
-            <h3>Intermediate (Progressing)</h3>
-            <p>Key Skills:</p>
+
+            <h3>Intermediate Level 1: "Barre Chord King"</h3>
+            <p>You have mastered barre chords and are now integrating scales into your playing, taking your sound to the next level.</p>
+            <h4>Key Skills:</h4>
             <ul>
-                <li><strong>Chord Fundamentals:</strong> Introduce and practice barre chords; refine overall chord transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency using single‑note patterns (covering the Pentatonic, major, and relative minor scales) to build speed, accuracy, and vocabulary.</li>
-                <li><strong>Rhythmic Development:</strong> Enhance chord transitions with varied rhythmic patterns (e.g., sixteenth notes, triplets) and practice with a metronome for precise timing.</li>
-                <li><strong>Music Theory:</strong> Study intervals and diatonic harmony using practical, tab‑based examples and written explanations.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Develop proficiency in reading chord, lyric, and tablature sheets.</li>
-                <li><strong>Technique:</strong> Focus on executing hammer‑ons, pull‑offs, slides, palm muting, and incorporate ghost notes for added rhythmic and tonal variation.</li>
+                <li><strong>Chord Fundamentals:</strong> Use barre chords (with E string and A string roots) while refining overall chord transitions.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency by using single‑note patterns covering the Pentatonic, major, and relative minor scales.</li>
+                <li><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—eighth notes, sixteenth notes, and triplets—and use a metronome to improve timing and precision.</li>
+                <li><strong>Music Theory:</strong> Explore intervals and diatonic harmony through hands-on, tab‑based examples and written resources to deepen your understanding of chord progressions and refine your theoretical knowledge.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets.</li>
+                <li><strong>Technique:</strong> Incorporate hammer‑ons, pull‑offs, slides, palm muting, and ghost notes to add rhythmic and tonal variation, and further develop these techniques.</li>
             </ul>
-            <h3>Advanced Intermediate (Refining Skills)</h3>
-            <p>Key Skills:</p>
+
+            <h3>Intermediate Level 2: "The Improvisor"</h3>
+            <p>You polish your chord skills, craft improvisations, and can jam with confidence while writing your own original songs.</p>
+            <h4>Key Skills:</h4>
             <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue refining complex chord transitions with increased speed and precision.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales, modes, and arpeggio exercises.</li>
-                <li><strong>Rhythmic Development:</strong> Integrate complex rhythmic patterns (e.g., sixteenth notes, triplets, syncopation) for enhanced expressive timing.</li>
-                <li><strong>Music Theory:</strong> Deepen your understanding of modal concepts and chord substitutions through practical examples and detailed written materials.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Maintain proficiency in reading advanced tablature and chord charts.</li>
-                <li><strong>Technique:</strong> Master advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
+                <li><strong>Chord Fundamentals:</strong> Continue refining chord transitions with increased speed and precision. Introduce shell voicings, voicings on different string sets, and expand your chord vocabulary to include diminished, augmented, m7b5, and triad forms.</li>
+                <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales and modes—including the diminished scale—and incorporate their corresponding arpeggios. Develop your improvisational skills.</li>
+                <li><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—such as eighth notes, sixteenth notes, and triplets—and use a metronome to enhance your timing. Integrate complex rhythmic patterns and syncopation to develop expressive timing and rhythmic complexity.</li>
+                <li><strong>Music Theory:</strong> Study intervals and diatonic harmony through practical, tab‑based examples and written material to deepen your understanding of modal concepts and chord substitutions, and to enhance your theoretical insights.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets, and further develop your knowledge of notes on the fretboard.</li>
+                <li><strong>Technique:</strong> Continue developing hammer‑ons, pull‑offs, slides, and palm muting with ghost notes; and introduce advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
             </ul>
-            <h3>Advanced (Mastery)</h3>
-            <p>Key Skills:</p>
+
+            <h3>Advanced: "Better Than The Teacher"</h3>
+            <p>You take your skills to the next level—crafting sophisticated solos, mastering advanced picking techniques, and unleashing dynamic musical expression that even your teacher would envy.</p>
+            <h4>Key Skills:</h4>
             <ul>
-                <li><strong>Chord Mastery:</strong> Master advanced chord shapes, including extended and altered chords.</li>
-                <li><strong>Scale Mastery:</strong> Explore advanced scales (diminished, whole tone, harmonic minor, melodic minor, and their modes) and integrate them into solos and improvisation.</li>
-                <li><strong>Musical Expression:</strong> Develop nuanced performance with dynamic variation, precise alternate picking, and expressive phrasing.</li>
-                <li><strong>Advanced Rhythmic Development:</strong> Practice intricate subdivisions (complex sixteenth note passages, triplets, dotted rhythms) within sophisticated arrangements.</li>
-                <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Continue advanced reading of complex tablature and chord charts.</li>
-                <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing.</li>
+                <li><strong>Chord Mastery:</strong> Learn advanced chord shapes, including extended, altered, inverted, and drop voicings on multiple string sets.</li>
+                <li><strong>Scale Mastery:</strong> Explore advanced scales—including diminished, whole tone, harmonic minor, melodic minor, and their modes—and integrate them and their corresponding arpeggios into solos and improvisations. Develop your soloing, improvisational, and arpeggio skills.</li>
+                <li><strong>Musical Expression:</strong> Develop a nuanced performance style with dynamic variation, precise alternate picking, and expressive phrasing to enhance your musical expression.</li>
+                <li><strong>Advanced Rhythmic Development:</strong> Use intricate subdivisions—such as complex sixteenth note passages, triplets, and dotted rhythms—within sophisticated arrangements to improve your rhythmic precision.</li>
+                <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams to deepen your theoretical insights.</li>
+                <li><strong>Fretboard & Reading Skills:</strong> Continue advancing your ability to read complex tablature and chord charts.</li>
+                <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing, and further develop your advanced technical skills.</li>
             </ul>
         </section>
         <section id="resources">
