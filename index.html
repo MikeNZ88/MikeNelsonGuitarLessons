@@ -626,16 +626,16 @@
 
         .checkbox-group {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            flex-direction: column; /* Stack checkboxes vertically */
+            align-items: center; /* Center checkboxes horizontally */
             margin-bottom: 1rem;
         }
 
         .checkbox-label {
             display: flex;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            justify-content: center;
+            align-items: center; /* Align checkbox and label text */
+            margin-bottom: 0.5rem; /* Space between checkboxes */
+            justify-content: center; /* Center the label text */
         }
 
         .checkbox-label input {
@@ -806,19 +806,19 @@
                     <label>Available Days (Check all that apply):</label>
                     <div class="checkbox-options">
                         <label class="checkbox-label">
-                            <input type="checkbox" name="days" value="monday"> Monday
+                            <input type="checkbox" name="days" value="monday"> Mon
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="days" value="tuesday"> Tuesday
+                            <input type="checkbox" name="days" value="tuesday"> Tues
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="days" value="wednesday"> Wednesday
+                            <input type="checkbox" name="days" value="wednesday"> Weds
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="days" value="thursday"> Thursday
+                            <input type="checkbox" name="days" value="thursday"> Thurs
                         </label>
                         <label class="checkbox-label">
-                            <input type="checkbox" name="days" value="friday"> Friday
+                            <input type="checkbox" name="days" value="friday"> Fri
                         </label>
                     </div>
                 </div>
