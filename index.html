@@ -133,11 +133,16 @@
             margin: 2rem 0; /* Add margin for spacing */
         }
 
-        .services-content > div {
+        .services-text {
             flex: 1; /* Allow items to grow */
             margin: 1rem; /* Add margin between items */
-            max-width: 400px; /* Set a max width for larger screens */
-            text-align: center; /* Center text */
+            max-width: 600px; /* Set a max width for larger screens */
+            text-align: left; /* Align text to the left */
+            padding: 1.5rem; /* Add padding for better spacing */
+            border: 1px solid var(--wood-light); /* Add border for separation */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+            background-color: var(--white); /* Background color */
         }
 
         .image-card {
@@ -212,6 +217,7 @@
         h3 {
             font-size: 1.5rem;
             margin: 1.5rem 0 0.75rem;
+            color: var(--primary-color);
         }
 
         h4 {
@@ -811,6 +817,23 @@
             margin: 10px 0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            margin: 1.5rem 0; /* Add some margin for spacing */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px; /* Optional: Add border radius for styling */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
+        }
     </style>
 </head>
 <body>
@@ -839,7 +862,9 @@
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
                 </div>
                 <div id="video">
-                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 315px;"></iframe>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
             <p>I am an experienced guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!</p>
@@ -1109,15 +1134,21 @@
             <div class="image-grid">
                 <div>
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">How to Read Chord Diagrams</h4>
-                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="video-iframe"></iframe>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
                 <div>
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Scales and the Guitar</h4>
-                    <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="video-iframe"></iframe>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
                 <div>
                     <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Strumming Chords - The Basics of Staying in Time</h4>
-                    <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="video-iframe"></iframe>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </section>
