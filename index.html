@@ -923,39 +923,53 @@
             <form id="contactForm" action="https://formspree.io/f/mgvaoawy" method="POST">
                 <input type="hidden" name="_subject" value="New Guitar Lesson Enquiry">
                 <input type="hidden" name="_next" value="https://mikenelsonguitar.github.io/thank-you.html">
+                
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required>
+                
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-                <div class="checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="days" value="mon">
-                        Mon
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="days" value="tues">
-                        Tues
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="days" value="weds">
-                        Weds
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="days" value="thurs">
-                        Thurs
-                    </label>
-                    <label class="checkbox-label">
-                        <input type="checkbox" name="days" value="fri">
-                        Fri
-                    </label>
-                </div>
-                <label for="time">Available Time:</label>
-                <select id="time" name="time" required>
-                    <option value="">Please select</option>
+                
+                <label for="mon">Monday:</label>
+                <select id="mon" name="mon" required>
+                    <option value="">Select Availability</option>
                     <option value="before5">Before 5pm</option>
                     <option value="after5">After 5pm</option>
                     <option value="both">Both</option>
                 </select>
+
+                <label for="tues">Tuesday:</label>
+                <select id="tues" name="tues" required>
+                    <option value="">Select Availability</option>
+                    <option value="before5">Before 5pm</option>
+                    <option value="after5">After 5pm</option>
+                    <option value="both">Both</option>
+                </select>
+
+                <label for="weds">Wednesday:</label>
+                <select id="weds" name="weds" required>
+                    <option value="">Select Availability</option>
+                    <option value="before5">Before 5pm</option>
+                    <option value="after5">After 5pm</option>
+                    <option value="both">Both</option>
+                </select>
+
+                <label for="thurs">Thursday:</label>
+                <select id="thurs" name="thurs" required>
+                    <option value="">Select Availability</option>
+                    <option value="before5">Before 5pm</option>
+                    <option value="after5">After 5pm</option>
+                    <option value="both">Both</option>
+                </select>
+
+                <label for="fri">Friday:</label>
+                <select id="fri" name="fri" required>
+                    <option value="">Select Availability</option>
+                    <option value="before5">Before 5pm</option>
+                    <option value="after5">After 5pm</option>
+                    <option value="both">Both</option>
+                </select>
+
                 <label for="experience">Experience Level:</label>
                 <select id="experience" name="experience" required>
                     <option value="">Please select</option>
@@ -964,6 +978,7 @@
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
                 </select>
+
                 <label for="years">Years Playing:</label>
                 <select id="years" name="years" required>
                     <option value="">Please select</option>
@@ -974,6 +989,7 @@
                     <option value="4">4</option>
                     <option value="5">5+</option>
                 </select>
+
                 <label for="age">Age Group:</label>
                 <select id="age" name="age" required>
                     <option value="">Please select</option>
@@ -981,6 +997,7 @@
                     <option value="primary-student">Primary Student</option>
                     <option value="college-student">College Student</option>
                 </select>
+
                 <label for="lesson-type">Lesson Type:</label>
                 <select id="lesson-type" name="lesson-type" required>
                     <option value="">Please select</option>
@@ -988,8 +1005,10 @@
                     <option value="in-person-your-place">In-person at your place (Plimmerton/Whitby/Paremata) - $45/30min</option>
                     <option value="online">Online (Zoom/Skype) - $30/30min</option>
                 </select>
+
                 <label for="message">Message:</label>
                 <textarea id="message" name="message" required></textarea>
+                
                 <button type="submit">Send</button>
             </form>
         </section>
