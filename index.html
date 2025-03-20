@@ -880,9 +880,9 @@
                     <h3>Available Hours</h3>
                     <ul>
                         <li>Monday: 2pm - 8pm</li>
-                        <li>Tuesday: 6:00 PM - 8:00 PM</li>
+                        <li>Tuesday: 6:00 PM - 8:30 PM</li>
                         <li>Wednesday: 2pm - 8pm</li>
-                        <li>Thursday: 6:00 PM - 8:00 PM</li>
+                        <li>Thursday: 6:00 PM - 8:30 PM</li>
                         <li>Friday: 6:30 PM - 8:00 PM</li>
                     </ul>
                 </div>
@@ -1174,108 +1174,6 @@
             <a href="#contact" style="color: var(--accent-color); font-weight: 600;">Book Now</a>
         </p>
     </footer>
-    <script>
-        const menuIcon = document.getElementById('menu-icon');
-        const nav = document.getElementById('nav-links');
-        const menuItems = nav.querySelectorAll('a');
-
-        menuIcon.addEventListener('click', () => {
-            nav.classList.toggle('active');
-        });
-
-        menuItems.forEach(item => {
-            item.addEventListener('click', () => {
-                nav.classList.remove('active');
-            });
-        });
-
-        // Google Calendar Integration
-        const calendarId = 'mikenelsonguitarlessonsnz@gmail.com'; // Your Calendar ID
-        const apiKey = 'AIzaSyBKAdrXoqj4R7j-hElXg9DeflAy5Rqf95s'; // Replace with your API key
-        const startHour = 14; // 2 PM
-        const endHour = 20; // 8 PM
-        const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
-        async function fetchEvents() {
-            const today = new Date();
-            const timeMin = new Date(today.setHours(startHour, 0, 0)).toISOString();
-            const timeMax = new Date(today.setHours(endHour, 0, 0)).toISOString();
-            const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${apiKey}&timeMin=${timeMin}&timeMax=${timeMax}&orderBy=startTime&singleEvents=true`;
-
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                return data.items;
-            } catch (error) {
-                console.error('Error fetching events:', error);
-                return [];
-            }
-        }
-
-        function findAvailableSlots(events) {
-            const availableSlots = {};
-
-            // Initialize available slots for each day
-            daysOfWeek.forEach(day => {
-                availableSlots[day] = [];
-                for (let hour = startHour; hour < endHour; hour++) {
-                    availableSlots[day].push(`${hour}:00`);
-                    availableSlots[day].push(`${hour}:30`);
-                }
-            });
-
-            // Remove booked slots based on events
-            events.forEach(event => {
-                const start = new Date(event.start.dateTime || event.start.date);
-                const end = new Date(event.end.dateTime || event.end.date);
-                const day = start.toLocaleDateString('en-US', { weekday: 'long' });
-
-                if (availableSlots[day]) {
-                    const startHour = start.getHours();
-                    const endHour = end.getHours();
-
-                    for (let hour = startHour; hour <= endHour; hour++) {
-                        const timeSlot1 = `${hour}:00`;
-                        const timeSlot2 = `${hour}:30`;
-                        const index1 = availableSlots[day].indexOf(timeSlot1);
-                        const index2 = availableSlots[day].indexOf(timeSlot2);
-
-                        if (index1 > -1) availableSlots[day].splice(index1, 1);
-                        if (index2 > -1) availableSlots[day].splice(index2, 1);
-                    }
-                }
-            });
-
-            return availableSlots;
-        }
-
-        function displayAvailableSlots(availableSlots) {
-            const slotsContainer = document.getElementById('slots-container');
-            slotsContainer.innerHTML = ''; // Clear previous slots
-
-            for (const day of daysOfWeek) {
-                if (availableSlots[day].length > 0) {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.innerHTML = `<strong>${day}:</strong>`;
-                    availableSlots[day].forEach(slot => {
-                        const slotDiv = document.createElement('div');
-                        slotDiv.className = 'slot';
-                        slotDiv.textContent = slot;
-                        dayDiv.appendChild(slotDiv);
-                    });
-                    slotsContainer.appendChild(dayDiv);
-                }
-            }
-        }
-
-        async function init() {
-            const events = await fetchEvents();
-            const availableSlots = findAvailableSlots(events);
-            displayAvailableSlots(availableSlots);
-        }
-
-        init(); // Initialize the process
-    </script>
 </body>
 </html>
 
