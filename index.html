@@ -804,17 +804,14 @@
                 left: 0;
                 width: 100%;
                 background-color: var(--wood-dark);
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 0.5rem;
-                transform: translateY(-100%);
-                transition: transform 0.3s ease;
+                display: none;
+                flex-direction: column;
                 z-index: 999;
-                padding: 0.5rem 0;
+                padding: 0;
             }
 
             .nav-links.active {
-                transform: translateY(0);
+                display: flex;
             }
 
             .nav-links li {
