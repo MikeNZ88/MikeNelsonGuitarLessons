@@ -1156,16 +1156,6 @@
         </section>
         <section id="events">
             <h2 style="text-align: center;">Available Lesson Times</h2>
-            <div id="schedule" style="text-align: center; margin-bottom: 1rem;">
-                <p><strong>Available Hours:</strong></p>
-                <ul>
-                    <li>Monday: 2pm - 8pm</li>
-                    <li>Tuesday: 2pm - 8pm</li>
-                    <li>Wednesday: 2pm - 8pm</li>
-                    <li>Thursday: 2pm - 8pm</li>
-                    <li>Friday: 2pm - 8pm</li>
-                </ul>
-            </div>
             <div id="events-container"></div> <!-- This is where the events will be displayed -->
             <iframe src="https://calendar.google.com/calendar/embed?src=bWlrZW5lbHNvbmd1aXRhcmxlc3NvbnNuekBnbWFpbC5jb20&ctz=Pacific/Auckland" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
         </section>
@@ -1225,19 +1215,48 @@
                 return;
             }
 
+            // Assuming your available hours are from 2 PM to 8 PM
+            const availableSlots = {
+                Monday: ['2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+                Tuesday: ['2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+                Wednesday: ['2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+                Thursday: ['2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+                Friday: ['2pm', '3pm', '4pm', '5pm', '6pm', '7pm'],
+            };
+
             events.forEach(event => {
                 const start = new Date(event.start.dateTime || event.start.date);
                 const end = new Date(event.end.dateTime || event.end.date);
-                const lessonType = event.summary.includes('Home') ? 'Home' : 'Away'; // Assuming lesson type is in the event title
+                const day = start.toLocaleDateString('en-US', { weekday: 'long' });
+                const startTime = start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const endTime = end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                // Remove the time slot from available slots
+                if (availableSlots[day]) {
+                    const index = availableSlots[day].indexOf(startTime);
+                    if (index > -1) {
+                        availableSlots[day].splice(index, 1); // Remove the booked slot
+                    }
+                }
 
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'event';
                 eventDiv.innerHTML = `
-                    <h3>${start.toLocaleDateString()} - ${start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} to ${end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</h3>
-                    <p>Lesson Type: ${lessonType}</p>
+                    <h3>${start.toLocaleDateString()} - ${startTime} to ${endTime}</h3>
+                    <p>Lesson Type: ${event.summary}</p>
                 `;
                 eventsContainer.appendChild(eventDiv);
             });
+
+            // Display available slots after events
+            for (const [day, slots] of Object.entries(availableSlots)) {
+                if (slots.length > 0) {
+                    const availableDiv = document.createElement('div');
+                    availableDiv.className = 'event';
+                    availableDiv.innerHTML = `<h4>${day} Available Slots: ${slots.join(', ')}</h4>`;
+                    eventsContainer.appendChild(availableDiv);
+                }
+            }
         }
 
         fetchEvents(); // Fetch events on page load
