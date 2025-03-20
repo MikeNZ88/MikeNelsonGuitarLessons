@@ -624,22 +624,22 @@
             margin: 1rem 0;
         }
 
-        .radio-group {
+        .checkbox-group {
             display: flex;
-            flex-direction: column; /* Stack radio buttons vertically */
-            margin-bottom: 1rem; /* Space below the radio group */
+            flex-direction: column; /* Stack checkboxes vertically */
+            margin-bottom: 1rem; /* Space below the checkbox group */
         }
 
-        .radio-label {
+        .checkbox-label {
             display: flex;
-            align-items: center; /* Align radio button and label text */
-            margin-bottom: 0.5rem; /* Space between radio buttons */
+            align-items: center; /* Align checkbox and label text */
+            margin-bottom: 0.5rem; /* Space between checkboxes */
             cursor: pointer; /* Change cursor to pointer on hover */
         }
 
-        .radio-label input {
-            margin-right: 0.5rem; /* Space between radio button and label text */
-            accent-color: var(--primary-color); /* Change radio button color (if supported) */
+        .checkbox-label input {
+            margin-right: 0.5rem; /* Space between checkbox and label text */
+            accent-color: var(--primary-color); /* Change checkbox color (if supported) */
         }
 
         .stars {
@@ -927,25 +927,25 @@
                 <input type="text" id="name" name="name" required>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="days" value="mon" required>
+                <div class="checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="days" value="mon">
                         Mon
                     </label>
-                    <label class="radio-label">
-                        <input type="radio" name="days" value="tues">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="days" value="tues">
                         Tues
                     </label>
-                    <label class="radio-label">
-                        <input type="radio" name="days" value="weds">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="days" value="weds">
                         Weds
                     </label>
-                    <label class="radio-label">
-                        <input type="radio" name="days" value="thurs">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="days" value="thurs">
                         Thurs
                     </label>
-                    <label class="radio-label">
-                        <input type="radio" name="days" value="fri">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="days" value="fri">
                         Fri
                     </label>
                 </div>
