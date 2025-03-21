@@ -9,14 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #8B4513;
-            --accent-color: #D2691E;
-            --text-color: #2C1810;
-            --light-bg: #F5E6D3;
-            --white: #ffffff;
-            --gray: #6c757d;
-            --wood-light: #DEB887;
-            --wood-dark: #8B4513;
+            --primary-color: #8B4513; /* Brown */
+            --accent-color: #D2691E; /* Chocolate */
+            --text-color: #2C1810; /* Dark text color */
+            --light-bg: #F5E6D3; /* Light background */
+            --white: #ffffff; /* White */
+            --gray: #6c757d; /* Gray */
+            --wood-light: #DEB887; /* Burlywood */
+            --wood-dark: #8B4513; /* Dark brown */
         }
 
         * {
@@ -26,16 +26,10 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', sans-serif; /* Ensure the font is set to Inter */
             line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
-            background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80');
-            background-attachment: fixed;
-            background-size: cover;
-            background-position: center;
-            margin: 0;
-            padding: 0;
+            color: var(--text-color); /* Use the defined text color variable */
+            background-color: var(--light-bg); /* Use the defined light background */
         }
 
         html {
@@ -53,700 +47,117 @@
             z-index: -1;
         }
 
-        .hero {
-            height: 50vh;
-            background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--white);
-            padding-top: 80px; /* Ensure content is below the header */
-            padding-bottom: 2rem; /* Add bottom padding for spacing */
-            margin: 0;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            padding: 0 2rem;
-            margin-top: 0;
-            margin-bottom: auto;
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .hero-content a.cta-button {
-            margin-top: 1rem;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--accent-color);
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: background-color 0.3s ease;
-        }
-
-        .hero-content a.cta-button:hover {
-            background-color: var(--wood-dark);
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--white);
-            margin-bottom: 2rem;
-        }
-
-        .image-grid {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0;
-        }
-
-        .services-content {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        .services-text {
-            flex: 1; /* Allow items to grow */
-            margin: 1rem; /* Add margin between items */
-            max-width: 300px; /* Set a max width for the service text containers */
-            text-align: left; /* Align text to the left */
-            padding: 1.5rem; /* Add padding for better spacing */
-            border: 1px solid var(--wood-light); /* Add border for separation */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-            background-color: var(--white); /* Background color */
-        }
-
-        .image-card {
-            width: calc(100% - 1rem); /* Ensure the image card takes full width with some margin */
-            max-width: 400px; /* Optional: Set a max width for larger screens */
-            margin: 0.5rem; /* Add margin to separate cards */
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 2px solid var(--wood-light);
-        }
-
-        .image-card img {
-            width: 100%; /* Ensure the image takes full width */
-            height: auto; /* Maintain aspect ratio */
-            object-fit: cover; /* Cover the area without distortion */
-            object-position: center; /* Center the image */
-            opacity: 1; /* Ensure the image is fully opaque */
-        }
-
-        .image-overlay {
-            display: none;
-        }
-
         header {
-            background-color: #8B4513;
-            color: var(--white);
+            background-color: var(--primary-color);
             padding: 1rem;
-            position: fixed;
-            width: 100%;
+            position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            border-bottom: 4px solid var(--wood-light);
-            transition: top 0.3s;
         }
 
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            padding: 0 1rem;
-            background-color: #8B4513;
-        }
-
-        .logo {
-            flex: 1;
-            text-align: left;
-        }
-
-        .menu-icon {
-            font-size: 2rem;
-            cursor: pointer;
-            display: block;
-        }
-
-        header h1 {
-            color: var(--white);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-color);
-        }
-
-        h2 {
-            font-size: 2.5rem;
-            margin: 1.5rem 0;
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            margin: 1.5rem 0 0.75rem;
-            color: var(--primary-color);
-        }
-
-        h4 {
-            font-size: 1.2rem;
-            margin: 1.2rem 0 0.5rem;
-        }
-
-        p, ul, li {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-color);
         }
 
         nav {
-            display: none; /* Hidden by default */
-            width: 100%;
-            background-color: var(--wood-dark);
-        }
-
-        nav.active {
-            display: block; /* Show when active */
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
 
         nav ul {
+            display: flex;
             list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column; /* Stack items vertically */
-            width: 100%; /* Full width */
         }
 
-        nav li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        nav ul li {
+            margin: 0 1rem;
         }
 
-        nav li a {
-            display: block;
-            padding: 0.5rem;
-            color: #fff;
+        nav ul li a {
+            color: var(--white);
             text-decoration: none;
-            transition: background 0.3s ease;
-            width: 100%; /* Full width for each item */
-        }
-
-        nav li a:hover {
-            background-color: #D2691E; /* Hover background color */
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 4rem auto;
-            padding: 0 1rem;
-        }
-
-        section {
-            background-color: var(--white);
-            padding: 2rem; /* Increase padding for better spacing */
-            margin: 1rem 0; /* Consistent margin */
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border: 2px solid var(--wood-light);
-            width: 100%; /* Ensure full width */
-            scroll-margin-top: 80px; /* Add scroll margin to prevent overlap with fixed header */
-            box-sizing: border-box; /* Include padding and border in width */
-        }
-
-        section::before {
-            /* Remove or comment out this block to eliminate the diagonal shading */
-            /* content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 12px;
-            background: linear-gradient(45deg, transparent 0%, rgba(222, 184, 135, 0.1) 100%);
-            pointer-events: none; */
-        }
-
-        p {
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        ul {
-            list-style-position: outside;
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.4rem;
-            line-height: 1.5;
-        }
-
-        .services-text ul {
-            margin-top: 0.5rem;
-        }
-
-        .services-text li {
-            margin-bottom: 0.25rem;
-        }
-
-        strong {
-            color: var(--primary-color);
             font-weight: 600;
         }
 
-        form {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto; /* Center the form */
-            padding: 1.5rem;
-            background: var(--white);
-            border-radius: 16px;
-            border: 2px solid var(--wood-light);
-        }
-
-        form label {
-            font-weight: 500;
-            color: var(--primary-color);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        form input, form textarea, form select {
-            padding: 1rem;
-            border: 2px solid var(--wood-light);
-            border-radius: 8px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            background-color: var(--white);
-            width: 100%;
-        }
-
-        form textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        form input:focus, form textarea:focus, form select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.2);
-            transform: translateY(-2px);
-        }
-
-        form button {
-            padding: 1.2rem 2.5rem;
-            background-color: var(--accent-color);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid var(--wood-dark);
-            margin-top: 1rem;
-        }
-
-        form button:hover {
-            background-color: var(--wood-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        select[multiple] {
-            height: 150px;
-        }
-
-        #video {
-            margin-top: 1.5rem; /* Add space above the video */
-        }
-
-        iframe {
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            width: 100%;
-            height: 315px;
-            border: 2px solid var(--wood-light);
-        }
-
-        footer {
-            background-color: #8B4513;
-            color: #fff;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-            border-top: 4px solid var(--wood-light);
-        }
-
-        footer .social-links {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        footer .social-links a {
-            color: var(--white);
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        footer .social-links a:hover {
-            color: var(--accent-color);
-        }
-
-        @media (max-width: 768px) {
-            body {
-                padding: 0;
-            }
-
-            .hero {
-                padding-top: 40px;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .header-content {
-                padding: 0 1rem;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            nav {
-                width: 100%;
-            }
-
-            nav ul {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-            }
-
-            section {
-                padding: 0.5rem; /* Further reduce padding for mobile */
-                margin: 0.5rem 0; /* Further reduce margin for mobile */
-            }
-
-            .services-content {
-                flex-direction: column; /* Stack images vertically if needed */
-            }
-
-            .image-card {
-                height: auto;
-            }
-
-            iframe {
-                width: 100%;
-                height: auto;
-            }
-
-            form {
-                padding: 1rem;
-            }
-
-            .image-grid {
-                flex-direction: column; /* Stack images vertically if needed */
-            }
+        nav ul li a:hover {
+            text-decoration: underline;
         }
 
         .hamburger {
-            display: none;
-            flex-direction: column;
+            display: none; /* Hidden by default */
             cursor: pointer;
-            margin-left: auto;
         }
 
-        .hamburger .line {
-            width: 30px;
-            height: 3px;
-            background-color: var(--white);
-            margin: 4px 0;
-            transition: all 0.3s ease;
+        .image-video-container {
+            display: flex;
+            flex-direction: row; /* Align items in a row */
+            justify-content: center; /* Center items horizontally */
+            align-items: flex-start; /* Align items to the top */
+            margin: 1rem 0; /* Add margin for spacing */
         }
 
-        /* Blog Section Styles */
-        #blog {
-            background-color: var(--white);
-            padding: 2rem;
-            margin: 2rem 0;
+        .image-card {
+            width: 100%; /* Ensure the image card takes full width */
+            max-width: 70%; /* Set a max width for the image */
+            height: 300px; /* Fixed height to match the video */
+            overflow: hidden; /* Hide overflow */
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid #8B4513;
         }
 
-        #blog h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            color: var(--primary-color);
+        .image-card img {
+            width: 100%; /* Ensure the image takes full width */
+            height: 100%; /* Set height to fill the container */
+            object-fit: cover; /* Crop the image while maintaining aspect ratio */
+            object-position: top; /* Position the image to crop from the bottom */
         }
 
-        #blog article {
-            margin-bottom: 2rem;
-            line-height: 1.8;
+        .video-container {
+            width: 100%; /* Ensure it takes full width */
+            max-width: 70%; /* Set a max width for the video */
         }
 
-        #blog h3 {
-            font-size: 1.8rem;
-            margin: 1.5rem 0 0.5rem;
-            color: var(--primary-color);
+        .video-container iframe {
+            width: 100%; /* Full width */
+            height: 300px; /* Set height to match the image */
+            border-radius: 12px; /* Optional: Add border radius for styling */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
         }
 
-        #blog p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: var(--text-color);
+        .intro-text {
+            text-align: justify; /* Justify text alignment */
+            margin: 1rem 0; /* Add margin for spacing */
+            font-size: 1rem; /* Adjusted font size to match other body text */
         }
 
-        #blog strong {
-            color: var(--accent-color);
-        }
-
-        #blog h4 {
-            font-size: 1.5rem;
-            margin: 1.2rem 0 0.5rem;
-            color: var(--primary-color);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Desktop Styles */
-        @media (min-width: 768px) {
-            .menu-icon {
-                display: none;
-            }
-            nav {
-                display: block;
-                width: auto;
-            }
-            nav ul {
-                flex-direction: row;
-                background-color: transparent;
-            }
-            nav li {
-                border: none;
-            }
-            nav li a {
-                padding: 1rem;
-                font-size: 1.1rem;
-            }
-            nav li a:hover {
-                background-color: transparent;
-                color: #D2691E;
-            }
-            .image-grid {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-                align-items: flex-start; /* Align items to the top */
-            }
-            #video {
-                margin-left: 1rem; /* Add space between photo and video */
-                flex: 1; /* Allow video to take available space */
-            }
-            .services-content {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        .nav-links {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            width: 100%;
-            background-color: var(--wood-dark);
-            flex-direction: column;
-            z-index: 999;
-            padding: 0;
-        }
-
-        .nav-links.active {
+        .services-text {
+            margin-top: 1rem; /* Space above the services text */
             display: flex;
-        }
-
-        #about h2 {
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        .checkbox-group {
-            display: flex;
-            flex-direction: column; /* Stack checkboxes vertically */
-            margin-bottom: 1rem; /* Space below the checkbox group */
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center; /* Align checkbox and label text */
-            margin-bottom: 0.5rem; /* Space between checkboxes */
-            cursor: pointer; /* Change cursor to pointer on hover */
-        }
-
-        .checkbox-label input {
-            margin-right: 0.5rem; /* Space between checkbox and label text */
-            accent-color: var(--primary-color); /* Change checkbox color (if supported) */
-        }
-
-        .stars {
-            color: #FFD700; /* Yellow color for stars */
-        }
-
-        .reviewer {
-            color: var(--wood-light); /* Use the wooden color for reviewer names */
-        }
-
-        .video-phone-container {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin-top: 1.5rem; /* Add some space above */
-        }
-
-        @media (min-width: 768px) {
-            .video-phone-container {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-                align-items: flex-start; /* Align items to the top */
-            }
-
-            #video {
-                margin-left: 1rem; /* Add space between phone and video */
-                flex: 1; /* Allow video to take available space */
-            }
+            flex-direction: column; /* Keep items in a column */
+            justify-content: flex-start; /* Align items to the start */
+            padding: 0; /* Remove padding for tighter spacing */
         }
 
         .services-text p {
-            text-align: justify; /* Justify text in the services section */
+            margin-bottom: 0.25rem; /* Adjust bottom margin for less space */
+            line-height: 1.6; /* Maintain line height for readability */
         }
 
-        .services-text ul {
-            text-align: left; /* Keep list items left-aligned */
+        h2, h3, h4 {
+            color: var(--primary-color); /* Set headings to primary color */
         }
 
-        /* Flexbox for Image and Video in About Section */
-        .image-grid {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0;
+        h4 {
+            margin: 1rem 0 0.5rem; /* Improve spacing for headings */
         }
 
-        #video {
-            margin-top: 1.5rem; /* Space above the video */
-        }
-
-        @media (min-width: 768px) {
-            .image-grid {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-                align-items: flex-start; /* Align items to the top */
-            }
-
-            #video {
-                margin-left: 1rem; /* Space between photo and video */
-                flex: 1; /* Allow video to take available space */
-            }
-        }
-
-        /* Services Section */
-        .services-content {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        @media (min-width: 768px) {
-            .services-content {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        /* Testimonials Section */
-        .testimonials-grid {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0;
-        }
-
-        @media (min-width: 768px) {
-            .testimonials-grid {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        /* Form Styles */
-        form {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            background: var(--white);
-            border-radius: 16px;
-            border: 2px solid var(--wood-light);
+        p, ul, li {
+            margin-bottom: 0.5rem; /* Add space between paragraphs and lists */
+            text-align: justify; /* Justify text alignment for paragraphs and list items */
         }
 
         /* Footer Styles */
@@ -759,269 +170,130 @@
             border-top: 4px solid var(--wood-light);
         }
 
+        /* Container for main content */
+        .container {
+            max-width: 1200px; /* Set a max width for the container */
+            margin: 0 auto; /* Center the container */
+            padding: 0 1rem; /* Add side padding */
+        }
+
         /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .hero {
-                padding-top: 40px;
-            }
-
-            .header-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            nav {
-                width: 100%;
-            }
-
-            nav ul {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            section {
-                padding: 0.5rem; /* Further reduce padding for mobile */
-                margin: 0.5rem 0; /* Further reduce margin for mobile */
-            }
-        }
-
-        .video-iframe {
-            width: 100%; /* Full width */
-            height: 315px; /* Set a consistent height */
-            border-radius: 12px; /* Optional: Add border radius for styling */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
-        }
-
-        .image-grid {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0;
-        }
-
-        @media (min-width: 768px) {
-            .image-grid {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-                align-items: flex-start; /* Align items to the top */
-            }
-        }
-
-        /* Upcoming Events Styles */
-        .event {
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-            margin: 1.5rem 0; /* Add some margin for spacing */
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 12px; /* Optional: Add border radius for styling */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
-        }
-
-        .image-video-container {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        .image-card, .video-container {
-            margin: 1rem; /* Add margin between items */
-        }
-
-        .video-container {
-            width: 100%; /* Ensure it takes full width */
-            max-width: 600px; /* Set a max width for larger screens */
-        }
-
-        .video-container iframe {
-            width: 100%; /* Full width */
-            height: 315px; /* Set a consistent height */
-            border-radius: 12px; /* Optional: Add border radius for styling */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
-        }
-
-        @media (min-width: 768px) {
-            .image-video-container {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        /* General adjustments for sections */
-        section {
-            padding: 2rem; /* Increase padding for better spacing */
-            margin: 1rem 0; /* Consistent margin */
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Flexbox for services and testimonials */
-        .services-content, .testimonials-grid {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        @media (min-width: 768px) {
-            .services-content, .testimonials-grid {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        /* Image and video alignment */
-        .image-video-container {
-            display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        @media (min-width: 768px) {
-            .image-video-container {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
-            }
-        }
-
-        /* Text alignment */
-        h2, h3, h4 {
-            text-align: center; /* Center align headings */
-        }
-
-        p, ul, li {
-            text-align: left; /* Left align paragraphs and lists */
-        }
-
-        /* Form adjustments */
-        form {
-            display: grid;
-            gap: 1.5rem;
-            max-width: 800px;
-            margin: 0 auto; /* Center the form */
-            padding: 1.5rem;
-            background: var(--white);
-            border-radius: 16px;
-            border: 2px solid var(--wood-light);
-        }
-
-        .left {
-            margin-right: 1rem; /* Space between the left container and the image */
-        }
-
-        .right {
-            margin-left: 1rem; /* Space between the right container and the image */
-        }
-
-        .image-video-container {
-            display: flex;
-            flex-direction: row; /* Align items in a row */
-            justify-content: space-between; /* Space between items */
-            align-items: flex-start; /* Align items to the top */
-            margin: 2rem 0; /* Add margin for spacing */
-        }
-
-        .services-text {
-            flex: 1; /* Allow items to grow */
-            margin: 1rem; /* Add margin between items */
-            max-width: 300px; /* Set a max width for the service text containers */
-            text-align: left; /* Align text to the left */
-            padding: 1.5rem; /* Add padding for better spacing */
-            border: 1px solid var(--wood-light); /* Add border for separation */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-            background-color: var(--white); /* Background color */
-        }
-
-        .left {
-            margin-right: 1rem; /* Space between the left container and the image */
-        }
-
-        .right {
-            margin-left: 1rem; /* Space between the right container and the image */
-        }
-
-        .video-container {
-            margin-top: 1.5rem; /* Space above the video */
-            width: 100%; /* Ensure it takes full width */
-            max-width: 600px; /* Set a max width for larger screens */
-        }
-
-        .video-container iframe {
-            width: 100%; /* Full width */
-            height: 315px; /* Set a consistent height */
-            border-radius: 12px; /* Optional: Add border radius for styling */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
-        }
-
-        /* General styles for mobile */
         @media (max-width: 768px) {
             .image-video-container {
                 flex-direction: column; /* Stack vertically on mobile */
                 align-items: center; /* Center items */
             }
 
-            .services-text {
-                max-width: 100%; /* Allow full width on mobile */
-                margin: 0.5rem 0; /* Adjust margin for spacing */
-            }
-
             .image-card {
-                max-width: 100%; /* Ensure image takes full width */
-                margin: 1rem 0; /* Add margin for spacing */
+                margin-right: 0; /* Remove right margin on mobile */
+                margin-bottom: 0.5rem; /* Add space below the image */
+                max-width: 100%; /* Full width on mobile */
+                height: auto; /* Allow height to adjust on mobile */
             }
 
             .video-container {
-                margin-top: 1rem; /* Space above the video */
-                width: 100%; /* Ensure it takes full width */
+                margin-top: 0.5rem; /* Space above the video */
+                max-width: 100%; /* Full width on mobile */
+                height: auto; /* Allow height to adjust on mobile */
             }
 
-            .video-container iframe {
+            .hamburger {
+                display: block; /* Show hamburger menu on mobile */
+            }
+
+            nav ul {
+                display: none; /* Hide navigation links by default */
+                flex-direction: column; /* Stack links vertically */
+                position: absolute; /* Position it absolutely */
+                top: 60px; /* Position below the header */
+                right: 0; /* Align to the right */
+                background-color: var(--primary-color); /* Match header color */
                 width: 100%; /* Full width */
-                height: auto; /* Maintain aspect ratio */
+                z-index: 1000; /* Ensure it appears above other content */
             }
 
-            /* Adjust section padding and margins */
-            section {
-                padding: 1rem; /* Reduce padding for mobile */
-                margin: 0.5rem 0; /* Reduce margin for mobile */
+            nav ul.active {
+                display: flex; /* Show links when active */
             }
 
-            h2, h3, h4 {
-                text-align: center; /* Center align headings */
+            nav ul li {
+                margin: 1rem 0; /* Add margin for vertical spacing */
             }
+        }
 
-            p, ul, li {
-                text-align: left; /* Left align paragraphs and lists */
+        @media (min-width: 768px) {
+            .image-video-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
             }
+        }
+
+        /* Contact Form Styles */
+        form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+            align-items: center; /* Center align form elements */
+            margin: 1rem 0; /* Add margin for spacing */
+        }
+
+        label {
+            margin: 0.5rem 0; /* Add margin for spacing around labels */
+            font-weight: bold; /* Make labels bold for better visibility */
+        }
+
+        input, select, textarea {
+            width: 100%; /* Full width for inputs */
+            max-width: 400px; /* Set a max width for inputs */
+            padding: 0.5rem; /* Add padding for comfort */
+            margin-bottom: 1rem; /* Space between inputs */
+            border: 1px solid #ccc; /* Add border */
+            border-radius: 4px; /* Rounded corners */
+        }
+
+        button {
+            background-color: var(--primary-color); /* Use primary color for button */
+            color: white; /* White text color */
+            padding: 0.5rem 1rem; /* Padding for button */
+            border: none; /* Remove border */
+            border-radius: 4px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        button:hover {
+            background-color: var(--accent-color); /* Change color on hover */
+        }
+
+        /* Review Stars Color */
+        .stars {
+            color: gold; /* Set star color to gold for visibility */
+        }
+
+        h2 {
+            text-align: center; /* Center the heading */
+            margin: 1rem 0; /* Add some margin for spacing */
+        }
+
+        .services-text h3, 
+        .services-text p {
+            margin: 0; /* Remove all margins */
+            padding: 0; /* Remove all padding */
+        }
+
+        .pricing-info {
+            text-align: justify; /* Justify text alignment */
+            margin: 1rem 0; /* Add margin for spacing */
         }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
-            <div class="menu-icon" id="menu-icon">&#9776;</div>
+            <div class="hamburger" id="hamburger">&#9776;</div>
             <nav id="nav-links">
                 <ul>
-                    <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about">About</a></li>
                     <li><a href="#testimonials">Reviews</a></li>
                     <li><a href="#how-lessons-work">Approach</a></li>
                     <li><a href="#curriculum">Curriculum</a></li>
@@ -1031,117 +303,68 @@
             </nav>
         </div>
     </header>
-    <main>
+    <main class="container">
         <section id="about">
             <h2>Mike Nelson Guitar Lessons</h2>
             
-            <!-- Move the image and text section to the top -->
             <div class="image-video-container">
                 <div class="image-card">
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
                 </div>
-                <div class="services-text">
-                    <h4 style="margin-top: 0;">Price</h4>
-                    <p>Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
-                    <h4>Pukerua Bay & Online Lessons</h4>
-                    <ul>
-                        <li>Available Hours: 
-                            <ul>
-                                <li>Monday: 2:00 PM – 8:00 PM</li>
-                                <li>Tuesday: 2:00 PM – 5:30 PM</li>
-                                <li>Wednesday: 5:30 PM – 8:00 PM</li>
-                                <li>Thursday: 2:00 PM – 5:00 PM</li>
-                                <li>Friday: 2:00 PM – 6:30 PM</li>
-                            </ul>
-                        </li>
-                    </ul>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
 
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <p class="intro-text">I am a guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut! Guitar is my passion and it can be yours too! Experience the joy of learning with a teacher who provides organized lessons and utilizes modern educational resources.</p>
+            
+            <p class="intro-text">I bring a unique perspective to music tuition. As an analytical problem solver, I have a background as a risk consultant and auditor at a professional services firm before starting my teaching career in 2019. I hold a Bachelor of Commerce with a focus on Accounting and Commercial Law. My strong affinity for process and analysis enables me to provide structured and engaging lessons that effectively meet my students' needs.</p>
+
+            <div class="services-text">
+                <h4>Pricing</h4>
+                <p class="pricing-info">Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
+                <div class="services-text">
+                    <h4>Pukerua Bay & Online Lessons</h4>
+                    <p>Available Hours:</p>
+                    <p>Monday: 2:00 PM – 8:00 PM</p>
+                    <p>Tuesday: 2:00 PM – 5:30 PM</p>
+                    <p>Wednesday: 5:30 PM – 8:00 PM</p>
+                    <p>Thursday: 2:00 PM – 5:00 PM</p>
+                    <p>Friday: 2:00 PM – 6:30 PM</p>
+                </div>
             </div>
 
             <div class="services-text">
-                <h4 style="margin-top: 0;">Lessons Away (Paremata, Whitby, Plimmerton)</h4>
-                <ul>
-                    <li>Available Hours: 
-                        <ul>
-                            <li>Tuesday: 6:00 PM – 8:30 PM</li>
-                            <li>Thursday: 6:00 PM – 8:30 PM</li>
-                            <li>Friday: 6:30 PM – 8:00 PM</li>
-                        </ul>
-                    </li>
-                </ul>
-                <h4>Online Lessons</h4>
-                <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
-                <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
+                <h4>Lessons Away (Paremata, Whitby, Plimmerton)</h4>
+                <p>Available Hours:</p>
+                <p>Tuesday: 6:00 PM – 8:30 PM</p>
+                <p>Thursday: 6:00 PM – 8:30 PM</p>
+                <p>Friday: 6:30 PM – 8:00 PM</p>
             </div>
-
-            <p>I am an experienced guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!</p>
+            
+            <h4>Online Lessons</h4>
+            <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
+            <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
         </section>
         <section id="how-lessons-work">
             <h2 style="text-align: center;">My Approach to Lessons</h2>
             <p>Lessons usually focus on a specific song chosen by the student—or by me if it is useful to develop specific skills. Technique and theory are discussed in the context of the song. There are also dedicated lessons solely for technique and theory. The type of lesson and content depends on your goals and the style of playing you wish to develop.</p>
             
             <h3>Song Lessons</h3>
-            <ul>
-                <li><strong>Quick Check-In:</strong> A brief chat to see how your song practice is going and identify any challenges.</li>
-                <li><strong>Song:</strong> We work on a specific section of your song where a key skill (like alternate picking or chord transitions) needs improvement. This helps with learning the song and developing your technical skills.</li>
-                <li><strong>Musical Ideas in Context:</strong> You'll learn how the musical ideas behind the song connect to underlying theory.</li>
-                <li><strong>Immediate Feedback:</strong> Targeted, hands-on corrections help you make quick progress.</li>
-                <li><strong>Practice Instructions:</strong> Dedicate focused time to practicing the song section, applying the techniques we worked on, and reviewing any theory concepts discussed.</li>
-            </ul>
+            <p><strong>Quick Check-In:</strong> A brief chat to see how your song practice is going and identify any challenges.</p>
+            <p><strong>Song:</strong> We work on a specific section of your song where a key skill (like alternate picking or chord transitions) needs improvement. This helps with learning the song and developing your technical skills.</p>
+            <p><strong>Musical Ideas in Context:</strong> You'll learn how the musical ideas behind the song connect to underlying theory.</p>
+            <p><strong>Immediate Feedback:</strong> Targeted, hands-on corrections help you make quick progress.</p>
+            <p><strong>Practice Instructions:</strong> Dedicate focused time to practicing the song section, applying the techniques we worked on, and reviewing any theory concepts discussed.</p>
 
             <h3>Theory-Focused Lessons</h3>
-            <ul>
-                <li><strong>Music Theory Concepts:</strong> These sessions explore scales, chord structures, rhythmic concepts, and common forms (e.g., 12 bar blues) to build a solid foundation for your musical intuition.</li>
-                <li><strong>Application:</strong> Learn how to apply these concepts in your playing through songwriting and improvisation.</li>
-            </ul>
+            <p><strong>Music Theory Concepts:</strong> These sessions explore scales, chord structures, rhythmic concepts, and common forms (e.g., 12 bar blues) to build a solid foundation for your musical intuition.</p>
+            <p><strong>Application:</strong> Learn how to apply these concepts in your playing through songwriting and improvisation.</p>
 
             <h3>Technique-Focused Lessons</h3>
-            <ul>
-                <li>These sessions concentrate on refining your technical skills through targeted exercises and drills. These may be new techniques or ones you are developing.</li>
-            </ul>
+            <p>These sessions concentrate on refining your technical skills through targeted exercises and drills. These may be new techniques or ones you are developing.</p>
 
             <p style="margin-top: 1.5rem;">This comprehensive approach ensures that every lesson—whether focused on a song, theory, or technique—contributes to your overall development as a guitarist.</p>
-        </section>
-        <section id="services">
-            <h2 style="text-align: center;">Services</h2>
-            <div class="services-content">
-                <div class="services-text">
-                    <h3 style="margin-top: 0;">Price</h3>
-                    <p>Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
-                    
-                    <h3>Pukerua Bay & Online Lessons</h3>
-                    <ul>
-                        <li>Available Hours: 
-                            <ul>
-                                <li>Monday: 2:00 PM – 8:00 PM</li>
-                                <li>Tuesday: 2:00 PM – 5:30 PM</li>
-                                <li>Wednesday: 5:30 PM – 8:00 PM</li>
-                                <li>Thursday: 2:00 PM – 5:00 PM</li>
-                                <li>Friday: 2:00 PM – 6:30 PM</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="services-text">
-                    <h3 style="margin-top: 0;">Lessons Away (Paremata, Whitby, Plimmerton)</h3>
-                    <ul>
-                        <li>Available Hours: 
-                            <ul>
-                                <li>Tuesday: 6:00 PM – 8:30 PM</li>
-                                <li>Thursday: 6:00 PM – 8:30 PM</li>
-                                <li>Friday: 6:30 PM – 8:00 PM</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <h3>Online Lessons</h3>
-                    <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
-                    <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
-                </div>
-            </div>
         </section>
         <section id="testimonials">
             <h2 style="text-align: center;">What My Students Say</h2>
@@ -1261,72 +484,62 @@
 
             <h3>Beginner Level 1: "First Time Strummer"</h3>
             <p>You're just starting out—getting your hands on strumming, basic chords, and simple rhythms. It's all about having fun with your first sounds and exploring the basics of guitar playing.</p>
-            <h4>Key Skills:</h4>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Learn open major and minor chords (A, Am, C, D, Dm, E, Em, and G).</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Use simple melodies on one or two strings to build finger strength and accuracy.</li>
-                <li><strong>Rhythmic Development:</strong> Use basic strumming patterns (quarter notes and simple eighth notes) while tapping your foot to maintain a steady internal pulse.</li>
-                <li><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Use targeted exercises and basic fretboard diagrams to identify note names along the E string, and develop the ability to interpret chord charts and lyric sheets.</li>
-                <li><strong>Technique:</strong> Develop an effective, comfortable pick grip and incorporate proper hand placement.</li>
-            </ul>
+            <p><strong>Key Skills:</strong></p>
+            <p><strong>Chord Fundamentals:</strong> Learn open major and minor chords (A, Am, C, D, Dm, E, Em, and G).</p>
+            <p><strong>Melodic/Single Note Playing:</strong> Use simple melodies on one or two strings to build finger strength and accuracy.</p>
+            <p><strong>Rhythmic Development:</strong> Use basic strumming patterns (quarter notes and simple eighth notes) while tapping your foot to maintain a steady internal pulse.</p>
+            <p><strong>Music Theory:</strong> Learn note names and understand how the third interval differentiates major from minor chords.</p>
+            <p><strong>Fretboard & Reading Skills:</strong> Use targeted exercises and basic fretboard diagrams to identify note names along the E string, and develop the ability to interpret chord charts and lyric sheets.</p>
+            <p><strong>Technique:</strong> Develop an effective, comfortable pick grip and incorporate proper hand placement.</p>
 
             <h3>Beginner Level 2: "Campfire Crooner"</h3>
             <p>You've learned a few songs and can serenade friends around a campfire, building your confidence with simple song structures and expressive playing.</p>
-            <h4>Key Skills:</h4>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue working with open chords and introduce additional chords—including Major 7, Minor 7, and Dominant 7—while developing chord changes.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Refine single‑note melodies and begin integrating simple multi‑string riffs. Develop clarity and precision in your playing.</li>
-                <li><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation and develop your rhythmic feel.</li>
-                <li><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams. Begin exploring foundational forms like the 12‑bar blues.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and develop your ability to read chord and lyric sheets.</li>
-                <li><strong>Technique:</strong> Continue developing a comfortable pick grip and incorporate proper hand placement.</li>
-            </ul>
+            <p><strong>Key Skills:</strong></p>
+            <p><strong>Chord Fundamentals:</strong> Continue working with open chords and introduce additional chords—including Major 7, Minor 7, and Dominant 7—while developing chord changes.</p>
+            <p><strong>Melodic/Single Note Playing:</strong> Refine single‑note melodies and begin integrating simple multi‑string riffs. Develop clarity and precision in your playing.</p>
+            <p><strong>Rhythmic Development:</strong> Explore varied strumming patterns that incorporate subtle syncopation and develop your rhythmic feel.</p>
+            <p><strong>Music Theory:</strong> Expand your understanding of chord construction using chord charts and fretboard diagrams. Begin exploring foundational forms like the 12‑bar blues.</p>
+            <p><strong>Fretboard & Reading Skills:</strong> Reinforce note identification along the E string, extend familiarity to other strings, and develop your ability to read chord and lyric sheets.</p>
+            <p><strong>Technique:</strong> Continue developing a comfortable pick grip and incorporate proper hand placement.</p>
 
             <h3>Intermediate Level 1: "Barre Chord King"</h3>
             <p>You have mastered barre chords and are now integrating scales into your playing, taking your sound to the next level.</p>
-            <h4>Key Skills:</h4>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Use barre chords (with E string and A string roots) while refining overall chord transitions.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency by using single‑note patterns covering the Pentatonic, major, and relative minor scales.</li>
-                <li><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—eighth notes, sixteenth notes, and triplets—and use a metronome to improve timing and precision.</li>
-                <li><strong>Music Theory:</strong> Explore intervals and diatonic harmony through hands-on, tab‑based examples and written resources to deepen your understanding of chord progressions and refine your theoretical knowledge.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets.</li>
-                <li><strong>Technique:</strong> Incorporate hammer‑ons, pull‑offs, slides, palm muting, and ghost notes to add rhythmic and tonal variation, and further develop these techniques.</li>
-            </ul>
+            <p><strong>Key Skills:</strong></p>
+            <p><strong>Chord Fundamentals:</strong> Use barre chords (with E string and A string roots) while refining overall chord transitions.</p>
+            <p><strong>Melodic/Single Note Playing:</strong> Develop scale proficiency by using single‑note patterns covering the Pentatonic, Major, and relative Minor scales.</p>
+            <p><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—eighth notes, sixteenth notes, and triplets—and use a metronome to improve timing and precision.</p>
+            <p><strong>Music Theory:</strong> Explore the concepts of intervals and diatonic harmony with hands-on, tab-based activities and written guides to deepen your comprehension of chord progressions, scales, and harmony.</p>
+            <p><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets.</p>
+            <p><strong>Technique:</strong> Incorporate hammer‑ons, pull‑offs, slides, palm muting, and ghost notes to add rhythmic and tonal variation, and further develop these techniques.</p>
 
             <h3>Intermediate Level 2: "The Improvisor"</h3>
             <p>You polish your chord skills, craft improvisations, and can jam with confidence while writing your own original songs.</p>
-            <h4>Key Skills:</h4>
-            <ul>
-                <li><strong>Chord Fundamentals:</strong> Continue refining chord transitions with increased speed and precision. Introduce shell voicings, voicings on different string sets, and expand your chord vocabulary to include diminished, augmented, m7b5, and triad forms.</li>
-                <li><strong>Melodic/Single Note Playing:</strong> Expand your use of scales and modes—including the diminished scale—and incorporate their corresponding arpeggios. Develop your improvisational skills.</li>
-                <li><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—such as eighth notes, sixteenth notes, and triplets—and use a metronome to enhance your timing. Integrate complex rhythmic patterns and syncopation to develop expressive timing and rhythmic complexity.</li>
-                <li><strong>Music Theory:</strong> Study intervals and diatonic harmony through practical, tab‑based examples and written material to deepen your understanding of modal concepts and chord substitutions, and to enhance your theoretical insights.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets, and further develop your knowledge of notes on the fretboard.</li>
-                <li><strong>Technique:</strong> Continue developing hammer‑ons, pull‑offs, slides, and palm muting with ghost notes; and introduce advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</li>
-            </ul>
+            <p><strong>Key Skills:</strong></p>
+            <p><strong>Chord Fundamentals:</strong> Continue refining chord transitions with increased speed and precision. Introduce shell voicings, voicings on different string sets, and expand your chord vocabulary to include diminished, augmented, m7b5, and triad forms.</p>
+            <p><strong>Melodic/Single Note Playing:</strong> Expand your use of scales and modes—including the diminished scale—and incorporate their corresponding arpeggios. Develop your improvisational skills.</p>
+            <p><strong>Rhythmic Development:</strong> Use varied rhythmic patterns—such as eighth notes, sixteenth notes, and triplets—and use a metronome to enhance your timing. Integrate complex rhythmic patterns and syncopation to develop expressive timing and rhythmic complexity.</p>
+            <p><strong>Music Theory:</strong> Study intervals and diatonic harmony through practical, tab‑based examples and written material to deepen your understanding of modal concepts and chord substitutions, and to enhance your theoretical insights.</p>
+            <p><strong>Fretboard & Reading Skills:</strong> Develop your skills in reading chord, lyric, and tablature sheets, and further develop your knowledge of notes on the fretboard.</p>
+            <p><strong>Technique:</strong> Continue developing hammer‑ons, pull‑offs, slides, and palm muting with ghost notes; and introduce advanced techniques such as tapping, string muting, alternate picking, and pinch harmonics.</p>
 
             <h3>Advanced: "Better Than The Teacher"</h3>
             <p>You take your skills to the next level—crafting sophisticated solos, mastering advanced picking techniques, and unleashing dynamic musical expression that even your teacher would envy.</p>
-            <h4>Key Skills:</h4>
-            <ul>
-                <li><strong>Chord Mastery:</strong> Learn advanced chord shapes, including extended, altered, inverted, and drop voicings on multiple string sets.</li>
-                <li><strong>Scale Mastery:</strong> Explore advanced scales—including diminished, whole tone, harmonic minor, melodic minor, and their modes—and integrate them and their corresponding arpeggios into solos and improvisations. Develop your soloing, improvisational, and arpeggio skills.</li>
-                <li><strong>Musical Expression:</strong> Develop a nuanced performance style with dynamic variation, precise alternate picking, and expressive phrasing to enhance your musical expression.</li>
-                <li><strong>Advanced Rhythmic Development:</strong> Use intricate subdivisions—such as complex sixteenth note passages, triplets, and dotted rhythms—within sophisticated arrangements to improve your rhythmic precision.</li>
-                <li><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams to deepen your theoretical insights.</li>
-                <li><strong>Fretboard & Reading Skills:</strong> Continue advancing your ability to read complex tablature and chord charts.</li>
-                <li><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing, and further develop your advanced technical skills.</li>
-            </ul>
+            <p><strong>Key Skills:</strong></p>
+            <p><strong>Chord Mastery:</strong> Learn advanced chord shapes, including extended, altered, inverted, and drop voicings on multiple string sets.</p>
+            <p><strong>Scale Mastery:</strong> Explore advanced scales—including diminished, whole tone, harmonic minor, melodic minor, and their modes—and integrate them and their corresponding arpeggios into solos and improvisations. Develop your soloing, improvisational, and arpeggio skills.</p>
+            <p><strong>Musical Expression:</strong> Develop a nuanced performance style with dynamic variation, precise alternate picking, and expressive phrasing to enhance your musical expression.</p>
+            <p><strong>Advanced Rhythmic Development:</strong> Use intricate subdivisions—such as complex sixteenth note passages, triplets, and dotted rhythms—within sophisticated arrangements to improve your rhythmic precision.</p>
+            <p><strong>Advanced Music Theory:</strong> Study harmonic analysis, modulation, voice leading, and advanced chord substitutions using comprehensive written materials and diagrams to deepen your theoretical insights.</p>
+            <p><strong>Fretboard & Reading Skills:</strong> Continue advancing your ability to read complex tablature and chord charts.</p>
+            <p><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing, and further develop your advanced technical skills.</p>
         </section>
         <section id="resources">
             <h2>Resources</h2>
             <div class="services-content">
-                <div class="services-text" style="height: 315px; display: flex; flex-direction: column; justify-content: space-between; padding: 1rem 0;">
+                <div class="services-text" style="display: flex; flex-direction: column; justify-content: flex-start; padding: 1rem 0;">
                     <div>
                         <h3 style="margin-top: 0;">Guitar Shapes Guide</h3>
-                        <p style="margin-bottom: 0.75rem;">I've created this comprehensive guide to major scale modes and arpeggios to help you master essential guitar shapes and patterns across the fretboard.</p>
+                        <p style="margin-bottom: 0;">I've created this comprehensive guide to major scale modes and arpeggios to help you master essential guitar shapes and patterns across the fretboard.</p>
                     </div>
                     <p style="margin-bottom: 0;">
                         <a href="https://drive.google.com/uc?export=download&id=1a42nEs0O01DsMM0B_hY2TZVySQqtz7hR" class="download-link">Download the Major Scale Modes & Arpeggios Guitar Shapes Guide</a>
@@ -1334,26 +547,11 @@
                 </div>
             </div>
             
-            <h3 style="margin-top: 2rem;">Video Lessons</h3>
-            <div class="image-grid">
-                <div>
-                    <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">How to Read Chord Diagrams</h4>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div>
-                    <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Scales and the Guitar</h4>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div>
-                    <h4 style="color: var(--primary-color); margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Strumming Chords - The Basics of Staying in Time</h4>
-                    <div class="video-container">
-                        <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                </div>
+            <h3 style="margin-top: 2rem;">YouTube Lessons</h3>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
         <section id="blog">
@@ -1415,5 +613,15 @@
             <a href="#contact" style="color: var(--accent-color); font-weight: 600;">Book Now</a>
         </p>
     </footer>
+
+    <script>
+        // Hamburger menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links').querySelector('ul');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
