@@ -835,9 +835,8 @@
 
         .image-video-container {
             display: flex;
-            flex-direction: row; /* Align items in a row */
-            justify-content: space-between; /* Space between items */
-            align-items: flex-start; /* Align items to the top */
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
             margin: 2rem 0; /* Add margin for spacing */
         }
 
@@ -859,7 +858,8 @@
 
         @media (min-width: 768px) {
             .image-video-container {
-                flex-direction: column; /* Stack vertically */
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
             }
         }
 
@@ -896,7 +896,8 @@
 
         @media (min-width: 768px) {
             .image-video-container {
-                flex-direction: column; /* Stack vertically */
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
             }
         }
 
@@ -1033,11 +1034,15 @@
     <main>
         <section id="about">
             <h2>Mike Nelson Guitar Lessons</h2>
+            
+            <!-- Move the image and text section to the top -->
             <div class="image-video-container">
-                <div class="services-text left">
+                <div class="image-card">
+                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
+                </div>
+                <div class="services-text">
                     <h4 style="margin-top: 0;">Price</h4>
                     <p>Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
-                    
                     <h4>Pukerua Bay & Online Lessons</h4>
                     <ul>
                         <li>Available Hours: 
@@ -1051,30 +1056,26 @@
                         </li>
                     </ul>
                 </div>
-
-                <div class="image-card">
-                    <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
-                </div>
-
-                <div class="services-text right">
-                    <h4 style="margin-top: 0;">Lessons Away (Paremata, Whitby, Plimmerton)</h4>
-                    <ul>
-                        <li>Available Hours: 
-                            <ul>
-                                <li>Tuesday: 6:00 PM – 8:30 PM</li>
-                                <li>Thursday: 6:00 PM – 8:30 PM</li>
-                                <li>Friday: 6:30 PM – 8:00 PM</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <h4>Online Lessons</h4>
-                    <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
-                    <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
-                </div>
             </div>
 
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="services-text">
+                <h4 style="margin-top: 0;">Lessons Away (Paremata, Whitby, Plimmerton)</h4>
+                <ul>
+                    <li>Available Hours: 
+                        <ul>
+                            <li>Tuesday: 6:00 PM – 8:30 PM</li>
+                            <li>Thursday: 6:00 PM – 8:30 PM</li>
+                            <li>Friday: 6:30 PM – 8:00 PM</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>Online Lessons</h4>
+                <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
+                <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
             </div>
 
             <p>I am an experienced guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!</p>
