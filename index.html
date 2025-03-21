@@ -28,8 +28,8 @@
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--light-bg);
+            color: #333;
+            background-color: #f5f5f5;
             background-image: url('https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&q=80');
             background-attachment: fixed;
             background-size: cover;
@@ -168,9 +168,9 @@
         }
 
         header {
-            background-color: var(--wood-dark);
+            background-color: #8B4513;
             color: var(--white);
-            padding: 1rem 0;
+            padding: 1rem;
             position: fixed;
             width: 100%;
             top: 0;
@@ -186,6 +186,7 @@
             align-items: center;
             width: 100%;
             padding: 0 1rem;
+            background-color: #8B4513;
         }
 
         .logo {
@@ -210,8 +211,8 @@
         }
 
         h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin: 1.5rem 0;
         }
 
         h3 {
@@ -416,8 +417,8 @@
         }
 
         footer {
-            background-color: var(--wood-dark);
-            color: var(--white);
+            background-color: #8B4513;
+            color: #fff;
             text-align: center;
             padding: 2rem 0;
             margin-top: 4rem;
@@ -753,8 +754,8 @@
 
         /* Footer Styles */
         footer {
-            background-color: var(--wood-dark);
-            color: var(--white);
+            background-color: #8B4513;
+            color: #fff;
             text-align: center;
             padding: 2rem 0;
             margin-top: 4rem;
@@ -843,22 +844,17 @@
         }
 
         .image-card, .video-container {
-            flex: 1; /* Allow items to grow */
-            max-width: 600px; /* Set a max width for larger screens */
             margin: 1rem; /* Add margin between items */
         }
 
         .video-container {
-            position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            width: 100%; /* Ensure it takes full width */
+            max-width: 600px; /* Set a max width for larger screens */
         }
 
         .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; /* Full width */
+            height: 315px; /* Set a consistent height */
             border-radius: 12px; /* Optional: Add border radius for styling */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
         }
@@ -866,7 +862,7 @@
         @media (min-width: 768px) {
             .image-video-container {
                 flex-direction: row; /* Side by side on desktop */
-                justify-content: space-between; /* Space between items */
+                justify-content: center; /* Center items */
             }
         }
     </style>
@@ -1210,8 +1206,8 @@
                     <li>
                         <strong>Level 2: Rhythmic Notation</strong>
                         <ul>
-                            <li><strong>Understanding Timing & Duration Indicators:</strong> Look at rhythmic notation to determine how long each note or chord lasts. The number of lines on the stem of a note indicates its duration—for example, one line might represent an eighth note, two lines a quarter note, three lines a half note, and so on (values may vary by tab, so refer to any provided legend).</li>
-                            <li><strong>Understanding Subdivisions:</strong> Grasp how each beat divides into smaller units. For example, in common time, a quarter note can be subdivided into two eighth notes or four sixteenth notes. This understanding enhances your rhythmic feel and helps ensure that you're playing with accurate timing.</li>
+                            <li><strong>Understanding Timing & Duration Indicators:</strong> Look at rhythmic notation to determine how long each note or chord lasts. This understanding enhances your rhythmic feel and helps ensure that you're playing with accurate timing.</li>
+                            <li><strong>Understanding Subdivisions:</strong> Grasp how each beat divides into smaller units. For example, in common time, a quarter note can be subdivided into two eighth notes or four sixteenth notes.</li>
                         </ul>
                     </li>
                     <li>
@@ -1226,7 +1222,6 @@
                         <strong>Level 4: Music Theory</strong>
                         <ul>
                             <li><strong>Key and Chord Relationships:</strong> Understanding the key of a song and its associated chords helps predict and make sense of the notes in tabs.</li>
-                            <li><strong>Critical Listening and Analysis:</strong> Applying music theory is especially important when your ear doesn't serve you correctly, ensuring you can interpret the music as intended.</li>
                         </ul>
                     </li>
                 </ul>
