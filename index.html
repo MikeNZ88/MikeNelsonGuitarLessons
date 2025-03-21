@@ -603,6 +603,14 @@
                 navLinks.classList.remove('active'); // Hide the menu when a link is clicked
             });
         });
+
+        // Hide menu when clicking outside of it
+        document.addEventListener('click', (event) => {
+            // Check if the click was outside the hamburger and the menu
+            if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
+                navLinks.classList.remove('active'); // Hide the menu
+            }
+        });
     </script>
 </body>
 </html>
