@@ -284,6 +284,10 @@
             text-align: justify; /* Justify text alignment */
             margin: 1rem 0; /* Add margin for spacing */
         }
+
+        section {
+            scroll-margin-top: 60px; /* Adjust this value based on your header height */
+        }
     </style>
 </head>
 <body>
@@ -606,10 +610,24 @@
 
         // Hide menu when clicking outside of it
         document.addEventListener('click', (event) => {
-            // Check if the click was outside the hamburger and the menu
             if (!hamburger.contains(event.target) && !navLinks.contains(event.target)) {
                 navLinks.classList.remove('active'); // Hide the menu
             }
+        });
+
+        // Smooth scrolling for navigation links
+        navLinks.querySelectorAll('li a').forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default anchor click behavior
+                const targetId = item.getAttribute('href'); // Get the target section ID
+                const targetSection = document.querySelector(targetId); // Select the target section
+
+                // Scroll to the target section
+                targetSection.scrollIntoView({
+                    behavior: 'smooth', // Smooth scroll
+                    block: 'start' // Align to the start of the section
+                });
+            });
         });
     </script>
 </body>
