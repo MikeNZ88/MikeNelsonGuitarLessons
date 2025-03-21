@@ -969,6 +969,48 @@
             border-radius: 12px; /* Optional: Add border radius for styling */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
         }
+
+        /* General styles for mobile */
+        @media (max-width: 768px) {
+            .image-video-container {
+                flex-direction: column; /* Stack vertically on mobile */
+                align-items: center; /* Center items */
+            }
+
+            .services-text {
+                max-width: 100%; /* Allow full width on mobile */
+                margin: 0.5rem 0; /* Adjust margin for spacing */
+            }
+
+            .image-card {
+                max-width: 100%; /* Ensure image takes full width */
+                margin: 1rem 0; /* Add margin for spacing */
+            }
+
+            .video-container {
+                margin-top: 1rem; /* Space above the video */
+                width: 100%; /* Ensure it takes full width */
+            }
+
+            .video-container iframe {
+                width: 100%; /* Full width */
+                height: auto; /* Maintain aspect ratio */
+            }
+
+            /* Adjust section padding and margins */
+            section {
+                padding: 1rem; /* Reduce padding for mobile */
+                margin: 0.5rem 0; /* Reduce margin for mobile */
+            }
+
+            h2, h3, h4 {
+                text-align: center; /* Center align headings */
+            }
+
+            p, ul, li {
+                text-align: left; /* Left align paragraphs and lists */
+            }
+        }
     </style>
 </head>
 <body>
