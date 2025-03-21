@@ -496,6 +496,9 @@
                 <textarea id="message" name="message" placeholder="Optional Message"></textarea>
                 
                 <input type="hidden" name="_subject" id="emailSubject" value="Enquiry from ">
+                
+                <!-- Hidden input for confirmation email -->
+                <input type="hidden" name="_replyto" id="replyTo" value="">
 
                 <button type="submit">Send</button>
             </form>
@@ -651,6 +654,11 @@
             const nameInput = document.getElementById('name').value;
             const subjectInput = document.getElementById('emailSubject');
             subjectInput.value = `Enquiry from ${nameInput}`;
+            
+            // Set the reply-to email for confirmation
+            const emailInput = document.getElementById('email').value;
+            const replyToInput = document.getElementById('replyTo');
+            replyToInput.value = emailInput;
         }
     </script>
 </body>
