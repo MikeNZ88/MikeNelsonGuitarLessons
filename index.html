@@ -136,14 +136,13 @@
         .services-text {
             flex: 1; /* Allow items to grow */
             margin: 1rem; /* Add margin between items */
-            max-width: 600px; /* Set a max width for larger screens */
+            max-width: 300px; /* Set a max width for the service text containers */
             text-align: left; /* Align text to the left */
             padding: 1.5rem; /* Add padding for better spacing */
             border: 1px solid var(--wood-light); /* Add border for separation */
             border-radius: 8px; /* Rounded corners */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
             background-color: var(--white); /* Background color */
-            min-height: 300px; /* Set a minimum height for uniformity */
         }
 
         .image-card {
@@ -287,8 +286,8 @@
 
         section {
             background-color: var(--white);
-            padding: 1rem; /* Adjust padding for mobile */
-            margin: 0.5rem 0; /* Adjust margin for mobile */
+            padding: 2rem; /* Increase padding for better spacing */
+            margin: 1rem 0; /* Consistent margin */
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border: 2px solid var(--wood-light);
@@ -343,9 +342,9 @@
             display: grid;
             gap: 1.5rem;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto; /* Center the form */
             padding: 1.5rem;
-            background: linear-gradient(45deg, rgba(222, 184, 135, 0.1), rgba(139, 69, 19, 0.05));
+            background: var(--white);
             border-radius: 16px;
             border: 2px solid var(--wood-light);
         }
@@ -492,10 +491,6 @@
             }
 
             form {
-                padding: 1rem;
-            }
-
-            footer {
                 padding: 1rem;
             }
 
@@ -840,8 +835,9 @@
 
         .image-video-container {
             display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center; /* Center items */
+            flex-direction: row; /* Align items in a row */
+            justify-content: space-between; /* Space between items */
+            align-items: flex-start; /* Align items to the top */
             margin: 2rem 0; /* Add margin for spacing */
         }
 
@@ -863,9 +859,115 @@
 
         @media (min-width: 768px) {
             .image-video-container {
-                flex-direction: row; /* Side by side on desktop */
-                justify-content: center; /* Center items */
+                flex-direction: column; /* Stack vertically */
             }
+        }
+
+        /* General adjustments for sections */
+        section {
+            padding: 2rem; /* Increase padding for better spacing */
+            margin: 1rem 0; /* Consistent margin */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Flexbox for services and testimonials */
+        .services-content, .testimonials-grid {
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
+            margin: 2rem 0; /* Add margin for spacing */
+        }
+
+        @media (min-width: 768px) {
+            .services-content, .testimonials-grid {
+                flex-direction: row; /* Side by side on desktop */
+                justify-content: space-between; /* Space between items */
+            }
+        }
+
+        /* Image and video alignment */
+        .image-video-container {
+            display: flex;
+            flex-direction: column; /* Stack on mobile */
+            align-items: center; /* Center items */
+            margin: 2rem 0; /* Add margin for spacing */
+        }
+
+        @media (min-width: 768px) {
+            .image-video-container {
+                flex-direction: column; /* Stack vertically */
+            }
+        }
+
+        /* Text alignment */
+        h2, h3, h4 {
+            text-align: center; /* Center align headings */
+        }
+
+        p, ul, li {
+            text-align: left; /* Left align paragraphs and lists */
+        }
+
+        /* Form adjustments */
+        form {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto; /* Center the form */
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 16px;
+            border: 2px solid var(--wood-light);
+        }
+
+        .left {
+            margin-right: 1rem; /* Space between the left container and the image */
+        }
+
+        .right {
+            margin-left: 1rem; /* Space between the right container and the image */
+        }
+
+        .image-video-container {
+            display: flex;
+            flex-direction: row; /* Align items in a row */
+            justify-content: space-between; /* Space between items */
+            align-items: flex-start; /* Align items to the top */
+            margin: 2rem 0; /* Add margin for spacing */
+        }
+
+        .services-text {
+            flex: 1; /* Allow items to grow */
+            margin: 1rem; /* Add margin between items */
+            max-width: 300px; /* Set a max width for the service text containers */
+            text-align: left; /* Align text to the left */
+            padding: 1.5rem; /* Add padding for better spacing */
+            border: 1px solid var(--wood-light); /* Add border for separation */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+            background-color: var(--white); /* Background color */
+        }
+
+        .left {
+            margin-right: 1rem; /* Space between the left container and the image */
+        }
+
+        .right {
+            margin-left: 1rem; /* Space between the right container and the image */
+        }
+
+        .video-container {
+            margin-top: 1.5rem; /* Space above the video */
+            width: 100%; /* Ensure it takes full width */
+            max-width: 600px; /* Set a max width for larger screens */
+        }
+
+        .video-container iframe {
+            width: 100%; /* Full width */
+            height: 315px; /* Set a consistent height */
+            border-radius: 12px; /* Optional: Add border radius for styling */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Optional: Add shadow for depth */
         }
     </style>
 </head>
@@ -877,7 +979,6 @@
                 <ul>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
-                    <li><a href="#services">Services</a></li>
                     <li><a href="#testimonials">Reviews</a></li>
                     <li><a href="#how-lessons-work">Approach</a></li>
                     <li><a href="#curriculum">Curriculum</a></li>
@@ -891,13 +992,49 @@
         <section id="about">
             <h2>Mike Nelson Guitar Lessons</h2>
             <div class="image-video-container">
+                <div class="services-text left">
+                    <h4 style="margin-top: 0;">Price</h4>
+                    <p>Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).</p>
+                    
+                    <h4>Pukerua Bay & Online Lessons</h4>
+                    <ul>
+                        <li>Available Hours: 
+                            <ul>
+                                <li>Monday: 2:00 PM – 8:00 PM</li>
+                                <li>Tuesday: 2:00 PM – 5:30 PM</li>
+                                <li>Wednesday: 5:30 PM – 8:00 PM</li>
+                                <li>Thursday: 2:00 PM – 5:00 PM</li>
+                                <li>Friday: 2:00 PM – 6:30 PM</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="image-card">
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
                 </div>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                <div class="services-text right">
+                    <h4 style="margin-top: 0;">Lessons Away (Paremata, Whitby, Plimmerton)</h4>
+                    <ul>
+                        <li>Available Hours: 
+                            <ul>
+                                <li>Tuesday: 6:00 PM – 8:30 PM</li>
+                                <li>Thursday: 6:00 PM – 8:30 PM</li>
+                                <li>Friday: 6:30 PM – 8:00 PM</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <h4>Online Lessons</h4>
+                    <p>Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.</p>
+                    <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
                 </div>
             </div>
+
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
             <p>I am an experienced guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!</p>
         </section>
         <section id="how-lessons-work">
