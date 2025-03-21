@@ -333,7 +333,7 @@
                 </div>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allowfullscreen></iframe>
-                </div>
+            </div>
             </div>
 
             <p class="intro-text">I am a guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut! Guitar is my passion and it can be yours too! Experience the joy of learning with a teacher who provides organized lessons and utilizes modern educational resources.</p>
@@ -420,7 +420,7 @@
                 <input type="hidden" name="_next" value="https://mikenelsonguitar.github.io/thank-you.html">
                 
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required placeholder="Your Name" oninput="updateSubject()">
+                <input type="text" id="name" name="name" required placeholder="Your Name">
                 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required placeholder="Your Email">
@@ -495,11 +495,6 @@
                 <label for="message">Message (optional):</label>
                 <textarea id="message" name="message" placeholder="Optional Message"></textarea>
                 
-                <input type="hidden" name="_subject" id="emailSubject" value="Enquiry from ">
-                
-                <!-- Hidden input for confirmation email -->
-                <input type="hidden" name="_replyto" id="replyTo" value="">
-
                 <button type="submit">Send</button>
             </form>
         </section>
@@ -573,8 +568,8 @@
             
             <h3 style="margin-top: 2rem;">YouTube Lessons</h3>
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
@@ -649,17 +644,6 @@
                 });
             });
         });
-
-        function updateSubject() {
-            const nameInput = document.getElementById('name').value;
-            const subjectInput = document.getElementById('emailSubject');
-            subjectInput.value = `Enquiry from ${nameInput}`;
-            
-            // Set the reply-to email for confirmation
-            const emailInput = document.getElementById('email').value;
-            const replyToInput = document.getElementById('replyTo');
-            replyToInput.value = emailInput;
-        }
     </script>
 </body>
 </html>
