@@ -417,11 +417,10 @@
             <p style="margin-bottom: 1.5rem; text-align: center;">You can call me on <a href="tel:022-127-2154" style="font-weight: 600;">022 127 2154</a></p>
             
             <form id="contactForm" action="https://formspree.io/f/xzzeerqo" method="POST">
-                <input type="hidden" name="_subject" value="Lesson Enquiry - Mike Nelson Guitar Lessons">
                 <input type="hidden" name="_next" value="https://mikenelsonguitar.github.io/thank-you.html">
                 
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required placeholder="Your Name">
+                <input type="text" id="name" name="name" required placeholder="Your Name" oninput="updateSubject()">
                 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required placeholder="Your Email">
@@ -496,6 +495,8 @@
                 <label for="message">Message (optional):</label>
                 <textarea id="message" name="message" placeholder="Optional Message"></textarea>
                 
+                <input type="hidden" name="_subject" id="emailSubject" value="Enquiry from ">
+
                 <button type="submit">Send</button>
             </form>
         </section>
@@ -645,6 +646,12 @@
                 });
             });
         });
+
+        function updateSubject() {
+            const nameInput = document.getElementById('name').value;
+            const subjectInput = document.getElementById('emailSubject');
+            subjectInput.value = `Enquiry from ${nameInput}`;
+        }
     </script>
 </body>
 </html>
