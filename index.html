@@ -152,6 +152,7 @@
 
         h2, h3, h4 {
             color: var(--primary-color); /* Set headings to primary color */
+            text-align: left; /* Align headings to the left */
         }
 
         h4 {
@@ -274,8 +275,16 @@
         }
 
         h2 {
-            text-align: center; /* Center the heading */
-            margin: 1rem 0; /* Add some margin for spacing */
+            text-align: center; /* Center the title "Mike Nelson Guitar Lessons" */
+        }
+
+        #contact h2 {
+            text-align: center; /* Center the contact heading */
+        }
+
+        h3, h4 {
+            text-align: left; /* Align all other headings to the left */
+            color: var(--primary-color); /* Set headings to primary color */
         }
 
         .services-text h3, 
@@ -377,7 +386,7 @@
             <p>Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.</p>
         </section>
         <section id="how-lessons-work">
-            <h2 style="text-align: center;">My Approach to Lessons</h2>
+            <h2 style="text-align: left;">My Approach to Lessons</h2>
             <p>Lessons usually focus on a specific song chosen by the student—or by me if it is useful to develop specific skills. Technique and theory are discussed in the context of the song. There are also dedicated lessons solely for technique and theory. The type of lesson and content depends on your goals and the style of playing you wish to develop.</p>
             
             <h3>Song Lessons</h3>
@@ -397,7 +406,7 @@
             <p style="margin-top: 1.5rem;">This comprehensive approach ensures that every lesson—whether focused on a song, theory, or technique—contributes to your overall development as a guitarist.</p>
         </section>
         <section id="testimonials">
-            <h2 style="text-align: center;">What My Students Say</h2>
+            <h2 style="text-align: left;">What My Students Say</h2>
             <div class="testimonials-grid">
                 <div class="testimonial-card">
                     <div class="stars">★★★★★</div>
@@ -516,7 +525,7 @@
             </p>
         </section>
         <section id="curriculum">
-            <h2 style="text-align: center;">Guitar Curriculum</h2>
+            <h2 style="text-align: left;">Guitar Curriculum</h2>
 
             <h3>Beginner Level 1: "First Time Strummer"</h3>
             <p>You've just started learning to strum basic chords.</p>
@@ -570,7 +579,7 @@
             <p><strong>Technique:</strong> Incorporate advanced picking techniques such as sweep picking and pick slanting for fluid, expressive lead playing, and further develop your advanced technical skills.</p>
         </section>
         <section id="resources">
-            <h2>Resources</h2>
+            <h2 style="text-align: left;">Resources</h2>
             <div class="services-content">
                 <div class="services-text" style="display: flex; flex-direction: column; justify-content: flex-start; padding: 1rem 0;">
                     <div>
@@ -587,11 +596,11 @@
             <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     <iframe src="https://www.youtube.com/embed/rtZX7lOVlOw" title="Scales and the Guitar" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                <iframe src="https://www.youtube.com/embed/ekZch53EzIw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/ekZX7lOVlOw" title="Strumming Chords - The Basics of Staying in Time" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </section>
         <section id="blog">
-            <h2 style="text-align: center;">Blog</h2>
+            <h2 style="text-align: left;">Blog</h2>
             <article>
                 <h3>Reading Guitar Tab</h3>
                 <p><strong>Understanding guitar tab goes beyond simply knowing the order of the notes.</strong></p>
@@ -621,13 +630,13 @@
         </section>
     </main>
     <footer>
-        <p style="text-align: center;">&copy; 2025 Mike Nelson Guitar Lessons</p>
+        <p>&copy; 2025 Mike Nelson Guitar Lessons</p>
         <div class="social-links">
             <a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank"><i class="fab fa-facebook" style="font-size: 1.5rem;"></i></a>
             <a href="https://www.instagram.com/ill_teach_you_a_lesson" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
-        <p style="margin-top: 1rem; text-align: center;">
+        <p style="margin-top: 1rem;">
             <a href="#top" style="color: var(--white); text-decoration: underline;">Return to Top</a>
         </p>
     </footer>
