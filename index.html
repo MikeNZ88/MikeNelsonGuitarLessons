@@ -592,8 +592,16 @@
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links').querySelector('ul');
 
+        // Toggle menu visibility
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+        });
+
+        // Hide menu when a menu item is clicked
+        navLinks.querySelectorAll('li a').forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active'); // Hide the menu when a link is clicked
+            });
         });
     </script>
 </body>
