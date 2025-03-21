@@ -99,6 +99,7 @@
             justify-content: center; /* Center items horizontally */
             align-items: flex-start; /* Align items to the top */
             margin: 1rem 0; /* Add margin for spacing */
+            position: relative;
         }
 
         .image-card {
@@ -319,7 +320,6 @@
                     <li><a href="#curriculum">Curriculum</a></li>
                     <li><a href="#resources">Resources</a></li>
                     <li><a href="#blog">Blog</a></li>
-                    <li><a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank" style="color: var(--white);">Facebook</a></li>
                 </ul>
             </nav>
         </div>
@@ -328,13 +328,17 @@
         <section id="about">
             <h2>Mike Nelson Guitar Lessons</h2>
             
-            <div class="image-video-container">
+            <div class="image-video-container" style="position: relative;">
                 <div class="image-card">
                     <img src="https://raw.githubusercontent.com/MikeNZ88/MikeNelsonGuitarLessons/main/Mike%20Nelson%20Guitar%20Lessons/191606714_10160049252613561_3843789765673120224_n.jpg" alt="Mike Nelson playing guitar">
+                    <!-- Facebook Button -->
+                    <a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank" style="position: absolute; top: 10px; left: 10px; z-index: 10;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 40px; height: 40px;">
+                    </a>
                 </div>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/TuMh30hSxwA" title="How to Read Chord Diagrams" frameborder="0" allowfullscreen></iframe>
-            </div>
+                </div>
             </div>
 
             <p class="intro-text">I am a guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut! Guitar is my passion and it can be yours too! Experience the joy of learning with a teacher who provides organized lessons and utilizes modern educational resources.</p>
@@ -503,7 +507,7 @@
             </form>
             
             <p style="text-align: center;">
-                Connect with me on <a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank">Facebook</a>!
+                Connect with us on <a href="https://www.facebook.com/MikeNelsonGuitarLessonsNZ" target="_blank">Facebook</a> (login may be required).
             </p>
         </section>
         <section id="curriculum">
