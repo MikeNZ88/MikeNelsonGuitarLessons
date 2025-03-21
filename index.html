@@ -290,12 +290,27 @@
         section {
             scroll-margin-top: 60px; /* Adjust this value based on your header height */
         }
+
+        .menu-label {
+            display: none; /* Hide by default */
+            margin-left: 0.5rem; /* Space between hamburger and label */
+            font-size: 1.2rem; /* Adjust font size as needed */
+            color: var(--white); /* Match the color with the navigation */
+        }
+
+        /* Show the Menu label on mobile devices */
+        @media (max-width: 768px) {
+            .menu-label {
+                display: inline; /* Show the label on mobile */
+            }
+        }
     </style>
 </head>
 <body>
     <header>
         <div class="header-content">
             <div class="hamburger" id="hamburger">&#9776;</div>
+            <span class="menu-label">Menu</span>
             <nav id="nav-links">
                 <ul>
                     <li><a href="#contact">Contact</a></li>
