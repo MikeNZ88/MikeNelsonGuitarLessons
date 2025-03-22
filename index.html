@@ -452,6 +452,8 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required placeholder="Your Email">
                 
+                <input type="hidden" name="_subject" id="subject" value="New enquiry from: ">
+
                 <p style="text-align: center;">Please select an option for at least one day:</p>
 
                 <label for="mon">Monday:</label>
@@ -683,6 +685,11 @@
                     block: 'start' // Align to the start of the section
                 });
             });
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function() {
+            const name = document.getElementById('name').value;
+            document.getElementById('subject').value = `New enquiry from: ${name}`;
         });
     </script>
 </body>
