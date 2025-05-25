@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    --font-playfair: 'Playfair Display', serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: var(--font-inter);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair);
+    line-height: 1.2;
+  }
+}
+
+@layer components {
+  .font-playfair {
+    font-family: var(--font-playfair);
+  }
+  
+  .btn-primary {
+    @apply bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 inline-flex items-center justify-center;
+  }
+  
+  .btn-secondary {
+    @apply bg-white hover:bg-amber-50 text-amber-800 font-semibold py-3 px-6 rounded-lg border-2 border-amber-600 transition-all duration-200 hover:border-amber-700 inline-flex items-center justify-center;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-amber-100 hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .section-padding {
+    @apply py-12 px-4 sm:py-16 sm:px-6 lg:px-8;
+  }
+  
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent;
+  }
+}
+
+/* Fix for any potential layout issues */
+* {
+  box-sizing: border-box;
+}
+
+/* Ensure images don't overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
