@@ -40,68 +40,6 @@ export default function Resources() {
         </div>
       </section>
 
-      {/* Guitar Shapes Guide Section */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-center mb-6">
-              <BookOpen className="h-8 w-8 text-amber-600 mr-3" />
-              <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800">
-                Guitar Shapes Guide
-              </h2>
-            </div>
-            
-            <p className="text-lg text-amber-700 mb-6">
-              I've created this comprehensive guide to major scale modes and arpeggios to help you master essential guitar shapes and patterns across the fretboard.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center">
-              <a
-                href="https://mikenelsonguitar.gumroad.com/l/fxzquj"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-primary flex items-center justify-center"
-              >
-                <Download className="h-5 w-5 mr-2" />
-                Download the Guide
-              </a>
-              <span className="text-amber-600 text-sm self-center">for NZ$20. Available at Gumroad.com.</span>
-            </div>
-
-            <p className="text-lg text-amber-700 mb-6">
-              By building a solid foundation in guitar fundamentals and music theory, and by equipping you with transposition techniques, this guide will empower you to confidently explore and learn additional scales. In doing so, it opens up a world of musical possibilities. Here's what you'll discover:
-            </p>
-            
-            <ul className="space-y-4 text-amber-700 mb-8">
-              <li className="flex items-start">
-                <span className="text-amber-600 mr-3 mt-1">•</span>
-                <div>
-                  <strong>A Different Approach to Scale Learning:</strong> Master one‑octave shapes and their core intervals—a departure from traditional methods that cover all six strings and multiple octaves. The guide shows how these shapes vary with different string sets, making them easier to visualize, transpose, and incorporate into your playing. You'll also see how these smaller building blocks combine to form larger shapes.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-600 mr-3 mt-1">•</span>
-                <div>
-                  <strong>Scale Fundamentals and Shapes:</strong> Dive into the C Major scale as the foundation of Western music theory, and explore detailed one‑ and two‑octave, as well as 3 note‑per‑string shapes for both C Major and its relative, A Minor.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-600 mr-3 mt-1">•</span>
-                <div>
-                  <strong>Fretboard Mastery:</strong> Gain practical insights into fret and string relationships, efficient left‑hand fingerings, and shifting techniques. Mastering these elements not only improves your technique but also makes it effortless to move familiar shapes across the fretboard.
-                </div>
-              </li>
-              <li className="flex items-start">
-                <span className="text-amber-600 mr-3 mt-1">•</span>
-                <div>
-                  <strong>Modes, Chords, and Arpeggios:</strong> Explore the seven modes derived from the Major scale and understand that shifting the tonal centre creates the unique sound of each mode. This guide also covers chord construction with clear diagrams for Major, Minor, Diminished, and 7th chords, as well as arpeggio shapes. It further explains the essential Major and Minor Pentatonic Scales and their relationship with the Major and Minor.
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* PracticeTrack Section */}
       <section className="section-padding bg-gradient-to-br from-orange-600 via-orange-500 to-red-500 text-white">
         <div className="container-max">
@@ -113,6 +51,9 @@ export default function Resources() {
               <p className="text-xl text-orange-100 mb-2">
                 Your Musical Journey Companion
               </p>
+              <div className="inline-block bg-amber-800 text-white px-4 py-2 rounded-full text-lg font-bold mb-4">
+                FREE
+              </div>
             </div>
             
             <p className="text-lg text-orange-100 mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -155,6 +96,68 @@ export default function Resources() {
                 Visit PracticeTrack
               </a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Guitar Shapes Guide Section */}
+      <section className="section-padding bg-white">
+        <div className="container-max">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center justify-center mb-6">
+              <BookOpen className="h-8 w-8 text-amber-600 mr-3" />
+              <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800">
+                Guitar Shapes Guide
+              </h2>
+            </div>
+            
+            <p className="text-lg text-amber-700 mb-6 text-center">
+              I've created this comprehensive guide to major scale modes and arpeggios to help you master essential guitar shapes and patterns across the fretboard.
+            </p>
+            
+            <div className="flex flex-col gap-4 mb-8 justify-center items-center">
+              <a
+                href="https://mikenelsonguitar.gumroad.com/l/fxzquj"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary flex items-center justify-center"
+              >
+                <Download className="h-5 w-5 mr-2" />
+                Download the Guide
+              </a>
+              <span className="text-amber-600 text-sm">for NZ$20. Available at Gumroad.com.</span>
+            </div>
+
+            <p className="text-lg text-amber-700 mb-6 text-center">
+              By building a solid foundation in guitar fundamentals and music theory, and by equipping you with transposition techniques, this guide will empower you to confidently explore and learn additional scales. In doing so, it opens up a world of musical possibilities. Here's what you'll discover:
+            </p>
+            
+            <ul className="space-y-4 text-amber-700 mb-8">
+              <li className="flex items-start">
+                <span className="text-amber-600 mr-3 mt-1">•</span>
+                <div>
+                  <strong>A Different Approach to Scale Learning:</strong> Master one‑octave shapes and their core intervals—a departure from traditional methods that cover all six strings and multiple octaves. The guide shows how these shapes vary with different string sets, making them easier to visualize, transpose, and incorporate into your playing. You'll also see how these smaller building blocks combine to form larger shapes.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-amber-600 mr-3 mt-1">•</span>
+                <div>
+                  <strong>Scale Fundamentals and Shapes:</strong> Dive into the C Major scale as the foundation of Western music theory, and explore detailed one‑ and two‑octave, as well as 3 note‑per‑string shapes for both C Major and its relative, A Minor.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-amber-600 mr-3 mt-1">•</span>
+                <div>
+                  <strong>Fretboard Mastery:</strong> Gain practical insights into fret and string relationships, efficient left‑hand fingerings, and shifting techniques. Mastering these elements not only improves your technique but also makes it effortless to move familiar shapes across the fretboard.
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-amber-600 mr-3 mt-1">•</span>
+                <div>
+                  <strong>Modes, Chords, and Arpeggios:</strong> Explore the seven modes derived from the Major scale and understand that shifting the tonal centre creates the unique sound of each mode. This guide also covers chord construction with clear diagrams for Major, Minor, Diminished, and 7th chords, as well as arpeggio shapes. It further explains the essential Major and Minor Pentatonic Scales and their relationship with the Major and Minor.
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
