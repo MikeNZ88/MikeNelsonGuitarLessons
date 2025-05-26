@@ -90,7 +90,7 @@ export default function ReadingGuitarTabPost() {
               <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
                 <h3 className="text-lg font-semibold text-amber-800 mb-2">Pro Tip</h3>
                 <p className="text-amber-700">
-                  While tab shows you where to play, it doesn't indicate timing or rhythm. Listen to the song while reading the tab to understand the timing, or look for tab that includes rhythm notation above the fret numbers.
+                  Learning common chord shapes will dramatically improve your tab reading efficiency. When you recognize that a series of fret numbers forms a familiar chord shape, you'll intuitively know which fingers to use and can play the passage much more smoothly. This makes learning tabs faster and helps you understand the musical structure behind the numbers.
                 </p>
               </div>
 
