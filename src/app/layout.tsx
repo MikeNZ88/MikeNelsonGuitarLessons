@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL('https://mikenelsonguitar.com'),
   title: "Mike Nelson Guitar Lessons | Guitar Tuition in Wellington",
-  description: "Guitar lessons in Wellington with 25+ years experience",
+  description: "Guitar lessons in Pukerua Bay, Wellington",
   keywords: "guitar lessons, Wellington, Pukerua Bay, guitar teacher, music lessons, guitar tuition",
   authors: [{ name: "Mike Nelson" }],
   icons: {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Mike Nelson Guitar Lessons",
-    description: "Guitar lessons in Wellington with 25+ years experience",
+    description: "Guitar lessons in Pukerua Bay, Wellington",
     type: "website",
     locale: "en_NZ",
     url: "https://mikenelsonguitar.com",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Mike Nelson Guitar Lessons",
-    description: "Guitar lessons in Wellington with 25+ years experience",
+    description: "Guitar lessons in Pukerua Bay, Wellington",
     images: ['https://mikenelsonguitar.com/Mike%20Photo.jpg'],
   },
   robots: {
