@@ -32,14 +32,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Mike Nelson Guitar Lessons",
-    description: "Professional guitar lessons in Wellington with 25+ years experience",
+    description: "Guitar lessons in Wellington with 25+ years experience",
     type: "website",
     locale: "en_NZ",
     url: "https://mikenelsonguitar.com",
     siteName: "Mike Nelson Guitar Lessons",
     images: [
       {
-        url: '/Mike Photo.jpg',
+        url: 'https://mikenelsonguitar.com/Mike%20Photo.jpg',
         width: 1200,
         height: 630,
         alt: 'Mike Nelson Guitar Teacher',
@@ -49,8 +49,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Mike Nelson Guitar Lessons",
-    description: "Professional guitar lessons in Wellington with 25+ years experience",
-    images: ['/Mike Photo.jpg'],
+    description: "Guitar lessons in Wellington with 25+ years experience",
+    images: ['https://mikenelsonguitar.com/Mike%20Photo.jpg'],
   },
   robots: {
     index: true,
