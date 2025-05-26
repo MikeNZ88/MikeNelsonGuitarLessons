@@ -5,7 +5,7 @@ import { Star, Guitar, Users, Clock, Award, Music, Play, ArrowRight } from 'luci
 export default function Home() {
   const testimonials = [
     {
-      text: "Mike is brilliant. He is authentic, patient, and he knows his stuff. I am learning guitar later in life and was worried I couldn&apos;t do it. Mike has given me the confidence and structure to practise and persevere.",
+      text: "Mike is brilliant. He is authentic, patient, and he knows his stuff. I am learning guitar later in life and was worried I couldn't do it. Mike has given me the confidence and structure to practise and persevere.",
       author: "Greg Le'Maire",
       rating: 5
     },
