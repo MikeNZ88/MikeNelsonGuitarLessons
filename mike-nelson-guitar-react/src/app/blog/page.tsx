@@ -30,7 +30,7 @@ export default function Blog() {
     {
       id: 3,
       title: "Reading Guitar Tab",
-      excerpt: "Master the art of reading guitar tablature with this comprehensive guide covering everything from basic notation to advanced techniques.",
+      excerpt: "Learn guitar tablature through a structured 4-level approach, from basic fret notation to advanced playing techniques and symbols.",
       content: "Guitar tablature (or 'tab') is a simple way to read music specifically written for guitar. Unlike traditional sheet music, tab shows you exactly where to place your fingers on the fretboard. This guide covers four levels of tab reading, from basic notation to advanced techniques and symbols.",
       date: "March 20, 2024",
       readTime: "8 min read",
