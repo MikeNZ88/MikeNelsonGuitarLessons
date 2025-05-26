@@ -43,4 +43,4 @@ This website showcases guitar lesson services offered by Mike Nelson, including:
 
 ---
 
-© 2025 Mike Nelson Guitar Lessons. All rights reserved. 
+© 2025 Mike Nelson Guitar Lessons. All rights reserved.
