@@ -35,9 +35,9 @@ export default function ReadingGuitarTabPost() {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <img 
-              src="https://images.unsplash.com/photo-1507838153414-b4b713384a76?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+              src="/x-blank-tab.png" 
               alt="Guitar tablature notation showing fret numbers on six lines" 
-              className="w-full h-64 object-cover rounded-lg mb-8"
+              className="w-full h-64 object-contain rounded-lg mb-8"
             />
             
             <div className="prose prose-lg max-w-none">

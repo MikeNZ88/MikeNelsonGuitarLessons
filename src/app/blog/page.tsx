@@ -23,7 +23,7 @@ export default function Blog() {
       date: "May 25, 2025",
       readTime: "6 min read",
       category: "Practice Tools",
-      image: "/blog-thumbnail.svg",
+      image: "/practicetrack-thumbnail.svg",
       slug: "introducing-practicetrack",
       author: "Mike Nelson"
     },
@@ -35,7 +35,7 @@ export default function Blog() {
       date: "March 20, 2024",
       readTime: "8 min read",
       category: "Guitar Basics",
-      image: "https://images.unsplash.com/photo-1507838153414-b4b713384a76?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      image: "/x-blank-tab.png",
       slug: "reading-guitar-tab",
       author: "Mike Nelson"
     }

@@ -1,0 +1,84 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="practiceTrackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ea580c;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#dc2626;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#practiceTrackGradient)"/>
+  
+  <!-- Music note icons -->
+  <g fill="rgba(255,255,255,0.15)">
+    <!-- Musical note 1 -->
+    <circle cx="150" cy="300" r="8"/>
+    <rect x="158" y="250" width="3" height="50"/>
+    <path d="M158 250 Q170 245 175 250 Q170 255 158 260" fill="rgba(255,255,255,0.15)"/>
+    
+    <!-- Musical note 2 -->
+    <circle cx="680" cy="180" r="6"/>
+    <rect x="686" y="140" width="2" height="40"/>
+    <path d="M686 140 Q695 137 698 140 Q695 143 686 146" fill="rgba(255,255,255,0.15)"/>
+  </g>
+  
+  <!-- Main content area -->
+  <g transform="translate(400, 200)">
+    <!-- Main title -->
+    <text x="0" y="-40" text-anchor="middle" font-family="serif" font-size="48" font-weight="bold" fill="white" filter="url(#shadow)">
+      Practice<tspan fill="#fde047">Track</tspan>
+    </text>
+    
+    <!-- Slogan -->
+    <text x="0" y="0" text-anchor="middle" font-family="sans-serif" font-size="20" fill="rgba(255,237,213,0.9)">
+      Your Musical Journey Companion
+    </text>
+    
+    <!-- Feature icons -->
+    <g transform="translate(-120, 40)">
+      <!-- Timer icon -->
+      <g>
+        <circle cx="0" cy="0" r="20" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        <text x="0" y="0" text-anchor="middle" font-size="16" fill="white" dominant-baseline="central">⏱️</text>
+        <text x="0" y="35" text-anchor="middle" font-size="12" fill="rgba(255,237,213,0.8)">Timer</text>
+      </g>
+    </g>
+    
+    <g transform="translate(0, 40)">
+      <!-- Goal icon -->
+      <g>
+        <circle cx="0" cy="0" r="20" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        <text x="0" y="0" text-anchor="middle" font-size="16" fill="white" dominant-baseline="central">🎯</text>
+        <text x="0" y="35" text-anchor="middle" font-size="12" fill="rgba(255,237,213,0.8)">Goals</text>
+      </g>
+    </g>
+    
+    <g transform="translate(120, 40)">
+      <!-- Stats icon -->
+      <g>
+        <circle cx="0" cy="0" r="20" fill="rgba(255,255,255,0.2)" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+        <text x="0" y="0" text-anchor="middle" font-size="16" fill="white" dominant-baseline="central">📊</text>
+        <text x="0" y="35" text-anchor="middle" font-size="12" fill="rgba(255,237,213,0.8)">Stats</text>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Guitar silhouette -->
+  <g transform="translate(700, 250)" fill="rgba(255,255,255,0.1)">
+    <path d="M0 0 Q-5 -20 0 -40 Q5 -60 0 -80 L-2 -85 L2 -85 Q8 -60 2 -40 Q-2 -20 0 0 Z"/>
+    <circle cx="0" cy="-70" r="15" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+    <line x1="-8" y1="-85" x2="8" y2="-85" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <line x1="-6" y1="-75" x2="6" y2="-75" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+    <line x1="-6" y1="-65" x2="6" y2="-65" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  </g>
+  
+  <!-- FREE badge - moved to bottom -->
+  <g transform="translate(400, 370)">
+    <rect x="-30" y="-12" width="60" height="24" rx="12" fill="#92400e"/>
+    <text x="0" y="0" text-anchor="middle" font-size="14" font-weight="bold" fill="white" dominant-baseline="central">FREE</text>
+  </g>
+</svg> 
