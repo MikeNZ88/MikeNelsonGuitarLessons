@@ -133,9 +133,6 @@ export default function Home() {
                 </div>
                 <p className="text-amber-700 mb-6 italic text-lg leading-relaxed">&ldquo;{testimonial.text}&rdquo;</p>
                 <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                    {testimonial.author.split(' ').map(n => n[0]).join('')}
-                  </div>
                   <p className="font-semibold text-amber-800">— {testimonial.author}</p>
                 </div>
               </div>
@@ -161,8 +158,6 @@ export default function Home() {
                 ))}
               </div>
               <span className="font-semibold">5.0 out of 5</span>
-              <span>•</span>
-              <span>50+ reviews</span>
             </div>
           </div>
         </div>

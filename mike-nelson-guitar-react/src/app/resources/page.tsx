@@ -286,12 +286,6 @@ export default function Resources() {
                     Resources
                   </button>
                   <button 
-                    onClick={() => setActiveSection('lessontrack')} 
-                    className={`px-4 py-2 rounded-md ${activeSection === 'lessontrack' ? 'bg-orange-600' : 'bg-orange-600 bg-opacity-80'} text-white hover:bg-orange-700`}
-                  >
-                    LessonTrack
-                  </button>
-                  <button 
                     onClick={() => setActiveSection('settings')} 
                     className={`px-4 py-2 rounded-md ${activeSection === 'settings' ? 'bg-orange-600' : 'bg-orange-600 bg-opacity-80'} text-white hover:bg-orange-700`}
                   >
@@ -462,31 +456,6 @@ export default function Resources() {
                       </div>
                       
                       <p className="text-sm italic">Use the Resources tab to quickly set up a well-rounded practice routine for your instrument.</p>
-                    </div>
-                  )}
-                  
-                  {activeSection === 'lessontrack' && (
-                    <div className="rounded-lg bg-orange-50 p-4">
-                      <h3 className="text-xl font-bold mb-2">LessonTrack Integration</h3>
-                      <p className="mb-3">If your teacher uses LessonTrack, you can receive lesson notes:</p>
-                      
-                      <div className="flex items-center justify-center my-4">
-                        <div className="text-xl font-bold">
-                          Lesson<span className="text-yellow-600">Track</span>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white rounded-md p-3 mb-3">
-                        <h4 className="font-bold">How it works</h4>
-                        <ul className="list-disc list-inside space-y-1 ml-2">
-                          <li>Teacher notes are synchronized to your account</li>
-                          <li>Notes appear in your Media Gallery with a LessonTrack tag</li>
-                          <li>Use the same email for PracticeTrack that your teacher has on file</li>
-                          <li>Internet connection required to receive new notes</li>
-                        </ul>
-                      </div>
-                      
-                      <p className="text-sm italic">If your teacher doesn't use LessonTrack yet, let them know they can find more information at <span className="font-medium">lessontrack.app</span></p>
                     </div>
                   )}
                   
