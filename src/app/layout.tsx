@@ -15,6 +15,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://mikenelsonguitar.com'),
   title: "Mike Nelson Guitar Lessons | Guitar Tuition in Wellington",
   description: "Guitar lessons in Wellington with 25+ years experience",
   keywords: "guitar lessons, Wellington, Pukerua Bay, guitar teacher, music lessons, guitar tuition",
@@ -24,12 +25,41 @@ export const metadata: Metadata = {
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', type: 'image/x-icon', sizes: '16x16' }
     ],
+    apple: [
+      { url: '/favicon.svg', sizes: '180x180', type: 'image/svg+xml' }
+    ],
+    shortcut: '/favicon.ico',
   },
   openGraph: {
     title: "Mike Nelson Guitar Lessons",
     description: "Professional guitar lessons in Wellington with 25+ years experience",
     type: "website",
     locale: "en_NZ",
+    url: "https://mikenelsonguitar.com",
+    siteName: "Mike Nelson Guitar Lessons",
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Guitar Teacher',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Mike Nelson Guitar Lessons",
+    description: "Professional guitar lessons in Wellington with 25+ years experience",
+    images: ['/Mike Photo.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  manifest: '/manifest.json',
+  other: {
+    'msapplication-TileColor': '#d97706',
+    'theme-color': '#d97706',
   },
 };
 
