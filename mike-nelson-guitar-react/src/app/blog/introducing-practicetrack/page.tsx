@@ -35,9 +35,9 @@ export default function IntroducingPracticeTrackPost() {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <img 
-              src="/practicetrack-thumbnail.svg" 
-              alt="PracticeTrack app interface - comprehensive practice tool for musicians" 
-              className="w-full h-48 object-cover rounded-lg mb-8"
+              src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" 
+              alt="Music practice setup" 
+              className="w-full h-64 object-cover rounded-lg mb-8"
             />
             
             <div className="prose prose-lg max-w-none">
@@ -74,7 +74,7 @@ export default function IntroducingPracticeTrackPost() {
 
               <h3 className="text-xl font-semibold text-gray-700 mb-3">Educational Resources</h3>
               <p className="mb-6">
-                Access our comprehensive guide on "How to Practice Effectively," featuring research-backed strategies and techniques used by musicians.
+                Access our comprehensive guide on "How to Practice Effectively," featuring research-backed strategies and techniques used by professional musicians.
               </p>
 
               <div className="bg-blue-50 border-l-4 border-blue-400 p-6 my-8">
@@ -119,13 +119,16 @@ export default function IntroducingPracticeTrackPost() {
                 <li><strong>Self-Monitoring:</strong> Recording and reviewing your playing for objective feedback</li>
               </ul>
 
-              <h2 className="text-3xl font-bold mb-4">Ready to start your guitar journey?</h2>
+              <p className="text-lg font-semibold text-gray-800 mb-4">
+                Ready to transform your practice routine? 
+              </p>
+              <p className="mb-6">
+                Visit PracticeTrack today and discover how structured, mindful practice can accelerate your musical growth. Remember: it's not about practicing harder, it's about practicing smarter.
+              </p>
 
               <div className="text-center">
                 <a 
-                  href="https://practicetrackapp.com/landing.html" 
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:pkbslayerpkb@gmail.com" 
                   className="inline-block bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors"
                 >
                   Learn More About PracticeTrack
