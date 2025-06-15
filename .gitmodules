@@ -1,0 +1,3 @@
+[submodule "public/tabplayer"]
+	path = public/tabplayer
+	url = https://github.com/MikeNZ88/guitar-tab-player.git
