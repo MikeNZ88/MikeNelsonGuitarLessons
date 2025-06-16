@@ -15,10 +15,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mikenelsonguitar.com'),
+  metadataBase: new URL('https://mikenelsonguitarlessons.co.nz'),
   title: "Mike Nelson Guitar Lessons | Guitar Tuition in Wellington",
-  description: "Guitar lessons in Pukerua Bay, Wellington",
-  keywords: "guitar lessons, Wellington, Pukerua Bay, guitar teacher, music lessons, guitar tuition",
+  description: "Guitar lessons in Pukerua Bay, Wellington with interactive scale explorer tool. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
+  keywords: "guitar lessons, Wellington, Pukerua Bay, guitar teacher, music lessons, guitar tuition, guitar scales, guitar modes, fretboard diagram, music theory, guitar chords, guitar learning, scale practice, guitar intervals, major scale, pentatonic scale, guitar education, music interval colours, music interval colors, chord theory, music theory for beginners, guitar theory confusion, music theory simplified, guitar scales explained, chord theory basics, fretboard memorization, guitar intervals explained, music theory made easy, guitar theory lessons, visual music theory, interactive guitar learning, guitar scale patterns, chord progression theory, guitar fretboard theory, guitar fretboard visualization, chord diagram generator, scale pattern tool, interval color coding, guitar mode explorer, enharmonic equivalents, diatonic chord theory, guitar interval training, modal interchange, guitar theory for dummies, understanding guitar modes, guitar chord construction",
   authors: [{ name: "Mike Nelson" }],
   icons: {
     icon: [
@@ -31,26 +31,26 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
   },
   openGraph: {
-    title: "Mike Nelson Guitar Lessons",
-    description: "Guitar lessons in Pukerua Bay, Wellington",
+    title: "Mike Nelson Guitar Lessons & Scale Explorer",
+    description: "Guitar lessons in Pukerua Bay, Wellington with interactive scale explorer tool. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
     type: "website",
     locale: "en_NZ",
-    url: "https://mikenelsonguitar.com",
+    url: "https://mikenelsonguitarlessons.co.nz",
     siteName: "Mike Nelson Guitar Lessons",
     images: [
       {
-        url: 'https://mikenelsonguitar.com/Mike%20Photo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Mike Nelson Guitar Teacher',
+        alt: 'Mike Nelson Guitar Teacher with Scale Explorer Tool',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Mike Nelson Guitar Lessons",
-    description: "Guitar lessons in Pukerua Bay, Wellington",
-    images: ['https://mikenelsonguitar.com/Mike%20Photo.jpg'],
+    title: "Mike Nelson Guitar Lessons & Scale Explorer",
+    description: "Guitar lessons in Pukerua Bay, Wellington with interactive scale explorer tool. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
+    images: ['https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg'],
   },
   robots: {
     index: true,

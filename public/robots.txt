@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Specific allows for important pages
+Allow: /scale-explorer
+Allow: /lessons
+Allow: /about
+Allow: /contact
+Allow: /approach
+Allow: /resources
+Allow: /blog
+
+# Disallow build and system files
+Disallow: /_next/
+Disallow: /out/
+Disallow: /.git/
+Disallow: /node_modules/
+
+# Sitemap location
+Sitemap: https://mikenelsonguitarlessons.co.nz/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1 
