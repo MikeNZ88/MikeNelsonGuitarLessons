@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect } from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -18,18 +21,14 @@ export const metadata: Metadata = {
 };
 
 export default function ScaleExplorerPage() {
+  useEffect(() => {
+    // Redirect to the standalone Scale Explorer
+    window.location.replace('/scale-explorer/');
+  }, []);
+
   return (
-    <div className="min-h-screen">
-      <iframe 
-        src="/tabplayer/index.html"
-        className="w-full h-screen border-0"
-        title="Guitar Scale Explorer"
-        style={{
-          minHeight: '100vh',
-          width: '100%',
-          border: 'none'
-        }}
-      />
+    <div className="flex items-center justify-center min-h-screen">
+      <p className="text-lg">Redirecting to Scale Explorer...</p>
     </div>
   );
 } 

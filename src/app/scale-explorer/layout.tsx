@@ -1,17 +1,8 @@
-// This file is intentionally empty to remove the custom layout
-// that was causing hydration errors
-
+// Remove custom layout - use default Next.js layout
 export default function ScaleExplorerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <head />
-      <body className="m-0 p-0 overflow-hidden">
-        {children}
-      </body>
-    </html>
-  );
+  return children;
 } 
