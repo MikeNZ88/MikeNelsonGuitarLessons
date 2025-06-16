@@ -1,16 +1,25 @@
-'use client';
-
-import { useEffect } from 'react';
-
 export default function ScaleToolPage() {
-  useEffect(() => {
-    // Redirect to the standalone Scale Explorer
-    window.location.href = '/scale-explorer/';
-  }, []);
-
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <p className="text-lg">Redirecting to Scale Explorer...</p>
+    <div style={{ 
+      position: 'fixed', 
+      top: 0, 
+      left: 0, 
+      width: '100vw', 
+      height: '100vh', 
+      zIndex: 9999,
+      backgroundColor: 'white'
+    }}>
+      <iframe 
+        src="/scale-explorer/index.html"
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          margin: 0,
+          padding: 0
+        }}
+        title="Guitar Scale Explorer"
+      />
     </div>
   );
 } 
