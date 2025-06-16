@@ -6,5 +6,12 @@ export default function ScaleExplorerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <html lang="en">
+      <head />
+      <body className="m-0 p-0 overflow-hidden">
+        {children}
+      </body>
+    </html>
+  );
 } 

@@ -21,7 +21,7 @@ export default function ScaleExplorerPage() {
   return (
     <div className="min-h-screen">
       <iframe 
-        src="/scale-explorer/index.html"
+        src="/tabplayer/index.html"
         className="w-full h-screen border-0"
         title="Guitar Scale Explorer"
         style={{
