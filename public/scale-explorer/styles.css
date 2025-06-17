@@ -1592,7 +1592,8 @@ font-size: 0.95rem;
 transition: all 0.2s ease;
 outline: none;
 width: auto;
-height: 44px;
+min-height: 44px;
+line-height: 1.4;
 }
 .scale-controls select:focus {
 border-color: #F39C12;
