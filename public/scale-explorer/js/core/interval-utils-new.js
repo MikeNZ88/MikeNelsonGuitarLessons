@@ -277,15 +277,15 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'aeolian' || (category === 'major-modes' && scaleType === 'aeolian')) {
-        // Aeolian mode (natural minor) - use functional harmony groupings like Ionian
+        // Aeolian mode (natural minor) - use hybrid approach with honest labeling
         switch (degree) {
-            case 1: return 'Tonic';           // i (tonic function)
-            case 2: return 'Predominant';    // ii° (predominant function - weak)
-            case 3: return 'Tonic';          // ♭III (tonic function)
-            case 4: return 'Predominant';    // iv (predominant function)
-            case 5: return 'Dominant';       // v (dominant function - weak minor v)
-            case 6: return 'Tonic';          // ♭VI (tonic function)
-            case 7: return 'Dominant';       // ♭VII (dominant function - but pulls to relative major)
+            case 1: return 'Tonic';           // i (clear tonic function)
+            case 2: return 'Predominant';    // ii° (weak predominant)
+            case 3: return 'Tonic Sub';      // ♭III (tonic substitute - modal characteristic)
+            case 4: return 'Predominant';    // iv (clear predominant function)
+            case 5: return 'Weak Dominant';  // v (weak minor dominant)
+            case 6: return 'Tonic Sub';      // ♭VI (tonic substitute - modal characteristic)
+            case 7: return 'Rel. Major Pull'; // ♭VII (pulls toward relative major)
             default: return '';
         }
     } else if (scaleType === 'locrian' || (category === 'major-modes' && scaleType === 'locrian')) {
@@ -460,15 +460,15 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'harmonic-minor') {
-        // Harmonic minor - use grouped functional harmony
+        // Harmonic minor - use voice-leading approach with honest labeling
         switch (degree) {
-            case 1: return 'Tonic';           // i (tonic function)
+            case 1: return 'Tonic';           // i (tonic center)
             case 2: return 'Predominant';    // ii° (predominant function)
-            case 3: return 'Tonic';          // ♭III+ (tonic function)
-            case 4: return 'Predominant';    // iv (predominant function)
-            case 5: return 'Dominant';       // V (dominant function)
-            case 6: return 'Tonic';          // ♭VI (tonic function)
-            case 7: return 'Dominant';       // vii° (dominant function)
+            case 3: return 'Color';          // ♭III+ (coloristic - unstable)
+            case 4: return 'Subdominant';    // iv (subdominant function)
+            case 5: return 'Strong Dominant'; // V (strong major dominant)
+            case 6: return 'Contrast';       // ♭VI (provides contrast)
+            case 7: return 'Leading Tone';   // vii° (leading tone resolution)
             default: return '';
         }
     }
