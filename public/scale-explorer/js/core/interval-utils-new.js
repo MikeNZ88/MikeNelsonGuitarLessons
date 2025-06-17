@@ -301,14 +301,14 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'locrian-natural-6' || (category === 'harmonic-minor-modes' && scaleType === 'locrian-natural-6')) {
-        // Locrian ♮6 (2nd mode of harmonic minor) - characteristic: diminished i° + major ♭II
+        // Locrian ♮6 (2nd mode of harmonic minor) - characteristic: diminished i° + major VI
         switch (degree) {
             case 1: return 'Modal Tonic';     // i° (diminished tonic)
-            case 2: return 'Characteristic';  // ♭II (major ♭II - provides resolution)
+            case 2: return '';                // ♭II
             case 3: return '';                // ♭iii
             case 4: return '';                // iv
             case 5: return '';                // ♭v
-            case 6: return '';                // VI (natural 6th - distinguishes from regular Locrian)
+            case 6: return 'Characteristic';  // VI (natural 6th - distinguishes from regular Locrian)
             case 7: return '';                // ♭vii
             default: return '';
         }
