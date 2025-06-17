@@ -2842,7 +2842,20 @@ function displayTraditionalChords(scale, scaleType, category) {
     function getTheoryExplanation(scaleType, category) {
         // For major scale, natural minor, and harmonic minor - use functional harmony
         if (scaleType === 'major' || scaleType === 'natural-minor' || scaleType === 'harmonic-minor' || 
-            scaleType === 'melodic-minor') {
+            scaleType === 'melodic-minor' || scaleType === 'aeolian') {
+            
+            // Special explanation for natural minor/aeolian
+            if (scaleType === 'natural-minor' || scaleType === 'aeolian') {
+                return `
+                    <div class="jazz-theory-note">
+                        <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III = 3rd degree, iv = 4th degree, v = 5th degree, ♭VI = 6th degree, ♭VII = 7th degree.</p>
+                        <p><strong>Chord Functions:</strong> <em>Tonic</em> = home/rest (i, ♭III, ♭VI); <em>Predominant</em> = preparation/tension (ii°, iv); <em>Dominant</em> = resolution/pull back to tonic (v - weak, ♭VII - strong pull toward relative major). In natural minor, the v chord provides a weaker dominant function compared to major keys, while ♭VII creates a strong pull toward the relative major and should be used carefully in modal contexts.</p>
+                        <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
+                    </div>
+                `;
+            }
+            
+            // Standard functional harmony explanation for major, harmonic minor, melodic minor
             return `
                 <div class="jazz-theory-note">
                     <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: I = 1st degree, ii = 2nd degree, iii = 3rd degree, IV = 4th degree, V = 5th degree, vi = 6th degree, vii° = 7th degree.</p>
@@ -2852,10 +2865,9 @@ function displayTraditionalChords(scale, scaleType, category) {
             `;
         }
         
-        // For modal scales - use modal explanation with dynamic examples
+        // For modal scales - use modal explanation with dynamic examples (excluding aeolian which is handled above)
         if (category === 'major-modes' || scaleType === 'dorian' || scaleType === 'phrygian' || 
-            scaleType === 'lydian' || scaleType === 'mixolydian' || scaleType === 'aeolian' || 
-            scaleType === 'locrian') {
+            scaleType === 'lydian' || scaleType === 'mixolydian' || scaleType === 'locrian') {
             
             let avoidExample = '';
             // Calculate the correct avoid progression based on the actual scale

@@ -277,15 +277,15 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'aeolian' || (category === 'major-modes' && scaleType === 'aeolian')) {
-        // Aeolian mode (natural minor) - characteristic: minor i + minor iv (plagal motion)
+        // Aeolian mode (natural minor) - use functional harmony groupings like Ionian
         switch (degree) {
-            case 1: return 'Modal Tonic';     // i (minor tonic)
-            case 2: return '';                // ii°
-            case 3: return '';                // ♭III
-            case 4: return 'Characteristic';  // iv (minor iv - classic plagal motion, avoids pull to relative major)
-            case 5: return '';                // v (weak minor v)
-            case 6: return '';                // ♭VI
-            case 7: return '';                // ♭VII
+            case 1: return 'Tonic';           // i (tonic function)
+            case 2: return 'Predominant';    // ii° (predominant function - weak)
+            case 3: return 'Tonic';          // ♭III (tonic function)
+            case 4: return 'Predominant';    // iv (predominant function)
+            case 5: return 'Dominant';       // v (dominant function - weak minor v)
+            case 6: return 'Tonic';          // ♭VI (tonic function)
+            case 7: return 'Dominant';       // ♭VII (dominant function - but pulls to relative major)
             default: return '';
         }
     } else if (scaleType === 'locrian' || (category === 'major-modes' && scaleType === 'locrian')) {
