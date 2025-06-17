@@ -234,7 +234,7 @@ const modeMetadata = {
     },
     aeolian: { 
         mood: 'Melancholy', 
-        description: 'The Natural Minor scale. Sad, introspective, dramatic, and melancholic.', 
+        description: 'The most common minor scale in Western music. Sad, introspective, dramatic, and deeply emotional. Creates profound melancholy and introspective beauty.', 
         applications: ['Classical', 'pop ballads', 'emotional songs', 'minor key harmony'] 
     },
     locrian: { 
@@ -251,21 +251,21 @@ const modeMetadata = {
     },
     'locrian-natural-6': { 
         mood: 'Dark', 
-        description: 'Improved version of Locrian with natural 6th adding stability. Dark but less unstable, more usable than standard Locrian.', 
+        description: 'A more stable alternative to regular Locrian, with the natural 6th providing harmonic relief. Dark and mysterious but actually usable as a tonal center.', 
         applications: ['Jazz over half-diminished chords', 'alternative to regular Locrian'] 
     },
     'ionian-sharp-5': { 
-        mood: 'Augmented', 
+        mood: 'Elevated', 
         description: 'Major scale with augmented 5th creating sophisticated tension. Bright but unsettled, sophisticated, and surreal.', 
         applications: ['Jazz over major 7♯5 chords', 'sophisticated pop harmony'] 
     },
     'dorian-sharp-4': { 
-        mood: 'Ukrainian', 
-        description: 'Dorian with exotic ♯4 creating distinctive folk flavor. Mysterious, folk-like, exotic, and Eastern European character.', 
+        mood: 'Folk', 
+        description: 'Dorian with an exotic ♯4 tritone, creating distinctive folk character. Mysterious, rustic, and hauntingly beautiful with ancient folk traditions.', 
         applications: ['Eastern European folk', 'world music', 'jazz for exotic colors'] 
     },
     'phrygian-dominant': { 
-        mood: 'Spanish', 
+        mood: 'Exotic', 
         description: 'Highly exotic with major 3rd over Phrygian ♭2, creates dominant function. Intensely exotic, passionate, fiery, and dramatic.', 
         applications: ['Flamenco', 'Middle Eastern music', 'klezmer', 'metal', 'jazz altered dominants'] 
     },
@@ -276,7 +276,7 @@ const modeMetadata = {
     },
     'altered-dominant': { 
         mood: 'Jazzy', 
-        description: 'Extremely unstable with maximum alterations. Chaotic, highly tense, and demanding resolution.', 
+        description: 'The ultimate altered dominant with maximum harmonic tension and instability. Chaotic, intensely dissonant, and creates overwhelming need for resolution.', 
         applications: ['Experimental music', 'extreme tension effects'] 
     },
     
@@ -287,8 +287,8 @@ const modeMetadata = {
         applications: ['Jazz over minor-major 7th chords', 'sophisticated minor harmony'] 
     },
     'dorian-b2': { 
-        mood: 'Phrygian', 
-        description: 'Phrygian character softened by natural 6th. Mysterious, exotic, and less dark than pure Phrygian.', 
+        mood: 'Brooding', 
+        description: 'Dark and mysterious with a distinctive ♭2 half-step descent, but softened by the natural 6th. Brooding, exotic, and sophisticated.', 
         applications: ['Jazz over suspended ♭9 chords', 'exotic minor passages'] 
     },
     'lydian-augmented': { 
@@ -298,50 +298,50 @@ const modeMetadata = {
     },
     'lydian-dominant': { 
         mood: 'Floating', 
-        description: 'Perfect fusion of Lydian brightness with dominant function. Sophisticated, bright, floating yet functional.', 
+        description: 'Bright and ethereal like Lydian, but with a grounded, bluesy character. Sophisticated, floating, yet confidently functional and groove-oriented.', 
         applications: ['Jazz over dominant 7♯11 chords', 'tritone substitutions', 'non-resolving dominants'] 
     },
     'mixolydian-b6': { 
         mood: 'Hindu', 
-        description: 'Dominant scale with exotic ♭6 adding Eastern flavor. Exotic, Eastern, sophisticated, and groove-oriented.', 
+        description: 'Dominant character with an exotic ♭6 creating distinctive harmonic color. Groovy yet mysterious, sophisticated with an edge of tension.', 
         applications: ['Jazz over dominant 7♭13 chords', 'Indian classical influences', 'minor key dominants'] 
     },
     'locrian-natural-2': { 
-        mood: 'Half-diminished', 
-        description: 'More stable than regular Locrian due to natural 2nd. Tense but manageable, sophisticated, and usable.', 
+        mood: 'Melancholy', 
+        description: 'A sophisticated, melancholy mode with distinctive harmonic tension. Dark and introspective, yet surprisingly stable and usable.', 
         applications: ['Jazz over minor 7♭5 chords', 'preferred alternative to standard Locrian'] 
     },
     'super-locrian': { 
-        mood: 'Altered', 
-        description: 'Ultimate altered dominant containing all common alterations (♭9, ♯9, ♯11, ♭13). Intensely tense, sophisticated, and demanding immediate resolution.', 
+        mood: 'Unstable', 
+        description: 'The ultimate altered sound with maximum harmonic instability and tension. Chaotic, intensely unstable, and creates overwhelming urgency for resolution.', 
         applications: ['Jazz over altered dominant chords', 'maximum tension before resolution'] 
     },
     
     // Diminished modes
-    'wh-diminished': { mood: 'Symmetrical', description: 'Eight-note symmetrical scale, alternating whole-half steps.', applications: ['Jazz', 'classical', 'metal'] },
-    'hw-diminished': { mood: 'Symmetrical', description: 'Eight-note symmetrical scale, alternating half-whole steps.', applications: ['Jazz', 'classical', 'experimental'] },
+    'wh-diminished': { mood: 'Mysterious', description: 'Eight-note symmetrical scale creating mysterious, otherworldly suspension. Atmospheric, supernatural, and hauntingly beautiful with floating, timeless quality.', applications: ['Jazz', 'classical', 'metal'] },
+    'hw-diminished': { mood: 'Intense', description: 'Eight-note symmetrical scale generating maximum harmonic tension and forward momentum. Intensely dramatic, sophisticated, and urgently demanding resolution.', applications: ['Jazz', 'classical', 'experimental'] },
     
     // Pentatonic scales
-    'major-pentatonic': { mood: 'Universal', description: 'Five notes that work everywhere, no wrong notes.', applications: ['Rock', 'country', 'pop', 'world'] },
-    'suspended-pentatonic': { mood: 'Ancient', description: 'Suspended pentatonic with ancient, mystical character.', applications: ['World music', 'ambient'] },
-    'man-gong': { mood: 'Phrygian', description: 'Third mode of major pentatonic, known as Man Gong in Asian traditions.', applications: ['Blues', 'rock', 'world music'] },
-    'ritusen': { mood: 'Lydian', description: 'Fourth mode of major pentatonic, traditional Japanese Ritusen scale.', applications: ['Country', 'folk', 'world music'] },
-    'minor-pentatonic': { mood: 'Soulful', description: 'Classic minor pentatonic scale.', applications: ['Blues', 'rock', 'jazz'] },
+    'major-pentatonic': { mood: 'Joyful', description: 'Five perfect notes creating universal appeal and instant accessibility. Joyful, bright, optimistic, and works beautifully in any musical context.', applications: ['Rock', 'country', 'pop', 'world'] },
+    'suspended-pentatonic': { mood: 'Ancient', description: 'Suspended pentatonic creating ancient, mystical atmosphere. Timeless, spiritual, and meditative with primitive yet sophisticated character.', applications: ['World music', 'ambient'] },
+    'man-gong': { mood: 'Contemplative', description: 'Third mode of major pentatonic with contemplative, reflective character. Meditative, introspective, and deeply thoughtful with Eastern philosophical depth.', applications: ['Blues', 'rock', 'world music'] },
+    'ritusen': { mood: 'Pastoral', description: 'Fourth mode of major pentatonic with pastoral, folk-like character. Peaceful, rustic, and naturally beautiful with countryside simplicity.', applications: ['Country', 'folk', 'world music'] },
+    'minor-pentatonic': { mood: 'Soulful', description: 'The classic minor pentatonic with deep emotional resonance. Soulful, bluesy, expressive, and profoundly moving - the voice of human emotion.', applications: ['Blues', 'rock', 'jazz'] },
     
     // Blues scales
-    'blues-major': { mood: 'Country', description: 'Six-note blues scale with chromatic passing tones (blue notes).', applications: ['Blues', 'country', 'rock'] },
-    'blues-minor': { mood: 'Soulful', description: 'Six-note blues scale with characteristic blue notes.', applications: ['Blues', 'rock', 'jazz'] },
+    'blues-major': { mood: 'Country', description: 'Six-note blues scale adding the ♭3 "blue note" for authentic country flavor. Earthy, down-home, and genuinely American with rustic charm.', applications: ['Blues', 'country', 'rock'] },
+    'blues-minor': { mood: 'Soulful', description: 'Six-note blues scale adding the ♭5 "blue note" for authentic blues expression. Deeply soulful, emotionally raw, and profoundly expressive.', applications: ['Blues', 'rock', 'jazz'] },
     
     // Whole tone scales
-    'whole-tone-1': { mood: 'Dreamy', description: 'First rotation of the whole tone scale, creates floating ambiguity.', applications: ['Impressionist', 'jazz', 'film'] },
-    'whole-tone-2': { mood: 'Dreamy', description: 'Second rotation of the whole tone scale.', applications: ['Impressionist', 'jazz', 'film'] },
-    'whole-tone-3': { mood: 'Dreamy', description: 'Third rotation of the whole tone scale.', applications: ['Impressionist', 'jazz', 'film'] },
-    'whole-tone-4': { mood: 'Dreamy', description: 'Fourth rotation of the whole tone scale.', applications: ['Impressionist', 'jazz', 'film'] },
-    'whole-tone-5': { mood: 'Dreamy', description: 'Fifth rotation of the whole tone scale.', applications: ['Impressionist', 'jazz', 'film'] },
-    'whole-tone-6': { mood: 'Dreamy', description: 'Sixth rotation of the whole tone scale.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-1': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-2': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-3': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-4': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-5': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
+    'whole-tone-6': { mood: 'Dreamy', description: 'Six-note whole tone scale creating ethereal, floating ambiguity. Dreamy, impressionistic, and otherworldly - like music floating on clouds.', applications: ['Impressionist', 'jazz', 'film'] },
     
     // Other scales
-    'chromatic': { mood: 'Chromatic', description: 'All twelve notes (in western music). Ultimate color and tension.', applications: ['Jazz', 'classical', 'experimental'] }
+    'chromatic': { mood: 'Chromatic', description: 'All twelve notes of Western music creating ultimate harmonic complexity. Chromatic, intensely colorful, and capable of infinite emotional expression.', applications: ['Jazz', 'classical', 'experimental'] }
 };
 
 // Mode Numbers and Names
