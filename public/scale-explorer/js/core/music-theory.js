@@ -38,9 +38,8 @@
         
         console.log('All modules loaded, initializing MusicTheory...');
 
-// Create the main MusicTheory object for backward compatibility
-const MusicTheory = {
-    // Color utilities
+        const MusicTheory = {
+            // Color utilities
             hexToRgb: window.ColorUtils.hexToRgb,
             rgbToHex: window.ColorUtils.rgbToHex,
             calculateScaleColor: window.ColorUtils.calculateScaleColor,
@@ -49,7 +48,7 @@ const MusicTheory = {
             lightenColor: window.ColorUtils.lightenColor,
             getChordColor: window.ColorUtils.getChordColor,
     
-    // Scale calculations
+            // Scale calculations
             getProperNoteSpelling: window.ScaleCalculator.getProperNoteSpelling,
             calculateScale: window.ScaleCalculator.calculateScale,
             calculateScaleWithDegrees: window.ScaleCalculator.calculateScaleWithDegrees,
@@ -62,7 +61,7 @@ const MusicTheory = {
             getChromatic: window.ScaleCalculator.getChromatic,
             getModeNotes: window.ScaleCalculator.getModeNotes,
     
-    // Chord analysis
+            // Chord analysis
             calculateTriads: window.ChordAnalyzer.calculateTriads,
             calculateSeventhChords: window.ChordAnalyzer.calculateSeventhChords,
             analyzeTriadComprehensive: window.ChordAnalyzer.analyzeTriadComprehensive,
@@ -87,7 +86,7 @@ const MusicTheory = {
             calculateEleventhChords: window.ChordAnalyzer.calculateEleventhChords,
             calculateThirteenthChords: window.ChordAnalyzer.calculateThirteenthChords,
     
-    // Interval utilities
+            // Interval utilities
             getIntervalName: window.IntervalUtils.getIntervalName,
             getIntervalBetweenNotes: window.IntervalUtils.getIntervalBetweenNotes,
             getIntervals: window.IntervalUtils.getIntervals,
@@ -582,33 +581,9 @@ function getAugmentedScaleChords(scale) {
 }
 
 function getChromaticScaleChords(scale) {
-    if (!scale || scale.length !== 12) {
-        return { chords: [] };
-    }
-    
-    // Chromatic scale can produce any chord
     return {
         chords: [
             { root: scale[0], chord: scale[0], notes: [scale[0], scale[4], scale[7]] }
         ]
     };
-}
-
-// Update the global exports to include all new functions
-window.MusicTheory = {
-    // ... existing exports ...
-    areEnharmonicEquivalents,
-    getEnharmonicEquivalent,
-    getIntervalEnharmonicEquivalent,
-    getEnharmonicTooltip,
-    getChordIntervals,
-    getCharacteristicChords,
-    isWholeToneScale,
-    isAugmentedScale,
-    getDiminishedScaleChords,
-    getPentatonicScaleChords,
-    getWholeToneScaleChords,
-    getBluesScaleChords,
-    getAugmentedScaleChords,
-    getChromaticScaleChords
-}; 
+} 
