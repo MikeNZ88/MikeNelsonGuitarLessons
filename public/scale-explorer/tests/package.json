@@ -1,0 +1,23 @@
+{
+  "name": "scale-explorer-tests",
+  "version": "1.0.0",
+  "description": "Automated testing for Scale Explorer music theory functions",
+  "main": "run-tests.js",
+  "scripts": {
+    "test": "node run-tests.js",
+    "test:verbose": "node run-tests.js --verbose",
+    "test:headful": "node run-tests.js --headless false",
+    "test:save": "node run-tests.js --output results.json"
+  },
+  "dependencies": {
+    "puppeteer": "^21.6.1"
+  },
+  "keywords": [
+    "music-theory",
+    "testing",
+    "automation",
+    "scale-explorer"
+  ],
+  "author": "Scale Explorer",
+  "license": "MIT"
+} 

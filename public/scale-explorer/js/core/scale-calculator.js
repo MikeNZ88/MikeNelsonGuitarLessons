@@ -33,28 +33,28 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
     // Enhanced noteToIndex function that handles double accidentals
     const noteToIndex = (note) => {
         // Handle double accidentals first
-        if (note.includes('bb')) {
-            const naturalNote = note.replace('bb', '');
-            const naturalIndex = {
+        if (note.includes('♭♭')) {
+            const naturalNote = note.replace('♭♭', '');
+            const baseIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
-            return naturalIndex !== undefined ? (naturalIndex - 2 + 12) % 12 : undefined;
-        } else if (note.includes('##')) {
-            const naturalNote = note.replace('##', '');
-            const naturalIndex = {
+            return (baseIndex - 2 + 12) % 12;
+        } else if (note.includes('♯♯')) {
+            const naturalNote = note.replace('♯♯', '');
+            const baseIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
-            return naturalIndex !== undefined ? (naturalIndex + 2) % 12 : undefined;
-        } else {
-            // Single accidental or natural
-            const singleAccidentalMap = {
-                'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
-                'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
-                'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10,
-                'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
-            };
-            return singleAccidentalMap[note];
+            return (baseIndex + 2) % 12;
         }
+        
+        // Handle regular notes with flats and sharps
+        const noteMap = {
+            'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
+            'C♯': 1, 'D♭': 1, 'D♯': 3, 'E♭': 3, 'F♯': 6, 'G♭': 6,
+            'G♯': 8, 'A♭': 8, 'A♯': 10, 'B♭': 10,
+            'B♯': 0, 'C♭': 11, 'E♯': 5, 'F♭': 4
+        };
+        return noteMap[note];
     };
     
     // Find the root note's position in the note names array
@@ -116,20 +116,20 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
         
         let noteName;
         if (chromaticDifference === 0) {
-            // Perfect match - use the natural note
+            // Same pitch - use the base note name
             noteName = baseNoteName;
         } else if (chromaticDifference === 1) {
             // One semitone up - use sharp
-            noteName = baseNoteName + '#';
+            noteName = baseNoteName + '♯';
         } else if (chromaticDifference === 11) {
             // One semitone down - use flat
-            noteName = baseNoteName + 'b';
+            noteName = baseNoteName + '♭';
         } else if (chromaticDifference === 2) {
             // Two semitones up - use double sharp (very rare)
-            noteName = baseNoteName + '##';
+            noteName = baseNoteName + '♯♯';
         } else if (chromaticDifference === 10) {
             // Two semitones down - use double flat (very rare)
-            noteName = baseNoteName + 'bb';
+            noteName = baseNoteName + '♭♭';
         } else {
             // This shouldn't happen in normal scales, fallback to chromatic
             noteName = getChromatic(currentChromaticIndex, root, scaleType);
@@ -155,28 +155,27 @@ function calculatePentatonicScale(root, formula, rootNoteIndex, rootChromaticInd
     let currentChromaticIndex = rootChromaticIndex;
     
     // Determine spelling convention based on the root note and scale type
-    const flatKeys = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'Cb'];
-    const sharpKeys = ['G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
+    const flatKeys = ['F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'C♭'];
+    const sharpKeys = ['G', 'D', 'A', 'E', 'B', 'F♯', 'C♯'];
     
-    let spellingConvention;
+    let useFlats = flatKeys.includes(root);
+    let useSharps = sharpKeys.includes(root);
     
     // Special handling for blues scales - always prefer flats for altered notes
     if (formula.length === 6 || scaleType === 'blues' || scaleType.includes('blues')) {
-        spellingConvention = 'flat';
-    } else if (flatKeys.includes(root)) {
-        spellingConvention = 'flat';
-    } else if (sharpKeys.includes(root)) {
-        spellingConvention = 'sharp';
-    } else {
+        useFlats = true;
+        useSharps = false;
+    } else if (!useFlats && !useSharps) {
         // For C and enharmonic equivalents, default to sharp for pentatonic, flat for blues
-        spellingConvention = (formula.length === 6) ? 'flat' : 'sharp';
+        useSharps = formula.length === 5; // pentatonic
+        useFlats = !useSharps;
     }
     
     // Chromatic scales with consistent spelling
-    const sharpChromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-    const flatChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const sharpChromatic = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+    const flatChromatic = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
     
-    const chromatic = spellingConvention === 'flat' ? flatChromatic : sharpChromatic;
+    const chromatic = useFlats ? flatChromatic : sharpChromatic;
     
     // Calculate each note using the formula
     for (let i = 0; i < formula.length - 1; i++) {
@@ -184,10 +183,10 @@ function calculatePentatonicScale(root, formula, rootNoteIndex, rootChromaticInd
         let noteName = chromatic[currentChromaticIndex];
         
         // Additional cleanup for problematic enharmonic spellings
-        if (noteName === 'B#') noteName = 'C';
-        if (noteName === 'E#') noteName = 'F';
-        if (noteName === 'Cb') noteName = 'B';
-        if (noteName === 'Fb') noteName = 'E';
+        if (noteName === 'B♯') noteName = 'C';
+        if (noteName === 'E♯') noteName = 'F';
+        if (noteName === 'C♭') noteName = 'B';
+        if (noteName === 'F♭') noteName = 'E';
         
         scale.push(noteName);
     }
@@ -217,17 +216,17 @@ function calculateBluesScale(root, formula, rootNoteIndex, rootChromaticIndex, n
     
     if (isBluesMajor) {
         // For blues major, calculate normally with flat-friendly spelling
-        const flatChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const flatChromatic = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
         
         for (let i = 0; i < formula.length - 1; i++) {
             currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
             let noteName = flatChromatic[currentChromaticIndex];
             
             // Clean up problematic enharmonic spellings
-            if (noteName === 'B#') noteName = 'C';
-            if (noteName === 'E#') noteName = 'F';
-            if (noteName === 'Cb') noteName = 'B';
-            if (noteName === 'Fb') noteName = 'E';
+            if (noteName === 'B♯') noteName = 'C';
+            if (noteName === 'E♯') noteName = 'F';
+            if (noteName === 'C♭') noteName = 'B';
+            if (noteName === 'F♭') noteName = 'E';
             
             scale.push(noteName);
         }
@@ -240,7 +239,7 @@ function calculateBluesScale(root, formula, rootNoteIndex, rootChromaticIndex, n
         const bluesMajorFormula = [2, 1, 1, 3, 2, 3]; // Blues major formula
         
         // Calculate the full blues major scale with consistent flat spelling
-        const flatChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const flatChromatic = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
         const bluesMajorNotes = [flatChromatic[bluesMajorRootIndex]];
         
         let bluesMajorIndex = bluesMajorRootIndex;
@@ -249,10 +248,10 @@ function calculateBluesScale(root, formula, rootNoteIndex, rootChromaticIndex, n
             let noteName = flatChromatic[bluesMajorIndex];
             
             // Clean up problematic enharmonic spellings
-            if (noteName === 'B#') noteName = 'C';
-            if (noteName === 'E#') noteName = 'F';
-            if (noteName === 'Cb') noteName = 'B';
-            if (noteName === 'Fb') noteName = 'E';
+            if (noteName === 'B♯') noteName = 'C';
+            if (noteName === 'E♯') noteName = 'F';
+            if (noteName === 'C♭') noteName = 'B';
+            if (noteName === 'F♭') noteName = 'E';
             
             bluesMajorNotes.push(noteName);
         }
@@ -283,13 +282,13 @@ function calculateHybridBluesScale(root, formula, rootNoteIndex, rootChromaticIn
     let currentChromaticIndex = rootChromaticIndex;
     
     // Blues-friendly chromatic scale (always use flats for altered notes)
-    const bluesChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const bluesChromatic = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
     
     for (let i = 0; i < formula.length; i++) {
         currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
         
         // For hybrid blues scale, always use the blues-friendly chromatic scale
-        // This ensures Gb instead of F# and Bb instead of B
+        // This ensures Gb instead of F♯ and B♭ instead of B
         const noteName = bluesChromatic[currentChromaticIndex];
         scale.push(noteName);
     }
@@ -305,7 +304,7 @@ function calculateAugmentedScale(root, formula, rootChromaticIndex, noteToIndex)
     let currentChromaticIndex = rootChromaticIndex;
     
     // Augmented scale uses flats for altered notes to maintain consistent spelling
-    const augmentedChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    const augmentedChromatic = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
     
     for (let i = 0; i < formula.length - 1; i++) {
         currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
@@ -358,24 +357,24 @@ function calculateDiminishedScale(root, formula, scaleType, rootNoteIndex, rootC
         if (chromaticDiff === 0) {
             noteName = targetLetter; // Natural
         } else if (chromaticDiff === 1) {
-            noteName = targetLetter + '#'; // Sharp
+            noteName = targetLetter + '♯'; // Sharp
         } else if (chromaticDiff === 11) {
-            noteName = targetLetter + 'b'; // Flat
+            noteName = targetLetter + '♭'; // Flat
         } else {
             // For problematic intervals, use enharmonic equivalents
             // Map chromatic index to preferred note name
             const chromaticToNote = {
-                0: 'C', 1: 'C#', 2: 'D', 3: 'Eb', 4: 'E', 5: 'F',
-                6: 'F#', 7: 'G', 8: 'Ab', 9: 'A', 10: 'Bb', 11: 'B'
+                0: 'C', 1: 'C♯', 2: 'D', 3: 'E♭', 4: 'E', 5: 'F',
+                6: 'F♯', 7: 'G', 8: 'A♭', 9: 'A', 10: 'B♭', 11: 'B'
             };
             noteName = chromaticToNote[currentChromaticIndex] || targetLetter;
         }
         
         // Fix problematic enharmonic spellings
-        if (noteName === 'Cb') noteName = 'B';
-        if (noteName === 'Fb') noteName = 'E';
-        if (noteName === 'E#') noteName = 'F';
-        if (noteName === 'B#') noteName = 'C';
+        if (noteName === 'C♭') noteName = 'B';
+        if (noteName === 'F♭') noteName = 'E';
+        if (noteName === 'E♯') noteName = 'F';
+        if (noteName === 'B♯') noteName = 'C';
         
         console.log(`Step ${i}: chromatic ${currentChromaticIndex}, letter ${targetLetter}, diff ${chromaticDiff}, result ${noteName}`);
         scale.push(noteName);
@@ -392,9 +391,9 @@ function calculateChromaticScale(root) {
     const noteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
     const noteToIndex = {
         'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
-        'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
-        'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10,
-        'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
+        'C♯': 1, 'D♭': 1, 'D♯': 3, 'E♭': 3, 'F♯': 6, 'G♭': 6,
+        'G♯': 8, 'A♭': 8, 'A♯': 10, 'B♭': 10,
+        'B♯': 0, 'C♭': 11, 'E♯': 5, 'F♭': 4
     };
     
     // Get root note information
@@ -432,9 +431,9 @@ function calculateChromaticScale(root) {
         if (chromaticDifference === 0) {
             noteName = targetLetter; // Natural
         } else if (chromaticDifference === 1) {
-            noteName = targetLetter + '#'; // Sharp
+            noteName = targetLetter + '♯'; // Sharp
         } else if (chromaticDifference === 11) {
-            noteName = targetLetter + 'b'; // Flat
+            noteName = targetLetter + '♭'; // Flat
         } else {
             // This shouldn't happen with proper chromatic scale calculation
             console.warn('Unexpected chromatic difference:', chromaticDifference, 'for', targetLetter);
@@ -452,8 +451,8 @@ function getChromatic(chromaticIndex, key, scaleType = 'major') {
     const normalizedIndex = ((chromaticIndex % 12) + 12) % 12;
     
     // Determine if this key uses sharps or flats
-    const sharpKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
-    const flatKeys = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb'];
+    const sharpKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯', 'C♯'];
+    const flatKeys = ['F', 'B♭', 'E♭', 'A♭', 'D♭', 'G♭'];
     
     const usesSharps = sharpKeys.includes(key);
     const usesFlats = flatKeys.includes(key);
@@ -462,14 +461,14 @@ function getChromatic(chromaticIndex, key, scaleType = 'major') {
     let chromaticScale;
     if (scaleType === 'blues') {
         // Blues scales generally prefer flats for altered notes
-        chromaticScale = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        chromaticScale = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
     } else if (usesSharps) {
-        chromaticScale = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+        chromaticScale = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
     } else if (usesFlats) {
-        chromaticScale = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        chromaticScale = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
     } else {
         // Default for C and enharmonic roots
-        chromaticScale = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+        chromaticScale = ['C', 'C♯', 'D', 'E♭', 'E', 'F', 'F♯', 'G', 'A♭', 'A', 'B♭', 'B'];
     }
     
     return chromaticScale[normalizedIndex];

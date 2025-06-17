@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Explorer - Music Theory Test Runner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-button {
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+        
+        .test-button:hover {
+            background-color: #e67e00;
+        }
+        
+        .test-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .test-output {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .test-summary {
+            background-color: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .test-summary.failed {
+            background-color: #ffeaea;
+            border-color: #f44336;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+        }
+        
+        .hidden-frame {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+        }
+        
+        .status {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .status.loading {
+            color: #ff8c00;
+        }
+        
+        .status.success {
+            color: #4caf50;
+        }
+        
+        .status.error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🎵 Scale Explorer Music Theory Test Runner</h1>
+            <p>Automated testing suite for music theory accuracy</p>
+        </div>
+        
+        <div class="test-controls">
+            <button id="runTests" class="test-button">Run All Tests</button>
+            <button id="exportResults" class="test-button" disabled>Export Results</button>
+            <button id="clearOutput" class="test-button">Clear Output</button>
+        </div>
+        
+        <div id="testStatus" class="status"></div>
+        
+        <div class="progress-bar">
+            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+        
+        <div id="testSummary" class="test-summary" style="display: none;">
+            <h3>Test Summary</h3>
+            <div id="summaryContent"></div>
+        </div>
+        
+        <div class="test-output" id="testOutput">
+            Click "Run All Tests" to begin testing...
+        </div>
+        
+        <!-- Hidden iframe to load Scale Explorer -->
+        <iframe id="scaleExplorerFrame" class="hidden-frame" src="./index.html"></iframe>
+    </div>
+
+    <script src="./tests/music-theory-tests.js"></script>
+    <script>
+        let testResults = null;
+        let tester = null;
+        
+        document.getElementById('runTests').addEventListener('click', runTests);
+        document.getElementById('exportResults').addEventListener('click', exportResults);
+        document.getElementById('clearOutput').addEventListener('click', clearOutput);
+        
+        function updateStatus(message, type = '') {
+            const statusEl = document.getElementById('testStatus');
+            statusEl.textContent = message;
+            statusEl.className = `status ${type}`;
+        }
+        
+        function updateProgress(percentage) {
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+        
+        function logToOutput(message) {
+            const output = document.getElementById('testOutput');
+            output.textContent += message + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearOutput() {
+            document.getElementById('testOutput').textContent = '';
+            document.getElementById('testSummary').style.display = 'none';
+            updateProgress(0);
+            updateStatus('');
+            document.getElementById('exportResults').disabled = true;
+        }
+        
+        function showSummary(results) {
+            const summaryEl = document.getElementById('testSummary');
+            const contentEl = document.getElementById('summaryContent');
+            
+            const successRate = results.summary.successRate;
+            summaryEl.className = successRate === 100 ? 'test-summary' : 'test-summary failed';
+            
+            contentEl.innerHTML = `
+                <p><strong>Total Tests:</strong> ${results.summary.total}</p>
+                <p><strong>Passed:</strong> ${results.summary.passed}</p>
+                <p><strong>Failed:</strong> ${results.summary.failed}</p>
+                <p><strong>Success Rate:</strong> ${successRate.toFixed(1)}%</p>
+                ${results.summary.failed > 0 ? `
+                    <p><strong>Failed Tests:</strong></p>
+                    <ul>
+                        ${results.results.filter(r => r.status === 'FAIL').map(r => `<li>${r.test}</li>`).join('')}
+                    </ul>
+                ` : ''}
+            `;
+            
+            summaryEl.style.display = 'block';
+        }
+        
+        async function runTests() {
+            const runButton = document.getElementById('runTests');
+            runButton.disabled = true;
+            
+            try {
+                updateStatus('Loading Scale Explorer...', 'loading');
+                updateProgress(10);
+                
+                // Wait for the iframe to load
+                const frame = document.getElementById('scaleExplorerFrame');
+                await new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => reject(new Error('Timeout loading Scale Explorer')), 10000);
+                    
+                    frame.onload = () => {
+                        clearTimeout(timeout);
+                        resolve();
+                    };
+                    
+                    // If already loaded, resolve immediately
+                    if (frame.contentDocument && frame.contentDocument.readyState === 'complete') {
+                        clearTimeout(timeout);
+                        resolve();
+                    }
+                });
+                
+                updateProgress(20);
+                updateStatus('Waiting for music theory modules...', 'loading');
+                
+                // Wait for music theory modules to load
+                await new Promise((resolve, reject) => {
+                    const checkModules = () => {
+                        const win = frame.contentWindow;
+                        if (win && win.MusicTheory && win.IntervalUtils) {
+                            resolve();
+                        } else {
+                            setTimeout(checkModules, 100);
+                        }
+                    };
+                    checkModules();
+                });
+                
+                updateProgress(30);
+                updateStatus('Running music theory tests...', 'loading');
+                
+                // Inject the window references
+                const frameWin = frame.contentWindow;
+                window.MusicTheory = frameWin.MusicTheory;
+                window.IntervalUtils = frameWin.IntervalUtils;
+                
+                // Redirect console output to our display
+                const originalLog = console.log;
+                const originalError = console.error;
+                
+                console.log = (...args) => {
+                    logToOutput(args.join(' '));
+                    originalLog(...args);
+                };
+                
+                console.error = (...args) => {
+                    logToOutput('ERROR: ' + args.join(' '));
+                    originalError(...args);
+                };
+                
+                updateProgress(40);
+                
+                // Run the tests
+                tester = new MusicTheoryTester();
+                testResults = tester.runAllTests();
+                
+                // Restore console
+                console.log = originalLog;
+                console.error = originalError;
+                
+                updateProgress(100);
+                const results = tester.exportResults();
+                
+                if (results.summary.failed === 0) {
+                    updateStatus('All tests passed! ✅', 'success');
+                } else {
+                    updateStatus(`${results.summary.failed} test(s) failed ❌`, 'error');
+                }
+                
+                showSummary(results);
+                document.getElementById('exportResults').disabled = false;
+                
+            } catch (error) {
+                updateStatus('Error running tests: ' + error.message, 'error');
+                logToOutput('ERROR: ' + error.message);
+                console.error('Test error:', error);
+            } finally {
+                runButton.disabled = false;
+            }
+        }
+        
+        function exportResults() {
+            if (!tester) return;
+            
+            const results = tester.exportResults();
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scale-explorer-test-results-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html> 

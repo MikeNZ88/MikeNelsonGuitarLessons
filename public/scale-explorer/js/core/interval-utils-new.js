@@ -3,7 +3,7 @@
 
 function getIntervalName(semitones) {
     const intervalNames = {
-        0: 'Unison', 1: 'Minor 2nd', 2: 'Major 2nd', 3: 'Minor 3rd',
+        0: 'Perfect Unison', 1: 'Minor 2nd', 2: 'Major 2nd', 3: 'Minor 3rd',
         4: 'Major 3rd', 5: 'Perfect 4th', 6: 'Tritone', 7: 'Perfect 5th',
         8: 'Minor 6th', 9: 'Major 6th', 10: 'Minor 7th', 11: 'Major 7th',
         12: 'Octave', 13: 'Minor 9th', 14: 'Major 9th', 15: 'Minor 10th',
@@ -17,14 +17,14 @@ function getIntervalName(semitones) {
 function getIntervalBetweenNotes(note1, note2) {
     const noteToIndex = (note) => {
         // Handle double accidentals first
-        if (note.includes('bb')) {
-            const naturalNote = note.replace('bb', '');
+        if (note.includes('♭♭')) {
+            const naturalNote = note.replace('♭♭', '');
             const naturalIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
             return naturalIndex !== undefined ? (naturalIndex - 2 + 12) % 12 : 0;
-        } else if (note.includes('##')) {
-            const naturalNote = note.replace('##', '');
+        } else if (note.includes('♯♯')) {
+            const naturalNote = note.replace('♯♯', '');
             const naturalIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
@@ -35,11 +35,11 @@ function getIntervalBetweenNotes(note1, note2) {
                 // Natural notes
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
                 // Sharp notes
-                'C#': 1, 'D#': 3, 'F#': 6, 'G#': 8, 'A#': 10,
+                'C♯': 1, 'D♯': 3, 'F♯': 6, 'G♯': 8, 'A♯': 10,
                 // Flat notes
-                'Db': 1, 'Eb': 3, 'Gb': 6, 'Ab': 8, 'Bb': 10,
+                'D♭': 1, 'E♭': 3, 'G♭': 6, 'A♭': 8, 'B♭': 10,
                 // Enharmonic equivalents
-                'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
+                'B♯': 0, 'C♭': 11, 'E♯': 5, 'F♭': 4
             };
             return noteMap[note] !== undefined ? noteMap[note] : 0;
         }
@@ -55,14 +55,14 @@ function getIntervals(notes, root, scaleType = 'major', mode = null) {
     
     function noteToIndex(note) {
         // Handle double accidentals first
-        if (note.includes('bb')) {
-            const naturalNote = note.replace('bb', '');
+        if (note.includes('♭♭')) {
+            const naturalNote = note.replace('♭♭', '');
             const naturalIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
             return naturalIndex !== undefined ? (naturalIndex - 2 + 12) % 12 : undefined;
-        } else if (note.includes('##')) {
-            const naturalNote = note.replace('##', '');
+        } else if (note.includes('♯♯')) {
+            const naturalNote = note.replace('♯♯', '');
             const naturalIndex = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11
             }[naturalNote];
@@ -71,9 +71,9 @@ function getIntervals(notes, root, scaleType = 'major', mode = null) {
             // Single accidental or natural
             const singleAccidentalMap = {
                 'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
-                'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
-                'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10,
-                'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
+                'C♯': 1, 'D♭': 1, 'D♯': 3, 'E♭': 3, 'F♯': 6, 'G♭': 6,
+                'G♯': 8, 'A♭': 8, 'A♯': 10, 'B♭': 10,
+                'B♯': 0, 'C♭': 11, 'E♯': 5, 'F♭': 4
             };
             return singleAccidentalMap[note];
         }
@@ -88,61 +88,71 @@ function getIntervals(notes, root, scaleType = 'major', mode = null) {
         // Whole tone scale uses sharps: 1, 2, 3, #4, #5, #6
         return notes.map(note => {
             const noteIndex = noteToIndex(note);
-            if (noteIndex === undefined) return '1';
+            if (noteIndex === undefined) return { symbol: '1', name: 'Perfect Unison' };
             
             const semitones = (noteIndex - rootIndex + 12) % 12;
             
             // Whole tone interval mapping with sharps
             const wholeToneIntervalMap = {
-                0: '1',   // Root
-                2: '2',   // Major 2nd
-                4: '3',   // Major 3rd
-                6: '#4',  // Augmented 4th (not b5)
-                8: '#5',  // Augmented 5th (not b6)
-                10: '#6'  // Augmented 6th (not b7)
+                0: { symbol: '1', name: 'Perfect Unison' },
+                2: { symbol: '2', name: 'Major 2nd' },
+                4: { symbol: '3', name: 'Major 3rd' },
+                6: { symbol: '♯4', name: 'Augmented 4th' },
+                8: { symbol: '♯5', name: 'Augmented 5th' },
+                10: { symbol: '♯6', name: 'Augmented 6th' }
             };
             
-            return wholeToneIntervalMap[semitones] || '1';
+            return wholeToneIntervalMap[semitones] || { symbol: '1', name: 'Perfect Unison' };
         });
     }
     
     return notes.map(note => {
         const noteIndex = noteToIndex(note);
-        if (noteIndex === undefined) return '1';
+        if (noteIndex === undefined) return { symbol: '1', name: 'Perfect Unison' };
         
         const semitones = (noteIndex - rootIndex + 12) % 12;
         
-        // Map semitones to interval names
+        // Map semitones to interval objects with symbol and name
         const intervalMap = {
-            0: '1', 1: 'b2', 2: '2', 3: 'b3', 4: '3', 5: '4',
-            6: 'b5', 7: '5', 8: 'b6', 9: '6', 10: 'b7', 11: '7'
+            0: { symbol: '1', name: 'Perfect Unison' },
+            1: { symbol: '♭2', name: 'Minor 2nd' },
+            2: { symbol: '2', name: 'Major 2nd' },
+            3: { symbol: '♭3', name: 'Minor 3rd' },
+            4: { symbol: '3', name: 'Major 3rd' },
+            5: { symbol: '4', name: 'Perfect 4th' },
+            6: { symbol: '♭5', name: 'Tritone' },
+            7: { symbol: '5', name: 'Perfect 5th' },
+            8: { symbol: '♭6', name: 'Minor 6th' },
+            9: { symbol: '6', name: 'Major 6th' },
+            10: { symbol: '♭7', name: 'Minor 7th' },
+            11: { symbol: '7', name: 'Major 7th' }
         };
         
-        let interval = intervalMap[semitones] || '1';
+        let interval = intervalMap[semitones] || { symbol: '1', name: 'Perfect Unison' };
         
         // Context-aware interval naming for specific modes
         if (semitones === 6) { // Tritone - can be b5 or #4
             if (mode === 'lydian' || scaleType === 'lydian') {
-                interval = '#4'; // Lydian mode uses #4, not b5
+                interval = { symbol: '♯4', name: 'Augmented 4th' }; // Lydian mode uses #4, not b5
             }
             // Other Lydian-related modes that use #4 instead of b5
             else if (mode === 'lydian-dominant' || scaleType === 'lydian-dominant' || 
                      mode === 'lydian-augmented' || scaleType === 'lydian-augmented' || 
                      mode === 'lydian-sharp-2' || scaleType === 'lydian-sharp-2' ||
                      mode === 'dorian-sharp-4' || scaleType === 'dorian-sharp-4') {
-                interval = '#4';
+                interval = { symbol: '♯4', name: 'Augmented 4th' };
             }
         }
         // Harmonic minor modes: #2 instead of b3
         else if (semitones === 3) { // Minor third - can be b3 or #2
             if (mode === 'lydian-sharp-2' || scaleType === 'lydian-sharp-2') {
-                interval = '#2'; // Lydian #2 uses #2, not b3
+                interval = { symbol: '♯2', name: 'Augmented 2nd' }; // Lydian #2 uses #2, not b3
             }
         }
         // Harmonic minor modes: #5 instead of b6
         else if (semitones === 8) { // Minor sixth - can be b6 or #5
             if (mode === 'ionian-sharp-5' || scaleType === 'ionian-sharp-5') {
-                interval = '#5'; // Ionian #5 uses #5, not b6
+                interval = { symbol: '♯5', name: 'Augmented 5th' }; // Ionian #5 uses #5, not b6
             }
         }
         
