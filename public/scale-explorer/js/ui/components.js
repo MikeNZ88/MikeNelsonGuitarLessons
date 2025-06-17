@@ -2845,8 +2845,8 @@ function displayTraditionalChords(scale, scaleType, category) {
             scaleType === 'melodic-minor') {
             return `
                 <div class="jazz-theory-note">
-                    <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
                     <p><strong>Chord Functions:</strong> <em>Tonic</em> = home/rest (I, iii, vi); <em>Predominant</em> = preparation/tension (ii, IV); <em>Dominant</em> = resolution/pull back to tonic (V, vii°). These functions describe how chords move and resolve in progressions, creating the sense of musical motion and harmonic rhythm.</p>
+                    <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
                 </div>
             `;
         }
