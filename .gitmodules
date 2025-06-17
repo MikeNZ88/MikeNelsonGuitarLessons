@@ -1,6 +1,3 @@
 [submodule "public/tabplayer"]
 	path = public/tabplayer
 	url = https://github.com/MikeNZ88/Scale-Explorer.git
-[submodule "public/scale-explorer"]
-	path = public/scale-explorer
-	url = https://github.com/MikeNZ88/Scale-Explorer.git

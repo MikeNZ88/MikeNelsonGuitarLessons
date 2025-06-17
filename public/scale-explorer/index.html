@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>Guitar Scale Explorer - Interactive Fretboard Tool for Learning Guitar Scales & Modes</title>
+    <meta name="title" content="Guitar Scale Explorer - Interactive Fretboard Tool for Learning Guitar Scales & Modes">
+    <meta name="description" content="Master guitar scales with this interactive fretboard explorer. Learn major scales, modes, pentatonic scales, and chord relationships. Visual interval colors and comprehensive music theory guide.">
+    <meta name="keywords" content="guitar scales, guitar modes, fretboard diagram, music theory, guitar chords, guitar learning, scale practice, guitar intervals, major scale, pentatonic scale, guitar education, music interval colours, music interval colors, chord theory, music theory for beginners, guitar theory confusion, music theory simplified, guitar scales explained, chord theory basics, fretboard memorization, guitar intervals explained, music theory made easy, guitar theory lessons, visual music theory, interactive guitar learning, guitar scale patterns, chord progression theory, guitar fretboard theory, guitar fretboard visualization, chord diagram generator, scale pattern tool, interval color coding, guitar mode explorer, enharmonic equivalents, diatonic chord theory">
+    <meta name="author" content="Mike Nelson Guitar Lessons">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mikenelsonguitarlessons.co.nz/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mikenelsonguitarlessons.co.nz/">
+    <meta property="og:title" content="Guitar Scale Explorer - Interactive Fretboard Tool for Learning Guitar Scales & Modes">
+    <meta property="og:description" content="Master guitar scales with this interactive fretboard explorer. Learn major scales, modes, pentatonic scales, and chord relationships. Visual interval colors and comprehensive music theory guide.">
+    <meta property="og:image" content="https://mikenelsonguitarlessons.co.nz/og-image.jpg">
+    <meta property="og:site_name" content="Mike Nelson Guitar Lessons">
+    <meta property="og:locale" content="en_NZ">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mikenelsonguitarlessons.co.nz/">
+    <meta property="twitter:title" content="Guitar Scale Explorer - Interactive Fretboard Tool for Learning Guitar Scales & Modes">
+    <meta property="twitter:description" content="Master guitar scales with this interactive fretboard explorer. Learn major scales, modes, pentatonic scales, and chord relationships. Visual interval colors and comprehensive music theory guide.">
+    <meta property="twitter:image" content="https://mikenelsonguitarlessons.co.nz/twitter-image.jpg">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="application-name" content="Guitar Scale Explorer">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Guitar Scale Explorer">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Guitar Scale Explorer",
+        "description": "Interactive guitar scale and fretboard learning tool with visual interval colors, comprehensive mode information, and chord relationships",
+        "url": "https://mikenelsonguitarlessons.co.nz/",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "NZD"
+        },
+        "creator": {
+            "@type": "Person",
+            "name": "Mike Nelson",
+            "url": "https://mikenelsonguitarlessons.co.nz/"
+        },
+        "keywords": "guitar scales, music theory, fretboard, guitar modes, guitar chords, music education",
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "guitar players, music students, music educators"
+        },
+        "educationalLevel": "beginner to advanced",
+        "learningResourceType": "interactive tool",
+        "teaches": [
+            "Guitar scales",
+            "Guitar modes", 
+            "Music theory",
+            "Chord progressions",
+            "Interval relationships",
+            "Fretboard navigation"
+        ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css?v=20250116-interval-colour-first">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Guitar Scale Explorer</h1>
+
+        <!-- Scale Controls -->
+        <div class="scale-controls">
+            <div class="control-group">
+                <label for="key-select">Root:</label>
+                <div class="key-selector-wrapper">
+                    <select id="key-select" class="key-selector">
+                        <option value="C">C</option>
+                        <option value="Db">Db</option>
+                        <option value="D">D</option>
+                        <option value="Eb">Eb</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="F#">F#</option>
+                        <option value="G">G</option>
+                        <option value="Ab">Ab</option>
+                        <option value="A">A</option>
+                        <option value="Bb">Bb</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="category-select">Scale:</label>
+                <select id="category-select">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="mode-select">Mode:</label>
+                <select id="mode-select">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+            </div>
+
+            <div class="control-group">
+                <button class="info-btn" onclick="UIComponents.openIntervalInfoModal()" title="Interval Spelling & Colour Guide">Interval Colours</button>
+                <button class="help-btn" onclick="UIComponents.openHelpModal()" title="Why Learn Guitar Scales: Master the Major Scale First">?</button>
+            </div>
+        </div>
+
+        <!-- Scale Display -->
+        <div class="scale-card">
+            <div class="scale-header">
+                <h2 class="scale-title">
+                    <span class="parent-scale">C Major</span>
+                    <span class="mode-name">Ionian</span>
+                </h2>
+            </div>
+
+            <!-- Fretboard Display - Moved to top -->
+            <div class="fretboard-section">
+                <h3>Fretboard Diagram</h3>
+                <div class="fretboard-container">
+                    <!-- Fretboard will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Mode Information - Moved below fretboard -->
+            <div class="scale-section mode-info">
+                <div class="mode-info-header" onclick="toggleModeInfo()">
+                    <h3>Scale Information</h3>
+                    <span class="mode-info-toggle">▼</span>
+                </div>
+                <div class="mode-details" id="mode-details">
+                    <div class="mode-metadata">
+                        <div class="mode-mood">
+                            <strong>Mood:</strong> <span></span>
+                        </div>
+                        <div class="mode-description">
+                            <strong>Description:</strong> <span></span>
+                        </div>
+                        <div class="mode-applications">
+                            <strong>Applications:</strong>
+                            <div class="application-tags">
+                                <!-- Application tags will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scale-theory-content">
+                        <div class="scale-section">
+                            <h3>Notes</h3>
+                            <div class="notes">
+                                <!-- Notes will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="scale-section">
+                            <h3>Intervals</h3>
+                            <div class="intervals">
+                                <!-- Intervals will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scale-content">
+                <div class="scale-section related-modes">
+                    <h4>Related Modes</h4>
+                    <div class="mode-buttons">
+                        <!-- Mode buttons will be populated by JavaScript -->
+                    </div>
+                    <div class="parent-scale-info">
+                        <!-- Parent scale information will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="scale-section chords-section">
+                    <h3>Chords diatonic to the scale</h3>
+                    <p class="section-description">These are chords that can be built from the scale. They only include notes from the scale</p>
+                    <div class="chord-controls">
+                        <button class="chord-type-btn active" data-type="triads">Triads</button>
+                        <button class="chord-type-btn" data-type="sixths">6th Chords</button>
+                        <button class="chord-type-btn" data-type="sus2">Sus2</button>
+                        <button class="chord-type-btn" data-type="sus4">Sus4</button>
+                        <button class="chord-type-btn" data-type="sus4-sevenths">7sus4</button>
+                        <button class="chord-type-btn" data-type="sevenths">7th Chords</button>
+                        <button class="chord-type-btn" data-type="ninths">9th Chords</button>
+                        <button class="chord-type-btn" data-type="elevenths">11th Chords</button>
+                        <button class="chord-type-btn" data-type="thirteenths">13th Chords</button>
+                        <button class="voicing-help-btn" onclick="UIComponents.openChordVoicingModal()" title="Guitar Chord Voicing Practices">ℹ️</button>
+                    </div>
+                    <div class="chords-container">
+                        <div class="chords-list" id="chords-list">
+                            <!-- Chords will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio Controls will be inserted here by JavaScript -->
+    </div>
+
+    <!-- Fretboard Modal -->
+    <div class="modal hidden" id="fretboard-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detailed Fretboard View</h2>
+                <button class="close-modal" onclick="UIComponents.closeFretboardModal()">×</button>
+            </div>
+            <div class="modal-fretboard">
+                <!-- Modal fretboard content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Chord Fretboard Modal -->
+    <div class="modal hidden" id="chord-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="chord-modal-title">Chord Diagram</h3>
+                <button class="close-modal" onclick="UIComponents.closeChordModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="chord-fretboard-container" id="chord-fretboard-container">
+                    <!-- Chord fretboard will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chord Voicing Practices Modal -->
+    <div class="modal hidden" id="chord-voicing-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Guitar Chord Voicing Practices</h3>
+                <button class="close-modal" onclick="UIComponents.closeChordVoicingModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="voicing-content">
+                    <div class="voicing-section">
+                        <h4>⚠️ Important Note About Chord Diagrams</h4>
+                        <p>The chord diagrams show <strong>theoretical full fretboard positions</strong> for educational purposes. Many extended chords (especially 9th, 11th, and 13th chords) contain 5-7 notes and <strong>cannot be physically played</strong> on a 6-string guitar as shown.</p>
+                        <p><strong>This site displays</strong> different chord types based on the selected scale:</p>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem; color: #333;">
+                            <li><strong>Major modes:</strong> Most chords including triads, 6th chords, 7th chords, 9th chords, 11th chords, 13th chords, sus2, sus4, and 7sus4</li>
+                            <li><strong>Harmonic minor and melodic minor:</strong> Limited to triads and 7th chords for traditional harmonic analysis</li>
+                            <li><strong>Pentatonic and blues scales:</strong> Chord analysis not displayed as these scales work best melodically; however, chords can be derived from the parent major scale by omitting notes. Blues scales additionally incorporate a chromatic passing tone</li>
+                            <li><strong>Whole tone scale:</strong> Naturally produces augmented triads and dominant 7♯5 chords from any scale degree due to its symmetrical structure</li>
+                            <li><strong>Chromatic scale:</strong> Contains all possible chord types making chord display impractical</li>
+                            <li><strong>Diminished scale:</strong> Displays triads and 7th chords built from each scale degree, showcasing the scale's rich harmonic possibilities</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="voicing-section">
+                        <h4>🎸 Practical Guitar Voicing</h4>
+                        <p>In practice, guitarists use <strong>note omission</strong> to create playable voicings. Here's the established hierarchy:</p>
+                        
+                        <div class="omission-hierarchy">
+                            <div class="omission-item priority-1">
+                                <span class="priority-number">1</span>
+                                <div class="omission-details">
+                                    <strong>Fifth (5th) - First to Omit</strong>
+                                    <p>The fifth is "harmonically inert" and doesn't define major/minor quality. It's implied in the overtones of the root.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="omission-item priority-2">
+                                <span class="priority-number">2</span>
+                                <div class="omission-details">
+                                    <strong>Root - Context Dependent</strong>
+                                    <p>Can be omitted when playing with a bass player or other harmonic instruments that provide the root.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="omission-item priority-3">
+                                <span class="priority-number">3</span>
+                                <div class="omission-details">
+                                    <strong>Extensions (9th, 11th) - Situational</strong>
+                                    <p>For 13th chords, the 9th and 11th can be omitted while retaining the characteristic 13th extension.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="omission-item essential">
+                                <span class="essential-icon">🚫</span>
+                                <div class="omission-details">
+                                    <strong>Rarely Omit: Third and Seventh</strong>
+                                    <p>The 3rd defines major/minor quality. The 7th determines dominant vs. major 7th character. These are essential for chord identity.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="voicing-section">
+                        <h4>💡 Practical Examples</h4>
+                        <div class="example-grid">
+                            <div class="example-item">
+                                <strong>C13 Chord (7 notes)</strong>
+                                <div class="theory-notes">Theory: C-E-G-B♭-D-F-A</div>
+                                <div class="practical-notes">Practical: C-E-B♭-A (omit 5th, 9th, 11th)</div>
+                            </div>
+                            
+                            <div class="example-item">
+                                <strong>Shell Voicing</strong>
+                                <div class="theory-notes">Essential: 3rd + 7th only</div>
+                                <div class="practical-notes">Example: E-B♭ (for C7)</div>
+                            </div>
+                            
+                            <div class="example-item">
+                                <strong>Rootless Voicing</strong>
+                                <div class="theory-notes">With bass player: omit root</div>
+                                <div class="practical-notes">Example: E-B♭-D-A (for C13)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="voicing-section special-case">
+                        <h4>⚠️ Special Case: Major 6th Chords</h4>
+                        <p>For maj6 chords, you <strong>must include the fifth</strong> to avoid sounding like the relative minor triad. Cmaj6 without the 5th (C-E-A) sounds like Am (A-C-E).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interval Information Modal -->
+    <div class="modal hidden" id="interval-info-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Interval Spelling & Colour Guide</h3>
+                <button class="close-modal" onclick="UIComponents.closeIntervalInfoModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-content">
+                    <div class="info-section">
+                        <h4>🌈 Interval Colour System</h4>
+                        
+                        <div class="interval-display">
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #FFFFFF; color: #000;">1</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Root/Unison</div>
+                                    <div class="interval-number">1</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #D35400; color: #fff;">♭2</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Minor Second</div>
+                                    <div class="interval-number">♭2</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #E67E22; color: #fff;">2</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Major Second</div>
+                                    <div class="interval-number">2</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #8E44AD; color: #fff;">♭3</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Minor Third</div>
+                                    <div class="interval-number">♭3</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #F4D03F; color: #000;">3</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Major Third</div>
+                                    <div class="interval-number">3</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #E74C3C; color: #fff;">4</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Perfect Fourth</div>
+                                    <div class="interval-number">4</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #922B21; color: #fff;">♯4</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Tritone</div>
+                                    <div class="interval-number">♯4/♭5</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #5DADE2; color: #000;">5</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Perfect Fifth</div>
+                                    <div class="interval-number">5</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #85929E; color: #fff;">♭6</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Minor Sixth</div>
+                                    <div class="interval-number">♭6</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #58D68D; color: #000;">6</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Major Sixth</div>
+                                    <div class="interval-number">6</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #CD6155; color: #fff;">♭7</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Minor Seventh</div>
+                                    <div class="interval-number">♭7</div>
+                                </div>
+                            </div>
+                            <div class="interval-item">
+                                <div class="interval-dot" style="background-color: #C0392B; color: #fff;">7</div>
+                                <div class="interval-labels">
+                                    <div class="interval-name">Major Seventh</div>
+                                    <div class="interval-number">7</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>Understanding Interval Spelling</h4>
+                        <p>In music theory, intervals must follow the <strong>consecutive numbering rule</strong>. For <strong>7-note scales</strong> (like major scale, harmonic minor scale, and melodic minor scale), every scale degree (1, 2, 3, 4, 5, 6, 7) must be represented exactly once.</p>
+                        
+                        <div class="example-grid">
+                            <div class="example-item">
+                                <span style="color: #2E7D32;">✅ Correct (C Natural Minor / Aeolian):</span><br>
+                                <strong>Intervals:</strong> 1, 2, ♭3, 4, 5, ♭6, ♭7<br>
+                                <strong>Notes:</strong> C, D, E♭, F, G, A♭, B♭<br>
+                                <small>(each number 1-7 used once)</small>
+                            </div>
+                            <div class="example-item">
+                                <span style="color: #C62828;">❌ Incorrect (same C Natural Minor scale):</span><br>
+                                <strong>Intervals:</strong> 1, 2, ♯2, 4, 5, ♯5, ♭7<br>
+                                <strong>Notes (wrong):</strong> C, D, D♯, F, G, G♯, B♭<br>
+                                <small>(missing 3 & 6, has duplicate 2 & 5)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="scale-types-note">
+                            <h5>📝 Different Scale Types:</h5>
+                            <ul>
+                                <li><strong>7-note scales (Major scale, Harmonic minor scale, Melodic minor scale):</strong> Use all 7 scale degrees (1, 2, 3, 4, 5, 6, 7) exactly once</li>
+                                <li><strong>5-note scales (Pentatonic):</strong> Derived from major scale with missing intervals. Pentatonic omits 4 and 7 (e.g., 1, 2, 3, 5, 6)</li>
+                                <li><strong>6-note scales (Blues, Whole Tone):</strong> Blues scales are pentatonic scales with added chromatic passing tones. Whole tone scales use 6 consecutive scale degrees with all intervals being whole steps</li>
+                                <li><strong>8-note scales (Diminished/Octatonic):</strong> Too large for 1-7 system, may repeat numbers with different accidentals (e.g., both ♭6 and 6)</li>
+                            </ul>
+                            <p><em>The key principle: interval spelling determines note spelling using consecutive letters. <strong>Exceptions:</strong> Pentatonic scales skip certain letters to match their missing intervals, and diminished scales may repeat letters due to their size exceeding the 7-letter system.</em></p>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>🔄 Enharmonic Equivalents</h4>
+                        <p>Intervals that sound the same but are spelled differently share <strong>identical colours</strong>:</p>
+                        
+                        <div class="example-grid">
+                            <div class="example-item">
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 0.5rem;">
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #922B21; border-radius: 50%;"></span>
+                                    <strong>♯4 = ♭5</strong>
+                                </div>
+                                <small>Both represent the tritone</small>
+                            </div>
+                            <div class="example-item">
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 0.5rem;">
+                                    <span style="display: inline-block; width: 20px; height: 20px; background-color: #F4D03F; border-radius: 50%;"></span>
+                                    <strong>♭4 = 3</strong>
+                                </div>
+                                <small>Diminished fourth = Major third</small>
+                            </div>
+                        </div>
+                        
+                        <div class="hover-tip">
+                            💡 <strong>Tip:</strong> Hover over any interval in the app to see its enharmonic equivalent!
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>🎸 Chord Intervals: Extended vs Simple</h4>
+                        <p>Chord intervals follow different rules than scale intervals. Understanding when to display <strong>9, 11, 13</strong> vs <strong>2, 4, 6</strong> is crucial for proper chord analysis.</p>
+                        
+                        <div class="color-theory-section">
+                            <h5>🔢 The Logic Behind Chord Interval Numbers</h5>
+                            <p><strong>Tertiary chord tones (1, 3, 5, 7)</strong> are always displayed as simple intervals, regardless of octave:</p>
+                            <p><strong>Extensions (9, 11, 13)</strong> are calculated by adding 7 to simple intervals (2, 4, 6), representing their octave displacement—a full seven scale degrees higher.</p>
+                            <ul class="benefits-list">
+                                <li><strong>Root (1)</strong> - Always shown as "1"</li>
+                                <li><strong>Third (3/♭3)</strong> - Always shown as "3" or "♭3"</li>
+                                <li><strong>Fifth (5/♭5)</strong> - Always shown as "5" or "♭5"</li>
+                                <li><strong>Seventh (7/♭7)</strong> - Always shown as "7" or "♭7"</li>
+                            </ul>
+                            
+                            <p><strong>Extensions (2, 4, 6)</strong> depend on harmonic context:</p>
+                            <div class="example-grid">
+                                <div class="example-item">
+                                    <strong>9th vs 2nd</strong><br>
+                                    9th when 3rd exists<br>
+                                    2nd when no 3rd
+                                </div>
+                                <div class="example-item">
+                                    <strong>11th vs 4th</strong><br>
+                                    11th when 7th exists<br>
+                                    4th when no 7th
+                                </div>
+                                <div class="example-item">
+                                    <strong>13th vs 6th</strong><br>
+                                    13th when 7th exists<br>
+                                    6th when no 7th
+                                </div>
+                                <div class="example-item">
+                                    <strong>♯11 vs ♭5</strong><br>
+                                    ♯11 when perfect 5th exists<br>
+                                    ♭5 when no perfect 5th
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="color-theory-section">
+                            <h5>🎨 Color Consistency for Extensions</h5>
+                            <p>Extended intervals share colors with their simple equivalents to maintain visual consistency:</p>
+                            
+                            <div class="interval-display">
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #D35400; color: #fff;">♭9</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as ♭2</div>
+                                        <div class="interval-number">♭9 = ♭2</div>
+                                    </div>
+                                </div>
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #E67E22; color: #fff;">9</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as 2</div>
+                                        <div class="interval-number">9 = 2</div>
+                                    </div>
+                                </div>
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #E74C3C; color: #fff;">11</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as 4</div>
+                                        <div class="interval-number">11 = 4</div>
+                                    </div>
+                                </div>
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #922B21; color: #fff;">♯11</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as ♯4</div>
+                                        <div class="interval-number">♯11 = ♯4</div>
+                                    </div>
+                                </div>
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #85929E; color: #fff;">♭13</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as ♭6</div>
+                                        <div class="interval-number">♭13 = ♭6</div>
+                                    </div>
+                                </div>
+                                <div class="interval-item">
+                                    <div class="interval-dot" style="background-color: #58D68D; color: #000;">13</div>
+                                    <div class="interval-labels">
+                                        <div class="interval-name">Same as 6</div>
+                                        <div class="interval-number">13 = 6</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="color-theory-section">
+                            <h5>📚 Real Chord Examples</h5>
+                            
+                            <div class="example-grid">
+                                <div class="example-item">
+                                    <strong>Fmaj13♯11</strong><br>
+                                    <small>F - A - C - E - G - B - D</small><br>
+                                    <span class="correct">1, 3, 5, 7, 9, ♯11, 13</span><br>
+                                    <small>Has 3rd, 5th, 7th → all extensions display as extended</small>
+                                </div>
+                                <div class="example-item">
+                                    <strong>Bm♭13♭9♭5</strong><br>
+                                    <small>B - D - F - A - C - E</small><br>
+                                    <span class="correct">1, ♭3, ♭5, ♭7, ♭9, 11</span><br>
+                                    <small>Has 3rd & 7th, no perfect 5th → ♭5 not ♯11</small>
+                                </div>
+                                <div class="example-item">
+                                    <strong>Csus4</strong><br>
+                                    <small>C - F - G</small><br>
+                                    <span class="correct">1, 4, 5</span><br>
+                                    <small>No 3rd or 7th → displays as 4, not 11</small>
+                                </div>
+                                <div class="example-item">
+                                    <strong>C6 (no 7th)</strong><br>
+                                    <small>C - E - G - A</small><br>
+                                    <span class="correct">1, 3, 5, 6</span><br>
+                                    <small>No 7th → displays as 6, not 13</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hover-tip">
+                            <strong>💡 Pro Tip:</strong> The fretboard automatically detects which tertiary tones are present and adjusts the interval display accordingly. This ensures you always see the most musically meaningful interval names for each chord context.
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h4>🎨 Colour Theory Foundation</h4>
+                        <div class="color-theory-section">
+                            <p>My interval colour system is based on academic research in music psychology, cross-modal perception, and colour theory. Colours represent the <strong>harmonic tension and emotional characteristics</strong> of each interval.</p>
+                            
+                            <p>This system synthesises research from:</p>
+                            <ul class="benefits-list">
+                                <li>Music theory research on interval emotional characteristics</li>
+                                <li>Colour psychology studies on universal colour-emotion associations</li>
+                                <li>Cross-modal perception research on music-colour mappings</li>
+                                <li>Educational research on colour-enhanced learning</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Why Learn Guitar Scales: Master the Major Scale First</h3>
+                <button class="close-modal" onclick="UIComponents.closeHelpModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-section">
+                    <h4>The Core Problem Most Guitarists Face</h4>
+                    <p>Most guitarists struggle with scales because they approach them backwards. They try to learn:</p>
+                    <ul>
+                        <li>Natural minor, harmonic minor, dorian, mixolydian as completely separate scales</li>
+                        <li>Dozens of chord formulas with no connection between them</li>
+                        <li>Scale patterns as isolated fretboard shapes</li>
+                        <li>Modes as entirely different systems</li>
+                    </ul>
+                    <p><strong>This leads to years of confusion and slow progress.</strong></p>
+                </div>
+
+                <div class="info-section">
+                    <h4>The Solution: One Universal Reference Point</h4>
+                    <p><strong>Learn the major scale first → everything else clicks into place.</strong></p>
+                    
+                    <p>The major scale isn't just another scale - it's the foundation of all Western music. Every other scale, chord, and musical concept is defined by how it relates to the major scale.</p>
+                    
+                    <div class="color-theory-section">
+                        <p><strong>Instead of memorizing everything separately, you learn:</strong></p>
+                        <ul>
+                            <li><strong>One reference scale</strong> that you can move anywhere on the fretboard</li>
+                            <li><strong>One interval framework</strong> that explains all other intervals</li>
+                            <li><strong>The connections</strong> between scales, chords, and progressions</li>
+                            <li><strong>The logic</strong> behind why certain note and chord combinations work</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>What Is the Major Scale?</h4>
+                    <p>The major scale is a sequence of 7 notes following this pattern of whole steps (W) and half steps (H):</p>
+                    
+                    <div class="color-theory-section">
+                        <h5><strong>W - W - H - W - W - W - H</strong></h5>
+                        <p><strong>Example in C major:</strong> C - D - E - F - G - A - B - C</p>
+                    </div>
+                    
+                    <p>The scale covers one octave (12 semitones) from the root note back to the same note at a higher pitch. While there are technically only 7 unique scale degrees, we conventionally include the octave as the 8th degree.</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>Understanding Intervals: The Building Blocks</h4>
+                    <p>Intervals measure the distance between notes, counted in semitones from the root note:</p>
+                    
+                    <div class="example-grid">
+                        <div class="example-item">
+                            <strong>1st - Root</strong><br>
+                            <small>C (0 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>2nd - Major 2nd</strong><br>
+                            <small>D (2 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>3rd - Major 3rd</strong><br>
+                            <small>E (4 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>4th - Perfect 4th</strong><br>
+                            <small>F (5 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>5th - Perfect 5th</strong><br>
+                            <small>G (7 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>6th - Major 6th</strong><br>
+                            <small>A (9 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>7th - Major 7th</strong><br>
+                            <small>B (11 semitones)</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>8th - Octave</strong><br>
+                            <small>C (12 semitones)</small>
+                        </div>
+                    </div>
+
+                    <div class="color-theory-section">
+                        <h5>Guitar-Specific Interval Shapes</h5>
+                        <p><strong>Along one string:</strong> 1 semitone = 1 fret</p>
+                        <ul>
+                            <li>Perfect 5th (7 semitones) = 7 frets higher on the same string</li>
+                        </ul>
+                        
+                        <p><strong>Across strings:</strong> Most interval shapes remain consistent across string pairs</p>
+                        <ul>
+                            <li><strong>Perfect 5th example:</strong> From the low E string (8th fret = C) to the A string (10th fret = G) creates a perfect 5th interval - <strong>this is the power chord shape!</strong> Power chords work everywhere on the fretboard because they maintain the same perfect 5th interval relationship</li>
+                            <li><strong>Exception:</strong> String pairs involving the B string require adjustment due to its different tuning - the same perfect 5th shape would need to move up one fret when crossing to or from the B string</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Why the Major Scale Is Your Universal Reference</h4>
+                    <p>Every other musical element is described by how it differs from the major scale:</p>
+                    
+                    <div class="color-theory-section">
+                        <h5>Other Scales</h5>
+                        <ul>
+                            <li><strong>Natural minor</strong> = major scale with ♭3, ♭6, ♭7</li>
+                            <li><strong>Harmonic minor</strong> = natural minor with raised 7th</li>
+                            <li><strong>Dorian mode</strong> = major scale with ♭3, ♭7</li>
+                            <li><strong>Mixolydian</strong> = major scale with ♭7</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="color-theory-section">
+                        <h5>Chord Construction</h5>
+                        <ul>
+                            <li><strong>Minor chord</strong> = major chord with ♭3</li>
+                            <li><strong>Dominant 7</strong> = major triad + ♭7</li>
+                            <li><strong>Minor 7</strong> = minor triad + ♭7</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>This approach makes memorization exponentially easier</strong> - instead of learning dozens of unrelated formulas, you learn one reference point and simple modifications.</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>The Two Key Types That Dominate Music</h4>
+                    <p>Most songs use one of two key types:</p>
+                    
+                    <div class="example-grid">
+                        <div class="example-item">
+                            <strong>Major Keys</strong><br>
+                            <small>Based on the major scale<br>
+                            Bright, resolved sound<br>
+                            Example: C major uses the C major scale</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>Minor Keys</strong><br>
+                            <small>Based on the natural minor scale (relative minor of major)<br>
+                            Darker, more emotional sound<br>
+                            Example: A minor uses the A natural minor scale (same notes as C major)</small>
+                        </div>
+                    </div>
+                    
+                    <div class="hover-tip">
+                        <strong>Key insight:</strong> The major scale and its relative natural minor use identical notes. Master the major scale patterns, and you instantly understand both key types.
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>What Are Modes? (Spoiler: You Already Know Them)</h4>
+                    <p>Modes sound intimidating, but they're simply the major scale starting from different notes. Each mode uses the exact same notes as the major scale, just with a different starting point (root).</p>
+                    
+                    <div class="color-theory-section">
+                        <h5>The 7 modes of C major:</h5>
+                        <ul>
+                            <li><strong>Ionian:</strong> C-D-E-F-G-A-B (starts on 1st degree) - <em>This is just the modal name for the major scale</em></li>
+                            <li><strong>Dorian:</strong> D-E-F-G-A-B-C (starts on 2nd degree)</li>
+                            <li><strong>Phrygian:</strong> E-F-G-A-B-C-D (starts on 3rd degree)</li>
+                            <li><strong>Lydian:</strong> F-G-A-B-C-D-E (starts on 4th degree)</li>
+                            <li><strong>Mixolydian:</strong> G-A-B-C-D-E-F (starts on 5th degree)</li>
+                            <li><strong>Aeolian:</strong> A-B-C-D-E-F-G (starts on 6th degree) - <em>This is just the modal name for the natural minor scale</em></li>
+                            <li><strong>Locrian:</strong> B-C-D-E-F-G-A (starts on 7th degree)</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="info-section">
+                    <h4>Why Different Roots Change Everything</h4>
+                    <p>Here's the crucial concept: <strong>When you change the root note, the interval relationships change completely.</strong></p>
+                    
+                    <p><strong>Example using A and C:</strong></p>
+                    <ul>
+                        <li><strong>In C major (Ionian):</strong> A is the 6th degree, C is the root (1st) → A to C = 6 to 1</li>
+                        <li><strong>In A minor (Aeolian):</strong> A is the root (1st), C is the 3rd degree → A to C = 1 to ♭3</li>
+                    </ul>
+                    
+                    <p>Same notes (A and C), but completely different interval relationships depending on which note you treat as the root.</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>Common Modes You'll Actually Use</h4>
+                    <ul>
+                        <li><strong>Dorian:</strong> Minor scale with a brighter sound (natural 6th instead of ♭6)</li>
+                        <li><strong>Mixolydian:</strong> Major scale with a bluesy edge (♭7 instead of major 7th)</li>
+                        <li><strong>Aeolian:</strong> The natural minor scale you already know</li>
+                    </ul>
+                    <p>The other modes are less common in popular music, so focus on these three first.</p>
+                </div>
+
+                <div class="info-section">
+                    <h4>How This Transforms Your Playing</h4>
+                    
+                    <div class="example-grid">
+                        <div class="example-item">
+                            <strong>Chord Understanding</strong><br>
+                            <small>Barre chords work everywhere because they maintain the same interval relationships. Modify any chord by knowing which fret changes which interval.</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>Fretboard Navigation</strong><br>
+                            <small>Navigate the entire fretboard with confidence. Connect rhythm and lead playing seamlessly. Transpose to any key instantly.</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>Musical Comprehension</strong><br>
+                            <small>Recognize chord progressions and predict what comes next. Improvise with intention rather than guessing.</small>
+                        </div>
+                        <div class="example-item">
+                            <strong>Universal Skills</strong><br>
+                            <small>Apply knowledge to any instrument, transcribe music, communicate with other musicians effectively.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Your Next Steps</h4>
+                    <ol class="benefits-list">
+                        <li><strong>Master the major scale pattern</strong> in one key (start with C major - learning C major is just learning the natural note names on the fretboard, which helps with remembering note positions)</li>
+                        <li><strong>Learn the interval relationships</strong> within that scale</li>
+                        <li><strong>Review the related modes</strong> - practice starting the same scale pattern from each degree to hear how the intervals change when you shift the root</li>
+                        <li><strong>Change the root note</strong> and watch how the note names shift but the fretboard patterns remain the same</li>
+                        <li><strong>Apply the pattern</strong> to other keys across the fretboard</li>
+                        <li><strong>Use it as your reference point</strong> for understanding all other scales and chords</li>
+                    </ol>
+                    
+                    <div class="hover-tip">
+                        <strong>Remember:</strong> The major scale isn't just another scale to learn - it's the key that unlocks everything else in music. Invest the time to truly understand it, and watch how quickly everything else falls into place.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Core modules in dependency order -->
+    <script src="js/core/constants.js"></script>
+    
+    <!-- Load individual music theory modules first -->
+    <script src="js/core/color-utils.js"></script>
+    <script src="js/core/interval-utils-new.js?v=20250115-whole-tone-sharp-intervals"></script>
+    <script src="js/core/pattern-detection.js?v=20250115-hide-pentatonic-chords"></script>
+    <script src="js/core/scale-calculator.js"></script>
+    <script src="js/core/chord-analyzer.js"></script>
+    
+    <!-- Main music theory aggregator (loads after individual modules) -->
+    <script src="js/core/music-theory.js?v=20250115-lydian-augmented-fix"></script>
+    
+    <!-- Other core modules -->
+    <script src="js/core/audio-engine.js"></script>
+    <script src="js/ui/components.js?v=20250115-help-modal-feature"></script>
+    <script src="js/ui/audio-controls.js"></script>
+    <script src="js/core/app-controller.js?v=20250615-default-ionian-mode"></script>
+
+    <!-- Main app initialization -->
+    <script src="app.js"></script>
+</body>
+</html>
