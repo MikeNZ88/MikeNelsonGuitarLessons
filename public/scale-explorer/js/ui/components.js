@@ -2855,7 +2855,18 @@ function displayTraditionalChords(scale, scaleType, category) {
                 `;
             }
             
-            // Standard functional harmony explanation for major, harmonic minor, melodic minor
+            // Special explanation for harmonic minor
+            if (scaleType === 'harmonic-minor') {
+                return `
+                    <div class="jazz-theory-note">
+                        <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III+ = 3rd degree (augmented), iv = 4th degree, V = 5th degree (major), ♭VI = 6th degree, vii° = 7th degree.</p>
+                        <p><strong>Chord Functions:</strong> <em>Tonic</em> = home/rest (i, ♭III+, ♭VI); <em>Predominant</em> = preparation/tension (ii°, iv); <em>Dominant</em> = resolution/pull back to tonic (V, vii°). Harmonic minor overcomes natural minor's weak dominant problem by raising the 7th degree, creating a strong major V chord and leading tone resolution back to the tonic.</p>
+                        <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
+                    </div>
+                `;
+            }
+            
+            // Standard functional harmony explanation for major and melodic minor
             return `
                 <div class="jazz-theory-note">
                     <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: I = 1st degree, ii = 2nd degree, iii = 3rd degree, IV = 4th degree, V = 5th degree, vi = 6th degree, vii° = 7th degree.</p>
