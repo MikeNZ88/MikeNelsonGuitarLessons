@@ -2845,9 +2845,9 @@ function displayTraditionalChords(scale, scaleType, category) {
             scaleType === 'melodic-minor') {
             return `
                 <div class="jazz-theory-note">
-                    <p><strong>Roman Numeral System:</strong> Represents chords by scale degree using capital numerals for major chords (I, IV, V), lowercase for minor chords (ii, iii, vi), and lowercase with ° for diminished chords (vii°).</p>
-                    <p><strong>Chord Functions:</strong> Each scale degree has a harmonic function - <em>Tonic</em> (I, iii, vi) provides home/rest, <em>Predominant</em> (ii, IV) creates preparation/tension, and <em>Dominant</em> (V, vii°) pulls toward resolution back to tonic. This functional movement creates the sense of musical motion and harmonic rhythm in progressions.</p>
-                    <p><strong>Jazz Theory Approach:</strong> The function names (tonic, predominant, dominant) and chord quality descriptions in this tool follow jazz theory conventions, emphasizing harmonic function and voice leading principles used in jazz, contemporary, and popular music analysis.</p>
+                    <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: I = 1st degree, ii = 2nd degree, iii = 3rd degree, IV = 4th degree, V = 5th degree, vi = 6th degree, vii° = 7th degree.</p>
+                    <p><strong>Chord Functions:</strong> <em>Tonic</em> = home/rest (I, iii, vi); <em>Predominant</em> = preparation/tension (ii, IV); <em>Dominant</em> = resolution/pull back to tonic (V, vii°). These functions describe how chords move and resolve in progressions, creating the sense of musical motion and harmonic rhythm.</p>
+                    <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
                 </div>
             `;
         }
