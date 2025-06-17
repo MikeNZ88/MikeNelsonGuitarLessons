@@ -201,16 +201,22 @@
                     <h3>Chords diatonic to the scale</h3>
                     <p class="section-description">These are chords that can be built from the scale. They only include notes from the scale</p>
                     <div class="chord-controls">
-                        <button class="chord-type-btn active" data-type="triads">Triads</button>
-                        <button class="chord-type-btn" data-type="sixths">6th Chords</button>
-                        <button class="chord-type-btn" data-type="sus2">Sus2</button>
-                        <button class="chord-type-btn" data-type="sus4">Sus4</button>
-                        <button class="chord-type-btn" data-type="sus4-sevenths">7sus4</button>
-                        <button class="chord-type-btn" data-type="sevenths">7th Chords</button>
-                        <button class="chord-type-btn" data-type="ninths">9th Chords</button>
-                        <button class="chord-type-btn" data-type="elevenths">11th Chords</button>
-                        <button class="chord-type-btn" data-type="thirteenths">13th Chords</button>
-                        <button class="voicing-help-btn" onclick="UIComponents.openChordVoicingModal()" title="Guitar Chord Voicing Practices">ℹ️</button>
+                        <div class="chord-view-toggle">
+                            <button class="view-toggle-btn active" data-view="type">Chord Type</button>
+                            <button class="view-toggle-btn" data-view="sequential">Sequential Order</button>
+                        </div>
+                        <div class="chord-type-controls">
+                            <button class="chord-type-btn active" data-type="triads">Triads</button>
+                            <button class="chord-type-btn" data-type="sixths">6th Chords</button>
+                            <button class="chord-type-btn" data-type="sus2">Sus2</button>
+                            <button class="chord-type-btn" data-type="sus4">Sus4</button>
+                            <button class="chord-type-btn" data-type="sus4-sevenths">7sus4</button>
+                            <button class="chord-type-btn" data-type="sevenths">7th Chords</button>
+                            <button class="chord-type-btn" data-type="ninths">9th Chords</button>
+                            <button class="chord-type-btn" data-type="elevenths">11th Chords</button>
+                            <button class="chord-type-btn" data-type="thirteenths">13th Chords</button>
+                            <button class="voicing-help-btn" onclick="UIComponents.openChordVoicingModal()" title="Guitar Chord Voicing Practices">ℹ️</button>
+                        </div>
                     </div>
                     <div class="chords-container">
                         <div class="chords-list" id="chords-list">
