@@ -277,13 +277,13 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'aeolian' || (category === 'major-modes' && scaleType === 'aeolian')) {
-        // Aeolian mode (natural minor) - characteristic: minor i + minor v
+        // Aeolian mode (natural minor) - characteristic: minor i + minor iv (plagal motion)
         switch (degree) {
             case 1: return 'Modal Tonic';     // i (minor tonic)
             case 2: return '';                // ii°
             case 3: return '';                // ♭III
-            case 4: return '';                // iv
-            case 5: return 'Characteristic';  // v (minor v - distinguishes from harmonic minor)
+            case 4: return 'Characteristic';  // iv (minor iv - classic plagal motion, avoids pull to relative major)
+            case 5: return '';                // v (weak minor v)
             case 6: return '';                // ♭VI
             case 7: return '';                // ♭VII
             default: return '';
@@ -409,15 +409,15 @@ function getModalFunction(degree, scaleType, category) {
             default: return '';
         }
     } else if (scaleType === 'lydian-dominant' || (category === 'melodic-minor-modes' && scaleType === 'lydian-dominant')) {
-        // Lydian Dominant (4th mode of melodic minor) - characteristic: major I + major ♯IV
+        // Lydian Dominant (4th mode of melodic minor) - characteristic: major I + major ♭VII
         switch (degree) {
             case 1: return 'Modal Tonic';     // I (major tonic)
             case 2: return '';                // II
             case 3: return '';                // III
-            case 4: return 'Characteristic';  // ♯IV (major ♯IV - Lydian brightness with dominant function)
+            case 4: return '';                // ♯IV (bright Lydian sound)
             case 5: return '';                // V
             case 6: return '';                // VI
-            case 7: return '';                // ♭VII
+            case 7: return 'Characteristic';  // ♭VII (major ♭VII - dominant function with Lydian brightness)
             default: return '';
         }
     } else if (scaleType === 'mixolydian-b6' || (category === 'melodic-minor-modes' && scaleType === 'mixolydian-b6')) {
