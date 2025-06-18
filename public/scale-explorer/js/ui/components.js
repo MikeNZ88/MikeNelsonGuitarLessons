@@ -4835,5 +4835,23 @@ window.UIComponents = {
     openChordVoicingModal,
     openIntervalInfoModal,
     openHelpModal,
-    closeHelpModal
+    closeHelpModal,
+    openChordTheoryModal,
+    closeChordTheoryModal
 };
+
+function openChordTheoryModal() {
+    const modal = document.getElementById('chord-theory-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+    }
+}
+
+function closeChordTheoryModal() {
+    const modal = document.getElementById('chord-theory-modal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+}
