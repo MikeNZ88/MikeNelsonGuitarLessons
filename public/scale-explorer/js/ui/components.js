@@ -2840,146 +2840,316 @@ function displayTraditionalChords(scale, scaleType, category) {
 
     // Add theory naming convention note based on scale type
     function getTheoryExplanation(scaleType, category) {
+        // Helper function to get the parent scale V and I chord names
+        function getParentScaleChords() {
+            if (window.currentScale && window.currentScale.length >= 7) {
+                let parentV, parentI;
+                
+                // For major scale modes, calculate based on which mode we're in
+                if (scaleType === 'ionian' || scaleType === 'major') {
+                    // Already in the parent scale
+                    parentV = window.currentScale[4]; // V of the scale
+                    parentI = window.currentScale[0]; // I of the scale
+                } else if (scaleType === 'dorian') {
+                    // Dorian is 2nd mode, so we need to go back to find parent I and V
+                    // In dorian, the parent I is the 7th degree, parent V is the 4th degree
+                    parentI = window.currentScale[6]; // 7th degree of dorian = I of parent major
+                    parentV = window.currentScale[3]; // 4th degree of dorian = V of parent major
+                } else if (scaleType === 'phrygian') {
+                    // Phrygian is 3rd mode
+                    // In phrygian, the parent I is the 6th degree, parent V is the 3rd degree
+                    parentI = window.currentScale[5]; // 6th degree of phrygian = I of parent major
+                    parentV = window.currentScale[2]; // 3rd degree of phrygian = V of parent major
+                } else if (scaleType === 'lydian') {
+                    // Lydian is 4th mode
+                    // In lydian, the parent I is the 5th degree, parent V is the 2nd degree
+                    parentI = window.currentScale[4]; // 5th degree of lydian = I of parent major
+                    parentV = window.currentScale[1]; // 2nd degree of lydian = V of parent major
+                } else if (scaleType === 'mixolydian') {
+                    // Mixolydian is 5th mode
+                    // In mixolydian, the parent I is the 4th degree, parent V is the 1st degree
+                    parentI = window.currentScale[3]; // 4th degree of mixolydian = I of parent major
+                    parentV = window.currentScale[0]; // 1st degree of mixolydian = V of parent major
+                } else if (scaleType === 'aeolian' || scaleType === 'natural-minor') {
+                    // Aeolian is 6th mode
+                    // In aeolian, the parent I is the 3rd degree, parent V is the 7th degree
+                    parentI = window.currentScale[2]; // 3rd degree of aeolian = I of parent major
+                    parentV = window.currentScale[6]; // 7th degree of aeolian = V of parent major
+                } else if (scaleType === 'locrian') {
+                    // Locrian is 7th mode
+                    // In locrian, the parent I is the 2nd degree, parent V is the 6th degree
+                    parentI = window.currentScale[1]; // 2nd degree of locrian = I of parent major
+                    parentV = window.currentScale[5]; // 6th degree of locrian = V of parent major
+                } else {
+                    // Default fallback
+                    parentV = window.currentScale[4];
+                    parentI = window.currentScale[0];
+                }
+                
+                return { V: parentV, I: parentI };
+            }
+            return { V: 'G', I: 'C' }; // fallback
+        }
+
         // For major scale, natural minor, and harmonic minor - use functional harmony
         if (scaleType === 'major' || scaleType === 'natural-minor' || scaleType === 'harmonic-minor' || 
             scaleType === 'melodic-minor' || scaleType === 'aeolian') {
             
-            // Special explanation for natural minor/aeolian
             if (scaleType === 'natural-minor' || scaleType === 'aeolian') {
-                return `
-                    <div class="jazz-theory-note">
-                        <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III = 3rd degree, iv = 4th degree, v = 5th degree, ♭VI = 6th degree, ♭VII = 7th degree.</p>
-                        <p><strong>Harmonic Approach:</strong> Natural minor uses a <em>hybrid approach</em> combining functional and modal elements. <em>Clear functions:</em> i (tonic), iv (subdominant/predominant). <em>Weak function:</em> v (minor dominant provides weak resolution compared to major keys). <em>Modal characteristics:</em> ♭III and ♭VI often act as tonic substitutes, while ♭VII creates strong pull toward the relative major and should be used carefully in modal contexts.</p>
-                        <p><strong>Chord Progressions:</strong> Essential progressions include i-iv-i (tonic-subdominant), i-♭VII-♭VI-♭VII (andalusian cadence), and i-♭VI-♭III-♭VII (natural minor sequence). The weak v chord can be used for subtle resolution, while avoiding ♭VII-♭III progressions that pull toward the relative major.</p>
-                    </div>
-                `;
-            }
-            
+            return `
+                    <div class="theory-note">
+                        <p><strong>Roman Numeral System:</strong> Natural minor uses a hybrid approach with both functional and modal elements. Roman numerals: i, ii°, ♭III, iv, v, ♭VI, ♭VII</p>
+                        <p><strong>Harmonic Approach:</strong> Natural minor uses a <em>hybrid approach</em> combining functional and modal elements. <em>Clear functions:</em> i (tonic), iv (subdominant/predominant). <em>Weak function:</em> v (minor dominant - lacks leading tone). <em>Modal elements:</em> ♭III, ♭VI, ♭VII create the characteristic minor sound but don't follow strict functional rules.</p>
+                </div>
+            `;
+        }
+        
             // Special explanation for harmonic minor
             if (scaleType === 'harmonic-minor') {
                 return `
-                    <div class="jazz-theory-note">
-                        <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III+ = 3rd degree (augmented), iv = 4th degree, V = 5th degree (major), ♭VI = 6th degree, vii° = 7th degree.</p>
-                        <p><strong>Harmonic Approach:</strong> Harmonic minor creates strong classical cadences by raising the 7th degree. <em>Key relationships:</em> i (tonic center), V and vii° (strong dominant function with leading tone resolution), iv (subdominant). <em>Characteristic chords:</em> ♭III+ adds exotic color but is inherently unstable, ♭VI provides contrast. This scale emphasizes voice-leading and cadential strength rather than rigid functional groupings.</p>
-                        <p><strong>Chord Progressions:</strong> Classical progressions include i-V-i (strong cadence), i-iv-V-i (minor ii-V-i), and iv-V-i (subdominant-dominant-tonic). Characteristic sounds emerge from ♭VI-V-i (Neapolitan sixth approach) and i-♭III+-iv progressions. The vii° chord provides additional leading tone motion.</p>
+                    <div class="theory-note">
+                        <p><strong>Roman Numeral System:</strong> Harmonic minor creates strong classical cadences by raising the 7th degree. Roman numerals: i, ii°, ♭III+, iv, V, ♭VI, vii°</p>
+                        <p><strong>Harmonic Approach:</strong> Harmonic minor creates strong classical cadences by raising the 7th degree. <em>Key relationships:</em> i (tonic center), V and vii° (strong dominant function with leading tone), ii° and iv (predominant), ♭VI (provides contrast), ♭III+ (coloristic - unstable augmented triad).</p>
                     </div>
                 `;
             }
-            
+
+            // Special explanation for melodic minor
+            if (scaleType === 'melodic-minor') {
+                return `
+                    <div class="theory-note">
+                        <p><strong>Roman Numeral System:</strong> Melodic minor (ascending) raises both 6th and 7th degrees from natural minor. Roman numerals: i, ii, ♭III+, IV, V, vi°, vii°</p>
+                        <p><strong>Harmonic Approach:</strong> Melodic minor combines minor tonality with major scale upper tetrachord. <em>Key relationships:</em> i (minor tonic), V and vii° (strong dominant function), ii and IV (predominant functions), ♭III+ (unstable augmented triad), vi° (diminished - provides tension).</p>
+                    </div>
+                `;
+            }
+
             // Standard functional harmony explanation for major and melodic minor
             return `
-                <div class="jazz-theory-note">
-                    <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: I = 1st degree, ii = 2nd degree, iii = 3rd degree, IV = 4th degree, V = 5th degree, vi = 6th degree, vii° = 7th degree.</p>
-                    <p><strong>Harmonic Approach:</strong> Major scales use <em>functional harmony</em> where chords have specific roles: <em>Tonic</em> (I, iii, vi) provides stability and resolution; <em>Predominant</em> (ii, IV) creates preparation and tension; <em>Dominant</em> (V, vii°) generates pull back to tonic. This system creates predictable patterns of tension and release.</p>
-                    <p><strong>Chord Progressions:</strong> Essential progressions include I-V-vi-IV (pop progression), ii-V-I (jazz turnaround), I-vi-ii-V (circle of fifths), and vi-IV-I-V (relative minor approach). These patterns form the foundation of Western harmony and are found across all musical styles.</p>
+                <div class="theory-note">
+                    <p><strong>Roman Numeral System:</strong> Traditional functional harmony using scale degree relationships. Each chord has a specific function within the key.</p>
+                    <p><strong>Chord Progressions:</strong> Common progressions include ii-V-I, IV-V-I, vi-IV-I-V, and I-vi-ii-V. These create satisfying harmonic movement through tension and resolution.</p>
                 </div>
             `;
         }
-        
-        // For modal scales - use modal explanation with dynamic examples
-        if (category === 'major-modes' || scaleType === 'dorian' || scaleType === 'phrygian' || 
-            scaleType === 'lydian' || scaleType === 'mixolydian' || scaleType === 'aeolian' || 
-            scaleType === 'locrian') {
-            
-            let avoidExample = '';
-            let characteristicPair = '';
-            
-            // Define characteristic chord pairs for each mode
-            if (scaleType === 'dorian') {
-                characteristicPair = 'The characteristic chord pair is <em>i</em> (modal tonic) and <em>IV</em> (major four), which creates the distinctive Dorian sound.';
-            } else if (scaleType === 'phrygian') {
-                characteristicPair = 'The characteristic chord pair is <em>i</em> (modal tonic) and <em>♭II</em> (major flat-two), which creates the distinctive Phrygian sound.';
-            } else if (scaleType === 'lydian') {
-                characteristicPair = 'The characteristic chord pair is <em>I</em> (modal tonic) and <em>II</em> (major two), which creates the distinctive Lydian sound.';
-            } else if (scaleType === 'mixolydian') {
-                characteristicPair = 'The characteristic chord pair is <em>I</em> (modal tonic) and <em>♭VII</em> (major flat-seven), which creates the distinctive Mixolydian sound.';
-            } else if (scaleType === 'locrian') {
-                characteristicPair = 'The characteristic chord pair is <em>i°</em> (diminished tonic) and <em>♭II</em> (major flat-two), though Locrian rarely functions as a stable tonic due to the diminished root chord.';
-            } else if (scaleType === 'ionian') {
-                characteristicPair = 'As the standard major scale, Ionian uses traditional I-V-vi-IV and ii-V-I progressions rather than modal characteristic pairs.';
-            }
-            
-            // Calculate the correct avoid progression based on the actual scale
-            if (scale && scale.length >= 7) {
-                // For all major modes, the avoid progression is V→I of the relative major
-                // The relative major is always the scale that starts on the 6th degree of the current mode
-                // But we need to find the V and I chords of that relative major
-                
-                // Get the modal tonic (first note of current scale)
-                const modalTonic = scale[0];
-                
-                // Calculate relative major root based on mode
-                let relativeMajorRoot;
-                if (scaleType === 'dorian') {
-                    // Dorian is the 2nd mode, so relative major is a minor 7th down (or major 2nd up)
-                    relativeMajorRoot = scale[6]; // 7th degree of dorian = 1st degree of relative major
+
+        // Get the modal tonic for chord name conversion
+        let modalTonic = '';
+        if (window.currentScale && window.currentScale.length > 0) {
+            modalTonic = window.currentScale[0];
+        } else {
+            modalTonic = 'C'; // fallback
+        }
+
+        // Get parent scale V and I chords
+        const parentChords = getParentScaleChords();
+
+        // For major modes - use modal theory with consolidated format
+        if (category === 'major-modes') {
+            let modalInfo = '';
+            console.log('Debug - In major-modes section, scaleType:', scaleType);
+
+            // Define modal information for each mode
+            if (scaleType === 'ionian' || scaleType === 'major') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and V (major tonic with major dominant)<br>
+                    <strong>Roman numerals:</strong> I - ii - iii - IV - V - vi - vii°<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to major center
+                `;
+            } else if (scaleType === 'dorian') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and IV (minor tonic with major four)<br>
+                    <strong>Roman numerals:</strong> i - ii - ♭III - IV - v - vi° - ♭VII<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to relative major
+                `;
                 } else if (scaleType === 'phrygian') {
-                    // Phrygian is the 3rd mode, so relative major is a major 6th down (or minor 3rd up)
-                    relativeMajorRoot = scale[5]; // 6th degree of phrygian = 1st degree of relative major
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and ♭II (minor tonic with major flat-two)<br>
+                    <strong>Roman numerals:</strong> i - ♭II - ♭III - iv - v° - ♭VI - ♭vii<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to relative major
+                `;
                 } else if (scaleType === 'lydian') {
-                    // Lydian is the 4th mode, so relative major is a perfect 5th down (or perfect 4th up)
-                    relativeMajorRoot = scale[4]; // 5th degree of lydian = 1st degree of relative major
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and II (major tonic with major two)<br>
+                    <strong>Roman numerals:</strong> I - II - iii - ♯iv° - V - vi - vii<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to major center
+                `;
                 } else if (scaleType === 'mixolydian') {
-                    // Mixolydian is the 5th mode, so relative major is a perfect 4th down (or perfect 5th up)
-                    relativeMajorRoot = scale[3]; // 4th degree of mixolydian = 1st degree of relative major
-                } else if (scaleType === 'aeolian') {
-                    // Aeolian is the 6th mode, so relative major is a major 3rd down (or minor 6th up)
-                    relativeMajorRoot = scale[2]; // 3rd degree of aeolian = 1st degree of relative major
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and ♭VII (major tonic with major flat-seven)<br>
+                    <strong>Roman numerals:</strong> I - ii - iii° - IV - v - vi - ♭VII<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to relative major
+                `;
+            } else if (scaleType === 'aeolian' || scaleType === 'natural-minor') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and ♭VI (minor tonic with major flat-six)<br>
+                    <strong>Roman numerals:</strong> i - ii° - ♭III - iv - v - ♭VI - ♭VII<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions pull to relative major
+                `;
                 } else if (scaleType === 'locrian') {
-                    // Locrian is the 7th mode, so relative major is a minor 2nd down (or major 7th up)
-                    relativeMajorRoot = scale[1]; // 2nd degree of locrian = 1st degree of relative major
-                } else {
-                    // Default fallback
-                    relativeMajorRoot = scale[2];
-                }
-                
-                // The V chord of the relative major is a perfect 5th above the relative major root
-                // In the context of our scale, we need to find which note is a perfect 5th above the relative major root
-                const noteToIndex = (note) => {
-                    const noteMap = { 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11 };
-                    return noteMap[note] !== undefined ? noteMap[note] : 0;
-                };
-                
-                const relativeMajorIndex = noteToIndex(relativeMajorRoot);
-                const dominantIndex = (relativeMajorIndex + 7) % 12; // Perfect 5th up
-                
-                // Find the dominant note name from our scale
-                let dominantNote = null;
-                for (let note of scale) {
-                    if (noteToIndex(note) === dominantIndex) {
-                        dominantNote = note;
-                        break;
-                    }
-                }
-                
-                // If we couldn't find the exact dominant in the scale, use the calculated one
-                if (!dominantNote) {
-                    const indexToNote = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-                    dominantNote = indexToNote[dominantIndex];
-                }
-                
-                avoidExample = ` For example, in ${modalTonic} ${scaleType.charAt(0).toUpperCase() + scaleType.slice(1)}, avoid the ${dominantNote}→${relativeMajorRoot} progression as it pulls toward ${relativeMajorRoot} Major (the relative major).`;
+                modalInfo = `
+                    <strong>Home chord:</strong> i° (${modalTonic} diminished)<br>
+                    <strong>Characteristic pairing:</strong> i° and ♭II (diminished tonic with major flat-two)<br>
+                    <strong>Roman numerals:</strong> i° - ♭II - ♭iii - iv - ♭V - ♭VI - ♭vii<br>
+                    <strong>Avoid:</strong> ${parentChords.V} - ${parentChords.I} progressions destabilize the tonic
+                `;
             }
-            
+
+            console.log('Debug - modalInfo set to:', modalInfo);
             return `
                 <div class="modal-theory-note">
-                    <p><strong>Modal Theory:</strong> Modal scales use different harmonic approaches than traditional major/minor functional harmony. Each mode has its own unique character and harmonic tendencies.</p>
-                    <p><strong>Modal Tonic:</strong> The <em>Modal Tonic</em> is the home chord that establishes the modal center.</p>
-                    <p><strong>Characteristic Chords:</strong> ${characteristicPair}</p>
-                    <p><strong>Modal Harmony:</strong> Other chords from the scale can also be used, but avoid traditional V-I cadences that pull toward the relative major.${avoidExample}</p>
+                    <p><strong>Modal Theory:</strong></p>
+                    <p>${modalInfo}</p>
+                </div>
+            `;
+        }
+
+        // For harmonic minor modes - use modal theory with consolidated format
+        if (category === 'harmonic-minor-modes') {
+            let modalInfo = '';
+
+            // Define modal information for each harmonic minor mode
+            if (scaleType === 'harmonic-minor') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and V (minor tonic with major dominant)<br>
+                    <strong>Roman numerals:</strong> i - ii° - ♭III+ - iv - V - ♭VI - vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic}m creates classical resolution instead of modal sound
+                `;
+            } else if (scaleType === 'locrian-natural-6') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i° (${modalTonic} diminished)<br>
+                    <strong>Characteristic pairing:</strong> i° and ♭VI (diminished tonic with major flat-six)<br>
+                    <strong>Roman numerals:</strong> i° - ♭III+ - iv - V - ♭VI - vii° - i<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${window.currentScale[5]} progressions pull to harmonic minor center
+                `;
+            } else if (scaleType === 'ionian-sharp-5') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I+ (${modalTonic} augmented)<br>
+                    <strong>Characteristic pairing:</strong> I+ and iv (augmented tonic with minor four)<br>
+                    <strong>Roman numerals:</strong> I+ - ii° - ♭III - iv - V - ♭VI - vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic}+ creates unstable resolution
+                `;
+            } else if (scaleType === 'dorian-sharp-4') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and ♯iv° (minor tonic with diminished sharp-four)<br>
+                    <strong>Roman numerals:</strong> i - ii° - ♭III+ - ♯iv° - V - ♭VI - vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic}m creates harmonic minor resolution instead of modal sound
+                `;
+            } else if (scaleType === 'phrygian-dominant') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and ♭ii° (major tonic with diminished flat-two)<br>
+                    <strong>Roman numerals:</strong> I - ♭ii° - ♭iii - iv - V - ♭VI - ♭vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[6]}° - ${window.currentScale[2]}m progressions pull to harmonic minor center
+                `;
+            } else if (scaleType === 'lydian-sharp-2') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and ♯ii° (major tonic with diminished sharp-two)<br>
+                    <strong>Roman numerals:</strong> I - ♯ii° - ♭iii+ - ♯iv - V - ♭VI - vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic} creates major resolution instead of modal sound
+                `;
+            } else if (scaleType === 'super-locrian' || scaleType === 'altered') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i° (${modalTonic} diminished)<br>
+                    <strong>Characteristic pairing:</strong> i° and ♭II (diminished tonic with major flat-two)<br>
+                    <strong>Roman numerals:</strong> i° - ♭II - ♭iii - ♯iv° - ♭V - ♭VI - ♭vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[1]} - ${window.currentScale[4]} progressions destabilize the modal center
+                `;
+            }
+
+            console.log('Debug - modalInfo set to:', modalInfo);
+            return `
+                <div class="modal-theory-note">
+                    <p><strong>Modal Theory:</strong></p>
+                    <p>${modalInfo}</p>
+                </div>
+            `;
+        }
+
+        // For melodic minor modes - use modal theory with consolidated format
+        if (category === 'melodic-minor-modes') {
+            let modalInfo = '';
+
+            // Define modal information for each melodic minor mode
+            if (scaleType === 'melodic-minor') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and V (minor tonic with major dominant)<br>
+                    <strong>Roman numerals:</strong> i - ii - ♭III+ - IV - V - vi° - vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic}m creates classical resolution instead of modal sound
+                `;
+            } else if (scaleType === 'dorian-b2') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i (${modalTonic} minor)<br>
+                    <strong>Characteristic pairing:</strong> i and ♭II+ (minor tonic with augmented flat-two)<br>
+                    <strong>Roman numerals:</strong> i - ♭II+ - ♭III - IV - V - vi° - ♭vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${window.currentScale[1]}+ progressions pull to melodic minor center
+                `;
+            } else if (scaleType === 'lydian-augmented') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I+ (${modalTonic} augmented)<br>
+                    <strong>Characteristic pairing:</strong> I+ and ♯IV (augmented tonic with major sharp-four)<br>
+                    <strong>Roman numerals:</strong> I+ - II - ♯IV - V - vi° - vii° - i<br>
+                    <strong>Avoid:</strong> ${window.currentScale[4]} - ${modalTonic}+ creates unstable resolution
+                `;
+            } else if (scaleType === 'lydian-dominant') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and ii (major tonic with minor two)<br>
+                    <strong>Roman numerals:</strong> I - ii - ♯iii° - ♯IV - V - vi° - ♭VII<br>
+                    <strong>Avoid:</strong> ${window.currentScale[6]} - ${window.currentScale[2]}° progressions pull to melodic minor center
+                `;
+            } else if (scaleType === 'mixolydian-b6') {
+                modalInfo = `
+                    <strong>Home chord:</strong> I (${modalTonic} major)<br>
+                    <strong>Characteristic pairing:</strong> I and ♭vi° (major tonic with diminished flat-six)<br>
+                    <strong>Roman numerals:</strong> I - ii - iii° - ♯IV - V - ♭vi° - ♭VII<br>
+                    <strong>Avoid:</strong> ${window.currentScale[6]} - ${window.currentScale[2]}° progressions pull to melodic minor center
+                `;
+            } else if (scaleType === 'locrian-natural-2') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i° (${modalTonic} diminished)<br>
+                    <strong>Characteristic pairing:</strong> i° and II (diminished tonic with major two)<br>
+                    <strong>Roman numerals:</strong> i° - II - ♯iii - ♯IV - V - ♭VI - ♭vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[1]} - ${window.currentScale[4]} progressions pull to melodic minor center
+                `;
+            } else if (scaleType === 'super-locrian' || scaleType === 'altered-dominant') {
+                modalInfo = `
+                    <strong>Home chord:</strong> i° (${modalTonic} diminished)<br>
+                    <strong>Characteristic pairing:</strong> i° and ♭II (diminished tonic with major flat-two)<br>
+                    <strong>Roman numerals:</strong> i° - ♭II - ♭iii - ♯iv° - ♭V - ♭VI - ♭vii°<br>
+                    <strong>Avoid:</strong> ${window.currentScale[1]} - ${window.currentScale[4]} progressions destabilize the modal center
+                `;
+            }
+            
+            console.log('Debug - modalInfo set to:', modalInfo);
+            return `
+                <div class="modal-theory-note">
+                    <p><strong>Modal Theory:</strong></p>
+                    <p>${modalInfo}</p>
                 </div>
             `;
         }
         
-        // Default for other scales
+        // Fallback for other scale types
         return `
             <div class="theory-note">
-                <p><strong>Scale Theory:</strong> This scale uses specialized harmonic structures. Chord functions and relationships may differ from traditional major/minor harmony.</p>
+                <p><strong>Scale Analysis:</strong> This scale offers unique harmonic possibilities. Experiment with different chord combinations to discover its characteristic sound.</p>
             </div>
         `;
     }
 
     const theoryNote = getTheoryExplanation(scaleType, category);
+    console.log('Debug - scaleType:', scaleType, 'category:', category, 'theoryNote:', theoryNote);
 
     // Combine notes
     const combinedNotes = scaleNote + theoryNote;
@@ -2993,7 +3163,8 @@ function displayTraditionalChords(scale, scaleType, category) {
     console.log('Generated 7th chords:', seventhChords);
 
     // Determine if extended chords should be available
-    const showExtendedChords = scaleType === 'major' || (category && category.toLowerCase().includes('major'));
+    const showExtendedChords = scaleType === 'major' || (category && (category.toLowerCase().includes('major') || 
+        category.toLowerCase().includes('harmonic-minor') || category.toLowerCase().includes('melodic-minor')));
     
     // Calculate extended chords (only for major modes)
     let sixthChords = [];
@@ -3020,6 +3191,19 @@ function displayTraditionalChords(scale, scaleType, category) {
         console.log('Generated 11th chords:', eleventhChords);
         console.log('Generated 13th chords:', thirteenthChords);
     }
+    
+    // Store current chords globally for view toggle functionality
+    window.currentChords = {
+        triads: triads,
+        sixths: sixthChords,
+        sus2: sus2Chords,
+        sus4: sus4Chords,
+        sus4sevenths: sus4SeventhChords,
+        sevenths: seventhChords,
+        ninths: ninthChords,
+        elevenths: eleventhChords,
+        thirteenths: thirteenthChords
+    };
 
     // Show/hide extended chord buttons based on scale type
     const extendedChordButtons = document.querySelectorAll('.chord-type-btn[data-type="sixths"], .chord-type-btn[data-type="sus2"], .chord-type-btn[data-type="sus4"], .chord-type-btn[data-type="sus4-sevenths"], .chord-type-btn[data-type="ninths"], .chord-type-btn[data-type="elevenths"], .chord-type-btn[data-type="thirteenths"]');
@@ -3252,6 +3436,60 @@ function displayChordType(type, chords, container = null) {
     if (!chordsList || !chords) return;
     
     chordsList.innerHTML = '';
+    
+    // Check if we're in sequential view mode
+    const isSequentialView = window.currentViewType === 'sequential';
+    
+    if (isSequentialView && chords.length > 0) {
+        // Sort chords by degree for sequential view
+        const sortedChords = [...chords].sort((a, b) => {
+            const degreeA = parseInt(a.degree) || 0;
+            const degreeB = parseInt(b.degree) || 0;
+            return degreeA - degreeB;
+        });
+        
+        // Display chords in order of scale degree
+        sortedChords.forEach((chord, index) => {
+            const chordElement = document.createElement('div');
+            chordElement.className = `chord-item ${chord.isNonStandard ? 'non-standard' : ''}`;
+            
+            // Use orange color for all chord degrees
+            const functionColor = '#d97706'; // Orange color to match theme
+            const textColor = 'white'; // White text for good contrast
+            
+            // Add a tooltip for non-standard chords
+            const tooltip = chord.isNonStandard ? 
+                `title="Non-standard chord: ${chord.intervals.map(i => MusicTheory.getIntervalName(i)).join(', ')}"` : '';
+            
+            chordElement.innerHTML = `
+                <div class="chord-degree" style="background-color: ${functionColor}; color: ${textColor};">
+                    <span class="degree-number">${chord.degree}</span>
+                    <span class="roman-numeral">${chord.roman}</span>
+                </div>
+                <div class="chord-info" ${tooltip}>
+                    <div class="chord-name ${chord.isNonStandard ? 'exotic' : ''}">${chord.name}</div>
+                    <div class="chord-notes">${chord.notes.join(' - ')}</div>
+                    <div class="chord-quality ${chord.isNonStandard ? 'exotic' : ''}">${chord.quality}</div>
+                    ${chord.isNonStandard ? '<div class="chord-exotic-note">⚡ Exotic</div>' : ''}
+                </div>
+            `;
+            
+            // Add click handler for chord interactions
+            chordElement.addEventListener('click', (e) => {
+                // Only prevent modal if clicking directly on audio control buttons
+                if (window.audioControls && (e.target.closest('.play-btn') || e.target.closest('.direction-btn'))) {
+                    return; // Let audio controls handle it
+                }
+                
+                console.log('Chord clicked:', chord);
+                highlightChordOnFretboard(chord);
+            });
+            
+            chordsList.appendChild(chordElement);
+        });
+        
+        return; // Exit early for sequential view
+    }
     
     // For triads and sevenths, organize by chord quality for better display
     if ((type === 'triads' || type === 'sevenths') && chords.length > 0) {
