@@ -124,7 +124,7 @@ const scaleCategories = {
         }
     },
     'pentatonic': {
-        name: 'Major Pentatonic',
+        name: 'Pentatonic',
         description: 'The five modes of the major pentatonic scale',
         modes: ['major-pentatonic', 'suspended-pentatonic', 'man-gong', 'ritusen', 'minor-pentatonic'],
         formulas: {
