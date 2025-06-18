@@ -65,7 +65,7 @@ function calculateTriads(scale, scaleType = 'major', category = null) {
         
         triads.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth],
             quality: chordAnalysis.quality,
@@ -152,7 +152,7 @@ function calculateSeventhChords(scale, scaleType = 'major', category = null) {
         
         seventhChords.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, seventh],
             quality: chordAnalysis.quality,
@@ -827,7 +827,7 @@ function calculateSixthChords(scale, scaleType = 'major', category = null) {
         
         sixthChords.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, sixth],
             quality: chordAnalysis.quality,
@@ -844,7 +844,7 @@ function calculateSixthChords(scale, scaleType = 'major', category = null) {
 }
 
 function analyzeSixthChord(thirdInterval, fifthInterval, sixthInterval) {
-    const quality = thirdInterval === 4 ? 'Major' : 'minor';
+    const quality = thirdInterval === 4 ? 'Major6' : 'minor6';
     const symbol = thirdInterval === 4 ? '6' : 'm6';
     return { quality, symbol };
 }
@@ -881,7 +881,7 @@ function calculateSus2Chords(scale, scaleType = 'major', category = null) {
         
         chords.push({
             degree: degree,
-            roman: window.IntervalUtils.getRomanNumeral(degree, 'sus2'),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, degree, 'sus2'),
             root: root,
             name: `${root}${analysis.symbol}`,
             notes: notes,
@@ -935,7 +935,7 @@ function calculateSus4Chords(scale, scaleType = 'major', category = null) {
         
         chords.push({
             degree: degree,
-            roman: window.IntervalUtils.getRomanNumeral(degree, 'sus4'),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, degree, 'sus4'),
             root: root,
             name: `${root}${analysis.symbol}`,
             notes: notes,
@@ -992,7 +992,7 @@ function calculateSus4SeventhChords(scale, scaleType = 'major', category = null)
         
         chords.push({
             degree: degree,
-            roman: window.IntervalUtils.getRomanNumeral(degree, 'sus4seventh'),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, degree, 'sus4seventh'),
             root: root,
             name: `${root}${analysis.symbol}`,
             notes: notes,
@@ -1069,7 +1069,7 @@ function calculateNinthChords(scale, scaleType = 'major', category = null) {
         
         ninthChords.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, seventh, ninth],
             quality: chordAnalysis.quality,
@@ -1234,7 +1234,7 @@ function calculateEleventhChords(scale, scaleType = 'major', category = null) {
         
         eleventhChords.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, seventh, ninth, eleventh],
             quality: chordAnalysis.quality,
@@ -1429,7 +1429,7 @@ function calculateThirteenthChords(scale, scaleType = 'major', category = null) 
         
         thirteenthChords.push({
             degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeral(i + 1, chordAnalysis.quality),
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, seventh, ninth, eleventh, thirteenth],
             quality: chordAnalysis.quality,

@@ -167,6 +167,82 @@ function getRomanNumeral(degree, quality) {
     return numeral;
 }
 
+function getRomanNumeralWithAccidentals(scale, scaleRoot, chordRoot, degree, quality) {
+    // For sus chords and 6th chords, return empty string as they don't correspond to tertiary harmony
+    if (quality === 'sus2' || quality === 'sus4' || quality === 'sus4seventh' || 
+        quality.includes('sus') || quality.includes('6')) {
+        return '';
+    }
+    
+    // Calculate what the chord root should be in a major scale starting from scaleRoot
+    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const noteToIndex = (note) => {
+        const cleanNote = note.replace(/[♭♯]/g, (match) => match === '♭' ? 'b' : '#');
+        const noteMap = { 'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3, 'E': 4, 'F': 5, 'F#': 6, 'Gb': 6, 'G': 7, 'G#': 8, 'Ab': 8, 'A': 9, 'A#': 10, 'Bb': 10, 'B': 11 };
+        return noteMap[cleanNote] !== undefined ? noteMap[cleanNote] : 0;
+    };
+    
+    const indexToNote = (index) => {
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        return notes[index % 12];
+    };
+    
+    // Major scale intervals from root: 0, 2, 4, 5, 7, 9, 11
+    const majorScaleIntervals = [0, 2, 4, 5, 7, 9, 11];
+    
+    const scaleRootIndex = noteToIndex(scaleRoot);
+    const chordRootIndex = noteToIndex(chordRoot);
+    
+    // Calculate what note SHOULD be at this degree in major scale
+    const expectedInterval = majorScaleIntervals[degree - 1];
+    const expectedNoteIndex = (scaleRootIndex + expectedInterval) % 12;
+    
+    // Calculate the actual interval from scale root to chord root
+    let actualInterval = (chordRootIndex - scaleRootIndex + 12) % 12;
+    
+    // Determine if we need flat or sharp
+    let accidental = '';
+    if (actualInterval !== expectedInterval) {
+        if ((actualInterval + 1) % 12 === expectedInterval) {
+            // Chord root is a semitone lower than expected = flat
+            accidental = '♭';
+        } else if ((actualInterval - 1 + 12) % 12 === expectedInterval) {
+            // Chord root is a semitone higher than expected = sharp
+            accidental = '#';
+        }
+    }
+    
+    // Get base roman numeral
+    const numerals = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+    let numeral = numerals[degree - 1] || 'I';
+    
+    // Normalize quality to basic types for proper capitalization
+    let baseQuality = quality;
+    if (quality.includes('Major') || quality.includes('Dominant') || quality.includes('Augmented')) {
+        baseQuality = quality.includes('Augmented') ? 'augmented' : 'major';
+    } else if (quality.includes('minor') || quality.includes('Minor')) {
+        baseQuality = 'minor';
+    } else if (quality.includes('diminished') || quality.includes('Diminished')) {
+        baseQuality = quality.includes('Half') ? 'half-diminished' : 'diminished';
+    }
+    
+    // Apply quality-based case changes
+    if (baseQuality === 'diminished') {
+        numeral = accidental + numeral.toLowerCase() + '°';
+    } else if (baseQuality === 'half-diminished') {
+        numeral = accidental + numeral.toLowerCase() + 'ø';
+    } else if (baseQuality === 'augmented') {
+        numeral = accidental + numeral + '+';
+    } else if (baseQuality === 'minor') {
+        numeral = accidental + numeral.toLowerCase();
+    } else {
+        // Major and dominant chords use uppercase
+        numeral = accidental + numeral;
+    }
+    
+    return numeral;
+}
+
 function getChordFunction(degree, scaleType, category) {
     console.log('getChordFunction called with degree:', degree, 'scaleType:', scaleType, 'category:', category);
     
@@ -625,6 +701,7 @@ window.IntervalUtils = {
     getIntervalBetweenNotes,
     getIntervals,
     getRomanNumeral,
+    getRomanNumeralWithAccidentals,
     getChordFunction,
     areEnharmonicEquivalents,
     getEnharmonicEquivalent,

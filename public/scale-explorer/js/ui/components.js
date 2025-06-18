@@ -2850,7 +2850,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                     <div class="jazz-theory-note">
                         <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III = 3rd degree, iv = 4th degree, v = 5th degree, ♭VI = 6th degree, ♭VII = 7th degree.</p>
                         <p><strong>Harmonic Approach:</strong> Natural minor uses a <em>hybrid approach</em> combining functional and modal elements. <em>Clear functions:</em> i (tonic), iv (subdominant/predominant). <em>Weak function:</em> v (minor dominant provides weak resolution compared to major keys). <em>Modal characteristics:</em> ♭III and ♭VI often act as tonic substitutes, while ♭VII creates strong pull toward the relative major and should be used carefully in modal contexts.</p>
-                        <p><strong>Jazz Theory Naming:</strong> Chord functions and quality descriptions in this tool are based on jazz theory conventions, while acknowledging that natural minor doesn't always fit rigid functional categories.</p>
+                        <p><strong>Chord Progressions:</strong> Essential progressions include i-iv-i (tonic-subdominant), i-♭VII-♭VI-♭VII (andalusian cadence), and i-♭VI-♭III-♭VII (natural minor sequence). The weak v chord can be used for subtle resolution, while avoiding ♭VII-♭III progressions that pull toward the relative major.</p>
                     </div>
                 `;
             }
@@ -2861,7 +2861,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                     <div class="jazz-theory-note">
                         <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: i = 1st degree, ii° = 2nd degree, ♭III+ = 3rd degree (augmented), iv = 4th degree, V = 5th degree (major), ♭VI = 6th degree, vii° = 7th degree.</p>
                         <p><strong>Harmonic Approach:</strong> Harmonic minor creates strong classical cadences by raising the 7th degree. <em>Key relationships:</em> i (tonic center), V and vii° (strong dominant function with leading tone resolution), iv (subdominant). <em>Characteristic chords:</em> ♭III+ adds exotic color but is inherently unstable, ♭VI provides contrast. This scale emphasizes voice-leading and cadential strength rather than rigid functional groupings.</p>
-                        <p><strong>Jazz Theory Naming:</strong> Chord descriptions are based on jazz theory conventions, while recognizing that harmonic minor operates on classical voice-leading principles rather than purely functional harmony.</p>
+                        <p><strong>Chord Progressions:</strong> Classical progressions include i-V-i (strong cadence), i-iv-V-i (minor ii-V-i), and iv-V-i (subdominant-dominant-tonic). Characteristic sounds emerge from ♭VI-V-i (Neapolitan sixth approach) and i-♭III+-iv progressions. The vii° chord provides additional leading tone motion.</p>
                     </div>
                 `;
             }
@@ -2870,17 +2870,35 @@ function displayTraditionalChords(scale, scaleType, category) {
             return `
                 <div class="jazz-theory-note">
                     <p><strong>Roman Numeral System:</strong> Roman numerals represent chord degrees within a scale. <em>Capital numerals</em> (I, IV, V) indicate major chords, <em>lowercase numerals</em> (ii, iii, vi) indicate minor chords, and <em>lowercase with °</em> (vii°) indicates diminished chords. The numbers correspond to scale degrees: I = 1st degree, ii = 2nd degree, iii = 3rd degree, IV = 4th degree, V = 5th degree, vi = 6th degree, vii° = 7th degree.</p>
-                    <p><strong>Chord Functions:</strong> <em>Tonic</em> = home/rest (I, iii, vi); <em>Predominant</em> = preparation/tension (ii, IV); <em>Dominant</em> = resolution/pull back to tonic (V, vii°). These functions describe how chords move and resolve in progressions, creating the sense of musical motion and harmonic rhythm.</p>
-                    <p><strong>Jazz Theory Naming:</strong> Chord functions (tonic, predominant, dominant, etc.) and quality descriptions in this tool are based on jazz theory conventions. This approach emphasizes harmonic function and voice leading principles commonly used in jazz, contemporary, and popular music analysis.</p>
+                    <p><strong>Harmonic Approach:</strong> Major scales use <em>functional harmony</em> where chords have specific roles: <em>Tonic</em> (I, iii, vi) provides stability and resolution; <em>Predominant</em> (ii, IV) creates preparation and tension; <em>Dominant</em> (V, vii°) generates pull back to tonic. This system creates predictable patterns of tension and release.</p>
+                    <p><strong>Chord Progressions:</strong> Essential progressions include I-V-vi-IV (pop progression), ii-V-I (jazz turnaround), I-vi-ii-V (circle of fifths), and vi-IV-I-V (relative minor approach). These patterns form the foundation of Western harmony and are found across all musical styles.</p>
                 </div>
             `;
         }
         
-        // For modal scales - use modal explanation with dynamic examples (excluding aeolian which is handled above)
+        // For modal scales - use modal explanation with dynamic examples
         if (category === 'major-modes' || scaleType === 'dorian' || scaleType === 'phrygian' || 
-            scaleType === 'lydian' || scaleType === 'mixolydian' || scaleType === 'locrian') {
+            scaleType === 'lydian' || scaleType === 'mixolydian' || scaleType === 'aeolian' || 
+            scaleType === 'locrian') {
             
             let avoidExample = '';
+            let characteristicPair = '';
+            
+            // Define characteristic chord pairs for each mode
+            if (scaleType === 'dorian') {
+                characteristicPair = 'The characteristic chord pair is <em>i</em> (modal tonic) and <em>IV</em> (major four), which creates the distinctive Dorian sound.';
+            } else if (scaleType === 'phrygian') {
+                characteristicPair = 'The characteristic chord pair is <em>i</em> (modal tonic) and <em>♭II</em> (major flat-two), which creates the distinctive Phrygian sound.';
+            } else if (scaleType === 'lydian') {
+                characteristicPair = 'The characteristic chord pair is <em>I</em> (modal tonic) and <em>II</em> (major two), which creates the distinctive Lydian sound.';
+            } else if (scaleType === 'mixolydian') {
+                characteristicPair = 'The characteristic chord pair is <em>I</em> (modal tonic) and <em>♭VII</em> (major flat-seven), which creates the distinctive Mixolydian sound.';
+            } else if (scaleType === 'locrian') {
+                characteristicPair = 'The characteristic chord pair is <em>i°</em> (diminished tonic) and <em>♭II</em> (major flat-two), though Locrian rarely functions as a stable tonic due to the diminished root chord.';
+            } else if (scaleType === 'ionian') {
+                characteristicPair = 'As the standard major scale, Ionian uses traditional I-V-vi-IV and ii-V-I progressions rather than modal characteristic pairs.';
+            }
+            
             // Calculate the correct avoid progression based on the actual scale
             if (scale && scale.length >= 7) {
                 // For all major modes, the avoid progression is V→I of the relative major
@@ -2947,7 +2965,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                 <div class="modal-theory-note">
                     <p><strong>Modal Theory:</strong> Modal scales use different harmonic approaches than traditional major/minor functional harmony. Each mode has its own unique character and harmonic tendencies.</p>
                     <p><strong>Modal Tonic:</strong> The <em>Modal Tonic</em> is the home chord that establishes the modal center.</p>
-                    <p><strong>Characteristic Chords:</strong> These are chords that, when used in conjunction with the modal tonic, create the distinctive sound and character of the mode.</p>
+                    <p><strong>Characteristic Chords:</strong> ${characteristicPair}</p>
                     <p><strong>Modal Harmony:</strong> Other chords from the scale can also be used, but avoid traditional V-I cadences that pull toward the relative major.${avoidExample}</p>
                 </div>
             `;
@@ -3003,19 +3021,6 @@ function displayTraditionalChords(scale, scaleType, category) {
         console.log('Generated 13th chords:', thirteenthChords);
     }
 
-    // Store all chord types globally for sequential view access
-    window.currentChords = {
-        triads: triads,
-        sixths: sixthChords,
-        sus2: sus2Chords,
-        sus4: sus4Chords,
-        sus4sevenths: sus4SeventhChords,
-        sevenths: seventhChords,
-        ninths: ninthChords,
-        elevenths: eleventhChords,
-        thirteenths: thirteenthChords
-    };
-
     // Show/hide extended chord buttons based on scale type
     const extendedChordButtons = document.querySelectorAll('.chord-type-btn[data-type="sixths"], .chord-type-btn[data-type="sus2"], .chord-type-btn[data-type="sus4"], .chord-type-btn[data-type="sus4-sevenths"], .chord-type-btn[data-type="ninths"], .chord-type-btn[data-type="elevenths"], .chord-type-btn[data-type="thirteenths"]');
     extendedChordButtons.forEach(button => {
@@ -3069,9 +3074,6 @@ function displayTraditionalChords(scale, scaleType, category) {
             chordButtons.forEach(btn => btn.classList.remove('active'));
             e.target.classList.add('active');
             
-            // Check current view mode
-            const currentView = document.querySelector('.view-toggle-btn.active')?.dataset.view || 'type';
-            
             // Clear the scale note when switching chord types
             const targetContainer = combinedNotes ? document.getElementById('triads-container') || chordsList : chordsList;
             
@@ -3083,17 +3085,9 @@ function displayTraditionalChords(scale, scaleType, category) {
                     const triadsContainer = document.createElement('div');
                     triadsContainer.id = 'triads-container';
                     chordsList.appendChild(triadsContainer);
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('triads', triads, triadsContainer);
-                    } else {
-                        displayChordType('triads', triads, triadsContainer);
-                    }
+                    displayChordType('triads', triads, triadsContainer);
                 } else {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('triads', triads);
-                    } else {
-                        displayChordType('triads', triads);
-                    }
+                    displayChordType('triads', triads);
                 }
                 // Update audio controls with triads
                 if (window.audioControls) {
@@ -3101,11 +3095,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                 }
             } else if (chordType === 'sixths') {
                 if (sixthChords.length > 0) {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sixths', sixthChords);
-                    } else {
-                        displayChordType('sixths', sixthChords);
-                    }
+                    displayChordType('sixths', sixthChords);
                     // Update audio controls with 6th chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(sixthChords);
@@ -3128,11 +3118,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                     const sus2Container = document.createElement('div');
                     sus2Container.id = 'sus2-container';
                     chordsList.appendChild(sus2Container);
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sus2', sus2Chords, sus2Container);
-                    } else {
-                        displayChordType('sus2', sus2Chords, sus2Container);
-                    }
+                    displayChordType('sus2', sus2Chords, sus2Container);
                     // Update audio controls with sus2 chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(sus2Chords);
@@ -3155,11 +3141,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                     const sus4Container = document.createElement('div');
                     sus4Container.id = 'sus4-container';
                     chordsList.appendChild(sus4Container);
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sus4', sus4Chords, sus4Container);
-                    } else {
-                        displayChordType('sus4', sus4Chords, sus4Container);
-                    }
+                    displayChordType('sus4', sus4Chords, sus4Container);
                     // Update audio controls with sus4 chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(sus4Chords);
@@ -3182,11 +3164,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                     const sus4SeventhContainer = document.createElement('div');
                     sus4SeventhContainer.id = 'sus4-seventh-container';
                     chordsList.appendChild(sus4SeventhContainer);
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sus4-sevenths', sus4SeventhChords, sus4SeventhContainer);
-                    } else {
-                        displayChordType('sus4-sevenths', sus4SeventhChords, sus4SeventhContainer);
-                    }
+                    displayChordType('sus4-sevenths', sus4SeventhChords, sus4SeventhContainer);
                     // Update audio controls with sus4 seventh chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(sus4SeventhChords);
@@ -3200,17 +3178,9 @@ function displayTraditionalChords(scale, scaleType, category) {
                 }
             } else if (chordType === 'sevenths') {
                 if (scaleNote) {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sevenths', seventhChords);
-                    } else {
-                        displayChordType('sevenths', seventhChords);
-                    }
+                    displayChordType('sevenths', seventhChords);
                 } else {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('sevenths', seventhChords);
-                    } else {
-                        displayChordType('sevenths', seventhChords);
-                    }
+                    displayChordType('sevenths', seventhChords);
                 }
                 // Update audio controls with 7th chords
                 if (window.audioControls) {
@@ -3218,11 +3188,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                 }
             } else if (chordType === 'ninths') {
                 if (ninthChords.length > 0) {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('ninths', ninthChords);
-                    } else {
-                        displayChordType('ninths', ninthChords);
-                    }
+                    displayChordType('ninths', ninthChords);
                     // Update audio controls with 9th chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(ninthChords);
@@ -3236,11 +3202,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                 }
             } else if (chordType === 'elevenths') {
                 if (eleventhChords.length > 0) {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('elevenths', eleventhChords);
-                    } else {
-                        displayChordType('elevenths', eleventhChords);
-                    }
+                    displayChordType('elevenths', eleventhChords);
                     // Update audio controls with 11th chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(eleventhChords);
@@ -3254,11 +3216,7 @@ function displayTraditionalChords(scale, scaleType, category) {
                 }
             } else if (chordType === 'thirteenths') {
                 if (thirteenthChords.length > 0) {
-                    if (currentView === 'sequential') {
-                        displayChordTypeSequential('thirteenths', thirteenthChords);
-                    } else {
-                        displayChordType('thirteenths', thirteenthChords);
-                    }
+                    displayChordType('thirteenths', thirteenthChords);
                     // Update audio controls with 13th chords
                     if (window.audioControls) {
                         window.audioControls.updateChords(thirteenthChords);
@@ -3269,34 +3227,6 @@ function displayTraditionalChords(scale, scaleType, category) {
                     if (chordsList) {
                         chordsList.innerHTML = '<p class="no-chords-message">13th chords are only available for major modes.</p>';
                     }
-                }
-            }
-        });
-    });
-
-    // Add event listeners for view toggle buttons
-    const viewToggleButtons = document.querySelectorAll('.view-toggle-btn');
-    viewToggleButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            // Update active state
-            viewToggleButtons.forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            
-            const viewMode = e.target.dataset.view;
-            const chordTypeControls = document.querySelector('.chord-type-controls');
-            
-            if (viewMode === 'sequential') {
-                // Hide chord type buttons in sequential view
-                chordTypeControls.classList.add('hidden');
-                // Display all chord types in sequential order
-                displayAllChordsSequential();
-            } else {
-                // Show chord type buttons in type view
-                chordTypeControls.classList.remove('hidden');
-                // Re-trigger the currently active chord type button
-                const activeChordButton = document.querySelector('.chord-type-btn.active');
-                if (activeChordButton) {
-                    activeChordButton.click();
                 }
             }
         });
@@ -3324,7 +3254,7 @@ function displayChordType(type, chords, container = null) {
     chordsList.innerHTML = '';
     
     // For triads and sevenths, organize by chord quality for better display
-    if ((type === 'triads' || type === 'sevenths' || type === 'ninths' || type === 'elevenths' || type === 'thirteenths') && chords.length > 0) {
+    if ((type === 'triads' || type === 'sevenths') && chords.length > 0) {
         const organized = organizeChordsByQuality(chords, type);
         
         // Display organized chord sections
@@ -3368,7 +3298,6 @@ function displayChordType(type, chords, container = null) {
                         <div class="chord-name ${chord.isNonStandard ? 'exotic' : ''}">${chord.name}</div>
                         <div class="chord-notes">${chord.notes.join(' - ')}</div>
                         <div class="chord-quality ${chord.isNonStandard ? 'exotic' : ''}">${chord.quality}</div>
-                        <div class="chord-function">${chord.function}</div>
                         ${chord.isNonStandard ? '<div class="chord-exotic-note">⚡ Exotic</div>' : ''}
                     </div>
                 `;
@@ -3387,8 +3316,7 @@ function displayChordType(type, chords, container = null) {
                         notes: chord.notes,
                         quality: chord.quality,
                         degree: chord.degree,
-                        roman: chord.roman,
-                        function: chord.function
+                        roman: chord.roman
                     });
                     highlightChordOnFretboard(chord);
                 });
@@ -3402,8 +3330,8 @@ function displayChordType(type, chords, container = null) {
             const chordElement = document.createElement('div');
             chordElement.className = `chord-item ${chord.isNonStandard ? 'non-standard' : ''}`;
             
-            // Use orange color for all chord degrees (consistent with organized types)
-            const functionColor = '#ff8c00'; // Orange color to match the theme
+            // Use simple neutral color for all chord degrees
+            const functionColor = '#6b7280'; // Neutral gray color
             const textColor = 'white'; // White text for good contrast
             
             // Add a tooltip for non-standard chords
@@ -3419,7 +3347,6 @@ function displayChordType(type, chords, container = null) {
                     <div class="chord-name ${chord.isNonStandard ? 'exotic' : ''}">${chord.name}</div>
                     <div class="chord-notes">${chord.notes.join(' - ')}</div>
                     <div class="chord-quality ${chord.isNonStandard ? 'exotic' : ''}">${chord.quality}</div>
-                    <div class="chord-function">${chord.function}</div>
                     ${chord.isNonStandard ? '<div class="chord-exotic-note">⚡ Exotic</div>' : ''}
                 </div>
             `;
@@ -3438,8 +3365,7 @@ function displayChordType(type, chords, container = null) {
                     notes: chord.notes,
                     quality: chord.quality,
                     degree: chord.degree,
-                    roman: chord.roman,
-                    function: chord.function
+                    roman: chord.roman
                 });
                 highlightChordOnFretboard(chord);
             });
@@ -3504,11 +3430,9 @@ function organizeChordsByQuality(chords, chordType) {
         } else if (chordType === 'ninths') {
             if (quality.toLowerCase().includes('major 9') || quality.includes('maj9')) {
                 quality = 'Major 9th';
-            } else if (quality.toLowerCase().includes('minor') && quality.includes('♭9')) {
-                quality = 'Minor ♭9th';
-            } else if (quality.toLowerCase().includes('minor 9') && !quality.toLowerCase().includes('♭5')) {
+            } else if (quality.toLowerCase().includes('minor 9')) {
                 quality = 'Minor 9th';
-            } else if (quality.toLowerCase().includes('dominant 9') || quality === '9' || (quality.includes('9') && !quality.includes('maj') && !quality.includes('m') && !quality.includes('♭5'))) {
+            } else if (quality.toLowerCase().includes('dominant 9') || quality === '9') {
                 quality = 'Dominant 9th';
             } else if (quality.toLowerCase().includes('half-diminished 9') || quality.includes('m9♭5')) {
                 quality = 'Half-Diminished 9th';
@@ -3516,13 +3440,11 @@ function organizeChordsByQuality(chords, chordType) {
                 quality = 'Diminished 9th';
             }
         } else if (chordType === 'elevenths') {
-            if (quality.toLowerCase().includes('major') && quality.includes('#11')) {
-                quality = 'Major #11th';
-            } else if (quality.toLowerCase().includes('major 11') || quality.includes('maj11')) {
+            if (quality.toLowerCase().includes('major 11') || quality.includes('maj11')) {
                 quality = 'Major 11th';
-            } else if (quality.toLowerCase().includes('minor 11') && !quality.toLowerCase().includes('♭5')) {
+            } else if (quality.toLowerCase().includes('minor 11')) {
                 quality = 'Minor 11th';
-            } else if (quality.toLowerCase().includes('dominant 11') || quality === '11' || (quality.includes('11') && !quality.includes('maj') && !quality.includes('m') && !quality.includes('♭5'))) {
+            } else if (quality.toLowerCase().includes('dominant 11') || quality === '11') {
                 quality = 'Dominant 11th';
             } else if (quality.toLowerCase().includes('half-diminished 11') || quality.includes('m11♭5')) {
                 quality = 'Half-Diminished 11th';
@@ -3531,16 +3453,10 @@ function organizeChordsByQuality(chords, chordType) {
             }
         } else if (chordType === 'thirteenths') {
             if (quality.toLowerCase().includes('major 13') || quality.includes('maj13')) {
-                if (quality.includes('#11')) {
-                    quality = 'Major 13th #11th';
-                } else {
-                    quality = 'Major 13th';
-                }
-            } else if (quality.toLowerCase().includes('minor') && quality.includes('♭13')) {
-                quality = 'Minor ♭13th';
-            } else if (quality.toLowerCase().includes('minor 13') && !quality.toLowerCase().includes('♭5')) {
+                quality = 'Major 13th';
+            } else if (quality.toLowerCase().includes('minor 13')) {
                 quality = 'Minor 13th';
-            } else if (quality.toLowerCase().includes('dominant 13') || quality === '13' || (quality.includes('13') && !quality.includes('maj') && !quality.includes('m') && !quality.includes('♭5'))) {
+            } else if (quality.toLowerCase().includes('dominant 13') || quality === '13') {
                 quality = 'Dominant 13th';
             } else if (quality.toLowerCase().includes('half-diminished 13') || quality.includes('m13♭5')) {
                 quality = 'Half-Diminished 13th';
@@ -3577,9 +3493,9 @@ function organizeChordsByQuality(chords, chordType) {
         'Major 6th', 'Minor 6th',
         'Sus2', 'Sus4',
         'Major 7sus4', 'Dominant 7sus4',
-        'Major 9th', 'Minor 9th', 'Minor ♭9th', 'Dominant 9th', 'Half-Diminished 9th', 'Diminished 9th',
-        'Major 11th', 'Major #11th', 'Minor 11th', 'Dominant 11th', 'Half-Diminished 11th', 'Diminished 11th',
-        'Major 13th', 'Major 13th #11th', 'Minor 13th', 'Minor ♭13th', 'Dominant 13th', 'Half-Diminished 13th', 'Diminished 13th'
+        'Major 9th', 'Minor 9th', 'Dominant 9th', 'Half-Diminished 9th', 'Diminished 9th',
+        'Major 11th', 'Minor 11th', 'Dominant 11th', 'Half-Diminished 11th', 'Diminished 11th',
+        'Major 13th', 'Minor 13th', 'Dominant 13th', 'Half-Diminished 13th', 'Diminished 13th'
     ];
     
     // Find which quality contains the degree 1 chord
@@ -4997,239 +4913,3 @@ window.UIComponents = {
     openHelpModal,
     closeHelpModal
 };
-
-// Function to display chords in sequential order (1-7)
-function displayChordTypeSequential(type, chords, container = null) {
-    const chordsList = container || document.getElementById('chords-list');
-    if (!chordsList || !chords) return;
-    
-    chordsList.innerHTML = '';
-    
-    // Sort chords by degree for sequential display
-    const sortedChords = [...chords].sort((a, b) => {
-        const degreeA = a.degree || 0;
-        const degreeB = b.degree || 0;
-        return degreeA - degreeB;
-    });
-    
-    // Create section header for sequential view
-    const sectionHeader = document.createElement('div');
-    sectionHeader.className = 'chord-type-section';
-    sectionHeader.innerHTML = `
-        <h4 class="chord-type-title">${getChordTypeTitle(type)} - Sequential Order</h4>
-        <p class="chord-type-description">${sortedChords.length} chord${sortedChords.length > 1 ? 's' : ''} from scale degrees 1-7</p>
-    `;
-    chordsList.appendChild(sectionHeader);
-    
-    // Create container for chords
-    const sectionContainer = document.createElement('div');
-    sectionContainer.className = 'chord-type-container';
-    chordsList.appendChild(sectionContainer);
-    
-    // Display chords in sequential order
-    sortedChords.forEach((chord, index) => {
-        const chordElement = document.createElement('div');
-        chordElement.className = `chord-item ${chord.isNonStandard ? 'non-standard' : ''}`;
-        
-        // Use orange color for all chord degrees
-        const functionColor = '#ff8c00'; // Orange color to match the theme
-        const textColor = 'white'; // White text for good contrast
-        
-        // Add a tooltip for non-standard chords
-        const tooltip = chord.isNonStandard ? 
-            `title="Non-standard chord: ${chord.intervals.map(i => MusicTheory.getIntervalName(i)).join(', ')}"` : '';
-        
-        chordElement.innerHTML = `
-            <div class="chord-degree" style="background-color: ${functionColor}; color: ${textColor};">
-                <span class="degree-number">${chord.degree}</span>
-                <span class="roman-numeral">${chord.roman}</span>
-            </div>
-            <div class="chord-info" ${tooltip}>
-                <div class="chord-name ${chord.isNonStandard ? 'exotic' : ''}">${chord.name}</div>
-                <div class="chord-notes">${chord.notes.join(' - ')}</div>
-                <div class="chord-quality ${chord.isNonStandard ? 'exotic' : ''}">${chord.quality}</div>
-                <div class="chord-function">${chord.function}</div>
-                ${chord.isNonStandard ? '<div class="chord-exotic-note">⚡ Exotic</div>' : ''}
-            </div>
-        `;
-        
-        // Add click handler for chord modal
-        chordElement.addEventListener('click', (e) => {
-            // Only prevent modal if clicking directly on audio control buttons
-            if (window.audioControls && (e.target.closest('.play-btn') || e.target.closest('.direction-btn'))) {
-                return; // Let audio controls handle it
-            }
-            
-            console.log('Sequential chord clicked:', chord);
-            highlightChordOnFretboard(chord);
-        });
-        
-        sectionContainer.appendChild(chordElement);
-    });
-}
-
-// Function to display all chord types in sequential order for the sequential view mode
-function displayAllChordsSequential() {
-    const chordsList = document.getElementById('chords-list');
-    if (!chordsList) return;
-    
-    chordsList.innerHTML = '';
-    
-    // Helper function to get proper Roman numeral
-    function getProperRomanNumeral(degree, chord) {
-        const quality = chord.quality ? chord.quality.toLowerCase() : '';
-        
-        // Determine the base quality for Roman numeral capitalization
-        let baseQuality = '';
-        if (quality.includes('major') || quality.includes('maj') || quality.includes('augmented') || quality.includes('aug')) {
-            if (quality.includes('augmented') || quality.includes('aug')) {
-                baseQuality = 'augmented';
-            } else {
-                baseQuality = 'major';
-            }
-        } else if (quality.includes('minor') || quality.includes('min')) {
-            baseQuality = 'minor';
-        } else if (quality.includes('diminished') || quality.includes('dim')) {
-            if (quality.includes('half-diminished') || quality.includes('half') || quality.includes('ø')) {
-                baseQuality = 'half-diminished';
-            } else {
-                baseQuality = 'diminished';
-            }
-        } else if (quality.includes('sus')) {
-            // Sus chords are neither major nor minor, typically use uppercase
-            baseQuality = 'major';
-        } else {
-            // Default to major for unknown qualities
-            baseQuality = 'major';
-        }
-        
-        const romanNumeral = window.IntervalUtils.getRomanNumeral(degree, baseQuality);
-        
-        // Format symbols with proper styling for display
-        if (romanNumeral.includes('°')) {
-            // Replace ° with superscript styled version
-            return romanNumeral.replace('°', '<sup>°</sup>');
-        } else if (romanNumeral.includes('ø')) {
-            // Replace ø with properly styled version
-            return romanNumeral.replace('ø', '<sup>ø</sup>');
-        } else if (romanNumeral.includes('+')) {
-            // Replace + with superscript styled version
-            return romanNumeral.replace('+', '<sup>+</sup>');
-        }
-        
-        return romanNumeral;
-    }
-    
-    // Get all available chord types from the current context
-    const chordTypes = [
-        { type: 'triads', chords: window.currentChords?.triads || [] },
-        { type: 'sevenths', chords: window.currentChords?.sevenths || [] },
-        { type: 'sixths', chords: window.currentChords?.sixths || [] },
-        { type: 'sus2', chords: window.currentChords?.sus2 || [] },
-        { type: 'sus4', chords: window.currentChords?.sus4 || [] },
-        { type: 'sus4-sevenths', chords: window.currentChords?.sus4Sevenths || [] },
-        { type: 'ninths', chords: window.currentChords?.ninths || [] },
-        { type: 'elevenths', chords: window.currentChords?.elevenths || [] },
-        { type: 'thirteenths', chords: window.currentChords?.thirteenths || [] }
-    ];
-    
-    // Create header for sequential view
-    const header = document.createElement('div');
-    header.className = 'chord-type-section';
-    header.innerHTML = `
-        <h4 class="chord-type-title">All Chords - Sequential Order (1-7)</h4>
-        <p class="chord-type-description">Chords organized by scale degree from each chord type</p>
-    `;
-    chordsList.appendChild(header);
-    
-    // Create a combined array of all chords with their types
-    const allChords = [];
-    chordTypes.forEach(({ type, chords }) => {
-        if (chords.length > 0) {
-            chords.forEach(chord => {
-                allChords.push({
-                    ...chord,
-                    chordType: type
-                });
-            });
-        }
-    });
-    
-    // Group chords by degree
-    const chordsByDegree = {};
-    allChords.forEach(chord => {
-        const degree = chord.degree || 0;
-        if (!chordsByDegree[degree]) {
-            chordsByDegree[degree] = [];
-        }
-        chordsByDegree[degree].push(chord);
-    });
-    
-    // Display chords grouped by degree
-    for (let degree = 1; degree <= 7; degree++) {
-        if (chordsByDegree[degree] && chordsByDegree[degree].length > 0) {
-            // Create degree section
-            const degreeSection = document.createElement('div');
-            degreeSection.className = 'chord-degree-section';
-            degreeSection.innerHTML = `
-                <h5 class="chord-degree-title">Scale Degree ${degree}</h5>
-            `;
-            chordsList.appendChild(degreeSection);
-            
-            // Create container for this degree's chords
-            const degreeContainer = document.createElement('div');
-            degreeContainer.className = 'chord-degree-container';
-            chordsList.appendChild(degreeContainer);
-            
-            // Sort chords within this degree by chord type complexity
-            const typeOrder = ['triads', 'sixths', 'sus2', 'sus4', 'sevenths', 'sus4-sevenths', 'ninths', 'elevenths', 'thirteenths'];
-            chordsByDegree[degree].sort((a, b) => {
-                const orderA = typeOrder.indexOf(a.chordType);
-                const orderB = typeOrder.indexOf(b.chordType);
-                return orderA - orderB;
-            });
-            
-            chordsByDegree[degree].forEach(chord => {
-                const chordElement = document.createElement('div');
-                chordElement.className = `chord-item ${chord.isNonStandard ? 'non-standard' : ''}`;
-                
-                // Use orange color for all chord degrees
-                const functionColor = '#ff8c00';
-                const textColor = 'white';
-                
-                // Get the proper Roman numeral
-                const properRoman = getProperRomanNumeral(chord.degree, chord);
-                
-                const tooltip = chord.isNonStandard ? 
-                    `title="Non-standard chord: ${chord.intervals.map(i => MusicTheory.getIntervalName(i)).join(', ')}"` : '';
-                
-                chordElement.innerHTML = `
-                    <div class="chord-degree" style="background-color: ${functionColor}; color: ${textColor};">
-                        <span class="degree-number">${chord.degree}</span>
-                        <span class="roman-numeral">${properRoman}</span>
-                    </div>
-                    <div class="chord-info" ${tooltip}>
-                        <div class="chord-name ${chord.isNonStandard ? 'exotic' : ''}">${chord.name}</div>
-                        <div class="chord-notes">${chord.notes.join(' - ')}</div>
-                        <div class="chord-quality ${chord.isNonStandard ? 'exotic' : ''}">${chord.quality}</div>
-                        <div class="chord-function">${chord.function}</div>
-                        <div class="chord-type-label">${getChordTypeTitle(chord.chordType)}</div>
-                        ${chord.isNonStandard ? '<div class="chord-exotic-note">⚡ Exotic</div>' : ''}
-                    </div>
-                `;
-                
-                // Add click handler for chord modal
-                chordElement.addEventListener('click', (e) => {
-                    if (window.audioControls && (e.target.closest('.play-btn') || e.target.closest('.direction-btn'))) {
-                        return;
-                    }
-                    
-                    console.log('Sequential all chords clicked:', chord);
-                    highlightChordOnFretboard(chord);
-                });
-                
-                degreeContainer.appendChild(chordElement);
-            });
-        }
-    }
-}
