@@ -313,7 +313,7 @@ const modeMetadata = {
     },
     'super-locrian': { 
         mood: 'Unstable', 
-        description: 'The ultimate altered sound with maximum harmonic instability and tension. Chaotic, intensely unstable, and creates overwhelming urgency for resolution.', 
+        description: 'Also known as Super Locrian, this is commonly called the altered scale. The ultimate altered sound with maximum harmonic instability and tension. Chaotic, intensely unstable, and creates overwhelming urgency for resolution.', 
         applications: ['Jazz over altered dominant chords', 'maximum tension before resolution'] 
     },
     
@@ -347,7 +347,7 @@ const modeMetadata = {
 // Mode Numbers and Names
 const modeNumbers = {
     // Major modes
-    'major': { number: 1, properName: 'Ionian' },
+    'major': { number: 1, properName: 'Ionian (Major)' },
     'dorian': { number: 2, properName: 'Dorian' },
     'phrygian': { number: 3, properName: 'Phrygian' },
     'lydian': { number: 4, properName: 'Lydian' },
@@ -371,7 +371,7 @@ const modeNumbers = {
     'lydian-dominant': { number: 4, properName: 'Lydian Dominant' },
     'mixolydian-b6': { number: 5, properName: 'Mixolydian ♭6' },
     'locrian-natural-2': { number: 6, properName: 'Locrian ♮2' },
-    'super-locrian': { number: 7, properName: 'Super Locrian' },
+    'super-locrian': { number: 7, properName: 'Altered' },
     
     // Diminished modes
     'wh-diminished': { number: 1, properName: 'WH Diminished' },
