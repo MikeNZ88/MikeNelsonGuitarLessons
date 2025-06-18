@@ -3330,8 +3330,8 @@ function displayChordType(type, chords, container = null) {
             const chordElement = document.createElement('div');
             chordElement.className = `chord-item ${chord.isNonStandard ? 'non-standard' : ''}`;
             
-            // Use simple neutral color for all chord degrees
-            const functionColor = '#6b7280'; // Neutral gray color
+            // Use orange color for all chord degrees like triads and sevenths
+            const functionColor = '#d97706'; // Orange color to match other chord types
             const textColor = 'white'; // White text for good contrast
             
             // Add a tooltip for non-standard chords

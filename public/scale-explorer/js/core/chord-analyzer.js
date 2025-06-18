@@ -782,34 +782,29 @@ function calculateDiminishedScaleSeventhChords(scale, scaleType) {
 }
 
 function calculateSixthChords(scale, scaleType = 'major', category = null) {
-    if (!scale || scale.length < 6) {
-        return [];
-    }
+    if (!scale || scale.length < 7) return [];
     
-    // Only calculate 6th chords for major modes
-    if (scaleType !== 'major' || !category || category !== 'major-modes') {
-        return [];
-    }
-
+    // Calculate 6th chords for all scale types, not just major
+    // 6th chords are typically found on degrees I, ii, iii, IV, V, vi in most scales
+    const sixthDegrees = [1, 2, 3, 4, 5, 6];
     const sixthChords = [];
     
-    // Only build 6th chords on degrees that naturally have a major 6th interval
-    // In major scale: I6, ii6, IV6, V6 (degrees 1, 2, 4, 5)
-    const sixthChordDegrees = [0, 1, 3, 4]; // I, ii, IV, V (0-indexed)
-    
-    sixthChordDegrees.forEach(i => {
-        const root = scale[i];
+    for (const degree of sixthDegrees) {
+        const rootIndex = degree - 1;
+        if (rootIndex >= scale.length) continue;
         
-        // Calculate scale degrees for chord tones
-        const thirdIndex = (i + 2) % scale.length;
-        const fifthIndex = (i + 4) % scale.length;
-        const sixthIndex = (i + 5) % scale.length; // 6th is the same as 13th but simpler
+        const root = scale[rootIndex];
+        
+        // Calculate sixth chord: root + 3rd + 5th + 6th
+        const thirdIndex = (rootIndex + 2) % scale.length;
+        const fifthIndex = (rootIndex + 4) % scale.length;
+        const sixthIndex = (rootIndex + 5) % scale.length;
         
         const third = scale[thirdIndex];
         const fifth = scale[fifthIndex];
         const sixth = scale[sixthIndex];
         
-        // Calculate intervals from the chord root
+        // Calculate intervals from root
         let thirdInterval = window.IntervalUtils.getIntervalBetweenNotes(root, third);
         let fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
         let sixthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, sixth);
@@ -822,45 +817,50 @@ function calculateSixthChords(scale, scaleType = 'major', category = null) {
         while (sixthInterval > 11) sixthInterval -= 12;
         while (sixthInterval < 8) sixthInterval += 12;
         
+        // Only include chords with natural 6th (9 semitones from root)
+        if (sixthInterval !== 9) continue;
+        
         // Analyze the 6th chord
         const chordAnalysis = analyzeSixthChord(thirdInterval, fifthInterval, sixthInterval);
         
         sixthChords.push({
-            degree: i + 1,
-            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, i + 1, chordAnalysis.quality),
+            degree: degree,
+            roman: window.IntervalUtils.getRomanNumeralWithAccidentals(scale, scale[0], root, degree, chordAnalysis.quality),
             root: root,
             notes: [root, third, fifth, sixth],
             quality: chordAnalysis.quality,
             symbol: chordAnalysis.symbol,
             name: `${root}${chordAnalysis.symbol}`,
             intervals: [thirdInterval, fifthInterval, sixthInterval],
-            function: window.IntervalUtils.getChordFunction(i + 1, scaleType, category),
+            function: window.IntervalUtils.getChordFunction(degree, scaleType, category),
             isNonStandard: chordAnalysis.isNonStandard,
             description: chordAnalysis.description
         });
-    });
+    }
     
     return sixthChords;
 }
 
 function analyzeSixthChord(thirdInterval, fifthInterval, sixthInterval) {
-    const quality = thirdInterval === 4 ? 'Major6' : 'minor6';
+    // Major 6th chord: Major 3rd + Perfect 5th + Major 6th
+    // Minor 6th chord: Minor 3rd + Perfect 5th + Major 6th
+    const quality = thirdInterval === 4 ? 'Major 6th' : 'minor 6th';
     const symbol = thirdInterval === 4 ? '6' : 'm6';
-    return { quality, symbol };
+    return { quality, symbol, isNonStandard: false, description: `${quality} chord` };
 }
 
 function calculateSus2Chords(scale, scaleType = 'major', category = null) {
     if (!scale || scale.length < 7) return [];
     
-    // Only calculate sus2 chords for major modes
-    if (scaleType !== 'major') return [];
-    
-    // Sus2 chords are typically found on degrees I, ii, IV, V, vi in major
+    // Calculate sus2 chords for all scale types, not just major
+    // Sus2 chords are typically found on degrees I, ii, IV, V, vi in most scales
     const sus2Degrees = [1, 2, 4, 5, 6];
     const chords = [];
     
     for (const degree of sus2Degrees) {
         const rootIndex = degree - 1;
+        if (rootIndex >= scale.length) continue;
+        
         const root = scale[rootIndex];
         
         // Calculate sus2 chord: root + 2nd + 5th
@@ -870,11 +870,20 @@ function calculateSus2Chords(scale, scaleType = 'major', category = null) {
         const second = scale[secondIndex];
         const fifth = scale[fifthIndex];
         
-        const notes = [root, second, fifth];
-        
         // Calculate intervals from root
-        const secondInterval = window.IntervalUtils.getIntervalBetweenNotes(root, second);
-        const fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
+        let secondInterval = window.IntervalUtils.getIntervalBetweenNotes(root, second);
+        let fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
+        
+        // Fix octave wrapping
+        while (secondInterval > 6) secondInterval -= 12;
+        while (secondInterval < 0) secondInterval += 12;
+        while (fifthInterval > 11) fifthInterval -= 12;
+        while (fifthInterval < 4) fifthInterval += 12;
+        
+        // Only include sus2 chords with perfect 5th (7 semitones)
+        if (fifthInterval !== 7) continue;
+        
+        const notes = [root, second, fifth];
         
         const analysis = analyzeSus2Chord(secondInterval, fifthInterval);
         const function_ = window.IntervalUtils.getChordFunction(degree, scaleType, category);
@@ -897,24 +906,24 @@ function calculateSus2Chords(scale, scaleType = 'major', category = null) {
 }
 
 function analyzeSus2Chord(secondInterval, fifthInterval) {
-    // Sus2 chords are neither major nor minor, but we can categorize by fifth
-    const quality = fifthInterval === 7 ? 'Sus2' : 'Sus2♭5';
-    const symbol = fifthInterval === 7 ? 'sus2' : 'sus2♭5';
+    // Sus2 chords should only have perfect 5th
+    const quality = 'Sus2';
+    const symbol = 'sus2';
     return { quality, symbol };
 }
 
 function calculateSus4Chords(scale, scaleType = 'major', category = null) {
     if (!scale || scale.length < 7) return [];
     
-    // Only calculate sus4 chords for major modes
-    if (scaleType !== 'major') return [];
-    
-    // Sus4 chords are typically found on degrees I, ii, iii, V, vi in major
+    // Calculate sus4 chords for all scale types, not just major
+    // Sus4 chords are typically found on degrees I, ii, iii, V, vi in most scales
     const sus4Degrees = [1, 2, 3, 5, 6];
     const chords = [];
     
     for (const degree of sus4Degrees) {
         const rootIndex = degree - 1;
+        if (rootIndex >= scale.length) continue;
+        
         const root = scale[rootIndex];
         
         // Calculate sus4 chord: root + 4th + 5th
@@ -924,11 +933,20 @@ function calculateSus4Chords(scale, scaleType = 'major', category = null) {
         const fourth = scale[fourthIndex];
         const fifth = scale[fifthIndex];
         
-        const notes = [root, fourth, fifth];
-        
         // Calculate intervals from root
-        const fourthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fourth);
-        const fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
+        let fourthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fourth);
+        let fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
+        
+        // Fix octave wrapping
+        while (fourthInterval > 6) fourthInterval -= 12;
+        while (fourthInterval < 4) fourthInterval += 12;
+        while (fifthInterval > 11) fifthInterval -= 12;
+        while (fifthInterval < 4) fifthInterval += 12;
+        
+        // Only include sus4 chords with perfect 5th (7 semitones)
+        if (fifthInterval !== 7) continue;
+        
+        const notes = [root, fourth, fifth];
         
         const analysis = analyzeSus4Chord(fourthInterval, fifthInterval);
         const function_ = window.IntervalUtils.getChordFunction(degree, scaleType, category);
@@ -951,24 +969,24 @@ function calculateSus4Chords(scale, scaleType = 'major', category = null) {
 }
 
 function analyzeSus4Chord(fourthInterval, fifthInterval) {
-    // Sus4 chords are neither major nor minor, but we can categorize by fifth
-    const quality = fifthInterval === 7 ? 'Sus4' : 'Sus4♭5';
-    const symbol = fifthInterval === 7 ? 'sus4' : 'sus4♭5';
+    // Sus4 chords should only have perfect 5th
+    const quality = 'Sus4';
+    const symbol = 'sus4';
     return { quality, symbol };
 }
 
 function calculateSus4SeventhChords(scale, scaleType = 'major', category = null) {
     if (!scale || scale.length < 7) return [];
     
-    // Only calculate 7sus4 chords for major modes
-    if (scaleType !== 'major') return [];
-    
-    // 7sus4 chords are typically found on degrees I, ii, iii, V, vi in major
+    // Calculate 7sus4 chords for all scale types, not just major
+    // 7sus4 chords are typically found on degrees I, ii, iii, V, vi in most scales
     const sus4SeventhDegrees = [1, 2, 3, 5, 6];
     const chords = [];
     
     for (const degree of sus4SeventhDegrees) {
         const rootIndex = degree - 1;
+        if (rootIndex >= scale.length) continue;
+        
         const root = scale[rootIndex];
         
         // Calculate 7sus4 chord: root + 4th + 5th + 7th
@@ -980,12 +998,23 @@ function calculateSus4SeventhChords(scale, scaleType = 'major', category = null)
         const fifth = scale[fifthIndex];
         const seventh = scale[seventhIndex];
         
-        const notes = [root, fourth, fifth, seventh];
-        
         // Calculate intervals from root
-        const fourthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fourth);
-        const fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
-        const seventhInterval = window.IntervalUtils.getIntervalBetweenNotes(root, seventh);
+        let fourthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fourth);
+        let fifthInterval = window.IntervalUtils.getIntervalBetweenNotes(root, fifth);
+        let seventhInterval = window.IntervalUtils.getIntervalBetweenNotes(root, seventh);
+        
+        // Fix octave wrapping
+        while (fourthInterval > 6) fourthInterval -= 12;
+        while (fourthInterval < 4) fourthInterval += 12;
+        while (fifthInterval > 11) fifthInterval -= 12;
+        while (fifthInterval < 4) fifthInterval += 12;
+        while (seventhInterval > 11) seventhInterval -= 12;
+        while (seventhInterval < 9) seventhInterval += 12;
+        
+        // Only include sus4 seventh chords with perfect 5th (7 semitones)
+        if (fifthInterval !== 7) continue;
+        
+        const notes = [root, fourth, fifth, seventh];
         
         const analysis = analyzeSus4SeventhChord(fourthInterval, fifthInterval, seventhInterval);
         const function_ = window.IntervalUtils.getChordFunction(degree, scaleType, category);
