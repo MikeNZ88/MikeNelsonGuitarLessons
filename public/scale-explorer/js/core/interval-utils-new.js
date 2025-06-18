@@ -141,8 +141,9 @@ function getIntervals(notes, root, scaleType = 'major', mode = null) {
         }
         // Harmonic minor modes: #5 instead of b6
         else if (semitones === 8) { // Minor sixth - can be b6 or #5
-            if (mode === 'ionian-sharp-5' || scaleType === 'ionian-sharp-5') {
-                interval = '#5'; // Ionian #5 uses #5, not b6
+            if (mode === 'ionian-sharp-5' || scaleType === 'ionian-sharp-5' ||
+                mode === 'lydian-augmented' || scaleType === 'lydian-augmented') {
+                interval = '#5'; // Ionian #5 and Lydian Augmented use #5, not b6
             }
         }
         
