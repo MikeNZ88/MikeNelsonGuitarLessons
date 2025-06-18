@@ -656,20 +656,21 @@ color: #f97316;
 font-weight: 500;
 }
 .legend-color {
-width: 12px;
-height: 12px;
-border-radius: 50%;
-margin-right: 8px;
-border: 1px solid #f97316;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    border: 1px solid #f97316;
+    background-color: white;
 }
 .legend-shared {
-background: #10b981;
+    background: #10b981;
 }
 .legend-scale1 {
-background: #3b82f6;
+    background: #3b82f6;
 }
 .legend-scale2 {
-background: #8b5cf6;
+    background: #8b5cf6;
 }
 
 /* === ENHANCED MODAL STYLES === */
@@ -2574,13 +2575,13 @@ font-size: 0.75rem !important;
 padding: 0.25rem !important;
 }
 .legend-color.shared-note {
-background-color: #3b82f6;
+background-color: #3b82f6 !important;
 }
 .legend-color.primary-only {
-background-color: #f97316;
+background-color: #f97316 !important;
 }
 .legend-color.comparison-only {
-background-color: #dc2626;
+background-color: #dc2626 !important;
 }
 /* === CLICKABLE CHORDS STYLING === */
 .clickable-chord {
@@ -4883,4 +4884,25 @@ font-weight: 500;
 text-transform: uppercase;
 letter-spacing: 0.5px;
 margin-top: 4px;
+}
+
+.comparison-legend .legend-color.shared-note {
+background-color: #3b82f6 !important;
+}
+.comparison-legend .legend-color.primary-only {
+background-color: #f97316 !important;
+}
+.comparison-legend .legend-color.comparison-only {
+background-color: #dc2626 !important;
+}
+
+/* Original selectors for backward compatibility */
+.legend-color.shared-note {
+background-color: #3b82f6 !important;
+}
+.legend-color.primary-only {
+background-color: #f97316 !important;
+}
+.legend-color.comparison-only {
+background-color: #dc2626 !important;
 }
