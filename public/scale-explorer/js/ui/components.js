@@ -2947,7 +2947,6 @@ function displayTraditionalChords(scale, scaleType, category) {
         // For major modes - use modal theory with consolidated format
         if (category === 'major-modes') {
             let modalInfo = '';
-            console.log('Debug - In major-modes section, scaleType:', scaleType);
 
             // Define modal information for each mode
             if (scaleType === 'ionian' || scaleType === 'major') {
@@ -3005,7 +3004,7 @@ function displayTraditionalChords(scale, scaleType, category) {
             return `
                 <div class="modal-theory-note">
                     <p><strong>Modal Theory:</strong></p>
-                    <p>${modalInfo}</p>
+                    <div>${modalInfo}</div>
                 </div>
             `;
         }
@@ -3070,7 +3069,7 @@ function displayTraditionalChords(scale, scaleType, category) {
             return `
                 <div class="modal-theory-note">
                     <p><strong>Modal Theory:</strong></p>
-                    <p>${modalInfo}</p>
+                    <div>${modalInfo}</div>
                 </div>
             `;
         }
@@ -3135,7 +3134,7 @@ function displayTraditionalChords(scale, scaleType, category) {
             return `
                 <div class="modal-theory-note">
                     <p><strong>Modal Theory:</strong></p>
-                    <p>${modalInfo}</p>
+                    <div>${modalInfo}</div>
                 </div>
             `;
         }
@@ -3149,8 +3148,7 @@ function displayTraditionalChords(scale, scaleType, category) {
     }
 
     const theoryNote = getTheoryExplanation(scaleType, category);
-    console.log('Debug - scaleType:', scaleType, 'category:', category, 'theoryNote:', theoryNote);
-
+    
     // Combine notes
     const combinedNotes = scaleNote + theoryNote;
 
