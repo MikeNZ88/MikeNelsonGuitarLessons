@@ -10,9 +10,6 @@ let currentState = {
     colorsVisible: true
 };
 
-// Initialize view type
-window.currentViewType = 'quality'; // Default to quality view
-
 // Initialize application
 function initializeApp() {
     console.log('Initializing Guitar Scale Explorer...');
@@ -45,12 +42,6 @@ function setupEventListeners() {
     if (modeSelect) {
         modeSelect.addEventListener('change', handleModeChange);
     }
-    
-    // View toggle buttons (Quality and Sequential Order)
-    const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
-    viewToggleBtns.forEach(btn => {
-        btn.addEventListener('click', handleViewToggle);
-    });
     
     // Modal close handlers
     const modalOverlay = document.getElementById('fretboard-modal');
@@ -104,30 +95,6 @@ function handleCategoryChange(event) {
 function handleModeChange(event) {
     currentState.mode = event.target.value;
     updateScale();
-}
-
-function handleViewToggle(event) {
-    const viewType = event.target.dataset.view;
-    
-    // Update active state
-    const viewToggleBtns = document.querySelectorAll('.view-toggle-btn');
-    viewToggleBtns.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
-    
-    // Store the current view type globally
-    window.currentChordView = viewType;
-    
-    // Re-render the current chord type with the new view
-    const activeChordBtn = document.querySelector('.chord-type-btn.active');
-    if (activeChordBtn) {
-        // Trigger a re-render of the current chord type
-        const chordType = activeChordBtn.dataset.type;
-        
-        // Get the current chords from the last updateScale call
-        if (window.currentChords && window.currentChords[chordType]) {
-            UIComponents.displayChordType(chordType, window.currentChords[chordType]);
-        }
-    }
 }
 
 // Debug function to check state
