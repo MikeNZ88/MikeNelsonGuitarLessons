@@ -147,6 +147,45 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
         scale.push(noteName);
     }
     
+    // Post-process for readability in specific scale types
+    if (scaleType === 'melodic-minor' || scaleType === 'dorian-b2' || scaleType === 'lydian-augmented' || 
+        scaleType === 'lydian-dominant' || scaleType === 'mixolydian-b6' || scaleType === 'locrian-natural-2') {
+        // For melodic minor and its modes, convert problematic double accidentals to readable enharmonics
+        for (let i = 0; i < scale.length; i++) {
+            const note = scale[i];
+            
+            // Convert double sharps to flats for readability
+            if (note.includes('##')) {
+                const enharmonicMap = {
+                    'C##': 'D', 'D##': 'E', 'E##': 'F#', 'F##': 'G', 'G##': 'A', 'A##': 'B', 'B##': 'C#'
+                };
+                if (enharmonicMap[note]) {
+                    scale[i] = enharmonicMap[note];
+                }
+            }
+            
+            // Convert problematic enharmonic equivalents to natural notes
+            if (note === 'B#') {
+                scale[i] = 'C';
+            }
+            if (note === 'E#') {
+                scale[i] = 'F';
+            }
+            if (note === 'Cb') {
+                scale[i] = 'B';
+            }
+            if (note === 'Fb') {
+                scale[i] = 'E';
+            }
+            
+            // For specific cases, prefer flats over sharps for melodic minor readability
+            // But preserve F# for F# keys
+            if (root !== 'F#' && note === 'A#') {
+                scale[i] = 'Bb';
+            }
+        }
+    }
+
     if (scaleType === 'mixolydian') {
         console.log('Final scale:', scale);
     }

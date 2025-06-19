@@ -1143,7 +1143,7 @@ function createRelatedModes(currentMode, category, currentKey) {
         
         // Calculate the parent major scale using the final parent root
         const majorFormula = [2, 2, 1, 2, 2, 2, 1]; // Major scale formula
-        const parentMajorScale = calculateScaleWithConsistentSpelling(finalParentRoot, majorFormula, 'major', spellingConvention);
+        const parentMajorScale = MusicTheory.calculateScale(finalParentRoot, majorFormula, 'major');
         
         console.log('Parent major scale:', parentMajorScale);
         
@@ -1233,7 +1233,7 @@ function createRelatedModes(currentMode, category, currentKey) {
         
         // Calculate the whole tone scale from the current key
         const wholeToneFormula = categoryData.formulas['whole-tone-1']; // All have same formula [2,2,2,2,2,2]
-        const wholeToneScale = calculateScaleWithConsistentSpelling(currentKey, wholeToneFormula, 'whole-tone', spellingConvention);
+        const wholeToneScale = MusicTheory.calculateScale(currentKey, wholeToneFormula, 'whole-tone');
         
         // Create 6 buttons - one for each rotation of the whole tone scale
         wholeToneScale.forEach((startingNote, index) => {
@@ -1360,7 +1360,7 @@ function createRelatedModes(currentMode, category, currentKey) {
     // Calculate the parent scale with consistent spelling
     const scaleType = getScaleTypeFromCategory(category);
     const parentFormula = categoryData.formulas[categoryData.modes[0]]; // Get the first mode's formula (the parent scale)
-    const parentScaleNotes = calculateScaleWithConsistentSpelling(finalParentRoot, parentFormula, scaleType, spellingConvention);
+    const parentScaleNotes = MusicTheory.calculateScale(finalParentRoot, parentFormula, scaleType);
     
     // Clean up problematic enharmonic equivalents in parent scale for pentatonic modes
     if (category === 'pentatonic') {
@@ -1615,7 +1615,7 @@ function getProperEnharmonicSpelling(note) {
 }
 
 // Helper function to calculate scale with consistent enharmonic spelling
-function calculateScaleWithConsistentSpelling(root, formula, scaleType, spellingConvention) {
+function calculateScaleWithConsistentSpelling(root, formula, scaleType, spellingConvention, category = null) {
     if (!formula || !Array.isArray(formula)) {
         console.warn('Invalid formula provided to calculateScaleWithConsistentSpelling:', formula);
         return [];
@@ -1636,6 +1636,11 @@ function calculateScaleWithConsistentSpelling(root, formula, scaleType, spelling
     // Special handling for altered scale - use chromatic spelling for practical enharmonics
     if (scaleType === 'super-locrian') {
         return calculateAlteredScaleSpelling(root, formula, spellingConvention);
+    }
+    
+    // Special handling for melodic minor scales - use flat-preferred spelling
+    if (scaleType === 'melodic-minor' || category === 'melodic-minor-modes') {
+        return calculateMelodicMinorScaleSpelling(root, formula, spellingConvention);
     }
     
     // Define the note names in order for proper scale degree calculation
@@ -1902,24 +1907,11 @@ function calculateAugmentedScaleSpelling(root, formula, spellingConvention) {
 }
 
 function getParentScaleName(category, parentRoot) {
-    console.log('Getting parent scale name for:', category, parentRoot);
-    
-    if (!category || !parentRoot) return '';
-    
     const categoryData = MusicConstants.scaleCategories[category];
-    if (!categoryData) return '';
-    
-    // For traditional modes (major, minor, dorian, etc.)
-    if (category === 'church-modes' || category === 'natural-minor-modes') {
-        return `All modes derive from the same scale, starting on different degrees`;
+    if (!categoryData) {
+        return `${parentRoot} Scale`;
     }
     
-    // For pentatonic modes
-    if (category === 'pentatonic') {
-        return `${parentRoot} Major Pentatonic`;
-    }
-    
-    // For other categories, use the category name
     return `${parentRoot} ${categoryData.name}`;
 }
 
@@ -4911,23 +4903,96 @@ function calculateAlteredScaleSpelling(root, formula, spellingConvention) {
 }
 
 function getParentScaleName(category, parentRoot) {
-    console.log('Getting parent scale name for:', category, parentRoot);
-    
-    if (!category || !parentRoot) return '';
-    
     const categoryData = MusicConstants.scaleCategories[category];
-    if (!categoryData) return '';
-    
-    // For traditional modes (major, minor, dorian, etc.)
-    if (category === 'church-modes' || category === 'natural-minor-modes') {
-        return `All modes derive from the same scale, starting on different degrees`;
+    if (!categoryData) {
+        return `${parentRoot} Scale`;
     }
     
-    // For pentatonic modes
-    if (category === 'pentatonic') {
-        return `${parentRoot} Major Pentatonic`;
-    }
-    
-    // For other categories, use the category name
     return `${parentRoot} ${categoryData.name}`;
+}
+
+// Special handling for melodic minor scales - use flat-preferred spelling
+function calculateMelodicMinorScaleSpelling(root, formula, spellingConvention) {
+    const noteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+    const noteToIndex = {
+        'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
+        'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
+        'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10,
+        'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
+    };
+    
+    // For F# root, use sharp spelling convention to maintain F# Altered
+    const shouldUseSharpSpelling = root === 'F#';
+    const effectiveSpellingConvention = shouldUseSharpSpelling ? 'sharp' : 'flat';
+    
+    // Find the root note's position in the note names array
+    const rootNoteName = root.charAt(0);
+    const rootNoteIndex = noteNames.indexOf(rootNoteName);
+    if (rootNoteIndex === -1) {
+        console.warn('Invalid root note:', root);
+        return [];
+    }
+    
+    // Get the chromatic index of the root
+    const rootChromaticIndex = noteToIndex[root];
+    if (rootChromaticIndex === undefined) {
+        console.warn('Invalid root note:', root);
+        return [];
+    }
+    
+    // Calculate scale notes based on scale degrees with conditional preference
+    const scale = [root]; // Start with the root
+    let currentChromaticIndex = rootChromaticIndex;
+    
+    for (let i = 0; i < formula.length - 1; i++) {
+        // Move to the next chromatic position
+        currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
+        
+        // Calculate which scale degree this should be (2nd, 3rd, 4th, etc.)
+        const scaleDegreeIndex = (rootNoteIndex + i + 1) % 7;
+        const baseNoteName = noteNames[scaleDegreeIndex];
+        const baseNoteChromatic = noteToIndex[baseNoteName];
+        
+        // Calculate the difference between where we are and where the base note is
+        const chromaticDifference = (currentChromaticIndex - baseNoteChromatic + 12) % 12;
+        
+        let noteName;
+        if (chromaticDifference === 0) {
+            // Perfect match - use the natural note
+            noteName = baseNoteName;
+        } else if (chromaticDifference === 1) {
+            // One semitone up - use convention-based preference
+            if (effectiveSpellingConvention === 'flat') {
+                // Use the next note with flat
+                const nextDegreeIndex = (scaleDegreeIndex + 1) % 7;
+                noteName = noteNames[nextDegreeIndex] + 'b';
+            } else {
+                // Use sharp
+                noteName = baseNoteName + '#';
+            }
+        } else if (chromaticDifference === 11) {
+            // One semitone down - use convention-based preference
+            if (effectiveSpellingConvention === 'sharp') {
+                // Use the previous note with sharp
+                const prevDegreeIndex = (scaleDegreeIndex - 1 + 7) % 7;
+                noteName = noteNames[prevDegreeIndex] + '#';
+            } else {
+                // Use flat
+                noteName = baseNoteName + 'b';
+            }
+        } else if (chromaticDifference === 2) {
+            // Two semitones up - avoid double sharp/flat, use chromatic spelling
+            noteName = getConsistentNoteSpelling(currentChromaticIndex, effectiveSpellingConvention);
+        } else if (chromaticDifference === 10) {
+            // Ten semitones up (two semitones down) - avoid double flat/sharp, use chromatic spelling
+            noteName = getConsistentNoteSpelling(currentChromaticIndex, effectiveSpellingConvention);
+        } else {
+            // For other intervals, use chromatic spelling based on convention
+            noteName = getConsistentNoteSpelling(currentChromaticIndex, effectiveSpellingConvention);
+        }
+        
+        scale.push(noteName);
+    }
+    
+    return scale;
 }
