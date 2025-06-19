@@ -93,6 +93,11 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
         return calculateDiminishedScale(root, formula, scaleType, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex);
     }
     
+    // Special handling for altered scale - use chromatic spelling to allow practical enharmonics
+    if (scaleType === 'super-locrian') {
+        return calculateAlteredScale(root, formula, rootChromaticIndex);
+    }
+    
     // Calculate scale notes based on scale degrees for regular scales
     const scale = [root]; // Start with the root
     let currentChromaticIndex = rootChromaticIndex;
@@ -318,6 +323,44 @@ function calculateAugmentedScale(root, formula, rootChromaticIndex, noteToIndex)
     return scale;
 }
 
+function calculateAlteredScale(root, formula, rootChromaticIndex) {
+    // Special handling for altered scale - use chromatic spelling for practical enharmonics
+    // This allows both b3 and 3 to use the same letter (e.g., Bb and B for G altered)
+    
+    const scale = [root];
+    let currentChromaticIndex = rootChromaticIndex;
+    
+    // Use chromatic spelling that prioritizes practical enharmonics
+    // For altered scale, we want: 1, b2, b3, 3, b5, b6, b7
+    // This translates to: Root, b9, #9, 3, #11, b13, b7 in jazz terms
+    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    
+    // Calculate each note using the formula with chromatic spelling
+    for (let i = 0; i < formula.length - 1; i++) {
+        currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
+        let noteName = chromaticScale[currentChromaticIndex];
+        
+        // For altered scale, convert sharps to flats for more readable jazz notation
+        // But allow practical combinations like Bb and B natural
+        const sharpToFlat = {
+            'C#': 'Db',
+            'D#': 'Eb', 
+            'F#': 'Gb',
+            'G#': 'Ab',
+            'A#': 'Bb'
+        };
+        
+        // Convert to flat notation for most altered tones, but keep naturals
+        if (sharpToFlat[noteName]) {
+            noteName = sharpToFlat[noteName];
+        }
+        
+        scale.push(noteName);
+    }
+    
+    return scale;
+}
+
 function calculateDiminishedScale(root, formula, scaleType, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex) {
     console.log('calculateDiminishedScale called with:', { root, formula, scaleType, rootNoteIndex, rootChromaticIndex });
     
@@ -496,6 +539,7 @@ window.ScaleCalculator = {
     calculateBluesScale,
     calculateHybridBluesScale,
     calculateAugmentedScale,
+    calculateAlteredScale,
     calculateDiminishedScale,
     calculateChromaticScale,
     getChromatic,

@@ -1633,6 +1633,11 @@ function calculateScaleWithConsistentSpelling(root, formula, scaleType, spelling
         return calculateDiminishedScaleSpelling(root, formula, spellingConvention);
     }
     
+    // Special handling for altered scale - use chromatic spelling for practical enharmonics
+    if (scaleType === 'super-locrian') {
+        return calculateAlteredScaleSpelling(root, formula, spellingConvention);
+    }
+    
     // Define the note names in order for proper scale degree calculation
     const noteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
     const noteToIndex = {
@@ -4854,4 +4859,75 @@ function closeChordTheoryModal() {
         modal.style.display = 'none';
         modal.classList.add('hidden');
     }
+}
+
+// Special function for altered scale spelling
+function calculateAlteredScaleSpelling(root, formula, spellingConvention) {
+    const noteToIndex = {
+        'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
+        'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
+        'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10,
+        'B#': 0, 'Cb': 11, 'E#': 5, 'Fb': 4
+    };
+    
+    const rootChromaticIndex = noteToIndex[root];
+    if (rootChromaticIndex === undefined) {
+        console.warn('Invalid root note:', root);
+        return [];
+    }
+    
+    const scale = [root];
+    let currentChromaticIndex = rootChromaticIndex;
+    
+    // Use chromatic spelling that prioritizes practical enharmonics
+    // For altered scale, we want: 1, b2, b3, 3, b5, b6, b7
+    // This translates to: Root, b9, #9, 3, #11, b13, b7 in jazz terms
+    const chromaticScale = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    
+    // Calculate each note using the formula with chromatic spelling
+    for (let i = 0; i < formula.length - 1; i++) {
+        currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
+        let noteName = chromaticScale[currentChromaticIndex];
+        
+        // For altered scale, convert sharps to flats for more readable jazz notation
+        // But allow practical combinations like Bb and B natural
+        const sharpToFlat = {
+            'C#': 'Db',
+            'D#': 'Eb', 
+            'F#': 'Gb',
+            'G#': 'Ab',
+            'A#': 'Bb'
+        };
+        
+        // Convert to flat notation for most altered tones, but keep naturals
+        if (sharpToFlat[noteName]) {
+            noteName = sharpToFlat[noteName];
+        }
+        
+        scale.push(noteName);
+    }
+    
+    return scale;
+}
+
+function getParentScaleName(category, parentRoot) {
+    console.log('Getting parent scale name for:', category, parentRoot);
+    
+    if (!category || !parentRoot) return '';
+    
+    const categoryData = MusicConstants.scaleCategories[category];
+    if (!categoryData) return '';
+    
+    // For traditional modes (major, minor, dorian, etc.)
+    if (category === 'church-modes' || category === 'natural-minor-modes') {
+        return `All modes derive from the same scale, starting on different degrees`;
+    }
+    
+    // For pentatonic modes
+    if (category === 'pentatonic') {
+        return `${parentRoot} Major Pentatonic`;
+    }
+    
+    // For other categories, use the category name
+    return `${parentRoot} ${categoryData.name}`;
 }
