@@ -1303,7 +1303,7 @@ function createRelatedModes(currentMode, category, currentKey) {
         
         // Calculate the diminished scale from the current key to get all 8 notes using the proper formula
         const diminishedFormula = categoryData.formulas[currentMode]; // Use the actual current mode formula
-        const diminishedScale = calculateOriginalDiminishedSpelling(currentKey, diminishedFormula, 'flat');
+        const diminishedScale = MusicTheory.calculateScale(currentKey, diminishedFormula, currentMode);
         
         // Create 8 buttons - one for each note in the diminished scale
         // Determine WH vs HW based on position in the scale array
@@ -2888,7 +2888,7 @@ function displayTraditionalChords(scale, scaleType, category) {
     }
 
     const theoryNote = getTheoryExplanation(scaleType, category);
-    
+
     // Combine notes
     const combinedNotes = scaleNote + theoryNote;
 

@@ -93,6 +93,10 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
         return calculateDiminishedScale(root, formula, scaleType, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex);
     }
     
+    if (scaleType === 'whole-tone') {
+        return calculateWholeToneScale(root, formula, rootChromaticIndex);
+    }
+    
     // Special handling for altered scale - use chromatic spelling to allow practical enharmonics
     if (scaleType === 'super-locrian') {
         return calculateAlteredScale(root, formula, rootChromaticIndex);
@@ -149,15 +153,28 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
     
     // Post-process for readability in specific scale types
     if (scaleType === 'melodic-minor' || scaleType === 'dorian-b2' || scaleType === 'lydian-augmented' || 
-        scaleType === 'lydian-dominant' || scaleType === 'mixolydian-b6' || scaleType === 'locrian-natural-2') {
-        // For melodic minor and its modes, convert problematic double accidentals to readable enharmonics
+        scaleType === 'lydian-dominant' || scaleType === 'mixolydian-b6' || scaleType === 'locrian-natural-2' ||
+        scaleType === 'harmonic-minor' || scaleType === 'locrian-natural-6' || scaleType === 'ionian-sharp-5' || 
+        scaleType === 'dorian-sharp-4' || scaleType === 'phrygian-dominant' || scaleType === 'lydian-sharp-2' || 
+        scaleType === 'altered-dominant') {
+        // For melodic minor, harmonic minor and their modes, convert problematic double accidentals to readable enharmonics
         for (let i = 0; i < scale.length; i++) {
             const note = scale[i];
             
-            // Convert double sharps to flats for readability
+            // Convert double sharps to more readable enharmonics
             if (note.includes('##')) {
                 const enharmonicMap = {
                     'C##': 'D', 'D##': 'E', 'E##': 'F#', 'F##': 'G', 'G##': 'A', 'A##': 'B', 'B##': 'C#'
+                };
+                if (enharmonicMap[note]) {
+                    scale[i] = enharmonicMap[note];
+                }
+            }
+            
+            // Convert double flats to more readable enharmonics (major fix for harmonic minor)
+            if (note.includes('bb')) {
+                const enharmonicMap = {
+                    'Cbb': 'Bb', 'Dbb': 'C', 'Ebb': 'D', 'Fbb': 'Eb', 'Gbb': 'F', 'Abb': 'G', 'Bbb': 'A'
                 };
                 if (enharmonicMap[note]) {
                     scale[i] = enharmonicMap[note];
@@ -178,9 +195,10 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
                 scale[i] = 'E';
             }
             
-            // For specific cases, prefer flats over sharps for melodic minor readability
-            // But preserve F# for F# keys
-            if (root !== 'F#' && note === 'A#') {
+            // For specific cases, prefer flats over sharps for minor scale readability
+            // But preserve F# for F# keys and other sharp keys
+            const sharpKeys = ['G', 'D', 'A', 'E', 'B', 'F#', 'C#'];
+            if (!sharpKeys.includes(root) && note === 'A#') {
                 scale[i] = 'Bb';
             }
         }
@@ -401,69 +419,116 @@ function calculateAlteredScale(root, formula, rootChromaticIndex) {
 }
 
 function calculateDiminishedScale(root, formula, scaleType, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex) {
-    console.log('calculateDiminishedScale called with:', { root, formula, scaleType, rootNoteIndex, rootChromaticIndex });
+    console.log('calculateDiminishedScale called with:', { root, formula, scaleType });
+    
+    // Standardized diminished scale spellings (using flats for consistency)
+    // Three unique diminished scales that cover all 12 chromatic notes
+    const diminishedScaleSpellings = {
+        // Scale 1: C, Db, Eb, E, Gb, G, A, Bb (and enharmonic equivalents)
+        'C': { wh: ['C', 'D', 'Eb', 'F', 'Gb', 'Ab', 'A', 'B'], hw: ['C', 'Db', 'Eb', 'E', 'Gb', 'G', 'A', 'Bb'] },
+        'Db': { wh: ['Db', 'Eb', 'E', 'Gb', 'G', 'A', 'Bb', 'C'], hw: ['Db', 'D', 'E', 'F', 'G', 'Ab', 'Bb', 'B'] },
+        'D': { wh: ['D', 'E', 'F', 'G', 'Ab', 'Bb', 'B', 'Db'], hw: ['D', 'Eb', 'F', 'Gb', 'Ab', 'A', 'B', 'C'] },
+        'Eb': { wh: ['Eb', 'F', 'Gb', 'Ab', 'A', 'B', 'C', 'D'], hw: ['Eb', 'E', 'Gb', 'G', 'A', 'Bb', 'C', 'Db'] },
+        'E': { wh: ['E', 'Gb', 'G', 'A', 'Bb', 'C', 'Db', 'Eb'], hw: ['E', 'F', 'G', 'Ab', 'Bb', 'B', 'Db', 'D'] },
+        'F': { wh: ['F', 'G', 'Ab', 'Bb', 'B', 'Db', 'D', 'E'], hw: ['F', 'Gb', 'Ab', 'A', 'B', 'C', 'D', 'Eb'] },
+        
+        // Scale 2: Gb, G, A, Bb, C, Db, Eb, E (and enharmonic equivalents)  
+        'Gb': { wh: ['Gb', 'Ab', 'A', 'B', 'C', 'D', 'Eb', 'F'], hw: ['Gb', 'G', 'A', 'Bb', 'C', 'Db', 'Eb', 'E'] },
+        'G': { wh: ['G', 'A', 'Bb', 'C', 'Db', 'Eb', 'E', 'Gb'], hw: ['G', 'Ab', 'Bb', 'B', 'Db', 'D', 'E', 'F'] },
+        'Ab': { wh: ['Ab', 'Bb', 'B', 'Db', 'D', 'E', 'F', 'G'], hw: ['Ab', 'A', 'B', 'C', 'D', 'Eb', 'F', 'Gb'] },
+        'A': { wh: ['A', 'B', 'C', 'D', 'Eb', 'F', 'Gb', 'Ab'], hw: ['A', 'Bb', 'C', 'Db', 'Eb', 'E', 'Gb', 'G'] },
+        'Bb': { wh: ['Bb', 'C', 'Db', 'Eb', 'E', 'Gb', 'G', 'A'], hw: ['Bb', 'B', 'Db', 'D', 'E', 'F', 'G', 'Ab'] },
+        'B': { wh: ['B', 'Db', 'D', 'E', 'F', 'G', 'Ab', 'Bb'], hw: ['B', 'C', 'D', 'Eb', 'F', 'Gb', 'Ab', 'A'] }
+    };
+    
+    // Handle enharmonic equivalents
+    let adjustedRoot = root;
+    if (root === 'C#') adjustedRoot = 'Db';
+    if (root === 'D#') adjustedRoot = 'Eb';
+    if (root === 'F#') adjustedRoot = 'Gb';
+    if (root === 'G#') adjustedRoot = 'Ab';
+    if (root === 'A#') adjustedRoot = 'Bb';
+    
+    // Get the appropriate spelling
+    const spellings = diminishedScaleSpellings[adjustedRoot];
+    if (!spellings) {
+        console.warn('No standardized spelling found for diminished root:', adjustedRoot);
+        // Fallback to chromatic calculation
+        return calculateDiminishedScaleFallback(root, formula, scaleType);
+    }
+    
+    // Determine if this is W-H or H-W pattern
+    const isWH = scaleType === 'wh-diminished' || formula[0] === 2;
+    const scale = isWH ? [...spellings.wh] : [...spellings.hw];
+    
+    console.log('Generated standardized diminished scale:', scale);
+    return scale;
+}
+
+// Fallback function for diminished scales if standardized spelling not found
+function calculateDiminishedScaleFallback(root, formula, scaleType) {
+    // Use flat-preferred chromatic spelling as fallback
+    const flatChromatic = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+    
+    const noteToIndex = (note) => {
+        const map = {
+            'C': 0, 'D': 2, 'E': 4, 'F': 5, 'G': 7, 'A': 9, 'B': 11,
+            'C#': 1, 'Db': 1, 'D#': 3, 'Eb': 3, 'F#': 6, 'Gb': 6,
+            'G#': 8, 'Ab': 8, 'A#': 10, 'Bb': 10
+        };
+        return map[note];
+    };
     
     const scale = [root];
-    
-    // Determine if this is W-H or H-W diminished
-    const isWH = scaleType === 'wh-diminished';
-    
-    // Letter offsets for diminished scales (ensuring one note per letter name)
-    const whLetterOffsets = [1, 2, 3, 4, 5, 5, 6, 0]; // W-H: step 5 stays on A, step 7 wraps to C
-    const hwLetterOffsets = [1, 2, 2, 3, 4, 5, 6, 0]; // H-W: step 2 stays on E, step 7 wraps to C
-    
-    const letterOffsets = isWH ? whLetterOffsets : hwLetterOffsets;
-    
-    let currentChromaticIndex = rootChromaticIndex;
+    let currentChromaticIndex = noteToIndex(root);
     
     for (let i = 0; i < formula.length - 1; i++) {
         currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
+        let noteName = flatChromatic[currentChromaticIndex];
         
-        // Calculate target letter index
-        const targetLetterIndex = (rootNoteIndex + letterOffsets[i]) % 7;
-        const targetLetter = noteNames[targetLetterIndex];
-        
-        // Handle bounds checking
-        if (targetLetterIndex < 0 || targetLetterIndex >= noteNames.length || !targetLetter) {
-            console.error('Undefined targetLetter at index', targetLetterIndex);
-            continue;
-        }
-        
-        // Get the natural chromatic index for this letter
-        const naturalIndex = noteToIndex(targetLetter);
-        
-        // Calculate chromatic difference
-        const chromaticDiff = (currentChromaticIndex - naturalIndex + 12) % 12;
-        
-        // Determine the note name with appropriate accidental
-        let noteName;
-        if (chromaticDiff === 0) {
-            noteName = targetLetter; // Natural
-        } else if (chromaticDiff === 1) {
-            noteName = targetLetter + '#'; // Sharp
-        } else if (chromaticDiff === 11) {
-            noteName = targetLetter + 'b'; // Flat
-        } else {
-            // For problematic intervals, use enharmonic equivalents
-            // Map chromatic index to preferred note name
-            const chromaticToNote = {
-                0: 'C', 1: 'C#', 2: 'D', 3: 'Eb', 4: 'E', 5: 'F',
-                6: 'F#', 7: 'G', 8: 'Ab', 9: 'A', 10: 'Bb', 11: 'B'
-            };
-            noteName = chromaticToNote[currentChromaticIndex] || targetLetter;
-        }
-        
-        // Fix problematic enharmonic spellings
+        // Clean up problematic enharmonics
+        if (noteName === 'B#') noteName = 'C';
+        if (noteName === 'E#') noteName = 'F';
         if (noteName === 'Cb') noteName = 'B';
         if (noteName === 'Fb') noteName = 'E';
-        if (noteName === 'E#') noteName = 'F';
-        if (noteName === 'B#') noteName = 'C';
         
-        console.log(`Step ${i}: chromatic ${currentChromaticIndex}, letter ${targetLetter}, diff ${chromaticDiff}, result ${noteName}`);
         scale.push(noteName);
     }
     
-    console.log('Generated diminished scale:', scale);
+    return scale;
+}
+
+function calculateWholeToneScale(root, formula, rootChromaticIndex) {
+    // There are only 2 unique whole tone scales in 12-tone equal temperament
+    // Each contains 6 notes spaced 2 semitones apart
+    // Scale 1: C D E F# G# A# (chromatic indices: 0 2 4 6 8 10)
+    // Scale 2: Db Eb F G A B (chromatic indices: 1 3 5 7 9 11)
+    
+    const wholeTone1 = ['C', 'D', 'E', 'F#', 'G#', 'A#'];
+    const wholeTone2 = ['Db', 'Eb', 'F', 'G', 'A', 'B'];
+    
+    // Determine which whole tone collection this root belongs to
+    const wholeTone1Chromatic = [0, 2, 4, 6, 8, 10];
+    const wholeTone2Chromatic = [1, 3, 5, 7, 9, 11];
+    
+    let targetScale, startIndex;
+    
+    if (wholeTone1Chromatic.includes(rootChromaticIndex)) {
+        targetScale = wholeTone1;
+        startIndex = wholeTone1Chromatic.indexOf(rootChromaticIndex);
+    } else {
+        targetScale = wholeTone2;
+        startIndex = wholeTone2Chromatic.indexOf(rootChromaticIndex);
+    }
+    
+    // Build the scale starting from the root
+    const scale = [];
+    for (let i = 0; i < 6; i++) {
+        const noteIndex = (startIndex + i) % 6;
+        scale.push(targetScale[noteIndex]);
+    }
+    
+    console.log(`Generated whole tone scale for ${root}:`, scale);
     return scale;
 }
 
