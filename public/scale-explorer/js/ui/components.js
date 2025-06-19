@@ -4881,19 +4881,25 @@ function calculateAlteredScaleSpelling(root, formula, spellingConvention) {
         currentChromaticIndex = (currentChromaticIndex + formula[i]) % 12;
         let noteName = chromaticScale[currentChromaticIndex];
         
-        // For altered scale, convert sharps to flats for more readable jazz notation
-        // But allow practical combinations like Bb and B natural
-        const sharpToFlat = {
-            'C#': 'Db',
-            'D#': 'Eb', 
-            'F#': 'Gb',
-            'G#': 'Ab',
-            'A#': 'Bb'
-        };
-        
-        // Convert to flat notation for most altered tones, but keep naturals
-        if (sharpToFlat[noteName]) {
-            noteName = sharpToFlat[noteName];
+        // For altered scale, we need special handling for the b3 and 3 intervals
+        // They should use the same letter name (e.g., G and G# for E altered)
+        if (i === 1 || i === 2) { // b3 and 3 positions in the formula
+            // Keep the chromatic spelling to allow same letter names
+            // Don't convert to flats for these intervals
+        } else {
+            // For other altered tones, convert sharps to flats for more readable jazz notation
+            const sharpToFlat = {
+                'C#': 'Db',
+                'D#': 'Eb', 
+                'F#': 'Gb',
+                'G#': 'Ab',
+                'A#': 'Bb'
+            };
+            
+            // Convert to flat notation for most altered tones, but keep naturals
+            if (sharpToFlat[noteName]) {
+                noteName = sharpToFlat[noteName];
+            }
         }
         
         scale.push(noteName);
