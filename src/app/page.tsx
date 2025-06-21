@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, Guitar, Users, Clock, Award, Music, Play, ArrowRight } from 'lucide-react';
+import { Star, Guitar, Users, Clock, Award, Music, Play, ArrowRight, MapPin } from 'lucide-react';
 
 export default function Home() {
   const testimonials = [
@@ -43,7 +43,7 @@ export default function Home() {
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-amber-100 leading-relaxed max-w-2xl">
-                  Master guitar with structured lessons and modern educational resources.
+                  <span className="text-amber-200">Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby, and online.</span>
                 </p>
               </div>
               
@@ -191,6 +191,61 @@ export default function Home() {
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Local Areas Section */}
+      <section className="section-padding bg-white">
+        <div className="container-max">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800 mb-6">
+              Guitar Teacher Serving Wellington Areas
+            </h2>
+            <p className="text-lg text-amber-700 max-w-3xl mx-auto mb-8">
+              Based in Pukerua Bay, I provide guitar lessons throughout the Wellington region. 
+              Whether you're looking for a guitar teacher in Plimmerton, Paremata, Whitby, or surrounding areas, 
+              I offer flexible lesson options to suit your location and schedule.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center p-6 rounded-xl bg-amber-50 border border-amber-200">
+              <MapPin className="h-8 w-8 text-amber-600 mx-auto mb-3" />
+              <h3 className="font-bold text-amber-800 mb-2">Pukerua Bay</h3>
+              <p className="text-amber-600 text-sm">Home studio lessons</p>
+              <p className="text-amber-600 text-sm font-semibold">$30 / 30min</p>
+            </div>
+            
+            <div className="text-center p-6 rounded-xl bg-amber-50 border border-amber-200">
+              <MapPin className="h-8 w-8 text-amber-600 mx-auto mb-3" />
+              <h3 className="font-bold text-amber-800 mb-2">Plimmerton</h3>
+              <p className="text-amber-600 text-sm">In-home guitar lessons</p>
+              <p className="text-amber-600 text-sm font-semibold">$45 / 30min</p>
+            </div>
+            
+            <div className="text-center p-6 rounded-xl bg-amber-50 border border-amber-200">
+              <MapPin className="h-8 w-8 text-amber-600 mx-auto mb-3" />
+              <h3 className="font-bold text-amber-800 mb-2">Paremata</h3>
+              <p className="text-amber-600 text-sm">In-home guitar lessons</p>
+              <p className="text-amber-600 text-sm font-semibold">$45 / 30min</p>
+            </div>
+            
+            <div className="text-center p-6 rounded-xl bg-amber-50 border border-amber-200">
+              <MapPin className="h-8 w-8 text-amber-600 mx-auto mb-3" />
+              <h3 className="font-bold text-amber-800 mb-2">Whitby</h3>
+              <p className="text-amber-600 text-sm">In-home guitar lessons</p>
+              <p className="text-amber-600 text-sm font-semibold">$45 / 30min</p>
+            </div>
+          </div>
+          
+          <div className="text-center mt-8">
+            <p className="text-amber-700 mb-4">
+              Also serving: Porirua, Mana, Tawa, and other Wellington suburbs
+            </p>
+            <Link href="/contact" className="btn-primary">
+              Find Guitar Lessons Near You
+            </Link>
           </div>
         </div>
       </section>
