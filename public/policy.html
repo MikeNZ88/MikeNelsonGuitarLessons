@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike Nelson Guitar Lessons - Policy</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .no-print { display: none; }
+            .copy-button { display: none !important; }
+        }
+        
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 30px;
+            line-height: 1.5;
+            color: #4a2c2a;
+            background: #faf9f7;
+        }
+        
+        h1 {
+            color: #8b4513;
+            border-bottom: 3px solid #d2691e;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        h2 {
+            color: #8b4513;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        h3 {
+            color: #8b4513;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .bank-details {
+            background-color: #f4e6d7;
+            padding: 12px;
+            border-left: 4px solid #d2691e;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            color: #5d4037;
+        }
+        
+        .contact-info {
+            background-color: #e8d5c4;
+            padding: 12px;
+            border-left: 4px solid #cd853f;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        
+        .category {
+            margin-bottom: 15px;
+        }
+        
+        .category-title {
+            font-weight: bold;
+            color: #8b4513;
+            margin-bottom: 6px;
+        }
+        
+        .category-content {
+            margin-left: 20px;
+            margin-bottom: 12px;
+            color: #4a2c2a;
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #d2691e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .print-button:hover {
+            background-color: #cd853f;
+        }
+        
+        @page {
+            margin: 0.75in;
+            size: A4;
+        }
+        
+        p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button no-print" onclick="window.print()">Print/Save as PDF</button>
+    
+    <h1>Mike Nelson Guitar Lessons</h1>
+    <h2>Lesson Payment and Cancellation Policy</h2>
+    
+    <h2>Payment Policy</h2>
+    <p>Payment is required on the day of the lesson or within 48 hours after the lesson. Lesson payments are on a per-lesson basis. Students may pay in advance for multiple lessons if they wish. Cash or bank transfer payments are accepted.</p>
+    
+    <div class="bank-details">
+        <strong>Bank Transfer Details:</strong><br>
+        <div style="margin: 8px 0; display: flex; align-items: center; justify-content: space-between; max-width: 300px;">
+            <span>Account Name: <span id="accountName" style="user-select: text; font-weight: 500;">Michael NELSON</span></span>
+            <button class="copy-button" onclick="copyToClipboard('accountName')" style="margin-left: 12px; padding: 6px 12px; font-size: 11px; background: #FF7F50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'; this.style.background='#FF6B35'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.background='#FF7F50'">Copy</button>
+        </div>
+        <div style="margin: 8px 0; display: flex; align-items: center; justify-content: space-between; max-width: 300px;">
+            <span>Account Number: <span id="accountNumber" style="user-select: text; font-weight: 500;">12-3427-0141869-00</span></span>
+            <button class="copy-button" onclick="copyToClipboard('accountNumber')" style="margin-left: 12px; padding: 6px 12px; font-size: 11px; background: #FF7F50; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'; this.style.background='#FF6B35'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.background='#FF7F50'">Copy</button>
+        </div>
+    </div>
+    
+    <script>
+    function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        const text = element.textContent;
+        
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(function() {
+                showCopyFeedback(elementId);
+            }).catch(function(err) {
+                fallbackCopyTextToClipboard(text, elementId);
+            });
+        } else {
+            fallbackCopyTextToClipboard(text, elementId);
+        }
+    }
+    
+    function fallbackCopyTextToClipboard(text, elementId) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showCopyFeedback(elementId);
+        } catch (err) {
+            console.error('Fallback: Could not copy text: ', err);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+    
+    function showCopyFeedback(elementId) {
+        const button = document.querySelector(`button[onclick="copyToClipboard('${elementId}')"]`);
+        const originalText = button.textContent;
+        button.textContent = '✓ Copied!';
+        button.style.background = '#48bb78';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = '#FF7F50';
+        }, 2000);
+    }
+    </script>
+    
+    <h2>Lesson Schedule</h2>
+    <p>Lessons are weekly and structured around the New Zealand school term calendar. Students can elect to have lessons during term breaks if they wish. Official school term dates can be found at: <strong>www.education.govt.nz/school/school-terms-and-holiday-dates</strong></p>
+    
+    <h2>Cancellation Policy</h2>
+    <p>I am committed to providing consistent, quality lessons while understanding that unexpected situations may arise. All cancellations must be communicated by phone call or text message to <strong>022 1272 154</strong>.</p>
+    
+    <h2>Cancellations Without Charge</h2>
+    
+    <div class="category">
+        <div class="category-title">Illness</div>
+        <div class="category-content">If you are too unwell to attend the lesson, or if no parent/guardian is well enough to transport you to the lesson, please provide at least 8 hours notice.</div>
+    </div>
+    
+    <div class="category">
+        <div class="category-title">Pre-scheduled Commitments</div>
+        <div class="category-content">For pre-scheduled commitments (e.g. school events, vacations), please provide at least 7 days notice.</div>
+    </div>
+    
+    <div style="page-break-before: always;"></div>
+    
+    <h2>Cancellations With Charge</h2>
+    <p>If the cancellation does not fit the above categories, full payment for the lesson is still required.</p>
+    
+    <h2>Makeup Lessons</h2>
+    <p>For all cancellations, I will offer available makeup times within the same week when possible.</p>
+    
+    <h2>Instructor Cancellations</h2>
+    <p>If I need to cancel due to illness, emergency, or other unforeseen circumstances, I will provide as much notice as possible and will offer makeup times or refund the lesson fee.</p>
+    
+    <div class="contact-info">
+        <strong>Contact Information:</strong><br>
+        Phone/Text: 022 1272 154
+    </div>
+</body>
+</html>

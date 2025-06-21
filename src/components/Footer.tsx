@@ -36,8 +36,8 @@ const Footer = () => {
               <Link href="/about" className="block hover:text-amber-200 transition-colors">
                 About Mike
               </Link>
-              <Link href="/contact" className="block hover:text-amber-200 transition-colors">
-                Get in Touch
+              <Link href="/policy.html" className="block hover:text-amber-200 transition-colors">
+                Payment and Cancellation Policy
               </Link>
             </div>
           </div>
