@@ -256,12 +256,17 @@ export default function Lessons() {
           <h2 className="text-3xl md:text-4xl font-bold font-playfair mb-4">
             Ready to start your guitar journey?
           </h2>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
             <Link href="/contact" className="btn-primary bg-white text-amber-800 hover:bg-amber-50">
               Book Your First Lesson
             </Link>
             <Link href="/about" className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800">
               Learn About Mike's Approach
+            </Link>
+          </div>
+          <div className="text-center">
+            <Link href="/policy.html" className="text-amber-200 hover:text-white underline transition-colors">
+              View Lesson Payment & Cancellation Policy
             </Link>
           </div>
         </div>

@@ -68,8 +68,50 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Mike Nelson Guitar Lessons",
+    "description": "Guitar lessons in Pukerua Bay, Wellington. Learn guitar theory, scales, modes, and chord progressions with experienced instructor Mike Nelson.",
+    "url": "https://mikenelsonguitarlessons.co.nz",
+    "telephone": "022-127-2154",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Pukerua Bay",
+      "addressRegion": "Wellington",
+      "addressCountry": "NZ"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-41.026",
+      "longitude": "174.890"
+    },
+    "areaServed": [
+      "Pukerua Bay",
+      "Plimmerton", 
+      "Paremata",
+      "Whitby",
+      "Wellington"
+    ],
+    "serviceType": "Music Lessons",
+    "priceRange": "$30-$45",
+    "instructor": {
+      "@type": "Person",
+      "name": "Mike Nelson",
+      "jobTitle": "Guitar Teacher"
+    }
+  };
+
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-amber-50 text-amber-900`}>
         <Header />
         <main className="min-h-screen">
