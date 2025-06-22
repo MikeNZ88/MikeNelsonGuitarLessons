@@ -32,12 +32,10 @@ export default function WellingtonMusicStoresPost() {
 
         <div className="prose prose-lg max-w-none">
           <p className="text-xl text-gray-700 mb-8">
-            Another one bites the dust. Kapiti Music in Paraparaumu has shut down, and with it goes the last music store serving the Kapiti Coast. The little shop on Amohia Street couldn't make it work anymore, with the owners saying "the recession finally got us" in their farewell post.
+            Another one bites the dust. <strong>Kapiti Music</strong> in Paraparaumu has shut down, and with it goes the last music store serving the Kapiti Coast. The little shop on Amohia Street couldn't make it work anymore, with the owners saying "the recession finally got us" in their farewell post.
           </p>
 
-          <p>
-            It's pretty gutting, really. This isn't just another shop closing - it's another sign that if you want to buy a guitar or drum kit in the Wellington region, you're going to have to trek into the city or order online like everyone else.
-          </p>
+
 
           <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Kingdom Music's Short-Lived Experiment</h2>
 
