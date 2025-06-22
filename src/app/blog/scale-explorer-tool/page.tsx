@@ -244,7 +244,7 @@ export default function ScaleExplorerTool() {
         <section className="text-center py-12 bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl border border-orange-200">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start Learning?</h2>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-            Stop memorizing isolated patterns. Start understanding the connections that make music work.
+            Stop memorizing isolated shapes. Start understanding the connections that make music work.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
                          <a 

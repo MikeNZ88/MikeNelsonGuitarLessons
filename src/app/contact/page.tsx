@@ -130,6 +130,17 @@ export default function Contact() {
 
             {/* Contact Form */}
             <div className="card">
+              <div className="text-center mb-6">
+                <a 
+                  href="/policy.html" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-600 hover:text-amber-800 underline transition-colors"
+                >
+                  View Payment & Cancellation Policy
+                </a>
+              </div>
+              
               <h2 className="text-2xl font-bold font-playfair text-amber-800 mb-6">
                 Book Your Lesson
               </h2>

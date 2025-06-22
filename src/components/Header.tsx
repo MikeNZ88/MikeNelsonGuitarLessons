@@ -10,10 +10,9 @@ const Header = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Approach', href: '/approach' },
-    { name: 'Lessons', href: '/lessons' },
-    { name: 'Resources', href: '/resources' },
+    { name: 'Guitar Lessons', href: '/lessons' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Resources', href: '/resources' },
     { name: 'Scale Explorer', href: '/scale-explorer/index.html' },
     { name: 'Contact', href: '/contact' },
   ];

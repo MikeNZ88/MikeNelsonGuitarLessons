@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Clock, MapPin, Monitor, DollarSign, Guitar, CheckCircle } from 'lucide-react';
+import { Clock, MapPin, Monitor, Guitar, CheckCircle } from 'lucide-react';
 
 export default function Lessons() {
   const curriculumLevels = [
@@ -179,8 +179,7 @@ export default function Lessons() {
                 </div>
                 
                 <div className="flex items-center mb-4">
-                  <DollarSign className="h-5 w-5 text-green-600 mr-2" />
-                  <span className="text-2xl font-bold text-green-600">{type.price}</span>
+                  <span className="text-2xl font-bold text-amber-800">{type.price}</span>
                   <span className="text-amber-600 ml-2">/ {type.duration}</span>
                 </div>
 
@@ -201,6 +200,17 @@ export default function Lessons() {
                 )}
               </div>
             ))}
+          </div>
+          
+          {/* Book Lesson Button */}
+          <div className="text-center mt-12">
+            <Link 
+              href="/contact" 
+              className="inline-flex items-center bg-amber-600 text-white px-8 py-4 rounded-lg hover:bg-amber-700 transition-colors font-semibold text-lg"
+            >
+              <Guitar className="w-5 h-5 mr-2" />
+              Book Your First Lesson
+            </Link>
           </div>
         </div>
       </section>
@@ -238,7 +248,7 @@ export default function Lessons() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {level.skills.map((skill, skillIndex) => (
                       <div key={skillIndex} className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-green-500 mr-3 mt-1 flex-shrink-0" />
+                        <CheckCircle className="h-5 w-5 text-amber-600 mr-3 mt-1 flex-shrink-0" />
                         <span className="text-lg leading-relaxed">{skill}</span>
                       </div>
                     ))}

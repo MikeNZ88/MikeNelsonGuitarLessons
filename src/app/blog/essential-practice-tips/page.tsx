@@ -255,7 +255,7 @@ export default function EssentialPracticeTips() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors font-semibold"
               >
-                Get Started with PracticeTrack
+                Get Started with PracticeTrack (free)
               </a>
             </div>
           </div>

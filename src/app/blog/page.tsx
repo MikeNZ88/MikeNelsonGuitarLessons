@@ -15,6 +15,17 @@ export default function Blog() {
       author: 'Mike Nelson'
     },
     {
+      id: '6',
+      title: 'Introducing PracticeTrack: Your Musical Journey Companion',
+      excerpt: 'Transform your practice sessions with deliberate tracking, goal setting, and analytics. A free tool to help you stay consistent and see your progress over time.',
+      date: 'May 12, 2025',
+      readTime: '6 min read',
+      category: 'Practice Tools',
+      image: '/practicetrack-thumbnail.svg',
+      slug: 'introducing-practicetrack',
+      author: 'Mike Nelson'
+    },
+    {
       id: '4',
       title: 'Smoother Chord Changes: Identifying Common Fingers Between Chords',
       excerpt: 'Learn how to identify common fingers between chords for smoother transitions. Master chord changes with visual diagrams and essential fingering tips.',
@@ -69,6 +80,8 @@ export default function Blog() {
         return <Store className="w-5 h-5" />;
       case 'Guitar Tools':
         return <Wrench className="w-5 h-5" />;
+      case 'Practice Tools':
+        return <Target className="w-5 h-5" />;
       default:
         return <Music className="w-5 h-5" />;
     }
