@@ -4,6 +4,17 @@ import { Music, BookOpen, Target, Store, Wrench } from 'lucide-react';
 export default function Blog() {
   const posts = [
     {
+      id: '8',
+      title: 'The Complete Beginner\'s Guide to Learning Guitar',
+      excerpt: 'Everything you need to know to start your guitar journey. From choosing your first guitar to learning essential chords, this comprehensive guide covers it all.',
+      date: 'January 10, 2025',
+      readTime: '15 min read',
+      category: 'Getting Started',
+      image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      slug: 'complete-beginners-guide-guitar',
+      author: 'Mike Nelson'
+    },
+    {
       id: '7',
       title: 'When Should You Start Learning Guitar? What the Research Actually Says',
       excerpt: 'Discover the optimal age to start guitar based on neuroscience research. From children to seniors, learn the advantages and challenges at every life stage.',

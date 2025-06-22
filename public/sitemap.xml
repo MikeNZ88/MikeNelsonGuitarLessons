@@ -62,10 +62,52 @@
     
     <!-- Blog Posts -->
     <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/complete-beginners-guide-guitar</loc>
+        <lastmod>2025-01-10</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/when-should-you-start-learning-guitar</loc>
+        <lastmod>2025-04-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/essential-practice-tips</loc>
+        <lastmod>2025-05-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/introducing-practicetrack</loc>
-        <lastmod>2025-01-16</lastmod>
+        <lastmod>2025-05-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers</loc>
+        <lastmod>2025-05-05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores</loc>
+        <lastmod>2025-06-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool</loc>
+        <lastmod>2025-06-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
     
     <url>

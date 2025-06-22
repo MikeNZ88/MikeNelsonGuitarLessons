@@ -161,8 +161,11 @@ export default function Lessons() {
             <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800 mb-4">
               Lesson Options
             </h2>
-            <p className="text-lg text-amber-700">
-              Choose the learning format that works best for you
+            <p className="text-lg text-amber-700 mb-4">
+              Choose the lesson format that works best for you - you come to me (Pukerua Bay), I come to you. Online lessons also available.
+            </p>
+            <p className="text-amber-600">
+              Serving Wellington's northern suburbs: Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, and Whitby
             </p>
           </div>
 
