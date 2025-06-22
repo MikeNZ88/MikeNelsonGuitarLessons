@@ -36,14 +36,6 @@ export default function About() {
               Before teaching, I worked as a risk consultant and auditor at a services firm before starting my teaching career in 2019. I hold a Bachelor of Commerce with a focus on Accounting and Commercial Law. My strong affinity for process and analysis enables me to break down complex musical concepts into manageable, step-by-step lessons.
             </p>
 
-            {/* Pricing Section */}
-            <div className="card mb-8">
-              <h2 className="text-2xl font-bold text-amber-800 mb-4">Pricing</h2>
-              <p className="text-lg text-amber-700 mb-6 text-justify">
-                Lessons are priced at $30 for 30 minutes at my address in Pukerua Bay (or online), or $45 for 30 minutes at your place (Paremata, Whitby, Plimmerton).
-              </p>
-            </div>
-
             {/* Lesson Types */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               {/* Pukerua Bay & Online */}

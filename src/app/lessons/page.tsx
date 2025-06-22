@@ -93,13 +93,13 @@ export default function Lessons() {
         "Monday: 2:00 PM – 8:00 PM",
         "Tuesday: 2:00 PM – 5:30 PM",
         "Wednesday: 5:30 PM – 8:00 PM",
-        "Thursday: 2:00 PM – 5:00 PM",
-        "Friday: 2:00 PM – 6:30 PM"
+        "Thursday: 2:00 PM – 7:00 PM",
+        "Friday: 2:00 PM – 5:00 PM"
       ]
     },
     {
       title: "In-Person at Your Place",
-      location: "Paremata, Whitby, Plimmerton",
+      location: "Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby",
       price: "$45",
       duration: "30 minutes",
       icon: <MapPin className="h-6 w-6" />,
@@ -111,8 +111,9 @@ export default function Lessons() {
       ],
       hours: [
         "Tuesday: 6:00 PM – 8:30 PM",
-        "Thursday: 6:00 PM – 8:30 PM",
-        "Friday: 6:30 PM – 8:00 PM"
+        "Wednesday: 2:00 PM – 5:00 PM",
+        "Thursday: 7:30 PM – 9:30 PM",
+        "Friday: 5:00 PM – 8:00 PM"
       ]
     },
     {
@@ -131,8 +132,8 @@ export default function Lessons() {
         "Monday: 2:00 PM – 8:00 PM",
         "Tuesday: 2:00 PM – 5:30 PM",
         "Wednesday: 5:30 PM – 8:00 PM",
-        "Thursday: 2:00 PM – 5:00 PM",
-        "Friday: 2:00 PM – 6:30 PM"
+        "Thursday: 2:00 PM – 7:00 PM",
+        "Friday: 2:00 PM – 5:00 PM"
       ],
       note: "Suited for intermediate level players comfortable with basic techniques"
     }

@@ -99,17 +99,18 @@ export default function Contact() {
                       <p>Monday: 2:00 PM – 8:00 PM</p>
                       <p>Tuesday: 2:00 PM – 5:30 PM</p>
                       <p>Wednesday: 5:30 PM – 8:00 PM</p>
-                      <p>Thursday: 2:00 PM – 5:00 PM</p>
-                      <p>Friday: 2:00 PM – 6:30 PM</p>
+                      <p>Thursday: 2:00 PM – 7:00 PM</p>
+                      <p>Friday: 2:00 PM – 5:00 PM</p>
                     </div>
                   </div>
                   
                   <div>
-                    <h4 className="font-semibold text-amber-800 mb-2">Lessons Away (Paremata, Whitby, Plimmerton)</h4>
+                    <h4 className="font-semibold text-amber-800 mb-2">Lessons Away (Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby)</h4>
                     <div className="text-amber-600 space-y-1">
                       <p>Tuesday: 6:00 PM – 8:30 PM</p>
-                      <p>Thursday: 6:00 PM – 8:30 PM</p>
-                      <p>Friday: 6:30 PM – 8:00 PM</p>
+                      <p>Wednesday: 2:00 PM – 5:00 PM</p>
+                      <p>Thursday: 7:30 PM – 9:30 PM</p>
+                      <p>Friday: 5:00 PM – 8:00 PM</p>
                     </div>
                   </div>
                 </div>
@@ -122,7 +123,7 @@ export default function Contact() {
                   <p><strong>Pukerua Bay & Online:</strong> $30 for 30 minutes</p>
                   <p><strong>Your Place:</strong> $45 for 30 minutes</p>
                   <p className="text-sm text-amber-500 mt-2">
-                    (Paremata, Whitby, Plimmerton areas)
+                    (Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby areas)
                   </p>
                 </div>
               </div>
@@ -266,7 +267,7 @@ export default function Contact() {
                   >
                     <option value="">Please select</option>
                     <option value="in-person-my-place">In-person at Mike's place (Pukerua Bay) - $30/30min</option>
-                    <option value="in-person-your-place">In-person at your place (Plimmerton/Whitby/Paremata) - $45/30min</option>
+                    <option value="in-person-your-place">In-person at your place (Plimmerton/Cambourne/Mana/Paremata/Papakowhai/Whitby) - $45/30min</option>
                     <option value="online">Online (Zoom/Skype) - $30/30min</option>
                   </select>
                 </div>
