@@ -4,6 +4,17 @@ import { Music, BookOpen, Target, Store, Wrench } from 'lucide-react';
 export default function Blog() {
   const posts = [
     {
+      id: '7',
+      title: 'When Should You Start Learning Guitar? What the Research Actually Says',
+      excerpt: 'Discover the optimal age to start guitar based on neuroscience research. From children to seniors, learn the advantages and challenges at every life stage.',
+      date: 'April 30, 2025',
+      readTime: '12 min read',
+      category: 'Getting Started',
+      image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      slug: 'when-should-you-start-learning-guitar',
+      author: 'Mike Nelson'
+    },
+    {
       id: '1',
       title: '6 Essential Practice Tips for Guitar Students',
       excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
