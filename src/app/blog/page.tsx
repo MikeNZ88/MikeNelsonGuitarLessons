@@ -39,6 +39,13 @@ export default function Blog() {
     }
   ];
 
+  // Sort posts by date (newest first)
+  const sortedPosts = posts.sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Practice Methods':
@@ -72,7 +79,7 @@ export default function Blog() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post) => (
+            {sortedPosts.map((post) => (
               <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                 <img 
                   src={post.image} 
