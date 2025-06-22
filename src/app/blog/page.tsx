@@ -15,6 +15,17 @@ export default function Blog() {
       author: 'Mike Nelson'
     },
     {
+      id: '4',
+      title: 'Smoother Chord Changes: Identifying Common Fingers Between Chords',
+      excerpt: 'Learn how to identify common fingers between chords for smoother transitions. Master chord changes with visual diagrams and essential fingering tips.',
+      date: 'May 5, 2025',
+      readTime: '7 min read',
+      category: 'Guitar Basics',
+      image: '/chord-transitions-thumbnail.svg',
+      slug: 'chord-transitions-common-fingers',
+      author: 'Mike Nelson'
+    },
+    {
       id: '2',
       title: 'Wellington\'s Vanishing Music Stores: What This Means for Guitar Students',
       excerpt: 'Exploring the impact of Wellington\'s changing music retail landscape on guitar students and where to find the gear and support you need.',

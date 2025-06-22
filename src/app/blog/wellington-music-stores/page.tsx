@@ -40,7 +40,7 @@ export default function WellingtonMusicStoresPost() {
           <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Kingdom Music's Short-Lived Experiment</h2>
 
           <p>
-            Making things worse, Kingdom Musicworks tried to set up shop in Porirua over the Christmas holidays, but that lasted all of a few months before they pulled the pin. Everyone was pretty hopeful when they opened - finally, someone filling the gap! But nope, turned out the numbers just didn't stack up.
+            Making things worse, Kingdom Musicworks tried to set up shop in North City shopping centre in Porirua over the Christmas holidays, but that lasted all of a few months before they pulled the pin.
           </p>
 
           <p>
