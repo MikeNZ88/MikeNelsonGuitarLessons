@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Explorer - Advanced Guitar Theory Tool | Mike Nelson Guitar Lessons</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header h2 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .scale-diagram {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .notes-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .note {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .note.root { background: #e74c3c; }
+        .note.second { background: #f39c12; }
+        .note.third { background: #f1c40f; }
+        .note.fourth { background: #2ecc71; }
+        .note.fifth { background: #3498db; }
+        .note.sixth { background: #9b59b6; }
+        .note.seventh { background: #e67e22; }
+
+        .intervals-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .interval {
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .chord-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .chord {
+            background: #667eea;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .mode {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .cta-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .cta-section h2 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .website-url {
+            font-size: 1.5rem;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .benefits {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .benefits h3 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .benefit-item::before {
+            content: "✓";
+            background: #2ecc71;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .notes-row {
+                justify-content: center;
+            }
+            
+            .note {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎸 Scale Explorer</h1>
+            <h2>Advanced Guitar Theory Made Visual</h2>
+            <div class="tagline">
+                Discover scales, modes, chords, and theory patterns with interactive visualization
+            </div>
+        </div>
+
+        <div class="features-grid">
+            <!-- Scale Example -->
+            <div class="feature-card">
+                <h3>🎵 Interactive Scale Visualization</h3>
+                <div class="scale-diagram">
+                    <h4>G Major Scale Example</h4>
+                    <div class="notes-row">
+                        <div class="note root">G</div>
+                        <div class="note second">A</div>
+                        <div class="note third">B</div>
+                        <div class="note fourth">C</div>
+                        <div class="note fifth">D</div>
+                        <div class="note sixth">E</div>
+                        <div class="note seventh">F#</div>
+                    </div>
+                    <div class="intervals-row">
+                        <div class="interval">1</div>
+                        <div class="interval">2</div>
+                        <div class="interval">3</div>
+                        <div class="interval">4</div>
+                        <div class="interval">5</div>
+                        <div class="interval">6</div>
+                        <div class="interval">7</div>
+                    </div>
+                </div>
+                <p>Explore all 37 scale types across 12 keys with color-coded intervals and audio playback</p>
+            </div>
+
+            <!-- Chord Analysis -->
+            <div class="feature-card">
+                <h3>🎹 Smart Chord Analysis</h3>
+                <div class="scale-diagram">
+                    <h4>Chords from G Major</h4>
+                    <div class="chord-grid">
+                        <div class="chord">Gmaj7</div>
+                        <div class="chord">Am7</div>
+                        <div class="chord">Bm7</div>
+                        <div class="chord">Cmaj7</div>
+                        <div class="chord">D7</div>
+                        <div class="chord">Em7</div>
+                        <div class="chord">F#m7♭5</div>
+                    </div>
+                </div>
+                <p>Automatically generates triads, 7th chords, and extensions from any scale</p>
+            </div>
+
+            <!-- Related Modes -->
+            <div class="feature-card">
+                <h3>🔄 Related Modes Explorer</h3>
+                <div class="scale-diagram">
+                    <h4>G Major Related Modes</h4>
+                    <div class="modes-grid">
+                        <div class="mode">G Ionian</div>
+                        <div class="mode">A Dorian</div>
+                        <div class="mode">B Phrygian</div>
+                        <div class="mode">C Lydian</div>
+                        <div class="mode">D Mixolydian</div>
+                        <div class="mode">E Aeolian</div>
+                        <div class="mode">F# Locrian</div>
+                    </div>
+                </div>
+                <p>Instantly see how modes relate to their parent scales with one-click navigation</p>
+            </div>
+
+            <!-- Jazz Scales -->
+            <div class="feature-card">
+                <h3>🎺 Advanced Jazz Scales</h3>
+                <div class="scale-diagram">
+                    <h4>E Altered Scale (Super-Locrian)</h4>
+                    <div class="notes-row">
+                        <div class="note root">E</div>
+                        <div class="note second">F</div>
+                        <div class="note third">G</div>
+                        <div class="note fourth">G#</div>
+                        <div class="note fifth">Bb</div>
+                        <div class="note sixth">C</div>
+                        <div class="note seventh">D</div>
+                    </div>
+                    <div class="intervals-row">
+                        <div class="interval">1</div>
+                        <div class="interval">♭2</div>
+                        <div class="interval">♭3</div>
+                        <div class="interval">3</div>
+                        <div class="interval">♭5</div>
+                        <div class="interval">♭6</div>
+                        <div class="interval">♭7</div>
+                    </div>
+                </div>
+                <p>Master complex scales like altered, diminished, and melodic minor modes</p>
+            </div>
+
+            <!-- Pattern Recognition -->
+            <div class="feature-card">
+                <h3>🧠 Pattern Recognition</h3>
+                <div class="scale-diagram">
+                    <h4>Harmonic Minor Patterns</h4>
+                    <div class="notes-row">
+                        <div class="note root">A</div>
+                        <div class="note second">B</div>
+                        <div class="note third">C</div>
+                        <div class="note fourth">D</div>
+                        <div class="note fifth">E</div>
+                        <div class="note sixth">F</div>
+                        <div class="note seventh">G#</div>
+                    </div>
+                    <div style="margin-top: 15px; font-weight: bold; color: #e74c3c;">
+                        Augmented 2nd: F → G# (3 semitones)
+                    </div>
+                </div>
+                <p>Identify characteristic intervals and understand what makes each scale unique</p>
+            </div>
+
+            <!-- Audio Features -->
+            <div class="feature-card">
+                <h3>🔊 Interactive Audio</h3>
+                <div class="scale-diagram">
+                    <h4>Play & Hear the Difference</h4>
+                    <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+                        <button style="padding: 15px 25px; background: #2ecc71; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;">▶ Play Scale</button>
+                        <button style="padding: 15px 25px; background: #3498db; color: white; border: none; border-radius: 25px; font-size: 1.1rem; cursor: pointer;">▶ Play Chords</button>
+                    </div>
+                    <div style="font-style: italic; color: #666;">
+                        Variable tempo • Ascending/Descending • Custom patterns
+                    </div>
+                </div>
+                <p>Listen to scales and chords with built-in audio engine and customizable playback</p>
+            </div>
+        </div>
+
+        <div class="benefits">
+            <h3>Why Scale Explorer?</h3>
+            <div class="benefits-list">
+                <div class="benefit-item">37 scale types across all 12 keys</div>
+                <div class="benefit-item">Color-coded interval visualization</div>
+                <div class="benefit-item">Automatic chord generation</div>
+                <div class="benefit-item">Related modes navigation</div>
+                <div class="benefit-item">Interactive audio playback</div>
+                <div class="benefit-item">Mobile-responsive design</div>
+                <div class="benefit-item">Perfect for jazz, classical & modern styles</div>
+                <div class="benefit-item">Professional music theory accuracy</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Transform Your Music Theory?</h2>
+            <p>Join hundreds of guitarists who've accelerated their learning with professional tools and expert instruction</p>
+            <a href="https://mikenelsonguitarlessons.co.nz" class="cta-button" target="_blank">
+                Explore Scale Explorer Now
+            </a>
+            <div class="website-url">
+                mikenelsonguitarlessons.co.nz
+            </div>
+            <div style="margin-top: 25px; font-size: 1.1rem; color: #666;">
+                ✨ Free to use • No signup required • Professional quality
+            </div>
+        </div>
+
+        <div style="text-align: center; color: white; margin-top: 30px; opacity: 0.8;">
+            <p>© 2025 Mike Nelson Guitar Lessons • Wellington, New Zealand</p>
+            <p style="margin-top: 10px;">Professional guitar instruction • Music theory made simple • Scale Explorer tool</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const notes = document.querySelectorAll('.note');
+            notes.forEach(note => {
+                note.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.1)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                
+                note.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+
+            // Add click effects to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 100);
+                    
+                    // Show a tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.textContent = 'Feature available in full Scale Explorer!';
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        background: #333;
+                        color: white;
+                        padding: 8px 12px;
+                        border-radius: 6px;
+                        font-size: 0.9rem;
+                        z-index: 1000;
+                        pointer-events: none;
+                        opacity: 0;
+                        transition: opacity 0.3s ease;
+                    `;
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    const rect = this.getBoundingClientRect();
+                    tooltip.style.left = (rect.left + rect.width/2 - tooltip.offsetWidth/2) + 'px';
+                    tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+                    
+                    setTimeout(() => {
+                        tooltip.style.opacity = '1';
+                    }, 50);
+                    
+                    setTimeout(() => {
+                        tooltip.style.opacity = '0';
+                        setTimeout(() => {
+                            document.body.removeChild(tooltip);
+                        }, 300);
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

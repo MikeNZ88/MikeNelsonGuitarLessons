@@ -1,43 +1,41 @@
 import Link from 'next/link';
-import { Music, BookOpen, Target } from 'lucide-react';
+import { Music, BookOpen, Target, Store, Wrench } from 'lucide-react';
 
 export default function Blog() {
   const posts = [
     {
-      id: 1,
-      title: "How to Practice Effectively",
-      excerpt: "Discover research-backed strategies for effective practice using PracticeTrack's comprehensive approach to musical improvement.",
-      content: "At PracticeTrack, we've compiled decades of research and practical experience into a comprehensive guide for effective practice. Learn about deliberate practice, session structuring, and the science behind effective musical improvement.",
-      date: "May 24, 2025",
-      readTime: "12 min read",
-      category: "Practice Methods",
-      image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-      slug: "practicetrack-effective-practice",
-      author: "PracticeTrack"
+      id: '1',
+      title: '6 Essential Practice Tips for Guitar Students',
+      excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
+      date: 'May 16, 2025',
+      readTime: '8 min read',
+      category: 'Practice Methods',
+      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      slug: 'essential-practice-tips',
+      author: 'Mike Nelson'
     },
     {
-      id: 2,
-      title: "Introducing PracticeTrack",
-      excerpt: "A comprehensive online practice tool designed to help musicians of all levels improve their skills through structured, effective practice sessions.",
-      content: "I'm excited to introduce you to PracticeTrack, a comprehensive online practice tool designed to help musicians of all levels improve their skills through structured, effective practice sessions. Whether you're a beginner learning your first chords or an advanced player working on complex pieces, PracticeTrack helps you practice more effectively.",
-      date: "May 25, 2025",
-      readTime: "6 min read",
-      category: "Practice Tools",
-      image: "/practicetrack-thumbnail.svg",
-      slug: "introducing-practicetrack",
-      author: "Mike Nelson"
+      id: '2',
+      title: 'Wellington\'s Vanishing Music Stores: What This Means for Guitar Students',
+      excerpt: 'Exploring the impact of Wellington\'s changing music retail landscape on guitar students and where to find the gear and support you need.',
+      date: 'June 22, 2025',
+      readTime: '6 min read',
+      category: 'Musical Instrument Retail',
+      image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      slug: 'wellington-music-stores',
+      author: 'Mike Nelson'
     },
+
     {
-      id: 3,
-      title: "Reading Guitar Tab",
-      excerpt: "Learn guitar tablature through a structured 4-level approach, from basic fret notation to advanced playing techniques and symbols.",
-      content: "Guitar tablature (or 'tab') is a simple way to read music specifically written for guitar. Unlike traditional sheet music, tab shows you exactly where to place your fingers on the fretboard. This guide covers four levels of tab reading, from basic notation to advanced techniques and symbols.",
-      date: "March 20, 2024",
-      readTime: "8 min read",
-      category: "Guitar Basics",
-      image: "/x-blank-tab.png",
-      slug: "reading-guitar-tab",
-      author: "Mike Nelson"
+      id: '5',
+      title: 'Master Guitar Scales with the Interactive Scale Explorer Tool',
+      excerpt: 'Discover how to use the Scale Explorer tool to visualize guitar scales, learn fretboard patterns, and understand music theory through interactive features.',
+      date: 'June 18, 2025',
+      readTime: '9 min read',
+      category: 'Guitar Tools',
+      image: '/scale-explorer-thumbnail.svg',
+      slug: 'scale-explorer-tool',
+      author: 'Mike Nelson'
     }
   ];
 
@@ -45,10 +43,14 @@ export default function Blog() {
     switch (category) {
       case 'Practice Methods':
         return <Target className="w-5 h-5" />;
-      case 'Practice Tools':
+      case 'Getting Started':
         return <Music className="w-5 h-5" />;
       case 'Guitar Basics':
         return <BookOpen className="w-5 h-5" />;
+      case 'Musical Instrument Retail':
+        return <Store className="w-5 h-5" />;
+      case 'Guitar Tools':
+        return <Wrench className="w-5 h-5" />;
       default:
         return <Music className="w-5 h-5" />;
     }

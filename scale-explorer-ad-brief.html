@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scale Explorer - Master Guitar Scales The Right Way</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #3a3a3a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-orange: #ff6b35;
+            --accent-blue: #4a90e2;
+            --accent-yellow: #f39c12;
+            --border-color: #444444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .page {
+            display: none;
+            width: 100vmin;
+            height: 100vmin;
+            max-width: 100vh;
+            max-height: 100vh;
+            padding: 2vmin;
+            overflow-y: auto;
+            position: relative;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page-content {
+            max-width: 100%;
+            width: 100%;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* Specific styling for page 5 (Why Master the Major Scale First?) */
+        .page:nth-child(5) .page-content {
+            justify-content: flex-start;
+            padding-top: 3vmin;
+        }
+
+        .page:nth-child(5) h3 {
+            margin-bottom: 2vmin;
+            font-size: 3.8vmin;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.8vmin;
+            margin: 0;
+            height: 80%;
+        }
+
+        .benefit {
+            background: var(--bg-secondary);
+            padding: 2.2vmin;
+            border-radius: 2vmin;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .benefit h4 {
+            color: var(--accent-orange);
+            margin-bottom: 1.3vmin;
+            font-size: 2.8vmin;
+            opacity: 0;
+            transform: translateX(-15px);
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .benefit:nth-child(1) h4 { animation-delay: 0.5s; }  /* Language of Music */
+        .benefit:nth-child(2) h4 { animation-delay: 4.0s; }  /* Learn Once Apply */
+        .benefit:nth-child(3) h4 { animation-delay: 7.5s; }  /* Everything Else */
+
+        .benefit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8vmin;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05), rgba(74, 144, 226, 0.05));
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 0.8vmin;
+            padding: 0.9vmin 1.3vmin;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: benefitFloat 2.5s ease-in-out infinite;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .benefit-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateX(3px) scale(1.01);
+            border-color: var(--accent-orange);
+            box-shadow: 0 0.5vmin 1.5vmin rgba(255, 107, 53, 0.2);
+        }
+
+        .benefit-item:hover::before {
+            left: 100%;
+        }
+
+        /* Staggered animation for benefit items - grouped by section */
+        /* Section 1: Language of Music (after 0.5s heading) */
+        .benefit:nth-child(1) .benefit-item:nth-child(1) { 
+            animation: slideInBenefit 0.8s ease-out forwards 1.2s, benefitFloat 2.5s ease-in-out infinite 2s; 
+        }
+        .benefit:nth-child(1) .benefit-item:nth-child(2) { 
+            animation: slideInBenefit 0.8s ease-out forwards 1.8s, benefitFloat 2.5s ease-in-out infinite 2.6s; 
+        }
+        .benefit:nth-child(1) .benefit-item:nth-child(3) { 
+            animation: slideInBenefit 0.8s ease-out forwards 2.4s, benefitFloat 2.5s ease-in-out infinite 3.2s; 
+        }
+
+        /* Section 2: Learn Once Apply (after 4.0s heading) */
+        .benefit:nth-child(2) .benefit-item:nth-child(1) { 
+            animation: slideInBenefit 0.8s ease-out forwards 4.7s, benefitFloat 2.5s ease-in-out infinite 5.5s; 
+        }
+        .benefit:nth-child(2) .benefit-item:nth-child(2) { 
+            animation: slideInBenefit 0.8s ease-out forwards 5.3s, benefitFloat 2.5s ease-in-out infinite 6.1s; 
+        }
+        .benefit:nth-child(2) .benefit-item:nth-child(3) { 
+            animation: slideInBenefit 0.8s ease-out forwards 5.9s, benefitFloat 2.5s ease-in-out infinite 6.7s; 
+        }
+
+        /* Section 3: Everything Else (after 7.5s heading) */
+        .benefit:nth-child(3) .reference-item {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .benefit:nth-child(3) .reference-item:nth-child(1) { 
+            animation: slideInBenefit 0.8s ease-out forwards 8.2s, referenceFloat 3s ease-in-out infinite 9s; 
+        }
+        .benefit:nth-child(3) .reference-item:nth-child(2) { 
+            animation: slideInBenefit 0.8s ease-out forwards 8.8s, referenceFloat 3s ease-in-out infinite 9.6s; 
+        }
+        .benefit:nth-child(3) .reference-item:nth-child(3) { 
+            animation: slideInBenefit 0.8s ease-out forwards 9.4s, referenceFloat 3s ease-in-out infinite 10.2s; 
+        }
+
+        /* Benefit item slide-in animation */
+        @keyframes slideInBenefit {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .benefit-icon {
+            font-size: 1.9vmin;
+            margin-right: 1.1vmin;
+            text-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+            animation: iconGlow 2s ease-in-out infinite;
+            min-width: 2vmin;
+        }
+
+        .benefit-text {
+            font-size: 1.8vmin;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        @keyframes benefitFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-1px); }
+        }
+
+        @keyframes iconGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .reference-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1vmin;
+            margin-top: 0.6vmin;
+        }
+
+        .reference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(74, 144, 226, 0.1));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 0.8vmin;
+            padding: 1vmin 1.5vmin;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: referenceFloat 3s ease-in-out infinite;
+        }
+
+        .reference-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .reference-item:hover {
+            transform: translateX(5px) scale(1.02);
+            border-color: var(--accent-orange);
+            box-shadow: 0 1vmin 2vmin rgba(255, 107, 53, 0.3);
+        }
+
+        .reference-item:hover::before {
+            left: 100%;
+        }
+
+        .reference-item:nth-child(1) { animation-delay: 0s; }
+        .reference-item:nth-child(2) { animation-delay: 0.5s; }
+        .reference-item:nth-child(3) { animation-delay: 1s; }
+
+        .scale-name {
+            font-weight: 700;
+            color: var(--accent-orange);
+            font-size: 1.8vmin;
+            text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+            flex: 1;
+            text-align: left;
+        }
+
+        .equals {
+            font-size: 2vmin;
+            font-weight: 900;
+            color: var(--accent-blue);
+            margin: 0 1vmin;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.6);
+            animation: equalsGlow 2s ease-in-out infinite;
+        }
+
+        .formula {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.9vmin;
+            flex: 1.2;
+            text-align: right;
+            background: linear-gradient(45deg, #ffffff, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chord-example {
+            border-color: rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(74, 144, 226, 0.1));
+        }
+
+        .chord-example .scale-name {
+            color: var(--accent-orange);
+            text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+        }
+
+        .chord-example .equals {
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.6);
+        }
+
+        @keyframes referenceFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-1px); }
+        }
+
+        @keyframes equalsGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        h1 {
+            font-size: 6vmin;
+            margin-bottom: 1.5vmin;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 4.5vmin;
+            margin-bottom: 2vmin;
+            color: var(--accent-orange);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInFade 1.2s ease-out forwards;
+        }
+
+        h3 {
+            font-size: 4vmin;
+            margin-bottom: 2vmin;
+            color: var(--accent-orange);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInFade 1.2s ease-out forwards;
+        }
+
+        .website-url {
+            font-size: 4vmin;
+            color: var(--accent-orange);
+            font-weight: 600;
+            margin: 0.5vmin 0;
+            /* Website URL positioned below screenshot */
+        }
+
+        .scale-coverage {
+            background: var(--bg-tertiary);
+            border-radius: 2vmin;
+            padding: 4vmin;
+            margin: 2vmin 0;
+            border: 1px solid var(--border-color);
+            height: 70%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .scale-coverage h4 {
+            color: var(--accent-orange);
+            margin-bottom: 3vmin;
+            font-size: 3vmin;
+            opacity: 0;
+            transform: rotateX(90deg);
+            animation: flipInFade 1s ease-out forwards 0.5s;
+        }
+
+        .scale-coverage p {
+            font-size: 2.2vmin;
+            line-height: 1.6;
+        }
+
+        .problem-solution {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2vmin;
+            margin: 0;
+            height: 85%;
+            align-items: stretch;
+        }
+
+        .problem, .solution {
+            background: var(--bg-secondary);
+            padding: 2.5vmin;
+            border-radius: 2vmin;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            min-height: 60vmin;
+        }
+
+        .problem-image, .solution-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            height: 100%;
+            min-height: 60vmin;
+            border-radius: 2vmin;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .problem-image .screenshot-image, .solution-image .screenshot-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+        }
+
+        .problem h3 {
+            color: #e74c3c;
+            margin-bottom: 2vmin;
+            font-size: 3.8vmin;
+            height: 8vmin;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solution h3 {
+            color: var(--accent-orange);
+            margin-bottom: 2vmin;
+            font-size: 3.8vmin;
+            height: 8vmin;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .problem ul, .solution ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .problem li, .solution li {
+            margin: 1.5vmin 0;
+            padding-left: 3.5vmin;
+            position: relative;
+            font-size: 2.2vmin;
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInFromLeft 0.8s ease-out forwards;
+        }
+
+        /* Staggered animation delays for problem items - much slower delays */
+        .problem li:nth-child(1) { animation-delay: 1.5s; }
+        .problem li:nth-child(2) { animation-delay: 4.5s; }
+        .problem li:nth-child(3) { animation-delay: 7.5s; }
+        .problem li:nth-child(4) { animation-delay: 10.5s; }
+
+        /* Staggered animation delays for solution items - much slower delays */
+        .solution li:nth-child(1) { animation-delay: 1.8s; }
+        .solution li:nth-child(2) { animation-delay: 4.8s; }
+        .solution li:nth-child(3) { animation-delay: 7.8s; }
+        .solution li:nth-child(4) { animation-delay: 10.8s; }
+
+        .problem li::before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+            font-size: 2vmin;
+            opacity: 0;
+            animation: iconBounceIn 0.6s ease-out forwards;
+        }
+
+        .solution li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            font-size: 2vmin;
+            opacity: 0;
+            animation: iconBounceIn 0.6s ease-out forwards;
+        }
+
+        /* Icon animation delays (slightly after text) - much slower delays */
+        .problem li:nth-child(1)::before { animation-delay: 2.0s; }
+        .problem li:nth-child(2)::before { animation-delay: 5.0s; }
+        .problem li:nth-child(3)::before { animation-delay: 8.0s; }
+        .problem li:nth-child(4)::before { animation-delay: 11.0s; }
+
+        .solution li:nth-child(1)::before { animation-delay: 2.3s; }
+        .solution li:nth-child(2)::before { animation-delay: 5.3s; }
+        .solution li:nth-child(3)::before { animation-delay: 8.3s; }
+        .solution li:nth-child(4)::before { animation-delay: 11.3s; }
+
+        /* Animation keyframes for list items */
+        @keyframes slideInFromLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes iconBounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-180deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2) rotate(-10deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .screenshot-container {
+            margin: 1vmin 0;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .screenshot-image {
+            max-width: 100%;
+            max-height: 75vmin;
+            object-fit: contain;
+            border-radius: 1.5vmin;
+            box-shadow: 0 1vmin 3vmin rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Hero page screenshot optimized */
+        .page:nth-child(3) .screenshot-image {
+            max-width: 100%;
+            max-height: 55vmin;
+        }
+
+        /* C Major scale fretboard diagram - uncropped, full image */
+        .page:nth-child(6) .screenshot-image {
+            max-width: 98%;
+            max-height: 75vmin;
+            object-fit: contain;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .screenshot-caption {
+            font-size: 2.2vmin;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 2vmin;
+            line-height: 1.4;
+        }
+
+        .interval-section {
+            background: var(--bg-secondary);
+            border-radius: 2vmin;
+            padding: 2.5vmin;
+            margin: 0;
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .interval-section h4 {
+            font-size: 4vmin;
+            margin-bottom: 2.5vmin;
+            opacity: 0;
+            transform: rotateX(90deg);
+            animation: flipInFade 1s ease-out forwards 0.5s;
+        }
+
+        .interval-group {
+            margin-bottom: 3vmin;
+        }
+
+        .interval-group p {
+            font-size: 2.6vmin;
+            margin-bottom: 1.2vmin;
+            color: var(--text-secondary);
+        }
+
+        .interval-colors {
+            display: flex;
+            justify-content: center;
+            gap: 1vmin;
+            margin: 1.5vmin 0;
+            flex-wrap: wrap;
+        }
+
+        .interval-circle {
+            width: 6vmin;
+            height: 6vmin;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 2.4vmin;
+            border: 2px solid #555;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3vmin;
+            height: 85%;
+            padding: 2vmin;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 126, 34, 0.3);
+            border-radius: 12px;
+            padding: 2.5vmin;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Staggered animation for feature items */
+        .feature-item:nth-child(1) { 
+            animation: slideInFeature 0.8s ease-out forwards 1.0s; 
+        }
+        .feature-item:nth-child(2) { 
+            animation: slideInFeature 0.8s ease-out forwards 2.5s; 
+        }
+        .feature-item:nth-child(3) { 
+            animation: slideInFeature 0.8s ease-out forwards 4.0s; 
+        }
+        .feature-item:nth-child(4) { 
+            animation: slideInFeature 0.8s ease-out forwards 5.5s; 
+        }
+        .feature-item:nth-child(5) { 
+            animation: slideInFeature 0.8s ease-out forwards 7.0s; 
+        }
+        .feature-item:nth-child(6) { 
+            animation: slideInFeature 0.8s ease-out forwards 8.5s; 
+        }
+
+        /* Feature item slide-in animation */
+        @keyframes slideInFeature {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-item:hover {
+            border-color: var(--accent-orange);
+            background: rgba(230, 126, 34, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 4vmin;
+            margin-bottom: 1.5vmin;
+            line-height: 1;
+            color: var(--accent-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            filter: brightness(1.2);
+        }
+
+        .feature-item h4 {
+            font-size: 2.4vmin;
+            color: var(--accent-orange);
+            margin-bottom: 1vmin;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bounceInFade 0.8s ease-out forwards;
+        }
+
+        .feature-item:nth-child(1) h4 { animation-delay: 0.3s; }
+        .feature-item:nth-child(2) h4 { animation-delay: 0.5s; }
+        .feature-item:nth-child(3) h4 { animation-delay: 0.7s; }
+        .feature-item:nth-child(4) h4 { animation-delay: 0.9s; }
+        .feature-item:nth-child(5) h4 { animation-delay: 1.1s; }
+        .feature-item:nth-child(6) h4 { animation-delay: 1.3s; }
+
+        .feature-item p {
+            font-size: 1.8vmin;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        /* Page-specific heading colors */
+        .page:nth-child(1) h2 {
+            color: #e74c3c; /* Red for problem */
+        }
+
+        .page:nth-child(2) h2 {
+            color: #27ae60; /* Green for solution */
+        }
+
+        .scale-coverage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5vmin;
+            height: 85%;
+            padding: 1vmin;
+        }
+
+        .scale-card {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 2vmin;
+            padding: 2.5vmin;
+            text-align: center;
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            animation: cardFloat 3s ease-in-out infinite;
+        }
+
+        .scale-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .scale-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: var(--accent-orange);
+            box-shadow: 0 2vmin 4vmin rgba(255, 107, 53, 0.3);
+        }
+
+        .scale-card:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .scale-card.major { animation-delay: 0s; }
+        .scale-card.minor { animation-delay: 0.5s; }
+        .scale-card.melodic { animation-delay: 1s; }
+        .scale-card.pentatonic { animation-delay: 1.5s; }
+        .scale-card.blues { animation-delay: 2s; }
+        .scale-card.exotic { animation-delay: 2.5s; }
+
+        .scale-card h4 {
+            font-size: 2.4vmin;
+            color: var(--accent-orange);
+            margin-bottom: 1.5vmin;
+            font-weight: 700;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleInFade 1s ease-out forwards;
+        }
+
+        .scale-card.major h4 { animation-delay: 0.5s; }
+        .scale-card.minor h4 { animation-delay: 0.7s; }
+        .scale-card.melodic h4 { animation-delay: 0.9s; }
+        .scale-card.pentatonic h4 { animation-delay: 1.1s; }
+        .scale-card.blues h4 { animation-delay: 1.3s; }
+        .scale-card.exotic h4 { animation-delay: 1.5s; }
+
+        .scale-card p {
+            font-size: 1.8vmin;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .scale-card .scale-icon {
+            font-size: 4.5vmin;
+            margin-bottom: 1.5vmin;
+            display: block;
+            animation: iconPulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.4));
+        }
+
+        .scale-total {
+            margin-top: 3vmin;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: totalPulse 2s ease-in-out infinite;
+        }
+
+        .total-number {
+            font-size: 4vmin;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 0.5vmin;
+        }
+
+        .total-text {
+            font-size: 2.2vmin;
+            font-weight: 600;
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes totalPulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        .reference-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2vmin;
+            margin-top: 0.8vmin;
+        }
+
+        .reference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(74, 144, 226, 0.1));
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 1vmin;
+            padding: 1.2vmin 1.8vmin;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: referenceFloat 3s ease-in-out infinite;
+        }
+
+        .reference-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .reference-item:hover {
+            transform: translateX(5px) scale(1.02);
+            border-color: var(--accent-orange);
+            box-shadow: 0 1vmin 2vmin rgba(255, 107, 53, 0.3);
+        }
+
+        .reference-item:hover::before {
+            left: 100%;
+        }
+
+        .reference-item:nth-child(1) { animation-delay: 0s; }
+        .reference-item:nth-child(2) { animation-delay: 0.5s; }
+        .reference-item:nth-child(3) { animation-delay: 1s; }
+
+        .scale-name {
+            font-weight: 700;
+            color: var(--accent-orange);
+            font-size: 2vmin;
+            text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+            flex: 1;
+            text-align: left;
+        }
+
+        .equals {
+            font-size: 2.2vmin;
+            font-weight: 900;
+            color: var(--accent-blue);
+            margin: 0 1.2vmin;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.6);
+            animation: equalsGlow 2s ease-in-out infinite;
+        }
+
+        .formula {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.9vmin;
+            flex: 1.2;
+            text-align: right;
+            background: linear-gradient(45deg, #ffffff, #b0b0b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chord-example {
+            border-color: rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(74, 144, 226, 0.1));
+        }
+
+        .chord-example .scale-name {
+            color: var(--accent-orange);
+            text-shadow: 0 0 8px rgba(255, 107, 53, 0.4);
+        }
+
+        .chord-example .equals {
+            color: var(--accent-blue);
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.6);
+        }
+
+        @keyframes referenceFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-1px); }
+        }
+
+        @keyframes equalsGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Arrow pointing to Scale Explorer in menu */
+        .menu-arrow {
+            position: absolute;
+            top: 12%;
+            right: 18%;
+            width: 0;
+            height: 0;
+            border-left: 2vmin solid transparent;
+            border-right: 2vmin solid transparent;
+            border-bottom: 3vmin solid var(--accent-orange);
+            z-index: 10;
+            animation: bounce 2s infinite;
+        }
+
+        .menu-arrow::after {
+            content: "";
+        }
+
+        /* FREE label above arrow */
+        .free-label {
+            position: absolute;
+            top: 3%;
+            right: 15%;
+            background: var(--accent-orange);
+            color: white;
+            padding: 0.8vmin 1.5vmin;
+            border-radius: 1vmin;
+            font-size: 1.8vmin;
+            font-weight: 700;
+            z-index: 11;
+            animation: bounce 2s infinite;
+            box-shadow: 0 0.5vmin 1vmin rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-1vmin);
+            }
+            60% {
+                transform: translateY(-0.5vmin);
+            }
+        }
+
+        /* Only show arrow on hero page */
+        .page:nth-child(3) .menu-arrow {
+            display: block;
+        }
+
+        .page:nth-child(3) .free-label {
+            display: block;
+        }
+
+        /* Mobile menu arrow adjustments */
+        .page:nth-child(3) .menu-arrow {
+            top: 10%;
+            right: 15%;
+            border-left: 1.5vmin solid transparent;
+            border-right: 1.5vmin solid transparent;
+            border-bottom: 2.2vmin solid var(--accent-orange);
+        }
+
+        .page:nth-child(3) .menu-arrow::after {
+            content: "";
+        }
+
+        /* Mobile free label adjustments */
+        .page:nth-child(3) .free-label {
+            top: 2%;
+            right: 12%;
+            font-size: 1.5vmin;
+            padding: 0.6vmin 1.2vmin;
+        }
+
+        /* Specific page adjustments for better heading positioning */
+        /* Pages with screenshots need headings moved down */
+        .page:nth-child(6) .page-content,  /* Interactive Fretboard - Notes */
+        .page:nth-child(8) .page-content,  /* Chord Analysis */
+        .page:nth-child(9) .page-content { /* Extended Chords */
+            justify-content: flex-start;
+            padding-top: 8vmin;
+        }
+
+        .page:nth-child(6) h3,
+        .page:nth-child(8) h3,
+        .page:nth-child(9) h3 {
+            margin-bottom: 3vmin;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3vmin;
+            height: 85%;
+            padding: 2vmin;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(230, 126, 34, 0.3);
+            border-radius: 12px;
+            padding: 2.5vmin;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Staggered animation for feature items */
+        .feature-item:nth-child(1) { 
+            animation: slideInFeature 0.8s ease-out forwards 1.0s; 
+        }
+        .feature-item:nth-child(2) { 
+            animation: slideInFeature 0.8s ease-out forwards 2.5s; 
+        }
+        .feature-item:nth-child(3) { 
+            animation: slideInFeature 0.8s ease-out forwards 4.0s; 
+        }
+        .feature-item:nth-child(4) { 
+            animation: slideInFeature 0.8s ease-out forwards 5.5s; 
+        }
+        .feature-item:nth-child(5) { 
+            animation: slideInFeature 0.8s ease-out forwards 7.0s; 
+        }
+        .feature-item:nth-child(6) { 
+            animation: slideInFeature 0.8s ease-out forwards 8.5s; 
+        }
+
+        /* Feature item slide-in animation */
+        @keyframes slideInFeature {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-item:hover {
+            border-color: var(--accent-orange);
+            background: rgba(230, 126, 34, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 4vmin;
+            margin-bottom: 1.5vmin;
+            line-height: 1;
+            color: var(--accent-orange);
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+            filter: brightness(1.2);
+        }
+
+        .feature-item h4 {
+            font-size: 2.4vmin;
+            color: var(--accent-orange);
+            margin-bottom: 1vmin;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bounceInFade 0.8s ease-out forwards;
+        }
+
+        .feature-item:nth-child(1) h4 { animation-delay: 0.3s; }
+        .feature-item:nth-child(2) h4 { animation-delay: 0.5s; }
+        .feature-item:nth-child(3) h4 { animation-delay: 0.7s; }
+        .feature-item:nth-child(4) h4 { animation-delay: 0.9s; }
+        .feature-item:nth-child(5) h4 { animation-delay: 1.1s; }
+        .feature-item:nth-child(6) h4 { animation-delay: 1.3s; }
+
+        .feature-item p {
+            font-size: 1.8vmin;
+            color: var(--text-secondary);
+            line-height: 1.3;
+            margin: 0;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .page {
+                padding: 1.5vmin;
+            }
+
+            .problem-solution {
+                grid-template-columns: 1fr;
+                gap: 3vmin;
+                height: 95%;
+                align-items: stretch;
+            }
+
+            .problem, .solution {
+                padding: 4vmin;
+                min-height: 40vmin;
+                height: auto;
+            }
+
+            .problem-image, .solution-image {
+                min-height: 40vmin;
+                height: auto;
+                border-radius: 2vmin;
+                border: 1px solid var(--border-color);
+                overflow: hidden;
+                background: var(--bg-secondary);
+            }
+
+            .problem-image .screenshot-image, .solution-image .screenshot-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                border-radius: 1.5vmin;
+            }
+
+            .problem li, .solution li {
+                font-size: 2.5vmin;
+                line-height: 1.5;
+                margin: 2vmin 0;
+                padding-left: 4vmin;
+            }
+
+            .problem li::before, .solution li::before {
+                font-size: 2.2vmin;
+            }
+
+            .screenshot-caption {
+                font-size: 2vmin;
+            }
+
+            .interval-section {
+                padding: 3vmin;
+                height: 90%;
+            }
+
+            .interval-section h4 {
+                font-size: 4.5vmin;
+                margin-bottom: 3vmin;
+            }
+
+            .interval-group p {
+                font-size: 2.8vmin;
+                margin-bottom: 2vmin;
+            }
+
+            .interval-circle {
+                width: 6.5vmin;
+                height: 6.5vmin;
+                font-size: 2.5vmin;
+            }
+
+            .benefits-grid {
+                gap: 3vmin;
+                height: 80%;
+            }
+
+            .benefit {
+                padding: 3vmin;
+            }
+
+            .benefit h4 {
+                font-size: 3.5vmin;
+                margin-bottom: 2.5vmin;
+            }
+
+            .benefit-item {
+                padding: 1.5vmin 2vmin;
+            }
+
+            .benefit-icon {
+                font-size: 2.5vmin;
+                margin-right: 1.8vmin;
+            }
+
+            .benefit-text {
+                font-size: 2.3vmin;
+                line-height: 1.4;
+            }
+
+            .scale-coverage {
+                padding: 4vmin;
+                height: 80%;
+            }
+
+            .scale-coverage h4 {
+                font-size: 3.5vmin;
+                margin-bottom: 3vmin;
+            }
+
+            .scale-coverage p {
+                font-size: 2.5vmin;
+                line-height: 1.7;
+            }
+
+            .cta-section {
+                padding: 4vmin;
+                height: 85%;
+            }
+
+            .cta-section h2 {
+                font-size: 4.5vmin;
+                margin-bottom: 3vmin;
+            }
+
+            .cta-section p {
+                font-size: 2.8vmin;
+                margin-bottom: 3vmin;
+                line-height: 1.6;
+            }
+
+            .cta-url {
+                font-size: 3.2vmin;
+                margin: 3vmin 0;
+            }
+
+            .cta-tagline {
+                font-size: 2.5vmin;
+            }
+
+            /* Hero page mobile adjustments */
+            .page:nth-child(3) .page-content p {
+                font-size: 2.5vmin !important;
+                margin-bottom: 2vmin !important;
+                line-height: 1.4;
+            }
+
+            .page:nth-child(3) h1 {
+                font-size: 7vmin;
+                margin-bottom: 2vmin;
+            }
+
+            .page:nth-child(3) h2 {
+                font-size: 5vmin;
+                margin-bottom: 2.5vmin;
+            }
+
+            .page:nth-child(3) .website-url {
+                font-size: 4.5vmin;
+            }
+
+            .page:nth-child(3) .screenshot-image {
+                max-height: 50vmin;
+            }
+
+            /* Scale Coverage Grid Mobile */
+            .scale-coverage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2vmin;
+                height: 85%;
+            }
+
+            .scale-card {
+                padding: 3vmin;
+            }
+
+            .scale-card h4 {
+                font-size: 2.8vmin;
+                margin-bottom: 2vmin;
+            }
+
+            .scale-card p {
+                font-size: 2vmin;
+                line-height: 1.5;
+            }
+
+            .scale-card .scale-icon {
+                font-size: 5vmin;
+                margin-bottom: 2vmin;
+            }
+
+            .scale-total {
+                margin-top: 2vmin;
+            }
+
+            .total-number {
+                font-size: 4.5vmin;
+            }
+
+            .total-text {
+                font-size: 2.5vmin;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 480px) {
+            .page {
+                padding: 1vmin;
+            }
+
+            .problem-solution {
+                height: 98%;
+                gap: 2vmin;
+            }
+
+            .problem, .solution {
+                padding: 3vmin;
+            }
+
+            .problem h3, .solution h3 {
+                font-size: 4vmin;
+                margin-bottom: 2.5vmin;
+            }
+
+            .problem li, .solution li {
+                font-size: 2.2vmin;
+                margin: 1.8vmin 0;
+                padding-left: 3.5vmin;
+            }
+
+            .problem li::before, .solution li::before {
+                font-size: 2vmin;
+            }
+
+            .screenshot-caption {
+                font-size: 1.8vmin;
+            }
+
+            .interval-circle {
+                width: 6vmin;
+                height: 6vmin;
+                font-size: 2.2vmin;
+            }
+
+            .benefit {
+                padding: 3vmin;
+            }
+
+            .benefit h4 {
+                font-size: 3.2vmin;
+            }
+
+            .benefit p {
+                font-size: 2.2vmin;
+            }
+
+            /* Hero page very small screen adjustments */
+            .page:nth-child(3) h1 {
+                font-size: 6vmin;
+            }
+
+            .page:nth-child(3) h2 {
+                font-size: 4.5vmin;
+            }
+
+            .page:nth-child(3) .page-content p {
+                font-size: 2.2vmin !important;
+            }
+
+            .page:nth-child(3) .website-url {
+                font-size: 4.5vmin;
+            }
+        }
+
+        /* Hero page specific styling */
+        .page:nth-child(3) .page-content p {
+            font-size: 2.2vmin !important;
+            margin-bottom: 1.5vmin !important;
+            line-height: 1.3;
+        }
+
+        .cta-section {
+            background: var(--bg-secondary);
+            border-radius: 2.5vmin;
+            padding: 4vmin;
+            border: 1px solid var(--border-color);
+            margin: 0;
+            height: 80%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .cta-section h2 {
+            margin-bottom: 3vmin;
+            font-size: 4vmin;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: dropInFade 1s ease-out forwards 0.5s;
+        }
+
+        .cta-section p {
+            font-size: 2.5vmin;
+            margin-bottom: 3vmin;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInFade 0.8s ease-out forwards;
+        }
+
+        .cta-section p:nth-of-type(1) {
+            animation-delay: 2.0s;
+        }
+
+        .cta-section p:nth-of-type(3) {
+            animation-delay: 5.5s;
+        }
+
+        .cta-url {
+            font-size: 3.5vmin;
+            color: var(--accent-orange);
+            font-weight: 700;
+            margin: 3vmin 0;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: scaleInGlow 1s ease-out forwards 3.5s;
+        }
+
+        .cta-tagline {
+            font-size: 2.2vmin;
+            color: var(--text-secondary);
+            margin-top: 2vmin;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideInFade 0.8s ease-out forwards 4.5s;
+        }
+
+        /* New animation for the URL with glow effect */
+        @keyframes scaleInGlow {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+                text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+                text-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                text-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+            }
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-secondary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: none; /* Hidden for recording */
+        }
+
+        .page-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--bg-secondary);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: none; /* Hidden for recording */
+        }
+
+        /* Invisible click area for mobile navigation */
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        /* Show navigation on hover for desktop (optional) */
+        .show-nav .navigation,
+        .show-nav .page-indicator {
+            display: block;
+        }
+
+        /* Extended Chords page - larger image for detailed chord diagram */
+        .page:nth-child(9) .screenshot-image {
+            max-width: 95%;
+            max-height: 80vmin;
+            object-fit: contain;
+        }
+
+        /* Extended Chords page mobile adjustments */
+        @media (max-width: 768px) {
+            .page:nth-child(9) .screenshot-image {
+                max-width: 100%;
+                max-height: 70vmin;
+            }
+        }
+
+        /* Hero page title animation */
+        .page:nth-child(3) h1 {
+            overflow: hidden;
+            border-right: 3px solid var(--accent-orange);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: 
+                typing 2.5s steps(40, end),
+                blink-caret 2.5s step-end,
+                gradientShift 4s ease-in-out infinite 2.5s;
+            background: linear-gradient(-45deg, var(--accent-orange), var(--accent-blue), #e74c3c, var(--accent-yellow));
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Typewriter effect */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        /* Blinking cursor - stops exactly when typing ends */
+        @keyframes blink-caret {
+            0%, 49% { border-color: var(--accent-orange) }
+            50%, 99% { border-color: transparent }
+            100% { border-color: transparent }
+        }
+
+        /* Gradient color shift */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        /* Remove cursor immediately when typing completes */
+        .page:nth-child(3) h1.typing-complete {
+            border-right: none;
+            animation: gradientShift 4s ease-in-out infinite;
+        }
+
+        /* General heading animations for all pages except hero */
+        .page:not(:nth-child(3)) h2,
+        .page:not(:nth-child(3)) h3 {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInFade 1.2s ease-out forwards;
+        }
+
+        /* Staggered animation for multiple headings */
+        .page:not(:nth-child(3)) h2 {
+            animation-delay: 0.2s;
+        }
+
+        .page:not(:nth-child(3)) h3 {
+            animation-delay: 0.4s;
+        }
+
+        /* Benefit section headings */
+        .benefit h4 {
+            opacity: 0;
+            transform: translateX(-15px);
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .benefit:nth-child(1) h4 { animation-delay: 0.5s; }  /* Language of Music */
+        .benefit:nth-child(2) h4 { animation-delay: 4.0s; }  /* Learn Once Apply */
+        .benefit:nth-child(3) h4 { animation-delay: 7.5s; }  /* Everything Else */
+
+        /* Scale card headings */
+        .scale-card h4 {
+            opacity: 0;
+            transform: scale(0.8);
+            animation: scaleInFade 1s ease-out forwards;
+        }
+
+        .scale-card.major h4 { animation-delay: 0.5s; }
+        .scale-card.minor h4 { animation-delay: 0.7s; }
+        .scale-card.melodic h4 { animation-delay: 0.9s; }
+        .scale-card.pentatonic h4 { animation-delay: 1.1s; }
+        .scale-card.blues h4 { animation-delay: 1.3s; }
+        .scale-card.exotic h4 { animation-delay: 1.5s; }
+
+        /* Feature section headings */
+        .feature-item h4 {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: bounceInFade 0.8s ease-out forwards;
+        }
+
+        .feature-item:nth-child(1) h4 { animation-delay: 0.3s; }
+        .feature-item:nth-child(2) h4 { animation-delay: 0.5s; }
+        .feature-item:nth-child(3) h4 { animation-delay: 0.7s; }
+        .feature-item:nth-child(4) h4 { animation-delay: 0.9s; }
+        .feature-item:nth-child(5) h4 { animation-delay: 1.1s; }
+        .feature-item:nth-child(6) h4 { animation-delay: 1.3s; }
+
+        /* Interval section heading */
+        .interval-section h4 {
+            opacity: 0;
+            transform: rotateX(90deg);
+            animation: flipInFade 1s ease-out forwards 0.5s;
+        }
+
+        /* CTA section heading */
+        .cta-section h2 {
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: dropInFade 1s ease-out forwards 0.3s;
+        }
+
+        /* Animation keyframes */
+        @keyframes slideInFade {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleInFade {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounceInFade {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            60% {
+                opacity: 0.8;
+                transform: translateY(-2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes flipInFade {
+            0% {
+                opacity: 0;
+                transform: rotateX(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: rotateX(0);
+            }
+        }
+
+        @keyframes dropInFade {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: The Problem -->
+    <div class="page active">
+        <div class="page-content">
+            <h2>Problems Many Guitarists Face</h2>
+            <div class="problem-solution">
+                <div class="problem">
+                    <ul>
+                        <li>They learn dozens of scales as isolated fretboard shapes</li>
+                        <li>They get stuck in a few positions on the neck</li>
+                        <li>They memorize chord shapes with no connection between them</li>
+                        <li>They guess at which notes and chords will sound good together</li>
+                    </ul>
+                </div>
+                <div class="problem-image">
+                    <img src="SCREENSHOTS/20250621_0103_Guitar Smash Clipart_simple_compose_01jy6py137ffsbg4wdewewav3f.png" alt="Frustrated guitarist struggling with scattered knowledge" class="screenshot-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: The Solution -->
+    <div class="page">
+        <div class="page-content">
+            <h2>The Solution: One Universal Reference</h2>
+            <div class="problem-solution">
+                <div class="solution">
+                    <ul>
+                        <li>Master the <strong>major scale</strong> → spend less time learning other scales</li>
+                        <li>At minimum, learning the C major scale across the fretboard teaches you all the natural note names</li>
+                        <li>See connections between scales, chords, and progressions</li>
+                        <li>Provides a language to understand and communicate music</li>
+                    </ul>
+                </div>
+                <div class="solution-image">
+                    <img src="SCREENSHOTS/20250621_0106_Campfire Guitar Serenade_remix_01jy6q3d4ae2mvhrs6f2een5vx.png" alt="Confident guitarist playing with understanding" class="screenshot-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 3: Hero -->
+    <div class="page">
+        <div class="page-content">
+            <h1>Scale Explorer</h1>
+            <h2>A Better Way to Learn Guitar Scales</h2>
+            <p>Stop struggling with scattered fretboard knowledge. Learn the <strong>major scale first</strong> → everything else clicks into place.</p>
+            
+            <div class="screenshot-container">
+                <img src="SCREENSHOTS/Mike Nelson Guitar Lessons.png" alt="Mike Nelson Guitar Lessons Website" class="screenshot-image">
+                <div class="free-label">FREE</div>
+                <div class="menu-arrow"></div>
+            </div>
+            
+            <p class="website-url">mikenelsonguitarlessons.co.nz</p>
+        </div>
+    </div>
+
+    <!-- Page 4: Scale Coverage -->
+    <div class="page">
+        <div class="page-content">
+            <h3 style="color: var(--accent-orange); margin-bottom: 3vmin;">🎼 Comprehensive Scale Coverage 🎼</h3>
+            <div class="scale-coverage-grid">
+                <div class="scale-card major">
+                    <div class="scale-icon">🎯</div>
+                    <h4>Major Scale & Modes</h4>
+                    <p>Ionian • Dorian • Phrygian<br>Lydian • Mixolydian • Aeolian • Locrian</p>
+                </div>
+                
+                <div class="scale-card minor">
+                    <div class="scale-icon">🌙</div>
+                    <h4>Harmonic Minor & Modes</h4>
+                    <p>7 exotic modes including<br>Phrygian Dominant</p>
+                </div>
+                
+                <div class="scale-card melodic">
+                    <div class="scale-icon">🎭</div>
+                    <h4>Melodic Minor & Modes</h4>
+                    <p>Lydian Dominant • Altered & more</p>
+                </div>
+                
+                <div class="scale-card pentatonic">
+                    <div class="scale-icon">⭐</div>
+                    <h4>Pentatonic & Modes</h4>
+                    <p>Major • Minor • Suspended<br>Man Gong • Ritusen</p>
+                </div>
+                
+                <div class="scale-card blues">
+                    <div class="scale-icon">🎸</div>
+                    <h4>Blues Scales</h4>
+                    <p>Major and Minor modes</p>
+                </div>
+                
+                <div class="scale-card exotic">
+                    <div class="scale-icon">🎨</div>
+                    <h4>Symmetrical Scales</h4>
+                    <p>Diminished • Whole Tone<br>Chromatic</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 5: Why Major Scale First -->
+    <div class="page">
+        <div class="page-content">
+            <h3>Why Master the Major Scale First?</h3>
+            <div class="benefits-grid">
+                <div class="benefit">
+                    <h4>It's the Language of Music</h4>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎹</span>
+                            <span class="benefit-text">Recognize keys and chord progressions</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎯</span>
+                            <span class="benefit-text">Improvise with intention</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🤝</span>
+                            <span class="benefit-text">Communicate with other musicians</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefit">
+                    <h4>Learn Once, Apply Everywhere</h4>
+                    <div class="benefit-list">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🔗</span>
+                            <span class="benefit-text">Learn a system that reveals connections</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🚫</span>
+                            <span class="benefit-text">Stop memorizing isolated shapes</span>
+                        </div>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🗺️</span>
+                            <span class="benefit-text">Don't get stuck in a few positions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="benefit">
+                    <h4>Everything Else is Just Variations</h4>
+                    <div class="reference-examples">
+                        <div class="reference-item">
+                            <span class="scale-name">Natural Minor scale</span>
+                            <span class="equals">=</span>
+                            <span class="formula">Major with ♭3, ♭6, ♭7</span>
+                        </div>
+                        <div class="reference-item">
+                            <span class="scale-name">Mixolydian scale</span>
+                            <span class="equals">=</span>
+                            <span class="formula">Major with ♭7</span>
+                        </div>
+                        <div class="reference-item chord-example">
+                            <span class="scale-name">Major vs Minor chords</span>
+                            <span class="equals">=</span>
+                            <span class="formula">3 vs ♭3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 6: Interactive Fretboard - Notes -->
+    <div class="page">
+        <div class="page-content">
+            <h3>Interactive Fretboard Diagrams</h3>
+            <div class="screenshot-container">
+                <img src="SCREENSHOTS/C major scale notes .png" alt="C Major Scale with Note Names" class="screenshot-image">
+                <div class="screenshot-caption">
+                    C Major scale showing note names across the entire fretboard - see every occurrence of each note
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 7: Interval Colors -->
+    <div class="page">
+        <div class="page-content">
+            <h3>Interval Colors</h3>
+            <div class="interval-section">
+                <h4 style="color: var(--accent-orange); margin-bottom: 30px;">See How Scales Relate</h4>
+                
+                <div class="interval-group">
+                    <p>Major Scale:</p>
+                    <div class="interval-colors">
+                        <div class="interval-circle" style="background: #FFFFFF; color: #000;">1</div>
+                        <div class="interval-circle" style="background: #E67E22; color: #000;">2</div>
+                        <div class="interval-circle" style="background: #F4D03F; color: #000;">3</div>
+                        <div class="interval-circle" style="background: #E74C3C; color: #FFF;">4</div>
+                        <div class="interval-circle" style="background: #5DADE2; color: #000;">5</div>
+                        <div class="interval-circle" style="background: #58D68D; color: #000;">6</div>
+                        <div class="interval-circle" style="background: #C0392B; color: #FFF;">7</div>
+                    </div>
+                </div>
+                
+                <div class="interval-group">
+                    <p>Natural Minor:</p>
+                    <div class="interval-colors">
+                        <div class="interval-circle" style="background: #FFFFFF; color: #000;">1</div>
+                        <div class="interval-circle" style="background: #E67E22; color: #000;">2</div>
+                        <div class="interval-circle" style="background: #8E44AD; color: #FFF;">♭3</div>
+                        <div class="interval-circle" style="background: #E74C3C; color: #FFF;">4</div>
+                        <div class="interval-circle" style="background: #5DADE2; color: #000;">5</div>
+                        <div class="interval-circle" style="background: #85929E; color: #FFF;">♭6</div>
+                        <div class="interval-circle" style="background: #CD6155; color: #FFF;">♭7</div>
+                    </div>
+                </div>
+                
+                <div class="interval-group">
+                    <p>Major Pentatonic:</p>
+                    <div class="interval-colors">
+                        <div class="interval-circle" style="background: #FFFFFF; color: #000;">1</div>
+                        <div class="interval-circle" style="background: #E67E22; color: #000;">2</div>
+                        <div class="interval-circle" style="background: #F4D03F; color: #000;">3</div>
+                        <div class="interval-circle" style="background: #5DADE2; color: #000;">5</div>
+                        <div class="interval-circle" style="background: #58D68D; color: #000;">6</div>
+                    </div>
+                </div>
+                
+                <p style="font-size: 2.4vmin; margin-top: 30px; color: var(--text-secondary); font-weight: 500; text-align: center;">
+                    Each interval has a unique color - see how other scales are just variations of the major scale pattern
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 8: Chord Analysis -->
+    <div class="page">
+        <div class="page-content">
+            <h3>Chord Theory Integration</h3>
+            <div class="screenshot-container">
+                <img src="SCREENSHOTS/C major chord intervals .png" alt="Chord Analysis with Intervals" class="screenshot-image">
+                <div class="screenshot-caption">
+                    C Major chord analysis showing interval relationships - understand the theory behind chord construction
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 9: Scale Explorer Features Summary -->
+    <div class="page">
+        <div class="page-content">
+            <h3>Scale Explorer Features</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🎸</div>
+                    <h4>Fretboard Diagrams for Scales and Chords</h4>
+                    <p>Interactive visual representations of every scale and chord pattern</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🎵</div>
+                    <h4>Chords Built from Each Scale</h4>
+                    <p>See exactly which chords belong together in any scale or key</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <h4>Scale Information & Applications</h4>
+                    <p>Learn the mood, character, and practical uses of each scale</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🔊</div>
+                    <h4>Hear What Each Scale Sounds Like</h4>
+                    <p>Experience the sound of each scale - hear the unique character and mood of every scale</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🔗</div>
+                    <h4>Related Modes & Connections</h4>
+                    <p>Discover how scales relate to each other and their modal variations</p>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚖️</div>
+                    <h4>Scale Comparison Tool</h4>
+                    <p>Overlay different scales on the same fretboard to see their similarities and differences</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 10: Call to Action -->
+    <div class="page">
+        <div class="page-content">
+            <div class="cta-section">
+                <h2>Ready to Know What You're Doing?</h2>
+                <p>Stop struggling with scattered fretboard knowledge. Start with the major scale and watch everything else fall into place.</p>
+                <p class="cta-url">mikenelsonguitarlessons.co.nz/scale-explorer</p>
+                <p class="cta-tagline">Free • Interactive • Comprehensive</p>
+                <p style="margin-top: 2vmin; font-size: 2.2vmin; color: var(--text-secondary);">
+                    Online lessons also available: <span style="color: var(--accent-orange); font-weight: 600;">mikenelsonguitarlessons.co.nz/contact</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">Press SPACEBAR for next page</div>
+    <div class="page-indicator">Page <span id="current-page">1</span> of <span id="total-pages">10</span></div>
+
+    <!-- Mobile navigation - invisible click area -->
+    <div class="mobile-nav" id="mobile-nav"></div>
+
+    <script>
+        let currentPage = 0;
+        const pages = document.querySelectorAll('.page');
+        const totalPages = pages.length;
+        const mobileNav = document.getElementById('mobile-nav');
+        document.getElementById('total-pages').textContent = totalPages;
+
+        function showPage(pageIndex) {
+            pages.forEach(page => page.classList.remove('active'));
+            pages[pageIndex].classList.add('active');
+            document.getElementById('current-page').textContent = pageIndex + 1;
+            
+            // Trigger title animation when hero page (page 2, index 2) is shown
+            if (pageIndex === 2) {
+                const heroTitle = pages[pageIndex].querySelector('h1');
+                if (heroTitle) {
+                    // Reset animation by removing and re-adding classes
+                    heroTitle.classList.remove('typing-complete');
+                    heroTitle.style.animation = 'none';
+                    
+                    // Force reflow
+                    heroTitle.offsetHeight;
+                    
+                    // Restart animation
+                    heroTitle.style.animation = `
+                        typing 2.5s steps(40, end),
+                        blink-caret 2.5s step-end,
+                        gradientShift 4s ease-in-out infinite 2.5s`;
+                    
+                    // Remove cursor immediately when typing completes
+                    setTimeout(() => {
+                        heroTitle.style.borderRight = 'none';
+                        heroTitle.style.animation = 'gradientShift 4s ease-in-out infinite';
+                    }, 2500);
+                }
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 0) {
+                currentPage--;
+                showPage(currentPage);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                nextPage();
+            } else if (event.code === 'ArrowLeft' || event.code === 'Backspace') {
+                event.preventDefault();
+                prevPage();
+            } else if (event.code === 'ArrowRight') {
+                event.preventDefault();
+                nextPage();
+            }
+        });
+
+        // Mobile/Touch navigation
+        mobileNav.addEventListener('click', function(event) {
+            event.preventDefault();
+            nextPage();
+        });
+
+        // Touch events for mobile
+        let touchStartX = 0;
+        mobileNav.addEventListener('touchstart', function(event) {
+            touchStartX = event.touches[0].clientX;
+        });
+
+        mobileNav.addEventListener('touchend', function(event) {
+            event.preventDefault();
+            const touchEndX = event.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > 50) { // Minimum swipe distance
+                if (diff > 0) {
+                    nextPage(); // Swipe left = next page
+                } else {
+                    prevPage(); // Swipe right = previous page
+                }
+            } else {
+                nextPage(); // Tap = next page
+            }
+        });
+
+        // Optional: Show navigation on Ctrl+Shift (for testing)
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey) {
+                document.body.classList.toggle('show-nav');
+            }
+        });
+
+        // Initialize
+        showPage(0);
+    </script>
+</body>
+</html> 
