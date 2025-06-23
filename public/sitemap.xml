@@ -62,6 +62,13 @@
     
     <!-- Blog Posts -->
     <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz</loc>
+        <lastmod>2025-06-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/complete-beginners-guide-guitar</loc>
         <lastmod>2025-01-10</lastmod>
         <changefreq>monthly</changefreq>

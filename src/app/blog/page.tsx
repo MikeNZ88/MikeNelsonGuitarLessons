@@ -4,6 +4,17 @@ import { Music, BookOpen, Target, Store, Wrench } from 'lucide-react';
 export default function Blog() {
   const posts = [
     {
+      id: '9',
+      title: 'Beginner Electric Guitar Guide - New Zealand 2025',
+      excerpt: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, current pricing, and where to buy for beginners.',
+      date: 'June 24, 2025',
+      readTime: '6 min read',
+      category: 'Getting Started',
+      image: '/yamaha-pac112j.webp',
+      slug: 'electric-guitar-beginner-guide-nz',
+      author: 'Mike Nelson'
+    },
+    {
       id: '8',
       title: 'The Complete Beginner\'s Guide to Learning Guitar',
       excerpt: 'Everything you need to know to start your guitar journey. From choosing your first guitar to learning essential chords, this comprehensive guide covers it all.',
@@ -130,7 +141,7 @@ export default function Blog() {
                 <img 
                   src={post.image} 
                   alt={post.title}
-                  className="w-full h-48 object-cover"
+                  className="w-full h-48 object-cover object-right"
                 />
                 <div className="p-6">
                   <div className="flex items-center mb-3">

@@ -137,13 +137,30 @@ export default function CompleteBeginnerGuide() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
                 <h3 className="text-xl font-bold text-amber-800 mb-4">Electric Guitars for Beginners</h3>
                 <p className="text-amber-700 mb-3">
-                  Electric guitars for beginners typically range from $300-500 for a guitar and amp package. 
-                  You can also buy small practice amps separately if you already have a guitar.
-                </p>
-                <p className="text-amber-700">
                   Electric guitars can be easier to play due to lower string tension and are great for 
-                  amplified performances.
+                  amplified performances. They require an amplifier to make sound, but this also gives 
+                  you access to a wide range of tones and effects.
                 </p>
+                <p className="text-amber-700 mb-4">
+                  Current pricing in New Zealand ranges from $668-$798 for a complete beginner setup 
+                  including guitar, amp, and essential accessories.
+                </p>
+                <div className="bg-white border border-amber-300 rounded-lg p-4">
+                  <p className="text-amber-800 font-semibold mb-2">
+                    📖 Complete Electric Guitar Guide Available
+                  </p>
+                  <p className="text-amber-700 text-sm mb-3">
+                    For my detailed recommendations, current NZ pricing, and where to buy, check out my 
+                    comprehensive electric guitar guide with specific guitar models, amp comparisons, 
+                    and complete setup pricing based on my teaching experience.
+                  </p>
+                  <Link 
+                    href="/blog/electric-guitar-beginner-guide-nz" 
+                    className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                  >
+                    Read the Electric Guitar Guide <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                </div>
               </div>
             </section>
 
