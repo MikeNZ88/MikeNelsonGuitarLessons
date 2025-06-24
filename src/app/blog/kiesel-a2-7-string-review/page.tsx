@@ -42,14 +42,14 @@ export default function KieselA2Review() {
           {/* Main Content */}
           <div className="flex-1 prose prose-lg max-w-none prose-p:mb-6">
             
-            {/* Guitar Image - Vertical alongside text */}
-            <div className="float-right ml-8 mb-8 mt-4 w-60 lg:w-72 clear-right">
+            {/* Guitar Image - Mobile: full width, Desktop: floating */}
+            <div className="mb-8 lg:float-right lg:ml-8 lg:mb-8 lg:mt-4 lg:w-72 lg:clear-right">
               <Image 
                 src="/my-gear/Screenshot 2025-06-24 at 9.57.49 PM.png"
                 alt="Kiesel A2 7-String Guitar"
                 width={320}
                 height={800}
-                className="w-full rounded-lg shadow-lg border border-gray-200"
+                className="w-full max-w-sm mx-auto lg:max-w-none lg:mx-0 rounded-lg shadow-lg border border-gray-200"
               />
             </div>
           <p className="text-xl text-gray-700 mb-8">
