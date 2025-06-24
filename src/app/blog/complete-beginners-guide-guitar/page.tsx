@@ -24,8 +24,7 @@ export default function CompleteBeginnerGuide() {
               Complete Beginner's Guide to Learning Guitar
             </h1>
             <p className="text-xl text-amber-100 mb-8 leading-relaxed">
-              Everything you need to know to start your guitar journey. From choosing your first instrument 
-              to playing your first songs - this is your complete roadmap to guitar success.
+              A simple guide on what to buy and what you'll learn as a beginner guitarist in NZ
             </p>
             <div className="flex items-center justify-center space-x-4 text-amber-200">
               <Clock className="h-5 w-5" />
@@ -54,6 +53,19 @@ export default function CompleteBeginnerGuide() {
                 everything you need to get started on the right foot.
               </p>
             </div>
+
+            {/* Teaching Style Note */}
+            <section className="mb-12">
+              <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-green-800 mb-3">About My Teaching Approach</h3>
+                <p className="text-green-700 mb-3">
+                  While I teach a variety of musical styles, I can loosely be categorised as a "rock" guitar teacher. Classical guitar has a different approach, predominantly due to the use of fingers in the plucking/picking hand rather than a pick.
+                </p>
+                <p className="text-green-700">
+                  I do teach some fingerstyle playing when requested, however my method is rooted in playing with a pick. If you're specifically interested in classical guitar technique, you may want to seek out a teacher who specializes in that approach.
+                </p>
+              </div>
+            </section>
 
             {/* Choosing Your First Guitar Section */}
             <section className="mb-12">
