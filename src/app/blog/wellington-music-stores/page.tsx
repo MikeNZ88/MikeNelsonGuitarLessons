@@ -83,7 +83,7 @@ export default function WellingtonMusicStoresPost() {
           <h3 className="text-xl font-semibold text-gray-800 mt-8 mb-4">Market Changes</h3>
           <ul className="list-disc list-inside space-y-3 mb-6">
             <li><strong>Digital gear revolution</strong> - High quality amp and effect modulation units, plus software and audio interface + computer based rigs replacing physical hardware</li>
-            <li><strong>Direct-to-consumer brands</strong> - Companies like Kiesel, Solar, Ormsby, and others completely bypass the traditional distributor system. They sell direct online, ship worldwide, and don't need local dealers at all. For customers, you just order online, pay the import duties, and get a guitar that's often better value than what the local stores can offer</li>
+            <li><strong>Direct-to-consumer brands</strong> - Companies completely bypass the traditional distributor system, selling direct online and shipping worldwide without needing local dealers. NZ/Australian brands like Artist Guitars and Ormsby offer direct sales with lower shipping costs and no import duties, while international brands like Kiesel (US) and Solar (Spain) ship from overseas. For customers, you just order online, pay any applicable import duties, and often get better value than what local stores can offer</li>
           </ul>
 
           <h3 className="text-xl font-semibold text-gray-800 mt-8 mb-4">Economic Pressures</h3>
@@ -142,7 +142,7 @@ export default function WellingtonMusicStoresPost() {
           <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">What This Means for Kapiti Musicians</h2>
 
           <p>
-            If you're living somewhere like Pukerua Bay, new guitar strings is a trip to Wellington or the Hutt Valley.
+            If you're living somewhere like Pukerua Bay, new guitar strings is a trip to Wellington or the Hutt Valley. There's also Kings Sound Centre in Levin, about a 30-minute drive north from Paraparaumu, but that's still a proper expedition for something as simple as picking up picks or strings.
           </p>
 
           <p>
