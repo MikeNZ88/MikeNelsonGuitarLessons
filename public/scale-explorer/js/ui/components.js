@@ -736,13 +736,16 @@ function makeResizable(modal) {
 function displayScale(scale, intervals, formula, scaleType, key, category) {
     displayNotes(scale);
     displayIntervals(intervals);
+    
+    // Display chords right after scale information
     displayChords(scale, scaleType, category);
+    
     updateScaleColor(intervals);
     updateParentScale(scaleType, key, category);
     updateModeName();
     createFretboard(scale);
     
-    // Get current state to create related modes
+    // Get current state to create related modes (displayed last)
     const currentState = AppController.getCurrentState();
     createRelatedModes(currentState.mode, currentState.category, currentState.key);
 }
@@ -3183,20 +3186,6 @@ function displayChordType(type, chords, container = null) {
             const qualityChords = organized[quality];
             if (qualityChords.length === 0) return;
             
-            // Create section header
-            const sectionHeader = document.createElement('div');
-            sectionHeader.className = 'chord-type-section';
-            sectionHeader.innerHTML = `
-                <h4 class="chord-type-title">${quality}</h4>
-                <p class="chord-type-description">${qualityChords.length} chord${qualityChords.length > 1 ? 's' : ''}</p>
-            `;
-            chordsList.appendChild(sectionHeader);
-            
-            // Create container for this chord type
-            const sectionContainer = document.createElement('div');
-            sectionContainer.className = 'chord-type-container';
-            chordsList.appendChild(sectionContainer);
-            
             // Display chords in this section
             qualityChords.forEach((chord, index) => {
                 const chordElement = document.createElement('div');
@@ -3242,7 +3231,7 @@ function displayChordType(type, chords, container = null) {
                     highlightChordOnFretboard(chord);
                 });
                 
-                sectionContainer.appendChild(chordElement);
+                chordsList.appendChild(chordElement);
             });
         });
     } else {
@@ -3298,155 +3287,42 @@ function displayChordType(type, chords, container = null) {
 
 // Helper function to organize chords by their quality/type
 function organizeChordsByQuality(chords, chordType) {
+    // Organize by scale degree (1-7) instead of chord quality
     const organized = {};
     
     chords.forEach(chord => {
-        let quality = chord.quality || 'Unknown';
+        const degree = chord.degree || 0;
+        const roman = chord.roman || '';
+        const quality = chord.quality || '';
         
-        // Normalize quality names for better grouping
-        if (chordType === 'triads') {
-            if (quality.toLowerCase().includes('major') && !quality.toLowerCase().includes('minor')) {
-                quality = 'Major Triads';
-            } else if (quality.toLowerCase().includes('minor') && !quality.toLowerCase().includes('major')) {
-                quality = 'Minor Triads';
-            } else if (quality.toLowerCase().includes('diminished')) {
-                quality = 'Diminished Triads';
-            } else if (quality.toLowerCase().includes('augmented')) {
-                quality = 'Augmented Triads';
-            } else if (quality.toLowerCase().includes('sus2')) {
-                quality = 'Sus2 Triads';
-            } else if (quality.toLowerCase().includes('sus4')) {
-                quality = 'Sus4 Triads';
-            }
-        } else if (chordType === 'sevenths') {
-            if (quality.toLowerCase().includes('major 7') || quality.toLowerCase().includes('maj7')) {
-                quality = 'Major 7th';
-            } else if (quality.toLowerCase().includes('half-diminished') || quality.includes('ø7') || quality.includes('m7♭5') || quality.toLowerCase().includes('minor 7 ♭5')) {
-                quality = 'Half Diminished';
-            } else if (quality.toLowerCase().includes('minor 7') && !quality.toLowerCase().includes('major') && !quality.toLowerCase().includes('♭5')) {
-                quality = 'Minor 7th';
-            } else if (quality.toLowerCase().includes('dominant 7') || quality === '7') {
-                quality = 'Dominant 7th';
-            } else if (quality.toLowerCase().includes('diminished 7') || quality.includes('°7')) {
-                quality = 'Diminished 7th';
-            } else if (quality.toLowerCase().includes('minor major 7') || quality.includes('mMaj7')) {
-                quality = 'Minor Major 7th';
-            }
-        } else if (chordType === 'sixths') {
-            if (quality.toLowerCase().includes('major')) {
-                quality = 'Major 6th';
-            } else if (quality.toLowerCase().includes('minor')) {
-                quality = 'Minor 6th';
-            }
-        } else if (chordType === 'sus2') {
-            quality = 'Sus2';
-        } else if (chordType === 'sus4') {
-            quality = 'Sus4';
-        } else if (chordType === 'sus4-sevenths') {
-            if (quality.toLowerCase().includes('major 7') || quality.includes('maj7')) {
-                quality = 'Major 7sus4';
-            } else {
-                quality = 'Dominant 7sus4';
-            }
-        } else if (chordType === 'ninths') {
-            if (quality.toLowerCase().includes('major 9') || quality.includes('maj9')) {
-                quality = 'Major 9th';
-            } else if (quality.toLowerCase().includes('minor 9')) {
-                quality = 'Minor 9th';
-            } else if (quality.toLowerCase().includes('dominant 9') || quality === '9') {
-                quality = 'Dominant 9th';
-            } else if (quality.toLowerCase().includes('half-diminished 9') || quality.includes('m9♭5')) {
-                quality = 'Half-Diminished 9th';
-            } else if (quality.toLowerCase().includes('diminished 9') || quality.includes('°9')) {
-                quality = 'Diminished 9th';
-            }
-        } else if (chordType === 'elevenths') {
-            if (quality.toLowerCase().includes('major 11') || quality.includes('maj11')) {
-                quality = 'Major 11th';
-            } else if (quality.toLowerCase().includes('minor 11')) {
-                quality = 'Minor 11th';
-            } else if (quality.toLowerCase().includes('dominant 11') || quality === '11') {
-                quality = 'Dominant 11th';
-            } else if (quality.toLowerCase().includes('half-diminished 11') || quality.includes('m11♭5')) {
-                quality = 'Half-Diminished 11th';
-            } else if (quality.toLowerCase().includes('diminished 11') || quality.includes('°11')) {
-                quality = 'Diminished 11th';
-            }
-        } else if (chordType === 'thirteenths') {
-            if (quality.toLowerCase().includes('major 13') || quality.includes('maj13')) {
-                quality = 'Major 13th';
-            } else if (quality.toLowerCase().includes('minor 13')) {
-                quality = 'Minor 13th';
-            } else if (quality.toLowerCase().includes('dominant 13') || quality === '13') {
-                quality = 'Dominant 13th';
-            } else if (quality.toLowerCase().includes('half-diminished 13') || quality.includes('m13♭5')) {
-                quality = 'Half-Diminished 13th';
-            } else if (quality.toLowerCase().includes('diminished 13') || quality.includes('°13')) {
-                quality = 'Diminished 13th';
-            }
+        // Create section title with Roman numeral and chord name
+        let sectionTitle;
+        if (roman && chord.name) {
+            sectionTitle = `${roman} - ${chord.name}`;
+        } else if (chord.name) {
+            sectionTitle = `${degree} - ${chord.name}`;
+        } else {
+            sectionTitle = `Degree ${degree}`;
         }
         
-        if (!organized[quality]) {
-            organized[quality] = [];
+        if (!organized[sectionTitle]) {
+            organized[sectionTitle] = [];
         }
-        organized[quality].push(chord);
+        organized[sectionTitle].push(chord);
     });
     
-    // Sort chords within each quality group by degree, with degree 1 first
-    Object.keys(organized).forEach(quality => {
-        organized[quality].sort((a, b) => {
-            const degreeA = a.degree || 0;
-            const degreeB = b.degree || 0;
-            
-            // Put degree 1 first
-            if (degreeA === 1 && degreeB !== 1) return -1;
-            if (degreeB === 1 && degreeA !== 1) return 1;
-            
-            // For all other degrees, sort in ascending order
-            return degreeA - degreeB;
-        });
-    });
-    
-    // Sort qualities in a logical order, but prioritize the quality containing degree 1
-    const qualityOrder = [
-        'Major Triads', 'Minor Triads', 'Diminished Triads', 'Augmented Triads', 'Sus2 Triads', 'Sus4 Triads',
-        'Major 7th', 'Minor 7th', 'Dominant 7th', 'Diminished 7th', 'Half Diminished', 'Minor Major 7th',
-        'Major 6th', 'Minor 6th',
-        'Sus2', 'Sus4',
-        'Major 7sus4', 'Dominant 7sus4',
-        'Major 9th', 'Minor 9th', 'Dominant 9th', 'Half-Diminished 9th', 'Diminished 9th',
-        'Major 11th', 'Minor 11th', 'Dominant 11th', 'Half-Diminished 11th', 'Diminished 11th',
-        'Major 13th', 'Minor 13th', 'Dominant 13th', 'Half-Diminished 13th', 'Diminished 13th'
-    ];
-    
-    // Find which quality contains the degree 1 chord
-    let degree1Quality = null;
-    Object.keys(organized).forEach(quality => {
-        const hasDegree1 = organized[quality].some(chord => chord.degree === 1);
-        if (hasDegree1) {
-            degree1Quality = quality;
-        }
-    });
-    
+    // Sort by degree (1-7)
     const sortedOrganized = {};
     
-    // Add the quality containing degree 1 first
-    if (degree1Quality && organized[degree1Quality]) {
-        sortedOrganized[degree1Quality] = organized[degree1Quality];
-    }
+    // Get all degrees present and sort them
+    const degrees = Object.keys(organized).map(key => {
+        const chord = organized[key][0];
+        return { key, degree: chord.degree || 0 };
+    }).sort((a, b) => a.degree - b.degree);
     
-    // Then add other qualities in their normal order
-    qualityOrder.forEach(quality => {
-        if (organized[quality] && quality !== degree1Quality) {
-            sortedOrganized[quality] = organized[quality];
-        }
-    });
-    
-    // Add any remaining qualities not in the predefined order
-    Object.keys(organized).forEach(quality => {
-        if (!sortedOrganized[quality]) {
-            sortedOrganized[quality] = organized[quality];
-        }
+    // Add sections in degree order (1-7)
+    degrees.forEach(({ key }) => {
+        sortedOrganized[key] = organized[key];
     });
     
     return sortedOrganized;

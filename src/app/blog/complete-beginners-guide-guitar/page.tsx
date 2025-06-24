@@ -404,7 +404,7 @@ export default function CompleteBeginnerGuide() {
                     <h3 className="text-xl font-bold text-amber-800">Complete Your Foundation</h3>
                   </div>
                   <p className="text-amber-700 mb-3">
-                    Learn the remaining foundation chords: Am, Dm, and E. These complete your essential chord vocabulary.
+                    Learn the remaining foundation chords: Am and Dm. These complete your essential chord vocabulary.
                   </p>
                   <p className="text-amber-600">
                     <strong>Achievement:</strong> You can now play hundreds of popular songs!
