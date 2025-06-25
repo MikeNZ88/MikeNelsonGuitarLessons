@@ -4220,11 +4220,20 @@ function showComparisonSelector(controlsDiv) {
                 return;
             }
             
-            // Get scale type
-            const scaleType = getScaleTypeFromCategory(category);
+            // Get scale type - for certain scale categories, use the specific mode as the scale type
+            let scaleType = getScaleTypeFromCategory(category);
+            if (category === 'pentatonic' || category === 'pentatonic-modes') {
+                scaleType = mode; // Use the actual mode name (e.g., 'minor-pentatonic', 'major-pentatonic')
+            } else if (category === 'blues-modes' || category === 'blues-scales') {
+                scaleType = mode; // Use the actual mode name (e.g., 'blues-major', 'blues-minor')
+            } else if (category === 'diminished-modes') {
+                scaleType = mode; // Use the actual mode name (e.g., 'wh-diminished', 'hw-diminished')
+            }
             
             // Generate the comparison scale using the same method as the main app
+            // console.log('Comparison calculation:', { root, modeFormula, scaleType, category, mode });
             const comparisonScale = MusicTheory.calculateScale(root, modeFormula, scaleType);
+            // console.log('Generated comparison scale:', comparisonScale);
             
             if (comparisonScale && comparisonScale.length > 0) {
                 // Store the comparison selections to maintain them
@@ -4317,6 +4326,7 @@ function getScaleTypeFromCategory(category) {
             return 'melodic-minor';
         case 'diminished-modes':
             return 'diminished';
+        case 'pentatonic':
         case 'pentatonic-modes':
             return 'major-pentatonic';
         case 'blues-modes':
@@ -4436,6 +4446,11 @@ function renderSingleScale(svg, scale, displayFrets, fretWidth) {
 function renderComparisonFretboard(svg, scale1, scale2, displayFrets, fretWidth) {
     const stringNotes = ['E', 'B', 'G', 'D', 'A', 'E'];
     
+    // Debug: Log the scales being compared (uncomment when needed)
+    // console.log('Comparison Debug - renderComparisonFretboard:');
+    // console.log('Scale 1 (primary):', scale1);
+    // console.log('Scale 2 (comparison):', scale2);
+    
     // Find shared notes between the two scales
     const sharedNotes = scale1.filter(note => 
         scale2.some(compareNote => {
@@ -4454,7 +4469,6 @@ function renderComparisonFretboard(svg, scale1, scale2, displayFrets, fretWidth)
             const actualFret = fretboardState.startFret + fret;
             
             const chromaticIndex = (noteToIndex(openNote) + actualFret) % 12;
-            const chromaticNoteName = MusicConstants.chromaticScale[chromaticIndex];
             
             let displayNote = null;
             let isInScale1 = false;
@@ -4463,45 +4477,29 @@ function renderComparisonFretboard(svg, scale1, scale2, displayFrets, fretWidth)
             let scale1Index = -1;
             let scale2Index = -1;
             
-            // Check if this note is in scale1
+            // Check if this chromatic position matches any note in scale1
             for (let i = 0; i < scale1.length; i++) {
                 const scaleNote = scale1[i];
-                if (typeof MusicTheory !== 'undefined' && 
-                    typeof MusicTheory.areEnharmonicEquivalents === 'function') {
-                    if (MusicTheory.areEnharmonicEquivalents(chromaticNoteName, scaleNote)) {
-                        displayNote = scaleNote;
-                        isInScale1 = true;
-                        scale1Index = i;
-                        break;
-                    }
-                } else {
-                    if (chromaticNoteName === scaleNote) {
-                        displayNote = scaleNote;
-                        isInScale1 = true;
-                        scale1Index = i;
-                        break;
-                    }
+                const scaleNoteIndex = noteToIndex(scaleNote);
+                if (scaleNoteIndex === chromaticIndex) {
+                    displayNote = scaleNote; // Use the scale's spelling
+                    isInScale1 = true;
+                    scale1Index = i;
+                    break;
                 }
             }
             
-            // Check if this note is in scale2
+            // Check if this chromatic position matches any note in scale2
             for (let i = 0; i < scale2.length; i++) {
                 const scaleNote = scale2[i];
-                if (typeof MusicTheory !== 'undefined' && 
-                    typeof MusicTheory.areEnharmonicEquivalents === 'function') {
-                    if (MusicTheory.areEnharmonicEquivalents(chromaticNoteName, scaleNote)) {
-                        if (!displayNote) displayNote = scaleNote;
-                        isInScale2 = true;
-                        scale2Index = i;
-                        break;
-                    }
-                } else {
-                    if (chromaticNoteName === scaleNote) {
-                        if (!displayNote) displayNote = scaleNote;
-                        isInScale2 = true;
-                        scale2Index = i;
-                        break;
-                    }
+                const scaleNoteIndex = noteToIndex(scaleNote);
+                if (scaleNoteIndex === chromaticIndex) {
+                    // If we already found it in scale1, prioritize scale1's spelling
+                    // Otherwise use scale2's spelling
+                    if (!displayNote) displayNote = scaleNote;
+                    isInScale2 = true;
+                    scale2Index = i;
+                    break;
                 }
             }
             

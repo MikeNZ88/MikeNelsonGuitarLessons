@@ -77,11 +77,11 @@ function calculateScaleWithDegrees(root, formula, scaleType = 'major') {
         return calculateChromaticScale(root);
     }
     
-    if (scaleType === 'pentatonic-major' || scaleType === 'pentatonic') {
+    if (scaleType === 'pentatonic-major' || scaleType === 'pentatonic' || scaleType === 'major-pentatonic' || scaleType === 'minor-pentatonic' || scaleType.includes('pentatonic')) {
         return calculatePentatonicScale(root, formula, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex, scaleType);
     }
     
-    if (scaleType === 'blues') {
+    if (scaleType === 'blues' || scaleType === 'blues-major' || scaleType === 'blues-minor' || scaleType.includes('blues')) {
         return calculateBluesScale(root, formula, rootNoteIndex, rootChromaticIndex, noteNames, noteToIndex);
     }
     
@@ -224,6 +224,9 @@ function calculatePentatonicScale(root, formula, rootNoteIndex, rootChromaticInd
     
     // Special handling for blues scales - always prefer flats for altered notes
     if (formula.length === 6 || scaleType === 'blues' || scaleType.includes('blues')) {
+        spellingConvention = 'flat';
+    } else if (scaleType === 'minor-pentatonic' || scaleType.includes('minor')) {
+        // Minor pentatonic scales should use natural/flat spelling to avoid double sharps
         spellingConvention = 'flat';
     } else if (flatKeys.includes(root)) {
         spellingConvention = 'flat';
