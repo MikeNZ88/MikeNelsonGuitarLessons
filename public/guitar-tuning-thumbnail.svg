@@ -1,0 +1,23 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f8fafc"/>
+  
+  <!-- Simple string representation -->
+  <g transform="translate(200, 150)">
+    <!-- String lines with different colors -->
+    <line x1="-120" y1="-75" x2="120" y2="-75" stroke="#e74c3c" stroke-width="4"/>
+    <line x1="-120" y1="-45" x2="120" y2="-45" stroke="#f39c12" stroke-width="4"/>
+    <line x1="-120" y1="-15" x2="120" y2="-15" stroke="#f1c40f" stroke-width="4"/>
+    <line x1="-120" y1="15" x2="120" y2="15" stroke="#27ae60" stroke-width="4"/>
+    <line x1="-120" y1="45" x2="120" y2="45" stroke="#3498db" stroke-width="4"/>
+    <line x1="-120" y1="75" x2="120" y2="75" stroke="#9b59b6" stroke-width="4"/>
+    
+    <!-- String labels on the left -->
+    <text x="-140" y="-70" font-family="Arial" font-size="28" font-weight="bold" fill="#e74c3c">E</text>
+    <text x="-140" y="-40" font-family="Arial" font-size="28" font-weight="bold" fill="#f39c12">A</text>
+    <text x="-140" y="-10" font-family="Arial" font-size="28" font-weight="bold" fill="#f1c40f">D</text>
+    <text x="-140" y="20" font-family="Arial" font-size="28" font-weight="bold" fill="#27ae60">G</text>
+    <text x="-140" y="50" font-family="Arial" font-size="28" font-weight="bold" fill="#3498db">B</text>
+    <text x="-140" y="80" font-family="Arial" font-size="28" font-weight="bold" fill="#9b59b6">E</text>
+  </g>
+</svg> 

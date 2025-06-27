@@ -9,6 +9,39 @@ export default function Blog() {
   const [sortOrder, setSortOrder] = useState('newest');
   const posts = [
     {
+      id: '12',
+      title: 'Understanding the Guitar Fretboard: Why Strings Are Tuned This Way (Part 1)',
+      excerpt: 'Why are guitar strings tuned E-A-D-G-B-E instead of something more logical? Discover the fascinating constraints and compromises that created this system with our visual fretboard guide and systematic analysis.',
+      date: 'June 27, 2025',
+      readTime: '20 min read',
+      category: 'Guides',
+      image: '/guitar-tuning-thumbnail.svg',
+      slug: 'understanding-guitar-fretboard',
+      author: 'Mike Nelson'
+    },
+    {
+      id: '13',
+      title: 'Guitar Fretboard Navigation: Cross-String Interval Relationships (Part 2)',
+      excerpt: 'Master practical techniques for finding notes and intervals across guitar strings. Complete with formulas, visual diagrams, and step-by-step examples for navigating the fretboard like a pro.',
+      date: 'June 27, 2025',
+      readTime: '15 min read',
+      category: 'Guides',
+      image: '/guitar-tuning-thumbnail.svg',
+      slug: 'guitar-fretboard-navigation',
+      author: 'Mike Nelson'
+    },
+    {
+      id: '11',
+      title: 'Beginner\'s Guide to Guitar Scales',
+      excerpt: 'Everything you need to know about guitar scales, from the basics of notes and intervals to practical application and improvisation. Learn C major, pentatonic, and minor scales step by step.',
+      date: 'April 28, 2025',
+      readTime: '25 min read',
+      category: 'Guides',
+      image: '/beginners-guide-scales-thumbnail.svg',
+      slug: 'beginners-guide-guitar-scales',
+      author: 'Mike Nelson'
+    },
+    {
       id: '10',
       title: 'My Kiesel A2 7-String',
       excerpt: 'In-depth review of the Kiesel A2 7-String guitar. From ordering process to playing experience, plus my complete studio setup for metal and extended range guitars.',
