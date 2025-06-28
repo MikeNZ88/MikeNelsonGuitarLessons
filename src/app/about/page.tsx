@@ -62,7 +62,7 @@ export default function About() {
                   <div className="p-2 bg-amber-100 rounded-lg mr-3">
                     <MapPin className="h-6 w-6 text-amber-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-amber-800">Lessons Away (Paremata, Whitby, Plimmerton)</h3>
+                  <h3 className="text-xl font-bold text-amber-800">Lessons Away (Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby)</h3>
                 </div>
                 <p className="text-amber-700 mb-4"><strong>Available Hours:</strong></p>
                 <ul className="space-y-1 text-amber-600">

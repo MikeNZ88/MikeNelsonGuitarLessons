@@ -9,6 +9,29 @@ export default function Blog() {
   const [sortOrder, setSortOrder] = useState('newest');
   const posts = [
     {
+      id: '16',
+      title: 'How to Read Chord Diagrams',
+      excerpt: 'Master the fundamentals of reading guitar chord diagrams with this comprehensive video tutorial. Learn to interpret chord charts and start playing songs faster.',
+      date: 'April 27, 2025',
+      readTime: '3 min read',
+      category: 'Guides',
+      image: '/youtube-logo.svg',
+      slug: 'how-to-read-chord-diagrams',
+      author: 'Mike Nelson'
+    },
+    {
+      id: '15',
+      title: 'Major Scale Guitar Guide',
+      excerpt: 'Master essential guitar shapes and patterns across the fretboard with this comprehensive guide to major scale modes and arpeggios. A different approach to scale learning.',
+      date: 'April 4, 2025',
+      readTime: '6 min read',
+      category: 'Guides',
+      image: '/major-scale-guide-20-thumbnail.svg',
+      slug: 'major-scale-guitar-guide',
+      author: 'Mike Nelson'
+    },
+
+    {
       id: '12',
       title: 'Understanding the Guitar Fretboard: Why Strings Are Tuned This Way (Part 1)',
       excerpt: 'Why are guitar strings tuned E-A-D-G-B-E instead of something more logical? Discover the fascinating constraints and compromises that created this system with our visual fretboard guide and systematic analysis.',
@@ -315,4 +338,4 @@ export default function Blog() {
       </section>
     </div>
   );
-} 
+}
