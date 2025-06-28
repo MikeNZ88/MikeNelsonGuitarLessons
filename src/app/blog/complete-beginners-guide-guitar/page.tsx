@@ -442,6 +442,13 @@ export default function CompleteBeginnerGuide() {
                       <li>Use my <Link href="/rhythm-tool" className="text-amber-600 hover:text-amber-800 underline">Rhythm Tool</Link> for single string rhythm exercises</li>
                       <li>Learn to pick individual chord notes (arpeggios) for smooth, controlled motion</li>
                     </ul>
+                    <p><strong>Major scales on one string:</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-1 mb-3">
+                      <li>Learn major scale patterns on individual strings to understand the sound of the scale</li>
+                      <li>Understand where the whole and half steps are (W = 2 frets, H = 1 fret)</li>
+                      <li>Major scale pattern: W-W-H-W-W-W-H (e.g., C major: C-D-E-F-G-A-B-C)</li>
+                                             <li>See my comprehensive <Link href="/blog/beginners-guide-guitar-scales" className="text-amber-600 hover:text-amber-800 underline">Beginner's Guide to Guitar Scales</Link> for detailed scale learning</li>
+                    </ul>
                     <p><strong>Finger exercises:</strong></p>
                     <ul className="list-disc list-inside ml-4 space-y-1">
                       <li>One finger per fret patterns on one string (e.g., frets 1-2-3-4 using fingers 1-2-3-4)</li>
