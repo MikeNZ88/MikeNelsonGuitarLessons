@@ -264,6 +264,15 @@ export default function CompleteBeginnerGuide() {
                 Learning songs is the most enjoyable way to practice your chords. Here's your progression 
                 of first songs, carefully chosen to build your skills step by step:
               </p>
+              
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
+                <h3 className="text-xl font-bold text-blue-800 mb-3">Essential Learning Tip</h3>
+                <p className="text-blue-700">
+                  <strong>Always start by learning songs at a slow tempo</strong> - sometimes quite a lot slower depending on your skill level. 
+                  It's essential that you first learn to play accurately at slow speed before gradually increasing the tempo. 
+                  Clean, accurate playing at slow speed will naturally develop into smooth playing at full speed.
+                </p>
+              </div>
 
               <div className="space-y-6">
                 {/* Song 1 */}
@@ -413,6 +422,39 @@ export default function CompleteBeginnerGuide() {
                 <div className="bg-white border border-amber-200 rounded-lg p-6">
                   <div className="flex items-center mb-4">
                     <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4">4</div>
+                    <h3 className="text-xl font-bold text-amber-800">Single Notes and Picking</h3>
+                  </div>
+                  <p className="text-amber-700 mb-3">
+                    Before completing your chord foundation, learn to play single notes and develop your picking technique. 
+                    This builds finger independence and prepares you for more advanced playing.
+                  </p>
+                  <div className="space-y-2 text-amber-600">
+                    <p><strong>Simple melodies to learn:</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-1">
+                      <li>Mary Had a Little Lamb (great for finger positioning)</li>
+                      <li>Achy Breaky Heart vocal melody (connects to your first chord song)</li>
+                      <li>Any familiar song melody - taking melodies from songs you know makes practice fun and musical</li>
+                    </ul>
+                    <p><strong>Important:</strong> Always start by learning songs at a slow tempo, sometimes quite a lot slower depending on your skill level. It's essential that you first learn to play accurately at slow speed before gradually increasing the tempo.</p>
+                    <p><strong>Picking exercises:</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-1 mb-3">
+                      <li>Play simple rhythms on one string - practice steady picking motion</li>
+                      <li>Use my <Link href="/rhythm-tool" className="text-amber-600 hover:text-amber-800 underline">Rhythm Tool</Link> for single string rhythm exercises</li>
+                      <li>Learn to pick individual chord notes (arpeggios) for smooth, controlled motion</li>
+                    </ul>
+                    <p><strong>Finger exercises:</strong></p>
+                    <ul className="list-disc list-inside ml-4 space-y-1">
+                      <li>One finger per fret patterns on one string (e.g., frets 1-2-3-4 using fingers 1-2-3-4)</li>
+                      <li>Expand to two strings for coordination between picking and fretting hands</li>
+                      <li>Focus on clean notes and steady timing rather than speed</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Stage 5 */}
+                <div className="bg-white border border-amber-200 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4">5</div>
                     <h3 className="text-xl font-bold text-amber-800">Complete Your Foundation</h3>
                   </div>
                   <p className="text-amber-700 mb-3">

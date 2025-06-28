@@ -759,7 +759,7 @@ export default function RhythmTool() {
                         This tool provides basic examples to help you become familiar with rhythmic notation and fundamental concepts. It doesn't cover everything in rhythm - there's much more to explore as you progress!
                       </p>
                       <p className="text-amber-800">
-                        <strong>Audio Features:</strong> Each example is tuned to the same note as the open B string of your guitar. You can slow down or speed up the examples, and loop them. See if you can play along!
+                        <strong>Audio Features:</strong> Each example is tuned to the same note as the open B string of your guitar. While all examples use the B string note, you can apply these rhythm patterns to any string on your guitar. You can slow down or speed up the examples, and loop them. See if you can play along!
                       </p>
                     </div>
                   </section>
