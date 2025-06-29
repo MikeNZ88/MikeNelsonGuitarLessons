@@ -480,7 +480,7 @@ export default function GuitarFretboardNavigation() {
           <h3 className="text-xl font-semibold text-brown-600 mb-3">Visual Examples: Cross-String Intervals</h3>
 
           {/* A-D String Pair Example */}
-          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
             <h4 className="font-semibold mb-8 text-center">A-D String Pair: Major 3rd Relationship</h4>
             
             <div className="min-w-max pt-2">
@@ -596,7 +596,7 @@ export default function GuitarFretboardNavigation() {
           </div>
 
           {/* G-B String Pair Example */}
-          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
             <h4 className="font-semibold mb-8 text-center">G-B String Pair: Major 3rd Relationship</h4>
             
             <div className="min-w-max pt-2">

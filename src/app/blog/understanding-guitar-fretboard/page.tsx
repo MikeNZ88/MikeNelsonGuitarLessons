@@ -236,7 +236,7 @@ export default function UnderstandingGuitarFretboard() {
                   <p className="text-sm text-gray-600 mb-3">💡 <strong>Tip:</strong> Scroll horizontally to see the full fretboard diagram</p>
                   <p className="text-sm text-gray-600 mb-3"><strong>Numbers below each note = fret numbers</strong> (0 = open string, 1 = 1st fret, etc.)</p>
                   
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto mobile-scroll-hint">
                     <div className="min-w-max">
                       {/* String data with actual semitone offsets from low E */}
                       {[
@@ -536,7 +536,7 @@ export default function UnderstandingGuitarFretboard() {
                   <h5 className="text-lg font-semibold text-amber-800 mb-3">E String Root</h5>
                   <p className="text-sm mb-4 text-gray-700">Barre position, root on low E string</p>
                   
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto mobile-scroll-hint">
                     <div className="inline-block border border-gray-400">
                       <div className="flex">
                         <div className="w-16 text-center bg-gray-100 border-r border-gray-400 py-1 text-xs font-bold">String</div>
@@ -579,7 +579,7 @@ export default function UnderstandingGuitarFretboard() {
                   <h5 className="text-lg font-semibold text-amber-800 mb-3">A String Root</h5>
                   <p className="text-sm mb-4 text-gray-700">Barre position, root on A string</p>
                   
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto mobile-scroll-hint">
                     <div className="inline-block border border-gray-400">
                       <div className="flex">
                         <div className="w-16 text-center bg-gray-100 border-r border-gray-400 py-1 text-xs font-bold">String</div>
@@ -622,7 +622,7 @@ export default function UnderstandingGuitarFretboard() {
                   <h5 className="text-lg font-semibold text-amber-800 mb-3">D String Root</h5>
                   <p className="text-sm mb-4 text-gray-700">Barre position, root on D string, low E muted</p>
                   
-                  <div className="overflow-x-auto">
+                  <div className="overflow-x-auto mobile-scroll-hint">
                     <div className="inline-block border border-gray-400">
                       <div className="flex">
                         <div className="w-16 text-center bg-gray-100 border-r border-gray-400 py-1 text-xs font-bold">String</div>

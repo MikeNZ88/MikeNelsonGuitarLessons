@@ -50,115 +50,115 @@ export default function BeginnersGuideGuitarScales() {
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl border-2 border-blue-200 mb-6">
             <h4 className="text-xl font-semibold text-center mb-6 text-gray-800">The Complete Chromatic Scale</h4>
             
-                                      {/* Visual chromatic scale with colors - Starting from C */}
-             <div className="mb-6">
-               <h5 className="text-center font-medium mb-3 text-gray-700">Starting from C:</h5>
-               <div className="flex justify-center items-center gap-1 mb-2">
-                 {[
-                   {note: 'C', color: 'bg-red-400', natural: true},
-                   {note: 'C#', color: 'bg-red-300', natural: false},
-                   {note: 'D', color: 'bg-orange-400', natural: true},
-                   {note: 'D#', color: 'bg-orange-300', natural: false},
-                   {note: 'E', color: 'bg-yellow-400', natural: true},
-                   {note: 'F', color: 'bg-green-400', natural: true},
-                   {note: 'F#', color: 'bg-green-300', natural: false},
-                   {note: 'G', color: 'bg-blue-400', natural: true},
-                   {note: 'G#', color: 'bg-blue-300', natural: false},
-                   {note: 'A', color: 'bg-purple-400', natural: true},
-                   {note: 'A#', color: 'bg-purple-300', natural: false},
-                   {note: 'B', color: 'bg-pink-400', natural: true}
-                 ].map((noteObj, index) => (
-                   <React.Fragment key={index}>
-                     <div className="flex flex-col items-center">
-                       <div 
-                         className={`w-8 h-8 ${noteObj.color} rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border ${noteObj.natural ? 'border-gray-700' : 'border-gray-500'}`}
-                       >
-                         {noteObj.note}
-                       </div>
-                       <div className="text-xs mt-1 text-gray-500 font-medium">
-                         {index}
-                       </div>
-                     </div>
-                     {index < 11 && (
-                       <div className="flex items-center">
-                         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                         </svg>
-                       </div>
-                     )}
-                   </React.Fragment>
-                 ))}
-                 <div className="flex items-center ml-2">
-                   <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                   </svg>
-                 </div>
-                 <div className="flex flex-col items-center ml-1">
-                   <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border border-gray-700">
-                     C
-                   </div>
-                   <div className="text-xs mt-1 text-gray-500 font-medium">12</div>
-                 </div>
-               </div>
-             </div>
+            {/* Visual chromatic scale with colors - Starting from C */}
+            <div className="mb-6 overflow-x-auto mobile-scroll-hint">
+              <h5 className="text-center font-medium mb-3 text-gray-700">Starting from C:</h5>
+              <div className="flex items-center gap-1 mb-2 min-w-max justify-center">
+                {[
+                  {note: 'C', color: 'bg-red-400', natural: true},
+                  {note: 'C#', color: 'bg-red-300', natural: false},
+                  {note: 'D', color: 'bg-orange-400', natural: true},
+                  {note: 'D#', color: 'bg-orange-300', natural: false},
+                  {note: 'E', color: 'bg-yellow-400', natural: true},
+                  {note: 'F', color: 'bg-green-400', natural: true},
+                  {note: 'F#', color: 'bg-green-300', natural: false},
+                  {note: 'G', color: 'bg-blue-400', natural: true},
+                  {note: 'G#', color: 'bg-blue-300', natural: false},
+                  {note: 'A', color: 'bg-purple-400', natural: true},
+                  {note: 'A#', color: 'bg-purple-300', natural: false},
+                  {note: 'B', color: 'bg-pink-400', natural: true}
+                ].map((noteObj, index) => (
+                  <React.Fragment key={index}>
+                    <div className="flex flex-col items-center">
+                      <div 
+                        className={`w-8 h-8 ${noteObj.color} rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border ${noteObj.natural ? 'border-gray-700' : 'border-gray-500'}`}
+                      >
+                        {noteObj.note}
+                      </div>
+                      <div className="text-xs mt-1 text-gray-500 font-medium">
+                        {index}
+                      </div>
+                    </div>
+                    {index < 11 && (
+                      <div className="flex items-center">
+                        <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+                <div className="flex items-center ml-2">
+                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center ml-1">
+                  <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border border-gray-700">
+                    C
+                  </div>
+                  <div className="text-xs mt-1 text-gray-500 font-medium">12</div>
+                </div>
+              </div>
+            </div>
 
-             {/* Visual chromatic scale - Starting from A */}
-             <div className="mb-4">
-               <h5 className="text-center font-medium mb-3 text-gray-700">Starting from A (same pattern):</h5>
-               <div className="flex justify-center items-center gap-1 mb-2">
-                 {[
-                   {note: 'A', color: 'bg-purple-400', natural: true},
-                   {note: 'A#', color: 'bg-purple-300', natural: false},
-                   {note: 'B', color: 'bg-pink-400', natural: true},
-                   {note: 'C', color: 'bg-red-400', natural: true},
-                   {note: 'C#', color: 'bg-red-300', natural: false},
-                   {note: 'D', color: 'bg-orange-400', natural: true},
-                   {note: 'D#', color: 'bg-orange-300', natural: false},
-                   {note: 'E', color: 'bg-yellow-400', natural: true},
-                   {note: 'F', color: 'bg-green-400', natural: true},
-                   {note: 'F#', color: 'bg-green-300', natural: false},
-                   {note: 'G', color: 'bg-blue-400', natural: true},
-                   {note: 'G#', color: 'bg-blue-300', natural: false}
-                 ].map((noteObj, index) => (
-                   <React.Fragment key={index}>
-                     <div className="flex flex-col items-center">
-                       <div 
-                         className={`w-8 h-8 ${noteObj.color} rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border ${noteObj.natural ? 'border-gray-700' : 'border-gray-500'}`}
-                       >
-                         {noteObj.note}
-                       </div>
-                       <div className="text-xs mt-1 text-gray-500 font-medium">
-                         {index}
-                       </div>
-                     </div>
-                     {index < 11 && (
-                       <div className="flex items-center">
-                         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                         </svg>
-                       </div>
-                     )}
-                   </React.Fragment>
-                 ))}
-                 <div className="flex items-center ml-2">
-                   <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                   </svg>
-                 </div>
-                 <div className="flex flex-col items-center ml-1">
-                   <div className="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border border-gray-700">
-                     A
-                   </div>
-                   <div className="text-xs mt-1 text-gray-500 font-medium">12</div>
-                 </div>
-               </div>
-             </div>
+            {/* Visual chromatic scale - Starting from A */}
+            <div className="mb-4 overflow-x-auto mobile-scroll-hint">
+              <h5 className="text-center font-medium mb-3 text-gray-700">Starting from A (same pattern):</h5>
+              <div className="flex items-center gap-1 mb-2 min-w-max justify-center">
+                {[
+                  {note: 'A', color: 'bg-purple-400', natural: true},
+                  {note: 'A#', color: 'bg-purple-300', natural: false},
+                  {note: 'B', color: 'bg-pink-400', natural: true},
+                  {note: 'C', color: 'bg-red-400', natural: true},
+                  {note: 'C#', color: 'bg-red-300', natural: false},
+                  {note: 'D', color: 'bg-orange-400', natural: true},
+                  {note: 'D#', color: 'bg-orange-300', natural: false},
+                  {note: 'E', color: 'bg-yellow-400', natural: true},
+                  {note: 'F', color: 'bg-green-400', natural: true},
+                  {note: 'F#', color: 'bg-green-300', natural: false},
+                  {note: 'G', color: 'bg-blue-400', natural: true},
+                  {note: 'G#', color: 'bg-blue-300', natural: false}
+                ].map((noteObj, index) => (
+                  <React.Fragment key={index}>
+                    <div className="flex flex-col items-center">
+                      <div 
+                        className={`w-8 h-8 ${noteObj.color} rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border ${noteObj.natural ? 'border-gray-700' : 'border-gray-500'}`}
+                      >
+                        {noteObj.note}
+                      </div>
+                      <div className="text-xs mt-1 text-gray-500 font-medium">
+                        {index}
+                      </div>
+                    </div>
+                    {index < 11 && (
+                      <div className="flex items-center">
+                        <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+                <div className="flex items-center ml-2">
+                  <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center ml-1">
+                  <div className="w-8 h-8 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-md border border-gray-700">
+                    A
+                  </div>
+                  <div className="text-xs mt-1 text-gray-500 font-medium">12</div>
+                </div>
+              </div>
+            </div>
 
-                         <div className="text-center">
-               <p className="text-lg font-semibold text-gray-800">
-                 1 fret = 1 half step (also called a semitone)
-               </p>
-             </div>
+            <div className="text-center">
+              <p className="text-lg font-semibold text-gray-800">
+                1 fret = 1 half step (also called a semitone)
+              </p>
+            </div>
           </div>
 
           <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-6">
@@ -222,7 +222,7 @@ export default function BeginnersGuideGuitarScales() {
             </p>
 
             {/* Visual diagram */}
-            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
               <h4 className="font-semibold mb-8 text-center">C Major Scale - A String Visual</h4>
               
               <div className="min-w-max pt-2">
@@ -310,7 +310,7 @@ export default function BeginnersGuideGuitarScales() {
             </p>
 
             {/* Visual diagram */}
-            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
               <h4 className="font-semibold mb-8 text-center">G Major Scale - Low E String Visual</h4>
               
               <div className="min-w-max pt-2">
@@ -411,7 +411,7 @@ export default function BeginnersGuideGuitarScales() {
             </div>
 
             {/* C Major Scale for comparison */}
-            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
               <h4 className="font-semibold mb-8 text-center">C Major Scale (Complete) - Low E String</h4>
               
               <div className="min-w-max pt-2">
@@ -482,7 +482,7 @@ export default function BeginnersGuideGuitarScales() {
             </div>
 
             {/* Visual diagram */}
-            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto">
+            <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
               <h4 className="font-semibold mb-8 text-center">C Major Pentatonic Scale (Simplified) - Low E String</h4>
               
               <div className="min-w-max pt-2">

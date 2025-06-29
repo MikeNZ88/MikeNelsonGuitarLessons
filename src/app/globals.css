@@ -54,6 +54,23 @@
   .gradient-text {
     @apply bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent;
   }
+  
+  /* Mobile-responsive blog content styles */
+  .blog-diagram {
+    @apply overflow-x-auto;
+  }
+  
+  .blog-table {
+    @apply overflow-x-auto;
+  }
+  
+  .fretboard-diagram {
+    @apply overflow-x-auto;
+  }
+  
+  .scale-pattern {
+    @apply overflow-x-auto;
+  }
 }
 
 /* Fix for any potential layout issues */
@@ -65,6 +82,141 @@
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Mobile Responsiveness for Blog Content */
+@media (max-width: 768px) {
+  /* Fretboard and scale diagrams */
+  .min-w-max {
+    min-width: 600px; /* Ensure diagrams have minimum width for proper display */
+  }
+  
+  /* Table responsiveness */
+  table {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  table th,
+  table td {
+    padding: 0.5rem !important;
+    font-size: 0.875rem;
+  }
+  
+  /* Compact table headers on mobile */
+  table th {
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 600;
+  }
+  
+  /* Scale pattern adjustments */
+  .scale-pattern .flex {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* Chord diagram adjustments */
+  .chord-diagram {
+    transform: scale(0.9);
+    transform-origin: left top;
+  }
+  
+  /* Responsive text in diagrams */
+  .diagram-text {
+    font-size: 0.75rem;
+  }
+  
+  /* Ensure scroll indicators are visible */
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 3px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Extra small screens - more aggressive scaling */
+  .min-w-max {
+    min-width: 500px;
+  }
+  
+  table {
+    font-size: 0.8125rem; /* 13px */
+  }
+  
+  table th,
+  table td {
+    padding: 0.375rem !important;
+    font-size: 0.8125rem;
+  }
+  
+  /* Scale fretboard elements smaller */
+  .w-12.h-12 {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    font-size: 0.75rem !important;
+  }
+  
+  /* Compact spacing in diagrams */
+  .space-x-2 > * + * {
+    margin-left: 0.375rem !important;
+  }
+  
+  /* Smaller chord diagram elements */
+  .chord-diagram {
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens */
+  .min-w-max {
+    min-width: 450px;
+  }
+  
+  table {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  table th,
+  table td {
+    padding: 0.25rem !important;
+    font-size: 0.75rem;
+  }
+  
+  /* Even smaller fretboard elements */
+  .w-12.h-12 {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 0.6875rem !important;
+  }
+  
+  /* Compact pattern displays */
+  .space-x-2 > * + * {
+    margin-left: 0.25rem !important;
+  }
+  
+  /* Scale chord diagrams further */
+  .chord-diagram {
+    transform: scale(0.7);
+  }
 }
 
 /* Custom slider styling for rhythm tool */
@@ -87,4 +239,46 @@ img {
   cursor: pointer;
   border: 2px solid #ffffff;
   box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+}
+
+/* Blog content mobile scroll hints */
+.mobile-scroll-hint {
+  position: relative;
+  margin-bottom: 2rem; /* Add extra space for the hint */
+}
+
+.mobile-scroll-hint::after {
+  content: "← Scroll to see more →";
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-style: italic;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+@media (min-width: 769px) {
+  .mobile-scroll-hint::after {
+    display: none;
+  }
+  
+  .mobile-scroll-hint {
+    margin-bottom: 1rem; /* Reset margin on desktop */
+  }
+}
+
+/* Specific mobile improvements for chromatic scales */
+@media (max-width: 768px) {
+  /* Chromatic scale circles */
+  .mobile-scroll-hint .min-w-max {
+    min-width: 600px; /* Ensure chromatic scale has proper width */
+  }
+  
+  /* Improve scroll hint visibility for nested scroll containers */
+  .mobile-scroll-hint .overflow-x-auto {
+    padding-bottom: 1rem;
+  }
 }

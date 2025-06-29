@@ -313,7 +313,7 @@ export default function ElectricGuitarBeginnerGuide() {
               </div>
 
               <h3 className="text-xl font-bold text-amber-800 mb-4">Essential: Choose One Amp</h3>
-              <div className="overflow-x-auto mb-6">
+              <div className="overflow-x-auto mobile-scroll-hint">
                 <table className="w-full border-collapse border border-amber-300">
                   <thead>
                     <tr className="bg-amber-100">
