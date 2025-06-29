@@ -21,8 +21,8 @@ export default function BeginnersGuideGuitarScales() {
 
       <article className="prose prose-lg max-w-none">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-gray-900">
-            Beginner's Guide to Guitar Scales
+          <h1 className="text-4xl font-bold mb-4 text-amber-600">
+            A Beginner's Guide to Guitar Scales: Start with One String
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
             Learn scales the simple way - start with one string and build from there
@@ -41,14 +41,14 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Section 1: What Are Notes? */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">1. The 12 Notes in Music</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">1. The 12 Notes in Music</h2>
           
           <p className="text-lg mb-6">
             Music uses <strong>12 different notes</strong> that repeat over and over at different pitches. These are:
           </p>
 
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl border-2 border-blue-200 mb-6">
-            <h4 className="text-xl font-semibold text-center mb-6 text-gray-800">The Complete Chromatic Scale</h4>
+            <h4 className="text-xl font-semibold text-center mb-6 text-amber-700">The Complete Chromatic Scale</h4>
             
             {/* Visual chromatic scale with colors - Starting from C */}
             <div className="mb-6 overflow-x-auto mobile-scroll-hint">
@@ -155,7 +155,7 @@ export default function BeginnersGuideGuitarScales() {
             </div>
 
             <div className="text-center">
-              <p className="text-lg font-semibold text-gray-800">
+              <p className="text-lg font-semibold text-amber-700">
                 1 fret = 1 half step (also called a semitone)
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Section 2: What Is A Scale? */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">2. What Is A Scale?</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">2. What Is A Scale?</h2>
           
           <p className="text-lg mb-6">
             A <strong>scale</strong> is a selection of notes from the 12 available notes that work well together musically. Instead of using all 12 notes, we pick specific ones that create a particular sound or mood.
@@ -202,7 +202,7 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Section 3: Learn Scales on One String */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">3. Learn Scales on One String First</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">3. Learn Scales on One String First</h2>
 
           <div className="bg-green-50 border-l-4 border-green-500 p-6 mb-8">
             <h3 className="text-xl font-semibold mb-3 text-green-900">🎯 Why Start with One String?</h3>
@@ -391,7 +391,7 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Section 4: Essential Scales */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">4. Pentatonic Scales</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">4. Pentatonic Scales</h2>
 
           {/* Pentatonic Scale */}
           <div className="mb-8">
@@ -552,7 +552,7 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Section 5: Next Steps */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">5. Building From One String</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">5. Building From One String</h2>
 
           <p className="text-lg mb-6">
             Once you're comfortable with scales on one string, you can start expanding to other strings and eventually learn full fretboard patterns.
@@ -581,7 +581,7 @@ export default function BeginnersGuideGuitarScales() {
 
         {/* Conclusion */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">Remember: Start Simple</h2>
+          <h2 className="text-3xl font-bold mb-6 text-amber-600">Remember: Start Simple</h2>
 
           <p className="text-lg mb-6">
             Learning scales doesn't have to be overwhelming. By starting with one string, you build a solid understanding of how scales work before tackling complex fretboard patterns.

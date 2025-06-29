@@ -752,7 +752,7 @@ export default function GuitarFretboardNavigation() {
 
           {/* Related Posts */}
           <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">🔗 Related Articles</h3>
+            <h3 className="text-xl font-semibold text-amber-700 mb-4">🔗 Related Articles</h3>
             <div className="grid md:grid-cols-1 gap-4">
               <Link href="/blog/understanding-guitar-fretboard" className="block p-4 bg-white rounded border hover:shadow-md transition-shadow">
                 <h4 className="font-semibold text-amber-800 mb-2">Part 1: Why Strings Are Tuned This Way</h4>

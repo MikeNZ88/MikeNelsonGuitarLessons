@@ -35,8 +35,8 @@ export default function IntroducingPracticeTrack() {
             <span>May 12, 2025</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Introducing PracticeTrack: Your Musical Journey Companion
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">
+            Introducing PracticeTrack: The Practice Log That Actually Works
           </h1>
           
           <p className="text-xl text-gray-600 leading-relaxed">
@@ -48,7 +48,7 @@ export default function IntroducingPracticeTrack() {
         {/* Hero Section */}
         <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl p-8 mb-12 border border-orange-200">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Track Your Music Practice</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mb-4">Track Your Music Practice</h2>
             <p className="text-lg text-gray-700 mb-6">
               PracticeTrack lets you log your practice sessions and see your progress over time. 
               Your data syncs across devices when you create an account.
@@ -78,7 +78,7 @@ export default function IntroducingPracticeTrack() {
             musicians practice more deliberately and effectively.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Practice Tracking Matters</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Why Practice Tracking Matters</h2>
           
           <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-8 rounded-r-lg">
             <h3 className="text-xl font-semibold text-amber-900 mb-2">Research-Backed Approach</h3>
@@ -95,7 +95,7 @@ export default function IntroducingPracticeTrack() {
             clear objectives. PracticeTrack helps make your practice more intentional and measurable.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Key Features</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Key Features</h2>
 
           <div className="grid md:grid-cols-2 gap-6 mb-12">
             <div className="bg-white rounded-xl p-6 shadow-lg border border-orange-200">
@@ -143,22 +143,22 @@ export default function IntroducingPracticeTrack() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Smart Organization Features</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Smart Organization Features</h2>
 
           <div className="bg-orange-50 rounded-xl p-8 border border-orange-200 mb-8">
-            <h3 className="text-xl font-semibold text-orange-900 mb-4">Smart Category System</h3>
-            <p className="text-orange-800 mb-4">
+            <h3 className="text-xl font-semibold text-amber-900 mb-4">Smart Category System</h3>
+            <p className="text-amber-800 mb-4">
               PracticeTrack organizes your practice into two main types: <strong>Songs</strong> and <strong>Exercises</strong>. 
               This simple but powerful distinction helps you balance repertoire building with technical development.
             </p>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div className="bg-white p-4 rounded-lg border border-orange-300">
-                <h4 className="font-semibold text-orange-900 mb-2">Songs</h4>
-                <p className="text-orange-800 text-sm">Track time spent learning and perfecting specific pieces of music</p>
+                <h4 className="font-semibold text-amber-900 mb-2">Songs</h4>
+                <p className="text-amber-800 text-sm">Track time spent learning and perfecting specific pieces of music</p>
               </div>
               <div className="bg-white p-4 rounded-lg border border-orange-300">
-                <h4 className="font-semibold text-orange-900 mb-2">Exercises</h4>
-                <p className="text-orange-800 text-sm">Log technical practice like scales, arpeggios, and technique drills</p>
+                <h4 className="font-semibold text-amber-900 mb-2">Exercises</h4>
+                <p className="text-amber-800 text-sm">Log technical practice like scales, arpeggios, and technique drills</p>
               </div>
             </div>
             <div className="bg-amber-100 p-4 rounded-lg border border-amber-300">
@@ -171,7 +171,7 @@ export default function IntroducingPracticeTrack() {
           </div>
 
           <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <h4 className="font-semibold text-gray-900 mb-3">Powerful Search & Filtering</h4>
+            <h4 className="font-semibold text-amber-600 mb-3">Powerful Search & Filtering</h4>
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
@@ -188,7 +188,7 @@ export default function IntroducingPracticeTrack() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Media Storage & Documentation</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Media Storage & Documentation</h2>
           
           <p className="mb-6">
             PracticeTrack goes beyond simple time tracking. You can record audio, photos, and videos 
@@ -205,7 +205,7 @@ export default function IntroducingPracticeTrack() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Install as a Progressive Web App</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Install as a Progressive Web App</h2>
           
           <p className="mb-6">
             For the best experience, install PracticeTrack as a Progressive Web App (PWA). This gives you 
@@ -242,7 +242,7 @@ export default function IntroducingPracticeTrack() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">How PracticeTrack Transforms Your Practice</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">How PracticeTrack Transforms Your Practice</h2>
           
           <p className="mb-6">
             I've seen the difference that structured practice makes in my students' progress. Those who 
@@ -287,7 +287,7 @@ export default function IntroducingPracticeTrack() {
 
         {/* Call to Action */}
         <section className="text-center py-12 bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl border border-orange-200 mt-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Want to Try PracticeTrack?</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-4">Want to Try PracticeTrack?</h2>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
             It's completely free to use. Give it a try and see if tracking your practice helps you stay more consistent.
           </p>

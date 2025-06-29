@@ -29,8 +29,8 @@ export default function KieselA2Review() {
             Back to Blog
           </Link>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            My Kiesel A2 7-String
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
+            Kiesel A2 7-String Review: My Custom Guitar Experience
           </h1>
           
           <div className="text-gray-600 mb-8">
@@ -53,11 +53,11 @@ export default function KieselA2Review() {
               />
             </div>
           <p className="text-xl text-gray-700 mb-8">
-            I've always been drawn to downtuned guitars. They're used heavily, no pun intended, in metal music. I'm a fan of many styles, but metal has been my go-to style of music since I was a teenager and it still is. As a guitar teacher in Wellington, New Zealand, I've been looking for the perfect 7-string for both my own playing and to better understand extended range instruments for my students.
+            I've always been drawn to downtuned guitars. They're used heavily, no pun intended, in metal music. I'm a fan of many styles, but metal has been my go-to style of music since I was a teenager and it still is.
           </p>
 
           <p className="mb-6">
-            Metal has been experimenting with lower tunings since the '90s. Korn are often cited as the catalyst, using 7 strings tuned down a whole step (<strong>A, D, G, C, F, A, D (low to high)</strong>). They're also a band that had a big effect on me at around the age of 11.
+            With a few earlier exceptions, metal started experimenting with lower tunings in the '90s. Korn are often cited as the catalyst, using 7 strings tuned down a whole step (<strong>A, D, G, C, F, A, D (low to high)</strong>). They're also a band that had a big effect on me at around the age of 11.
           </p>
 
           <p className="mb-6">
@@ -76,7 +76,7 @@ export default function KieselA2Review() {
             Anyway, about the guitar... After a few months of looking around for options in NZ, I finally pulled the trigger on a <strong>Kiesel A2 7-String</strong> last year. It took about 8 weeks to build and arrive, finally showing up in August.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6 flex items-center">
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6 flex items-center">
             <DollarSign className="h-8 w-8 mr-3" />
             Importing a Kiesel Guitar to New Zealand
           </h2>
@@ -135,7 +135,7 @@ export default function KieselA2Review() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6 flex items-center">
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6 flex items-center">
             <Music className="h-8 w-8 mr-3" />
             The Guitar
           </h2>
@@ -172,7 +172,7 @@ export default function KieselA2Review() {
             The finish looks stunning and showcases the natural wood grain underneath.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6 flex items-center">
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6 flex items-center">
             <Settings className="h-8 w-8 mr-3" />
             My Other Gear
           </h2>
@@ -219,7 +219,7 @@ export default function KieselA2Review() {
             The KM7 is a good guitar, but it never quite felt right to me—the neck is definitely bigger and it just doesn't have that familiar feel I was looking for in a 7-string.
           </p>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4 flex items-center">
+          <h3 className="text-2xl font-semibold text-amber-700 mt-8 mb-4 flex items-center">
             <Monitor className="h-6 w-6 mr-2" />
             Studio Setup
           </h3>
@@ -302,7 +302,7 @@ export default function KieselA2Review() {
             </div>
           </div>
 
-          <h3 className="text-2xl font-semibold text-gray-800 mt-8 mb-4 flex items-center">
+          <h3 className="text-2xl font-semibold text-amber-700 mt-8 mb-4 flex items-center">
             <Zap className="h-6 w-6 mr-2" />
             Recording Setup
           </h3>

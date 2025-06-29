@@ -15,7 +15,7 @@ export default function WhenShouldYouStartLearningGuitar() {
 
           {/* Header */}
           <header className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4 leading-tight">
               When Should You Start Learning Guitar? What the Research Actually Says
             </h1>
             <div className="flex items-center text-gray-600 text-sm">
@@ -31,7 +31,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               As a guitar teacher, I'm constantly asked: "What's the best age to start learning guitar?" Parents want to know if their child is the right age, while adults worry they've missed their chance. Here's what I've learned about optimal ages for guitar learning.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">The Bottom Line First</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">The Bottom Line First</h2>
             
             <div className="bg-amber-100 border-l-4 border-amber-500 p-6 mb-8">
               <p className="text-lg font-semibold text-gray-900 mb-2">
@@ -39,7 +39,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Children: Ages 7-8 as the Optimal Starting Point</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Children: Ages 7-8 as the Optimal Starting Point</h2>
             
             <p className="mb-6">
               <strong>Most children are developmentally ready for guitar around ages 7-8</strong>. This timing isn't arbitrary – it reflects when several crucial abilities converge:
@@ -49,12 +49,12 @@ export default function WhenShouldYouStartLearningGuitar() {
               At this age, children have developed the fine motor skills needed for fretting and picking, their hands are large enough for appropriately sized instruments (3/4 or 1/2 size guitars), and they have the shoulder stability to maintain proper posture. Equally important is their cognitive development - they can focus for 20-30 minutes during lessons, recognize patterns in chord shapes and scales, and understand the cause-and-effect relationship between their finger movements and the sounds they create.
             </p>
 
-            <h3 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">What about younger children?</h3>
+            <h3 className="text-2xl font-semibold text-amber-700 mt-8 mb-4">What about younger children?</h3>
             <p className="mb-6">
               <strong>Starting before age 6 is typically too early</strong>. The combination of limited attention spans and guitar's physical demands often creates frustration. However, early musical exposure through singing and simple instruments provides excellent preparation.
             </p>
 
-            <h3 className="text-2xl font-semibold text-gray-900 mt-8 mb-4">The neuroplasticity advantage</h3>
+            <h3 className="text-2xl font-semibold text-amber-700 mt-8 mb-4">The neuroplasticity advantage</h3>
             <p className="mb-4">
               Research shows that musical training before ages 7-9 creates lasting brain structure changes and enhanced musical processing abilities¹. Children who start in this window do show certain advantages in musical tasks later in life.
             </p>
@@ -63,7 +63,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               <strong>But here's the crucial caveat</strong>: Every child is different. Some 6-year-olds might be ready if they show strong interest and focus, while others benefit from waiting until 9 or 10. Individual readiness matters more than hitting a specific age target.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Adults: Different Strengths, Different Timeline</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Adults: Different Strengths, Different Timeline</h2>
             
             <p className="mb-6">
               <strong>Adults don't learn guitar the same way children do – and that's often an advantage</strong>. While they may not have the neuroplasticity benefits of childhood, adults bring compensating strengths that children lack:
@@ -77,7 +77,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               Here's the encouraging news from neuroscience: adult brains remain remarkably adaptable. Studies show measurable brain structure changes after just 10 weeks of musical training, regardless of age². While these changes may be less dramatic than in children, they're still significant and beneficial for cognitive function.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Senior Learners: Time and Dedication</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Senior Learners: Time and Dedication</h2>
             
             <p className="mb-6">
               <strong>Learners over 60 often become exceptional students</strong>. They typically have more available practice time, strong intrinsic motivation, and the patience that comes with life experience.
@@ -91,7 +91,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               The cognitive benefits for seniors are particularly compelling. Musical learning provides measurable improvements in memory, processing speed, and attention. Research even suggests that regular musical training may delay cognitive decline and reduce dementia risk by up to 64%³ - making guitar lessons not just enjoyable, but potentially protective for brain health.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">What Your Guitar Journey Might Look Like</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">What Your Guitar Journey Might Look Like</h2>
 
             <p className="mb-6">
               <strong>If you're starting with a child</strong>, expect lessons that feel more like play than work. Young learners thrive on games, movement, and celebrating small victories. A properly sized guitar makes all the difference for comfort and reach.
@@ -109,7 +109,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               <strong>Senior learners</strong> often find deep satisfaction in the learning process itself. Look for patient instruction, the option to work with familiar songs, and teachers willing to adapt to any physical considerations you might have.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">The Brain Benefits Are Real at Every Age</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">The Brain Benefits Are Real at Every Age</h2>
 
             <p className="mb-6">
               The cognitive benefits of guitar learning are well-documented across all age groups. For children, musical training enhances verbal memory, reading skills, and attention control⁴ - benefits that transfer directly to academic performance and language development.
@@ -119,7 +119,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               Adults and seniors see improvements in processing speed, working memory, and speech-in-noise perception. Brain imaging studies show increased gray matter and enhanced neural connectivity regardless of starting age⁵. In other words, your brain benefits from guitar learning whether you're 8 or 80.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Making the Decision: Individual Readiness Matters Most</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Making the Decision: Individual Readiness Matters Most</h2>
             
             <p className="mb-6">
               Rather than focusing solely on age, consider these readiness indicators:
@@ -137,7 +137,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               <strong>Seniors</strong> benefit from assessing their physical comfort with holding an instrument, patience with gradual progress, genuine interest in the learning process itself, and acceptance of any physical limitations that might require adaptations.
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">The Real Answer</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">The Real Answer</h2>
             
             <p className="mb-6">
               <strong>The best time to start guitar is when you're ready and motivated to learn</strong>. Yes, children who start around 7-8 gain certain neurological advantages. But adults often progress faster initially due to superior analytical skills and practice efficiency. Seniors bring dedication and life experience that enhance musical expression.
@@ -147,13 +147,13 @@ export default function WhenShouldYouStartLearningGuitar() {
               The research is clear: <strong>quality instruction, consistent practice, and genuine interest matter far more than your starting age</strong>. Whether you're considering lessons for your 8-year-old, starting at 35, or fulfilling a lifelong dream at 65, the guitar offers cognitive, emotional, and creative benefits at every stage of life.
             </p>
             
-            <p className="mb-8 text-xl font-semibold text-gray-900">
+            <p className="mb-8 text-xl font-semibold text-amber-600">
               The question isn't whether you're the right age to start – it's whether you're ready to begin the journey.
             </p>
 
             <hr className="my-12 border-gray-300" />
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">References</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">References</h2>
             
             <div className="text-sm text-gray-700 space-y-4 mb-8">
               <p>
@@ -177,7 +177,7 @@ export default function WhenShouldYouStartLearningGuitar() {
               </p>
             </div>
 
-            <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Additional Reading</h2>
+            <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Additional Reading</h2>
             
             <div className="text-sm text-gray-700 space-y-4 mb-12">
               <p>
@@ -196,7 +196,7 @@ export default function WhenShouldYouStartLearningGuitar() {
 
           {/* Call to Action */}
           <div className="bg-amber-100 rounded-lg p-8 mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold text-amber-600 mb-4">
               Ready to Start Your Guitar Journey?
             </h3>
             <p className="text-gray-700 mb-6">

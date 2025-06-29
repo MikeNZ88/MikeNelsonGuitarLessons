@@ -35,7 +35,7 @@ export default function EssentialPracticeTips() {
             <span>January 15, 2025</span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">
             6 Essential Practice Tips for Guitar Students
           </h1>
           
@@ -71,7 +71,7 @@ export default function EssentialPracticeTips() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">1</span>
             Start Slow, Build Speed Gradually
           </h2>
@@ -83,7 +83,7 @@ export default function EssentialPracticeTips() {
           </p>
 
           <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <h4 className="font-semibold text-gray-900 mb-3">Practical Application:</h4>
+            <h4 className="font-semibold text-amber-600 mb-3">Practical Application:</h4>
             <ul className="space-y-2 text-gray-700">
               <li className="flex items-start gap-2">
                 <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
@@ -100,7 +100,7 @@ export default function EssentialPracticeTips() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">2</span>
             Challenge Yourself with Speed Bursts
           </h2>
@@ -133,7 +133,7 @@ export default function EssentialPracticeTips() {
             </ul>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">3</span>
             Practice in Short, Focused Sessions
           </h2>
@@ -162,7 +162,7 @@ export default function EssentialPracticeTips() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">4</span>
             Focus on Problem Areas
           </h2>
@@ -173,7 +173,7 @@ export default function EssentialPracticeTips() {
             will solve problems much faster than repeated run-throughs.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">5</span>
             Use Proper Posture and Hand Position
           </h2>
@@ -184,7 +184,7 @@ export default function EssentialPracticeTips() {
             not sure, book a lesson – even one session can save you months of struggling with poor technique.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+          <h2 className="text-3xl font-bold text-amber-600 mb-6 flex items-center gap-3">
             <span className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold">6</span>
             Record Yourself Playing
           </h2>
@@ -195,7 +195,7 @@ export default function EssentialPracticeTips() {
             Use your phone's voice recorder – it doesn't need to be fancy.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">How PracticeTrack Supports Your Practice Journey</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">How PracticeTrack Supports Your Practice Journey</h2>
           
           <p className="mb-6">
             Each of these 6 tips becomes more effective when you track your progress consistently. 
@@ -260,7 +260,7 @@ export default function EssentialPracticeTips() {
             </div>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Putting It All Together</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Putting It All Together</h2>
           
           <p className="mb-6">
             Remember, effective practice is about consistency and quality, not just time spent with the guitar. 

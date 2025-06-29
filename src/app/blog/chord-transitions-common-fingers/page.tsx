@@ -39,7 +39,7 @@ export default function ChordTransitionsPost() {
             Back to Blog
           </Link>
           
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
             🎸 Smoother Chord Changes: Identifying Common Fingers Between Chords on Guitar
           </h1>
           
@@ -67,15 +67,15 @@ export default function ChordTransitionsPost() {
             Here's a quick guide to some common open chord pairs, showing only the fingers that stay put during the transition.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">What Are Common Fingers?</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">What Are Common Fingers?</h2>
 
           <p>
             Common fingers are those that press the <strong>same fret on the same string</strong> across two chords. Using these as anchors reduces finger lifting and helps your hand flow naturally.
           </p>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Common Fingers in Open Chord Transitions</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Common Fingers in Open Chord Transitions</h2>
 
-          <h3 className="text-2xl font-bold text-gray-800 mt-10 mb-6">1. C → Am</h3>
+          <h3 className="text-2xl font-bold text-amber-700 mt-10 mb-6">1. C → Am</h3>
 
           <p><strong>Common fingers:</strong></p>
           <ul className="list-disc list-inside space-y-2 mb-6">
@@ -86,7 +86,7 @@ export default function ChordTransitionsPost() {
           <div className="bg-gray-100 p-6 rounded-lg mb-6 font-mono text-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">C Major</h4>
+                <h4 className="font-bold mb-3 text-amber-700">C Major</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -141,7 +141,7 @@ export default function ChordTransitionsPost() {
               </div>
               
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">A minor</h4>
+                <h4 className="font-bold mb-3 text-amber-700">A minor</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -200,7 +200,7 @@ export default function ChordTransitionsPost() {
             </p>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-800 mt-10 mb-6">2. G → D</h3>
+          <h3 className="text-2xl font-bold text-amber-700 mt-10 mb-6">2. G → D</h3>
 
           <p><strong>Common finger:</strong></p>
           <ul className="list-disc list-inside space-y-2 mb-6">
@@ -210,7 +210,7 @@ export default function ChordTransitionsPost() {
           <div className="bg-gray-100 p-6 rounded-lg mb-6 font-mono text-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">G Major</h4>
+                <h4 className="font-bold mb-3 text-amber-700">G Major</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -265,7 +265,7 @@ export default function ChordTransitionsPost() {
               </div>
               
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">D Major</h4>
+                <h4 className="font-bold mb-3 text-amber-700">D Major</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -324,7 +324,7 @@ export default function ChordTransitionsPost() {
             </p>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-800 mt-10 mb-6">3. Em → C</h3>
+          <h3 className="text-2xl font-bold text-amber-700 mt-10 mb-6">3. Em → C</h3>
 
           <p><strong>Common finger:</strong></p>
           <ul className="list-disc list-inside space-y-2 mb-6">
@@ -334,7 +334,7 @@ export default function ChordTransitionsPost() {
           <div className="bg-gray-100 p-6 rounded-lg mb-6 font-mono text-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">E minor</h4>
+                <h4 className="font-bold mb-3 text-amber-700">E minor</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -389,7 +389,7 @@ export default function ChordTransitionsPost() {
               </div>
               
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">C Major</h4>
+                <h4 className="font-bold mb-3 text-amber-700">C Major</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -448,7 +448,7 @@ export default function ChordTransitionsPost() {
             </p>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-800 mt-10 mb-6">4. G → Em</h3>
+          <h3 className="text-2xl font-bold text-amber-700 mt-10 mb-6">4. G → Em</h3>
 
           <p><strong>Common finger:</strong></p>
           <ul className="list-disc list-inside space-y-2 mb-6">
@@ -458,7 +458,7 @@ export default function ChordTransitionsPost() {
           <div className="bg-gray-100 p-6 rounded-lg mb-6 font-mono text-sm">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">G Major</h4>
+                <h4 className="font-bold mb-3 text-amber-700">G Major</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -513,7 +513,7 @@ export default function ChordTransitionsPost() {
               </div>
               
               <div>
-                <h4 className="font-bold mb-3 text-gray-800">E minor</h4>
+                <h4 className="font-bold mb-3 text-amber-700">E minor</h4>
                 <div className="space-y-1">
                   <div className="flex items-center mb-2 font-semibold text-gray-700 text-xs">
                     <span className="w-8 text-center">String</span>
@@ -572,7 +572,7 @@ export default function ChordTransitionsPost() {
             </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-gray-900 mt-12 mb-6">Final Tips</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Final Tips</h2>
 
           <ul className="list-disc list-inside space-y-3 mb-6">
             <li><strong>Watch your anchor fingers</strong> during chord changes to keep them steady.</li>

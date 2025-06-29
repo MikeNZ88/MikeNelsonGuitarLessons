@@ -23,8 +23,8 @@ export default function ScaleExplorerTool() {
 
         {/* Header */}
         <header className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Scale Explorer: Learn Guitar Scales The Right Way
+          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
+            Scale Explorer: Interactive Guitar Learning Tool
           </h1>
           <div className="text-gray-600 mb-8">
             <time>Published: January 2025</time>
@@ -36,7 +36,7 @@ export default function ScaleExplorerTool() {
 
         {/* What is Scale Explorer */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">What is Scale Explorer?</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">What is Scale Explorer?</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-gray-700 mb-6">
               Scale Explorer is a free, interactive tool that helps you understand guitar scales through visual learning and music theory connections. Instead of memorizing dozens of isolated fretboard patterns, you learn one universal reference - the major scale - and see how everything else relates to it.
@@ -50,7 +50,7 @@ export default function ScaleExplorerTool() {
 
         {/* How It Helps */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">How Scale Explorer Helps You</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">How Scale Explorer Helps You</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white rounded-xl p-6 shadow-lg border border-orange-200">
@@ -95,14 +95,14 @@ export default function ScaleExplorerTool() {
 
         {/* Interval Colors */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Understanding Intervals Through Color</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Understanding Intervals Through Color</h2>
           
           <div className="bg-white rounded-xl p-8 shadow-lg border border-orange-200">
             <p className="text-gray-700 mb-8">
               Scale Explorer uses a consistent color system to help you recognize intervals instantly. Each scale degree has its own color, making it easy to see patterns and relationships across different scales.
             </p>
             
-            <h3 className="text-xl font-semibold text-gray-800 mb-6">Major Scale Intervals (1-7)</h3>
+            <h3 className="text-xl font-semibold text-amber-700 mb-6">Major Scale Intervals (1-7)</h3>
             
             <div className="flex flex-wrap justify-center gap-4 mb-8">
               <div className="flex flex-col items-center">
@@ -169,7 +169,7 @@ export default function ScaleExplorerTool() {
 
         {/* Key Features */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Key Features</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Key Features</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-lg p-6 border border-orange-200">
@@ -189,7 +189,7 @@ export default function ScaleExplorerTool() {
             <div className="bg-white rounded-lg p-6 border border-orange-200">
               <h3 className="text-lg font-semibold text-orange-800 mb-3">🔊 Audio Playback</h3>
               <p className="text-gray-700">
-                Hear how each scale sounds. Listen to scales and chords to develop your ear and understand their musical character.
+                                        Hear how each scale sounds. Listen to scales to develop your ear and understand their musical character.
               </p>
             </div>
             
@@ -218,7 +218,7 @@ export default function ScaleExplorerTool() {
 
         {/* Why Start with Major Scale */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">Why Start with the Major Scale?</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-6">Why Start with the Major Scale?</h2>
           
           <div className="bg-orange-50 rounded-xl p-8 border border-orange-200">
             <div className="prose prose-lg max-w-none">
@@ -242,7 +242,7 @@ export default function ScaleExplorerTool() {
 
         {/* Call to Action */}
         <section className="text-center py-12 bg-gradient-to-r from-orange-100 to-amber-100 rounded-xl border border-orange-200">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Start Learning?</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-4">Ready to Start Learning?</h2>
           <p className="text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
             Stop memorizing isolated shapes. Start understanding the connections that make music work.
           </p>
