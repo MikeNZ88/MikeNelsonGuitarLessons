@@ -195,60 +195,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Local Areas Section */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800 mb-6">
-              Guitar Lessons Near Me - Wellington North
-            </h2>
-            <p className="text-lg text-amber-700 max-w-3xl mx-auto mb-8">
-              Looking for guitar lessons near you? I provide professional guitar tuition in Wellington's northern suburbs. 
-              Choose from home studio lessons in Pukerua Bay or convenient in-home guitar lessons at your place.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-amber-50 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-amber-800 mb-4">Guitar Lessons Near Me - Home Studio</h3>
-              <p className="text-amber-700 mb-4">
-                Visit my professional home studio in Pukerua Bay for focused, distraction-free guitar lessons. 
-                Perfect for students from nearby areas.
-              </p>
-              <ul className="text-amber-600 text-sm space-y-1">
-                <li>• Professional equipment and setup</li>
-                <li>• Quiet, dedicated learning space</li>
-                <li>• Easy parking available</li>
-                <li>• $30 per 30-minute lesson</li>
-              </ul>
-            </div>
-            
-            <div className="bg-amber-50 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-amber-800 mb-4">Mobile Guitar Lessons - I Come to You</h3>
-              <p className="text-amber-700 mb-4">
-                Prefer guitar lessons at home? I travel to students in Plimmerton, Cambourne, Mana, 
-                Paremata, Papakowhai, and Whitby for convenient in-home guitar tuition.
-              </p>
-              <ul className="text-amber-600 text-sm space-y-1">
-                <li>• Learn in your comfortable environment</li>
-                <li>• No travel time for you</li>
-                <li>• Personalized setup advice</li>
-                <li>• $45 per 30-minute lesson</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="text-center">
-            <p className="text-amber-700 mb-6 text-lg">
-              <strong>Guitar lessons near me in:</strong> Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, and Whitby
-            </p>
-            <p className="text-amber-600">
-              Can't find guitar lessons near you? I also offer online guitar lessons via Zoom for students anywhere in New Zealand.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 text-white relative overflow-hidden">
         {/* Background Pattern */}
