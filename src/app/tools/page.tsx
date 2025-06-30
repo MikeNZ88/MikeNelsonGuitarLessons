@@ -70,6 +70,9 @@ export default function Tools() {
                     <Music className="h-8 w-8" />
                   </div>
                   <h2 className="text-3xl font-bold text-amber-800 mb-4">Scale Explorer</h2>
+                  <div className="inline-block bg-green-600 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
+                    FREE
+                  </div>
                   <p className="text-lg text-amber-700 max-w-2xl mx-auto">
                     Interactive guitar fretboard tool to visualize scales, modes, and chord relationships. 
                     Perfect for understanding music theory and fretboard navigation.
