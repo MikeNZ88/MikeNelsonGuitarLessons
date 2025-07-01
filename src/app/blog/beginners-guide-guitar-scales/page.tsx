@@ -254,12 +254,7 @@ export default function BeginnersGuideGuitarScales() {
                           {fret}
                         </div>
                         
-                        {/* Interval numbers above for scale notes */}
-                        {isScaleNote && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded px-1">
-                            {intervals[fret]}
-                          </div>
-                        )}
+                        {                        /* Interval numbers above for scale notes */}
                       </div>
                     );
                   })}
@@ -342,12 +337,7 @@ export default function BeginnersGuideGuitarScales() {
                           {fret}
                         </div>
                         
-                        {/* Interval numbers above for scale notes */}
-                        {isScaleNote && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white rounded px-1">
-                            {intervals[fret]}
-                          </div>
-                        )}
+                        {                        /* Interval numbers above for scale notes */}
                       </div>
                     );
                   })}
@@ -443,12 +433,7 @@ export default function BeginnersGuideGuitarScales() {
                           {fret}
                         </div>
                         
-                        {/* Interval numbers above for scale notes */}
-                        {isScaleNote && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded px-1">
-                            {intervals[fret]}
-                          </div>
-                        )}
+                        {                        /* Interval numbers above for scale notes */}
                       </div>
                     );
                   })}
@@ -514,12 +499,7 @@ export default function BeginnersGuideGuitarScales() {
                           {fret}
                         </div>
                         
-                        {/* Interval numbers above for scale notes */}
-                        {isScaleNote && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white rounded px-1">
-                            {intervals[fret]}
-                          </div>
-                        )}
+                        {                        /* Interval numbers above for scale notes */}
                       </div>
                     );
                   })}

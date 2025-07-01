@@ -7,757 +7,971 @@ export default function GuitarFretboardNavigation() {
   const [showMathModal, setShowMathModal] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <nav className="text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-amber-600">Home</Link>
-          <span className="mx-2">/</span>
-          <Link href="/blog" className="hover:text-amber-600">Blog</Link>
-          <span className="mx-2">/</span>
-          <span className="text-gray-900">Guitar Fretboard Navigation</span>
-        </nav>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+      <div className="container mx-auto px-6 py-12">
+        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="p-8">
+            {/* Breadcrumb */}
+            <nav className="text-sm text-gray-600 mb-6">
+              <Link href="/" className="hover:text-amber-600">Home</Link>
+              <span className="mx-2">/</span>
+              <Link href="/blog" className="hover:text-amber-600">Blog</Link>
+              <span className="mx-2">/</span>
+              <span className="text-gray-900">Guitar Fretboard Navigation</span>
+            </nav>
 
-        <article className="prose prose-lg max-w-none">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-amber-800 mb-6">
-              Guitar Fretboard Navigation: Cross-String Interval Relationships (Part 2)
-            </h1>
-            
-            <p className="text-xl text-gray-600 mb-4">
-              Master the practical techniques for finding notes and intervals across guitar strings
-            </p>
-
-            {/* Link back to Part 1 */}
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mb-8">
-              <p className="text-amber-800 text-sm">
-                📖 <strong>Part 2 of 2:</strong> This builds on the theoretical foundation from{" "}
-                <Link href="/blog/understanding-guitar-fretboard" className="text-amber-600 hover:text-amber-800 underline">
-                  Part 1: Why Strings Are Tuned This Way
-                </Link>. 
-                Start there if you want to understand the "why" behind these techniques.
-              </p>
-            </div>
-
-            <div className="text-sm text-gray-500">
-              Published: June 27, 2025
-            </div>
-          </div>
-
-          {/* Optional Learning Approach */}
-          <div className="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-lg mb-8">
-            <h3 className="text-lg font-semibold text-green-800 mb-3">📚 Choose Your Learning Approach</h3>
-            <p className="text-green-800 text-sm mb-3">
-              The detailed mathematical analysis below is <strong>completely optional</strong>. Everyone makes fretboard connections differently, and it can take time for these relationships to click.
-            </p>
-            <p className="text-green-800 text-sm mb-3">
-              Some players learn best through repetition and muscle memory, others through visual patterns, and others by understanding the mathematical relationships. All approaches are equally valid.
-            </p>
-            <p className="text-green-800 text-sm">
-              <strong>Remember:</strong> The more you understand about how the fretboard works, the easier learning becomes - but you don't need to master everything at once. Take what helps you and leave the rest for later.
-            </p>
-          </div>
-
-          {/* Beginner-friendly explanation */}
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-lg mb-8">
-            <h2 className="text-2xl font-semibold text-amber-800 mb-4 flex items-center">
-              🎸 For Beginners: Understanding Cross-String Relationships
-            </h2>
-            
-            <p className="text-amber-900 font-medium mb-4">
-              <strong>Here's the key insight:</strong> Apart from G to B strings, all other guitar strings are tuned exactly 5 half-steps apart.
-            </p>
-
-            <div className="bg-white p-4 rounded border mb-4">
-              <h4 className="font-semibold mb-3 text-amber-800">🔍 Try This Exercise:</h4>
-              <p className="mb-3 text-amber-800">
-                Find the note <strong>A</strong> on the 5th fret of the low E string. Notice that the exact same note (sounds identical) 
-                is found on the string below it, but 5 frets back at fret 0 (the open A string).
-              </p>
-            </div>
-
-            <div className="bg-amber-100 p-4 rounded border-l-4 border-amber-600 mb-4">
-              <h4 className="font-semibold mb-3 text-amber-900">💡 The Handy Tip:</h4>
-              <p className="mb-3 text-amber-900">
-                If you have a starting point (let's call it the <strong>root</strong>), and you move up to a note on a higher fret on that same string, 
-                you can find that same note on the string below by using this simple calculation:
-              </p>
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold text-amber-800 mb-6">
+                Guitar Fretboard Navigation: Cross-String Movement Formulas
+              </h1>
               
-              <div className="bg-white p-3 rounded border text-center">
-                <p className="font-bold text-amber-900 text-lg">
-                  String Tuning (5) - Frets Moved Up = Frets to Move Back
+              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+                Master practical techniques for finding notes and intervals across guitar strings using mathematical relationships
+              </p>
+
+              {/* Link back to Part 1 */}
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-8 shadow-sm">
+                <p className="text-amber-800">
+                  📖 <strong>Part 2 of 2:</strong> This builds on the theoretical foundation from{" "}
+                  <Link href="/blog/understanding-guitar-fretboard" className="text-amber-600 hover:text-amber-800 underline">
+                    Part 1: Why Strings Are Tuned This Way
+                  </Link>. 
+                  Start there if you want to understand the "why" behind these techniques.
                 </p>
               </div>
+
+              <div className="text-sm text-gray-500">
+                Published: June 27, 2025
+              </div>
             </div>
 
-            <div className="bg-white p-4 rounded border">
-              <h4 className="font-semibold mb-3 text-amber-800">📝 Example:</h4>
-              <ol className="list-decimal list-inside space-y-2 text-amber-800">
-                <li>Start at the 5th fret on E string (note A)</li>
-                <li>Move to the 7th fret on E string (note B) → we moved <strong>2 frets up</strong></li>
-                <li>Calculate: 5 - 2 = <strong>3</strong></li>
-                <li>Move back 3 frets from the 5th fret on A string: 5 - 3 = <strong>2nd fret</strong></li>
-                <li>Result: Note B is found on the <strong>2nd fret of the A string</strong></li>
-              </ol>
-            </div>
-
-            <div className="bg-amber-100 p-4 rounded mt-4">
-              <p className="text-amber-900 text-sm">
-                <strong>🎯 Why this works:</strong> This calculation automatically accounts for the 5-fret tuning difference between strings, 
-                making it easy to find any note on adjacent strings without memorizing the entire fretboard.
-              </p>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-amber-800 mb-6">Cross-String Interval Relationships</h2>
-
-            <div className="bg-amber-50 p-6 rounded-lg mb-6">
-              <h3 className="text-xl font-semibold mb-4">🎯 Finding the Same Note on Adjacent Strings</h3>
-              <p className="mb-4">
-                <strong>The same note can be found 5 frets back on the next lower string (except G to B, which is 4 frets back).</strong>
-              </p>
-              
-              <div className="bg-white p-4 rounded border mb-4">
-                <h4 className="font-semibold mb-4 text-center">Example: Finding A on E and A Strings</h4>
+            <div className="prose prose-lg max-w-none">
+              {/* Key Insight */}
+              <div className="bg-gradient-to-br from-amber-50 to-orange-100 p-6 rounded-lg mb-8 shadow-sm">
+                <h3 className="text-xl font-semibold text-amber-700 mb-4">💡 The Guitar Secret: Finding Notes Across Strings</h3>
+                <p className="text-gray-700 mb-4">
+                  <strong>The basic idea:</strong> When you move up the fretboard on one string, you can find that same note by moving back on the next string.
+                </p>
                 
-                <div className="space-y-4">
-                  {/* A String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">A:</div>
-                    {Array.from({length: 6}, (_, i) => {
-                      const fret = i;
-                      const isOpenA = fret === 0; // A on open A string
-                      
-                      return (
-                        <div key={fret} className="relative">
-                          <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                              ${isOpenA
-                                ? 'bg-amber-500 text-white border-amber-600'
-                                : 'bg-gray-100 border-gray-300 text-gray-400'
-                              }`}
-                          >
-                            {isOpenA ? 'A' : '•'}
-                          </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Low E String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">E:</div>
-                    {Array.from({length: 6}, (_, i) => {
-                      const fret = i;
-                      const isFifthFretA = fret === 5; // A on 5th fret E string
-                      
-                      return (
-                        <div key={fret} className="relative">
-                          <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                              ${isFifthFretA
-                                ? 'bg-amber-500 text-white border-amber-600'
-                                : 'bg-gray-100 border-gray-300 text-gray-400'
-                              }`}
-                          >
-                            {isFifthFretA ? 'A' : '•'}
-                          </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                <div className="bg-white p-4 rounded-lg border shadow-sm mb-4">
+                  <h4 className="font-semibold mb-3 text-amber-800">🎯 How it works:</h4>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• Guitar strings are tuned 5 frets apart (except G to B which is 4 frets)</li>
+                    <li>• If you go up 2 frets on the low E string, the same note is 3 frets back on the A string</li>
+                    <li>• If you go up 3 frets, the same note is 2 frets back</li>
+                    <li>• They always add up to 5 (or 4 for G to B)</li>
+                  </ul>
+                  
+                  <p className="text-sm text-gray-700 mt-3">
+                    <strong>It works for going from higher to lower notes too.</strong> If you go down 2 frets on the high E string, the same note is 3 frets away (but forward rather than back).
+                  </p>
                 </div>
 
-                {/* Simple explanation */}
-                <div className="text-center mt-4 space-y-2">
-                  <div className="bg-amber-100 p-3 rounded">
-                    <p className="text-sm"><strong>A on 5th fret E string</strong> = <strong>A on open A string</strong></p>
-                    <p className="text-lg font-bold text-amber-700 my-2">The open fret (0) is 5 frets back from the 5th fret</p>
-                  </div>
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-200">
+                  <h4 className="font-semibold mb-2 text-amber-800">Why this helps:</h4>
+                  <p className="text-sm text-gray-700">
+                    This shows us two possible paths to find the same note. It's just another way of thinking about the fretboard.
+                  </p>
                 </div>
               </div>
 
-              <div className="bg-white p-4 rounded border mb-4">
-                <h4 className="font-semibold mb-4 text-center">Example: Finding C on E and A Strings</h4>
+              {/* Simple Visual Example */}
+              <div className="bg-white border-2 border-amber-300 p-6 rounded-lg mb-8 shadow-sm">
+                <h4 className="font-semibold mb-4 text-center text-amber-800">Example: A to C</h4>
                 
-                <div className="space-y-4">
-                  {/* A String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">A:</div>
-                    {Array.from({length: 9}, (_, i) => {
+
+
+                <div className="space-y-3 mb-4 relative">
+
+                  
+                  {/* A String - Higher String */}
+                  <div className="flex items-center relative">
+                    <div className="w-12 text-right pr-2 font-medium text-xs">A:</div>
+                    {Array.from({length: 10}, (_, i) => {
                       const fret = i;
-                      const isTargetC = fret === 3; // C on 3rd fret A string
+                      const isTargetC = fret === 3; // C on 3rd fret A string (cross-string target)
                       
                       return (
                         <div key={fret} className="relative">
                           <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
+                            className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
                               ${isTargetC
-                                ? 'bg-amber-500 text-white border-amber-600'
+                                ? 'bg-amber-400 text-white border-amber-500'
                                 : 'bg-gray-100 border-gray-300 text-gray-400'
                               }`}
                           >
                             {isTargetC ? 'C' : '•'}
                           </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
+                          <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
                         </div>
                       );
                     })}
+                    
+                    {/* 2 frets label positioned between fret 5 and fret 3 */}
+                    <div className="absolute -top-6" style={{left: 'calc(4 * 2rem + 1.5rem + 0.75rem)'}}> {/* Position between fret 3 and 5 */}
+                      <div className="flex items-center text-xs font-semibold text-orange-600">
+                        <span>←</span>
+                        <span className="ml-1">2 frets</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Low E String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">Low E:</div>
-                    {Array.from({length: 9}, (_, i) => {
+                  {/* E String - Lower String */}
+                  <div className="flex items-center relative">
+                    <div className="w-12 text-right pr-2 font-medium text-xs">E:</div>
+                    {Array.from({length: 10}, (_, i) => {
                       const fret = i;
-                      const isTargetC = fret === 8; // C on 8th fret E string
+                      const isStartA = fret === 5; // A on 5th fret E string (root)
+                      const isSameStringC = fret === 8; // C on 8th fret E string (same-string target)
                       
                       return (
                         <div key={fret} className="relative">
                           <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                              ${isTargetC
-                                ? 'bg-amber-500 text-white border-amber-600'
+                            className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                              ${isStartA
+                                ? 'bg-blue-500 text-white border-blue-600'
+                                : isSameStringC
+                                ? 'bg-amber-200 text-amber-800 border-amber-400'
                                 : 'bg-gray-100 border-gray-300 text-gray-400'
                               }`}
                           >
-                            {isTargetC ? 'C' : '•'}
+                            {isStartA ? 'A' : isSameStringC ? 'C' : '•'}
                           </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
+                          <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
                         </div>
                       );
                     })}
+                    
+                    {/* 3 frets label positioned between fret 5 and fret 8 */}
+                    <div className="absolute -bottom-4" style={{left: 'calc(6.5 * 2rem + 1.5rem)'}}> {/* Position between fret 5 and 8 */}
+                      <div className="flex items-center text-xs font-semibold text-orange-600">
+                        <span className="mr-1">3 frets</span>
+                        <span>→</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Simple explanation */}
-                <div className="text-center mt-4 space-y-2">
-                  <div className="bg-amber-100 p-3 rounded">
-                    <p className="text-sm"><strong>C on 8th fret E string</strong> = <strong>C on 3rd fret A string</strong></p>
-                    <p className="text-lg font-bold text-amber-700 my-2">The 3rd fret is 5 frets back from the 8th fret</p>
-                  </div>
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-3 rounded border border-amber-200">
+                  <p className="text-sm text-gray-700 text-center">
+                    Two paths to the same note C: 8th fret E string OR 3rd fret A string
+                  </p>
                 </div>
               </div>
-            </div>
 
-            <div className="bg-blue-50 p-6 rounded-lg mb-6">
-              <h3 className="text-xl font-semibold mb-4">🎯 The Cross-String Interval Formula</h3>
-              <p className="mb-4">
-                Now that you understand how to find the same note on adjacent strings, you can extend this to find <strong>any interval</strong>:
-              </p>
-              
-              <div className="bg-white p-4 rounded border mb-4">
-                <h4 className="font-semibold mb-4 text-center">Example: Major 3rd on E and A Strings</h4>
+              {/* Math Section */}
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-6 rounded-lg mb-8 shadow-sm">
+                <h3 className="text-xl font-semibold text-amber-700 mb-4">🔢 Maths and More Examples</h3>
+                <p className="text-amber-700 mb-4">
+                  You don't have to understand the maths. Looking at the diagrams will be enough for most to understand this concept. 
+                  Just look at how many frets away the note is on the same string from the note you want to start from and figure out 
+                  the other puzzle piece that adds up to 5 (4 for G and B string pair). You'll see 2s pair with 3s, 1s pair with 4s and so on.
+                </p>
+              </div>
+
+              {/* The Formula */}
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-amber-800 mb-6">🔥 The Two Formulas</h2>
                 
-                <div className="space-y-4">
-                  {/* A String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">A:</div>
-                    {Array.from({length: 13}, (_, i) => {
-                      const fret = i;
-                      const isCrossStringMajor3rd = fret === 7; // E on 7th fret A string (cross-string major 3rd)
-                      
-                      return (
-                        <div key={fret} className="relative">
-                          <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                              ${isCrossStringMajor3rd
-                                ? 'bg-amber-400 text-black border-amber-500'
-                                : 'bg-gray-100 border-gray-300 text-gray-400'
-                              }`}
-                          >
-                            {isCrossStringMajor3rd ? 'E' : '•'}
-                          </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
-                          
-                          {/* Labels above */}
-                          {isCrossStringMajor3rd && (
-                            <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                              M3rd
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Low E String */}
-                  <div className="flex items-center">
-                    <div className="w-16 text-right pr-4 font-medium">Low E:</div>
-                    {Array.from({length: 13}, (_, i) => {
-                      const fret = i;
-                      const isRoot = fret === 8; // C on 8th fret E string
-                      const isSameStringMajor3rd = fret === 12; // E on 12th fret E string (same-string major 3rd)
-                      
-                      return (
-                        <div key={fret} className="relative">
-                          <div 
-                            className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                              ${isRoot 
-                                ? 'bg-blue-500 text-white border-blue-600' 
-                                : isSameStringMajor3rd
-                                ? 'bg-amber-400 text-black border-amber-500'
-                                : 'bg-gray-100 border-gray-300 text-gray-400'
-                              }`}
-                          >
-                            {isRoot ? 'C' : isSameStringMajor3rd ? 'E' : '•'}
-                          </div>
-                          
-                          {/* Fret numbers below */}
-                          <div className="text-xs text-center mt-1 text-gray-600">
-                            {fret}
-                          </div>
-                          
-                          {/* Labels above */}
-                          {isRoot && (
-                            <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded px-1">
-                              Root
-                            </div>
-                          )}
-                          {isSameStringMajor3rd && (
-                            <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                              M3rd
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Formula explanation */}
-                <div className="text-center mt-4 space-y-2">
-                  <p className="font-semibold">Major 3rd Cross-String Formula:</p>
-                  <div className="bg-white p-3 rounded border">
-                    <p className="text-sm"><strong>Root:</strong> C on 8th fret E string</p>
-                    <p className="text-sm"><strong>Same string:</strong> Major 3rd (E) = 4 frets higher → 12th fret E string</p>
-                    <p className="text-lg font-bold my-2">
-                      <span className="bg-purple-100 px-2 py-1 rounded text-sm font-bold">4 (same string)</span>
-                      <span className="mx-2">-</span>
-                      <span className="bg-gray-100 px-2 py-1 rounded text-sm font-bold">5 (string tuning interval)</span>
-                      <span className="mx-2">=</span>
-                      <span className="bg-green-100 px-2 py-1 rounded text-sm font-bold">-1 → 1 fret back</span>
-                    </p>
-                    <p className="text-sm"><strong>Cross-string:</strong> E on 7th fret A string</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-4 rounded border-l-4 border-amber-500 mb-4">
-              <h4 className="font-semibold mb-3">🧮 How The Cross-String Formula Works</h4>
-              
-              <div className="bg-blue-50 p-3 rounded mb-4 border-l-4 border-blue-500">
-                <p className="text-blue-900 text-sm mb-2">
-                  <strong>📍 Note:</strong> This advanced formula is more comprehensive than the beginner calculation shown above. 
-                  While the beginner method works great for finding notes when moving up from a reference point, 
-                  this formula handles any interval relationship and any starting position on the fretboard.
-                </p>
-              </div>
-              
-              <p className="mb-3"><strong>The Formula:</strong></p>
-              <div className="bg-amber-50 p-3 rounded mb-3">
-                <p className="text-center font-bold">
-                  <span className="bg-purple-100 px-2 py-1 rounded">Same-String Interval</span> - 
-                  <span className="bg-gray-100 px-2 py-1 rounded">String Tuning Interval</span> = 
-                  <span className="bg-green-100 px-2 py-1 rounded">Cross-String Position</span>
-                </p>
-                <p className="text-center text-sm text-gray-600 mt-1">(All intervals measured in semitones/half steps)</p>
-              </div>
-              
-              <p className="mb-3"><strong>Step by step (Method 1 - Know the interval):</strong></p>
-              <ol className="list-decimal list-inside space-y-2 text-sm">
-                <li><strong>Find your interval on the same string</strong> (e.g., major 3rd = 4 frets)</li>
-                <li><strong>Know your string interval</strong> (E-A, A-D, D-G = 5 frets; G-B = 4 frets)</li>
-                <li><strong>Subtract:</strong> 4 - 5 = -1 (negative means go back toward the nut)</li>
-                <li><strong>Apply to your root note:</strong> If root is 8th fret, cross-string is 8 - 1 = 7th fret</li>
-              </ol>
-              
-              <p className="mb-3 mt-4"><strong>Step by step (Method 2 - Use fret numbers):</strong></p>
-              <ol className="list-decimal list-inside space-y-2 text-sm">
-                <li><strong>Find your root fret and interval fret</strong> (e.g., root = 8th fret, interval = 12th fret)</li>
-                <li><strong>Calculate same-string interval:</strong> 12 - 8 = 4 frets</li>
-                <li><strong>Know your string interval</strong> (E-A, A-D, D-G = 5 frets; G-B = 4 frets)</li>
-                <li><strong>Subtract:</strong> 4 - 5 = -1 (negative means go back toward the nut)</li>
-                <li><strong>Apply to your root note:</strong> 8th fret - 1 = 7th fret on adjacent string</li>
-              </ol>
-              
-              <div className="mt-4 p-3 bg-gray-50 rounded">
-                <p className="font-semibold text-sm mb-2">📝 Written Example:</p>
-                <p className="text-sm mb-2">
-                  <strong>Goal:</strong> Find the major 3rd of C (which is E) on the A string, when C is on the 8th fret E string.
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>Step 1:</strong> Major 3rd = 4 semitones (frets)
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>Step 2:</strong> E-A string interval = 5 semitones
-                </p>
-                <p className="text-sm mb-1">
-                  <strong>Step 3:</strong> 4 - 5 = -1 (go back 1 fret toward nut)
-                </p>
-                <p className="text-sm">
-                  <strong>Step 4:</strong> 8th fret - 1 = 7th fret → E is on 7th fret A string ✓
-                </p>
-              </div>
-              
-              <div className="mt-3 p-2 bg-yellow-50 rounded">
-                <p className="text-xs"><strong>Remember:</strong> Positive result = move toward bridge, Negative result = move toward nut</p>
-              </div>
-              
-              <div className="mt-4 text-center">
-                <button 
-                  onClick={() => setShowMathModal(true)}
-                  className="text-blue-600 hover:text-blue-800 underline text-sm"
-                >
-                  📐 Show the Mathematical Relationship
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-8">
-            <h3 className="text-xl font-semibold mb-4">🎸 Practical Applications</h3>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-3">🎵 Perfect 5th (Power Chords)</h4>
-                <p className="text-sm mb-2"><strong>E-A strings:</strong> <span className="bg-purple-100 px-1 rounded">7</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">+2</span> → 2 frets forward</p>
-                <p className="text-sm mb-2"><strong>A-D strings:</strong> <span className="bg-purple-100 px-1 rounded">7</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">+2</span> → 2 frets forward</p>
-                <p className="text-sm mb-2"><strong>G-B strings:</strong> <span className="bg-purple-100 px-1 rounded">7</span> - <span className="bg-gray-100 px-1 rounded">4</span> = <span className="bg-green-100 px-1 rounded">+3</span> → 3 frets forward</p>
-                <p className="text-xs text-gray-600">This is the classic power chord shape!</p>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-3">🎵 Octaves</h4>
-                <p className="text-sm mb-2"><strong>E-A strings:</strong> <span className="bg-purple-100 px-1 rounded">12</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">+7</span> → 7 frets forward</p>
-                <p className="text-sm mb-2"><strong>A-D strings:</strong> <span className="bg-purple-100 px-1 rounded">12</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">+7</span> → 7 frets forward</p>
-                <p className="text-sm mb-2"><strong>G-B strings:</strong> <span className="bg-purple-100 px-1 rounded">12</span> - <span className="bg-gray-100 px-1 rounded">4</span> = <span className="bg-green-100 px-1 rounded">+8</span> → 8 frets forward</p>
-                <p className="text-xs text-gray-600">Perfect for melodic doubling!</p>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-3">🎵 Major 3rd</h4>
-                <p className="text-sm mb-2"><strong>E-A strings:</strong> <span className="bg-purple-100 px-1 rounded">4</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">-1</span> → 1 fret back</p>
-                <p className="text-sm mb-2"><strong>A-D strings:</strong> <span className="bg-purple-100 px-1 rounded">4</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">-1</span> → 1 fret back</p>
-                <p className="text-sm mb-2"><strong>G-B strings:</strong> <span className="bg-purple-100 px-1 rounded">4</span> - <span className="bg-gray-100 px-1 rounded">4</span> = <span className="bg-green-100 px-1 rounded">0</span> → Same fret</p>
-                <p className="text-xs text-gray-600">Essential for major chord shapes!</p>
-              </div>
-              
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-semibold mb-3">🎵 Perfect 4th</h4>
-                <p className="text-sm mb-2"><strong>E-A strings:</strong> <span className="bg-purple-100 px-1 rounded">5</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">0</span> → Same fret</p>
-                <p className="text-sm mb-2"><strong>A-D strings:</strong> <span className="bg-purple-100 px-1 rounded">5</span> - <span className="bg-gray-100 px-1 rounded">5</span> = <span className="bg-green-100 px-1 rounded">0</span> → Same fret</p>
-                <p className="text-sm mb-2"><strong>G-B strings:</strong> <span className="bg-purple-100 px-1 rounded">5</span> - <span className="bg-gray-100 px-1 rounded">4</span> = <span className="bg-green-100 px-1 rounded">+1</span> → 1 fret forward</p>
-                <p className="text-xs text-gray-600">Perfect for sus4 chords and quartal harmony!</p>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="text-xl font-semibold text-brown-600 mb-3">Visual Examples: Cross-String Intervals</h3>
-
-          {/* A-D String Pair Example */}
-          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
-            <h4 className="font-semibold mb-8 text-center">A-D String Pair: Major 3rd Relationship</h4>
-            
-            <div className="min-w-max pt-2">
-              {/* Clean breakdown above the diagram */}
-              <div className="mb-6 text-center">
-                <div className="inline-flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded">
-                  <span className="bg-green-100 px-2 py-1 rounded text-sm font-bold">1 fret back</span>
-                  <span>+</span>
-                  <span className="bg-purple-100 px-2 py-1 rounded text-sm font-bold">4 frets (Major 3rd)</span>
-                  <span>=</span>
-                  <span className="bg-gray-100 px-2 py-1 rounded text-sm font-bold">5 frets total</span>
-                </div>
-              </div>
-
-              {/* String representation */}
-              <div className="space-y-4">
-                {/* D String */}
-                <div className="flex items-center">
-                  <div className="w-16 text-right pr-4 font-medium">D:</div>
-                  {Array.from({length: 13}, (_, i) => {
-                    const fret = i;
-                    const isCrossStringMajor3rd = fret === 2; // E on 2nd fret D string (cross-string major 3rd)
-                    
-                    return (
-                      <div key={fret} className="relative">
-                        <div 
-                          className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                            ${isCrossStringMajor3rd
-                              ? 'bg-orange-400 text-black border-orange-500'
-                              : 'bg-gray-100 border-gray-300 text-gray-400'
-                            }`}
-                        >
-                          {isCrossStringMajor3rd ? 'E' : '•'}
-                        </div>
-                        
-                        {/* Fret numbers below */}
-                        <div className="text-xs text-center mt-1 text-gray-600">
-                          {fret}
-                        </div>
-                        
-                        {/* Labels above */}
-                        {isCrossStringMajor3rd && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                            M3rd
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* A String */}
-                <div className="flex items-center">
-                  <div className="w-16 text-right pr-4 font-medium">A:</div>
-                  {Array.from({length: 13}, (_, i) => {
-                    const fret = i;
-                    const isRoot = fret === 3; // C on 3rd fret A string
-                    const isSameStringMajor3rd = fret === 7; // E on 7th fret A string (same-string major 3rd)
-                    
-                    return (
-                      <div key={fret} className="relative">
-                        <div 
-                          className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                            ${isRoot 
-                              ? 'bg-blue-500 text-white border-blue-600' 
-                              : isSameStringMajor3rd
-                              ? 'bg-orange-400 text-black border-orange-500'
-                              : 'bg-gray-100 border-gray-300 text-gray-400'
-                            }`}
-                        >
-                          {isRoot ? 'C' : isSameStringMajor3rd ? 'E' : '•'}
-                        </div>
-                        
-                        {/* Fret numbers below */}
-                        <div className="text-xs text-center mt-1 text-gray-600">
-                          {fret}
-                        </div>
-                        
-                        {/* Labels above */}
-                        {isRoot && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded px-1">
-                            Root
-                          </div>
-                        )}
-                        {isSameStringMajor3rd && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                            M3rd
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Formula explanation */}
-              <div className="text-center mt-4 space-y-2">
-                <p className="font-semibold">Major 3rd Cross-String Formula:</p>
-                <div className="bg-white p-3 rounded border">
-                  <p className="text-sm"><strong>Root:</strong> C on 3rd fret A string</p>
-                  <p className="text-sm"><strong>Same string:</strong> Major 3rd (E) = 4 frets higher → 7th fret A string</p>
-                  <p className="text-lg font-bold my-2">
-                    <span className="bg-purple-100 px-2 py-1 rounded text-sm font-bold">4 (same string)</span>
-                    <span className="mx-2">-</span>
-                    <span className="bg-gray-100 px-2 py-1 rounded text-sm font-bold">5 (string tuning interval)</span>
-                    <span className="mx-2">=</span>
-                    <span className="bg-green-100 px-2 py-1 rounded text-sm font-bold">-1 → 1 fret back</span>
+                {/* Formula Introduction */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-6 shadow-sm">
+                  <p className="text-amber-900 text-sm mb-4">
+                    Here are the two simple formulas that let you find any note on any adjacent string pair:
                   </p>
-                  <p className="text-sm"><strong>Cross-string:</strong> E on 2nd fret D string</p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-lg border shadow-sm text-center">
+                      <h4 className="font-semibold text-orange-800 mb-2">Moving to Higher Notes</h4>
+                      <span className="bg-orange-100 px-3 py-2 rounded-lg text-lg font-bold text-orange-900">C = M - S</span>
+                      <p className="text-xs text-orange-700 mt-2">Cross-string position = Movement - String interval</p>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg border shadow-sm text-center">
+                      <h4 className="font-semibold text-amber-800 mb-2">Moving to Lower Notes</h4>
+                      <span className="bg-amber-100 px-3 py-2 rounded-lg text-lg font-bold text-amber-900">C = M + S</span>
+                      <p className="text-xs text-amber-700 mt-2">Cross-string position = Movement + String interval</p>
+                    </div>
+                  </div>
+                  <div className="mt-4 text-xs text-amber-700">
+                    <p><strong>Where:</strong> C = Cross-string fret position, M = Movement along string (in frets), S = String tuning interval (5 or 4 frets)</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* G-B String Pair Example */}
-          <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 overflow-x-auto mobile-scroll-hint">
-            <h4 className="font-semibold mb-8 text-center">G-B String Pair: Major 3rd Relationship</h4>
-            
-            <div className="min-w-max pt-2">
-              {/* Clean breakdown above the diagram */}
-              <div className="mb-6 text-center">
-                <div className="inline-flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded">
-                  <span className="bg-green-100 px-2 py-1 rounded text-sm font-bold">0 fret back</span>
-                  <span>+</span>
-                  <span className="bg-purple-100 px-2 py-1 rounded text-sm font-bold">4 frets (Major 3rd)</span>
-                  <span>=</span>
-                  <span className="bg-gray-100 px-2 py-1 rounded text-sm font-bold">4 frets total</span>
-                </div>
-              </div>
-
-              {/* String representation */}
-              <div className="space-y-4">
-                {/* B String */}
-                <div className="flex items-center">
-                  <div className="w-16 text-right pr-4 font-medium">B:</div>
-                  {Array.from({length: 13}, (_, i) => {
-                    const fret = i + 3;
-                    const isMajorThirdOnB = fret === 5; // E on 5th fret B string
-                    const noteNames: {[key: number]: string} = {5: 'E'};
-                    
-                    return (
-                      <div key={fret} className="relative">
-                        <div 
-                          className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                            ${isMajorThirdOnB
-                              ? 'bg-orange-400 text-black border-orange-500'
-                              : 'bg-gray-100 border-gray-300 text-gray-400'
-                            }`}
-                        >
-                          {isMajorThirdOnB ? noteNames[fret] : '•'}
-                        </div>
-                        
-                        {/* Fret numbers below */}
-                        <div className="text-xs text-center mt-1 text-gray-600">
-                          {fret}
-                        </div>
-                        
-                        {/* Labels above */}
-                        {isMajorThirdOnB && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                            M3rd
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* G String */}
-                <div className="flex items-center">
-                  <div className="w-16 text-right pr-4 font-medium">G:</div>
-                  {Array.from({length: 13}, (_, i) => {
-                    const fret = i + 3;
-                    const isRoot = fret === 5; // C on 5th fret G string
-                    const isMajorThird = fret === 9; // E on 9th fret G string (4 frets higher)
-                    const noteNames: {[key: number]: string} = {5: 'C', 9: 'E'};
-                    
-                    return (
-                      <div key={fret} className="relative">
-                        <div 
-                          className={`w-12 h-12 border-2 flex items-center justify-center text-sm font-bold
-                            ${isRoot 
-                              ? 'bg-blue-500 text-white border-blue-600' 
-                              : isMajorThird
-                              ? 'bg-orange-400 text-black border-orange-500'
-                              : 'bg-gray-100 border-gray-300 text-gray-400'
-                            }`}
-                        >
-                          {isRoot || isMajorThird ? noteNames[fret] : '•'}
-                        </div>
-                        
-                        {/* Fret numbers below */}
-                        <div className="text-xs text-center mt-1 text-gray-600">
-                          {fret}
-                        </div>
-                        
-                        {/* Labels above */}
-                        {isRoot && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white rounded px-1">
-                            Root
-                          </div>
-                        )}
-                        {isMajorThird && (
-                          <div className="text-xs text-center absolute -top-4 left-1/2 transform -translate-x-1/2 bg-orange-600 text-white rounded px-1">
-                            M3rd
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Formula explanation */}
-              <div className="text-center mt-4 space-y-2">
-                <p className="font-semibold">Major 3rd Cross-String Formula:</p>
-                <div className="bg-white p-3 rounded border">
-                  <p className="text-sm"><strong>Root:</strong> C on 5th fret G string</p>
-                  <p className="text-sm"><strong>Same string:</strong> Major 3rd (E) = 4 frets higher → 9th fret G string</p>
-                  <p className="text-lg font-bold my-2">
-                    <span className="bg-purple-100 px-2 py-1 rounded text-sm font-bold">4 (same string)</span>
-                    <span className="mx-2">-</span>
-                    <span className="bg-gray-100 px-2 py-1 rounded text-sm font-bold">4 (string tuning)</span>
-                    <span className="mx-2">=</span>
-                    <span className="bg-green-100 px-2 py-1 rounded text-sm font-bold">0 → Same fret</span>
+                
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-200 rounded-xl p-6 mb-6 shadow-sm">
+                  <h3 className="font-semibold mb-3 text-amber-800">🔑 Key Insight</h3>
+                  <p className="text-amber-900 text-sm mb-4">
+                    The same note is always found in a predictable relative position on adjacent strings:
                   </p>
-                  <p className="text-sm"><strong>Cross-string:</strong> E on 5th fret B string</p>
+                  <div className="bg-white p-4 rounded-lg border shadow-sm">
+                    <div className="grid md:grid-cols-2 gap-4 text-sm">
+                      <div className="text-center">
+                        <p><strong>Higher String (thinner):</strong></p>
+                        <p>Same note is found <strong>BACK</strong></p>
+                        <p className="text-orange-600 font-bold">Back = -S</p>
+                      </div>
+                      <div className="text-center">
+                        <p><strong>Lower String (thicker):</strong></p>
+                        <p>Same note is found <strong>FORWARD</strong></p>
+                        <p className="text-amber-600 font-bold">Forward = +S</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Moving to Higher Notes */}
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-xl p-6 mb-6 shadow-sm">
+                  <h3 className="font-semibold mb-3 text-orange-800">📈 Moving to Higher Notes (Ascending)</h3>
+                  <p className="text-orange-900 text-sm mb-4">
+                    When moving UP to a higher note on a thinner string, you typically move BACK on the fretboard.
+                  </p>
+                  
+                  <div className="text-center mb-4">
+                    <div className="bg-white p-4 rounded-lg border-2 border-orange-300 shadow-sm">
+                      <h4 className="font-semibold text-orange-800 mb-2">Ascending Formula</h4>
+                      <span className="bg-orange-100 px-4 py-2 rounded-lg text-xl font-bold text-orange-900">C = M - S</span>
+                      <p className="text-sm text-orange-700 mt-2">Move back = negative = minus sign</p>
+                    </div>
+                  </div>
+
+                  {/* Visual Example: E to A String */}
+                  <div className="bg-white border-2 border-orange-300 p-6 rounded-lg mb-4 shadow-sm">
+                    <h5 className="font-semibold mb-4 text-center text-orange-800">Example: Minor 3rd Up (E to A Strings)</h5>
+                    
+
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-orange-600">↑</div>
+                        <span className="ml-2 text-xs text-gray-600">Ascending Movement</span>
+                      </div>
+                      
+                      {/* A String - Higher String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">A:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetC = fret === 3; // C on 3rd fret A string (cross-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetC
+                                    ? 'bg-orange-400 text-white border-orange-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* E String - Lower String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">E:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartA = fret === 5; // A on 5th fret E string (root)
+                          const isSameStringC = fret === 8; // C on 8th fret E string (same-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartA
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isSameStringC
+                                    ? 'bg-orange-200 text-orange-800 border-orange-400'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartA ? 'A' : isSameStringC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-orange-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Movement (M):</strong> A to C = +3 semitones (minor 3rd up)</p>
+                        <p><strong>Calculation:</strong> C = M - S = 3 - 5 = -2</p>
+                        <p><strong>Result:</strong> Move back 2 frets: 5th - 2 = 3rd fret A string ✓</p>
+                        <p><strong>Compare:</strong> Same-string C on 8th fret vs cross-string on 3rd fret</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Example: G to B String */}
+                  <div className="bg-white border-2 border-orange-300 p-6 rounded-lg mb-4 shadow-sm">
+                    <h5 className="font-semibold mb-4 text-center text-orange-800">Example: Major 3rd Up (G to B Strings)</h5>
+                    
+
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-orange-600">↑</div>
+                        <span className="ml-2 text-xs text-gray-600">Ascending Movement</span>
+                      </div>
+                      
+                      {/* B String - Higher String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">B:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetE = fret === 5; // E on 5th fret B string (cross-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetE
+                                    ? 'bg-orange-400 text-white border-orange-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* G String - Lower String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">G:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartC = fret === 5; // C on 5th fret G string (root)
+                          const isSameStringE = fret === 9; // E on 9th fret G string (same-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartC
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isSameStringE
+                                    ? 'bg-orange-200 text-orange-800 border-orange-400'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartC ? 'C' : isSameStringE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-orange-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Movement (M):</strong> C to E = +4 semitones (major 3rd up)</p>
+                        <p><strong>Calculation:</strong> C = M - S = 4 - 4 = 0</p>
+                        <p><strong>Result:</strong> Same fret: 5th fret B string ✓</p>
+                        <p><strong>Compare:</strong> Same-string E on 9th fret vs cross-string on 5th fret</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border shadow-sm">
+                    <h5 className="font-semibold mb-2">More Examples:</h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="bg-orange-50 p-2 rounded">
+                        <p><strong>Major 3rd up (+4 frets):</strong> C = 4 - 5 = -1 → move back 1 fret</p>
+                      </div>
+                      <div className="bg-orange-50 p-2 rounded">
+                        <p><strong>Perfect 5th up (+7 frets):</strong> C = 7 - 5 = +2 → move forward 2 frets</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Moving to Lower Notes */}
+                <div className="bg-gradient-to-br from-amber-100 to-amber-200 border border-amber-300 rounded-xl p-6 mb-6 shadow-sm">
+                  <h3 className="font-semibold mb-3 text-amber-800">📉 Moving to Lower Notes (Descending)</h3>
+                  <p className="text-amber-900 text-sm mb-4">
+                    When moving DOWN to a lower note on a thicker string, you typically move FORWARD on the fretboard.
+                  </p>
+                  
+                  <div className="text-center mb-4">
+                    <div className="bg-white p-4 rounded-lg border-2 border-amber-300 shadow-sm">
+                      <h4 className="font-semibold text-amber-800 mb-2">Descending Formula</h4>
+                      <span className="bg-amber-100 px-4 py-2 rounded-lg text-xl font-bold text-amber-900">C = M + S</span>
+                      <p className="text-sm text-amber-700 mt-2">Move forward = positive = plus sign</p>
+                    </div>
+                  </div>
+
+                  {/* Visual Example: A to E String */}
+                  <div className="bg-white border-2 border-amber-400 p-6 rounded-lg mb-4 shadow-sm">
+                    <h5 className="font-semibold mb-4 text-center text-amber-800">Example: Whole Step Down (A to E Strings)</h5>
+                    
+
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-amber-600">↓</div>
+                        <span className="ml-2 text-xs text-gray-600">Descending Movement</span>
+                      </div>
+                      
+                      {/* A String - Higher String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">A:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartingD = fret === 5; // D on 5th fret A string (root)
+                          const isTargetC = fret === 3; // C on 3rd fret A string (same-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartingD
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isTargetC
+                                    ? 'bg-amber-400 text-white border-amber-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartingD ? 'D' : isTargetC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* E String - Lower String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">E:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetC = fret === 8; // C on 8th fret E string (cross-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetC
+                                    ? 'bg-amber-500 text-white border-amber-600'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Movement (M):</strong> D to C = -2 semitones (whole step down)</p>
+                        <p><strong>Calculation:</strong> C = M + S = (-2) + 5 = +3</p>
+                        <p><strong>Result:</strong> Move forward 3 frets: 5th + 3 = 8th fret E string ✓</p>
+                        <p><strong>Compare:</strong> Same-string C on 3rd fret vs cross-string on 8th fret</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Visual Example: B to G String */}
+                  <div className="bg-white border-2 border-amber-400 p-6 rounded-lg mb-4 shadow-sm">
+                    <h5 className="font-semibold mb-4 text-center text-amber-800">Example: Minor 3rd Down (B to G Strings)</h5>
+                    
+
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-amber-600">↓</div>
+                        <span className="ml-2 text-xs text-gray-600">Descending Movement</span>
+                      </div>
+                      
+                      {/* B String - Higher String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">B:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartG = fret === 8; // G on 8th fret B string (root)
+                          const isSameStringE = fret === 5; // E on 5th fret B string (same-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartG
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isSameStringE
+                                    ? 'bg-amber-200 text-amber-800 border-amber-400'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartG ? 'G' : isSameStringE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* G String - Lower String */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">G:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetE = fret === 9; // E on 9th fret G string (cross-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetE
+                                    ? 'bg-amber-500 text-white border-amber-600'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Movement (M):</strong> G to E = -3 semitones (minor 3rd down)</p>
+                        <p><strong>Calculation:</strong> C = M + S = (-3) + 4 = +1</p>
+                        <p><strong>Result:</strong> Move forward 1 fret: 8th + 1 = 9th fret G string ✓</p>
+                        <p><strong>Compare:</strong> Same-string E on 5th fret vs cross-string on 9th fret</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border shadow-sm">
+                    <h5 className="font-semibold mb-2">More Examples:</h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="bg-orange-50 p-2 rounded">
+                        <p><strong>Whole step down (-2 frets):</strong> C = -2 + 5 = +3 → move forward 3 frets</p>
+                      </div>
+                      <div className="bg-orange-50 p-2 rounded">
+                        <p><strong>Perfect 4th down (-5 frets):</strong> C = -5 + 5 = 0 → same fret</p>
+                      </div>
+                      <div className="bg-amber-50 p-2 rounded border border-amber-200">
+                        <p><strong>High E to B string (-2 frets):</strong> C = -2 + 5 = +3 → move forward 3 frets on the B string</p>
+                        <p className="text-xs text-gray-600 mt-1">This works for any note - go down 2 frets on high E, same note is 3 frets forward on B string!</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Memory Aid */}
+                <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-4 shadow-sm">
+                  <h4 className="font-semibold text-amber-800 mb-2">🧠 Memory Aid</h4>
+                  <div className="text-center text-sm text-amber-900">
+                    <p className="font-bold">Move Forward = +S • Move Back = -S</p>
+                    <p className="text-xs mt-1">The same note is found back on higher strings, forward on lower strings</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-3 bg-white rounded-lg border shadow-sm">
+                  <p className="text-sm"><strong>Where:</strong></p>
+                  <ul className="text-sm space-y-1">
+                    <li><strong>M</strong> = Movement along current string (+ascending, -descending)</li>
+                    <li><strong>C</strong> = Cross-string movement (+forward, -backward)</li>
+                    <li><strong>S</strong> = String tuning interval (5 or 4 frets)</li>
+                  </ul>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
-            <h4 className="font-semibold mb-2">💡 Why This Matters</h4>
-            <p className="text-sm">
-              These relationships help you understand practical ways of finding notes on adjacent strings. Start with the simple "5 frets back" rule for the same note, then use the interval formula when you need different intervals. Instead of memorizing every note position, you can calculate where notes and intervals appear across string pairs.
-            </p>
-          </div>
-
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-8">
-            <h4 className="font-semibold mb-2">🔗 How the Simple Examples Connect to the Formula</h4>
-            <p className="text-sm mb-3">
-              Notice that the initial "same note" examples actually follow the cross-string interval formula too! 
-              When finding the <strong>same note</strong> on adjacent strings, the same-string interval is 0 frets:
-            </p>
-            
-            <div className="space-y-2 text-sm">
-              <div className="bg-white p-2 rounded">
-                <p><strong>A on E and A strings:</strong></p>
-                <p>Same-string interval = 0 frets (same note) | String interval = 5 frets</p>
-                <p className="font-semibold text-amber-600">0 - 5 = -5 → Move 5 frets back ✓</p>
+              {/* Practical Applications */}
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-amber-800 mb-6">🎸 Practical Applications</h2>
+                
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-3">🎵 Power Chords (Perfect 5th)</h4>
+                    <p className="text-sm mb-2"><strong>E-A strings:</strong> 7 - 5 = +2 → 2 frets forward</p>
+                    <p className="text-sm mb-2"><strong>A-D strings:</strong> 7 - 5 = +2 → 2 frets forward</p>
+                    <p className="text-sm mb-2"><strong>G-B strings:</strong> 7 - 4 = +3 → 3 frets forward</p>
+                    <p className="text-xs text-gray-600">Classic power chord shape!</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-3">🎵 Major 3rds</h4>
+                    <p className="text-sm mb-2"><strong>E-A strings:</strong> 4 - 5 = -1 → 1 fret back</p>
+                    <p className="text-sm mb-2"><strong>A-D strings:</strong> 4 - 5 = -1 → 1 fret back</p>
+                    <p className="text-sm mb-2"><strong>G-B strings:</strong> 4 - 4 = 0 → Same fret</p>
+                    <p className="text-xs text-gray-600">Essential for major chord shapes!</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-3">🎵 Octaves</h4>
+                    <p className="text-sm mb-2"><strong>E-A strings:</strong> 12 - 5 = +7 → 7 frets forward</p>
+                    <p className="text-sm mb-2"><strong>A-D strings:</strong> 12 - 5 = +7 → 7 frets forward</p>
+                    <p className="text-sm mb-2"><strong>G-B strings:</strong> 12 - 4 = +8 → 8 frets forward</p>
+                    <p className="text-xs text-gray-600">Perfect for melodic doubling!</p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-3">🎵 Perfect 4th</h4>
+                    <p className="text-sm mb-2"><strong>E-A strings:</strong> 5 - 5 = 0 → Same fret</p>
+                    <p className="text-sm mb-2"><strong>A-D strings:</strong> 5 - 5 = 0 → Same fret</p>
+                    <p className="text-sm mb-2"><strong>G-B strings:</strong> 5 - 4 = +1 → 1 fret forward</p>
+                    <p className="text-xs text-gray-600">Great for sus4 chords!</p>
+                  </div>
+                </div>
               </div>
-              
-              <div className="bg-white p-2 rounded">
-                <p><strong>C on E and A strings:</strong></p>
-                <p>Same-string interval = 0 frets (same note) | String interval = 5 frets</p>
-                <p className="font-semibold text-amber-600">0 - 5 = -5 → Move 5 frets back ✓</p>
+
+              {/* Visual Example: Major 3rd Relationship */}
+              <div className="mb-8">
+                <h3 className="text-xl font-semibold text-amber-800 mb-4">🎯 Visual Examples: Different String Pairs</h3>
+                
+                <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 shadow-sm">
+                  <h4 className="font-semibold mb-6 text-center">A-D String Pair: Cross-String Relationship</h4>
+                  
+
+
+                  <div className="space-y-4 mb-6">
+                    {/* D String - Higher String (on top) */}
+                    <div className="flex items-center">
+                      <div className="w-16 text-right pr-4 font-medium">D:</div>
+                      {Array.from({length: 13}, (_, i) => {
+                        const fret = i;
+                        const isTargetE = fret === 2; // E on 2nd fret D string (target)
+                        
+                        return (
+                          <div key={fret} className="relative">
+                            <div 
+                              className={`w-10 h-10 border-2 flex items-center justify-center text-xs font-bold
+                                ${isTargetE
+                                  ? 'bg-orange-400 text-black border-orange-500'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                                }`}
+                            >
+                              {isTargetE ? 'E' : '•'}
+                            </div>
+                            
+                            <div className="text-xs text-center mt-1 text-gray-600">
+                              {fret}
+                            </div>
+                            
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* A String - Lower String (on bottom) */}
+                    <div className="flex items-center">
+                      <div className="w-16 text-right pr-4 font-medium">A:</div>
+                      {Array.from({length: 13}, (_, i) => {
+                        const fret = i;
+                        const isRoot = fret === 3; // C on 3rd fret A string (root)
+                        const isSameStringMajor3rd = fret === 7; // E on 7th fret A string (same string target)
+                        
+                        return (
+                          <div key={fret} className="relative">
+                            <div 
+                              className={`w-10 h-10 border-2 flex items-center justify-center text-xs font-bold
+                                ${isRoot 
+                                  ? 'bg-blue-500 text-white border-blue-600' 
+                                  : isSameStringMajor3rd
+                                  ? 'bg-orange-400 text-black border-orange-500'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                                }`}
+                            >
+                              {isRoot ? 'C' : isSameStringMajor3rd ? 'E' : '•'}
+                            </div>
+                            
+                            <div className="text-xs text-center mt-1 text-gray-600">
+                              {fret}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border">
+                    <h5 className="font-semibold mb-2">A-D String Formula (5-Fret Interval):</h5>
+                    <div className="text-sm space-y-1">
+                      <p><strong>Movement along string (M):</strong> C to E = +4 frets (ascending)</p>
+                      <p><strong>String interval (S):</strong> A to D = 5 frets</p>
+                      <p><strong>Cross-string movement (C):</strong> C = M - S = 4 - 5 = -1</p>
+                      <p><strong>Result:</strong> Move 1 fret back: 3rd - 1 = 2nd fret D string ✓</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* G-B String Pair Example */}
+                <div className="bg-white border-2 border-gray-300 p-6 rounded-lg mb-6 shadow-sm">
+                  <h4 className="font-semibold mb-6 text-center">G-B String Pair: Cross-String Relationship (4-Fret Interval)</h4>
+                  
+
+
+                  <div className="space-y-4 mb-6">
+                    {/* B String - Higher String */}
+                    <div className="flex items-center">
+                      <div className="w-16 text-right pr-4 font-medium">B:</div>
+                      {Array.from({length: 13}, (_, i) => {
+                        const fret = i;
+                        const isTargetE = fret === 5; // E on 5th fret B string (target)
+                        
+                        return (
+                          <div key={fret} className="relative">
+                            <div 
+                              className={`w-10 h-10 border-2 flex items-center justify-center text-xs font-bold
+                                ${isTargetE
+                                  ? 'bg-orange-400 text-black border-orange-500'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                                }`}
+                            >
+                              {isTargetE ? 'E' : '•'}
+                            </div>
+                            
+                            <div className="text-xs text-center mt-1 text-gray-600">
+                              {fret}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* G String - Lower String */}
+                    <div className="flex items-center">
+                      <div className="w-16 text-right pr-4 font-medium">G:</div>
+                      {Array.from({length: 13}, (_, i) => {
+                        const fret = i;
+                        const isRoot = fret === 5; // C on 5th fret G string (root)
+                        const isSameStringMajor3rd = fret === 9; // E on 9th fret G string (target)
+                        
+                        return (
+                          <div key={fret} className="relative">
+                            <div 
+                              className={`w-10 h-10 border-2 flex items-center justify-center text-xs font-bold
+                                ${isRoot 
+                                  ? 'bg-blue-500 text-white border-blue-600' 
+                                  : isSameStringMajor3rd
+                                  ? 'bg-orange-400 text-black border-orange-500'
+                                  : 'bg-gray-100 border-gray-300 text-gray-400'
+                                }`}
+                            >
+                              {isRoot ? 'C' : isSameStringMajor3rd ? 'E' : '•'}
+                            </div>
+                            
+                            <div className="text-xs text-center mt-1 text-gray-600">
+                              {fret}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-lg border">
+                    <h5 className="font-semibold mb-2">G-B String Formula (4-Fret Interval):</h5>
+                    <div className="text-sm space-y-1">
+                      <p><strong>Movement along string (M):</strong> C to E = +4 frets (ascending)</p>
+                      <p><strong>String interval (S):</strong> G to B = 4 frets</p>
+                      <p><strong>Cross-string movement (C):</strong> C = M - S = 4 - 4 = 0</p>
+                      <p><strong>Result:</strong> E is on the same 5th fret B string ✓</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Descending Examples */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* A to E Descending */}
+                  <div className="bg-white border-2 border-gray-300 p-6 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-4 text-center">Descending: A to E Strings</h4>
+                    
+                    <div className="mb-4 text-center">
+                      <div className="inline-flex items-center space-x-1 bg-gradient-to-r from-red-50 to-pink-50 px-3 py-2 rounded text-sm">
+                        <span className="bg-blue-100 px-2 py-1 rounded font-bold">D→C</span>
+                        <span className="text-gray-500">↓</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-amber-600">↓</div>
+                        <span className="ml-2 text-xs text-gray-600">Descending Movement</span>
+                      </div>
+                      
+                      {/* A String - Higher String (on top) */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">A:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartingD = fret === 5; // D on 5th fret A string (root)
+                          const isTargetC = fret === 3; // C on 3rd fret A string (target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartingD
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isTargetC
+                                    ? 'bg-amber-400 text-white border-amber-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartingD ? 'D' : isTargetC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* E String - Lower String (on bottom) */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">E:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetC = fret === 8; // C on 8th fret E string
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetC
+                                    ? 'bg-amber-400 text-white border-amber-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetC ? 'C' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Descending:</strong> D to C = -2 frets (descending)</p>
+                        <p><strong>Formula:</strong> C = M + S = -2 + 5 = +3</p>
+                        <p><strong>Result:</strong> 5 + 3 = 8th fret E ✓</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* B to G Descending */}
+                  <div className="bg-white border-2 border-gray-300 p-6 rounded-lg shadow-sm">
+                    <h4 className="font-semibold mb-4 text-center">Descending: B to G Strings</h4>
+                    
+                    <div className="mb-4 text-center">
+                      <div className="inline-flex items-center space-x-1 bg-gradient-to-r from-red-50 to-pink-50 px-3 py-2 rounded text-sm">
+                        <span className="bg-blue-100 px-2 py-1 rounded font-bold">F→E</span>
+                        <span className="text-gray-500">↓</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 mb-4">
+                      {/* Direction Arrow */}
+                      <div className="flex items-center justify-center mb-2">
+                        <div className="text-2xl text-amber-600">↓</div>
+                        <span className="ml-2 text-xs text-gray-600">Descending Movement</span>
+                      </div>
+                      
+                      {/* B String - Higher String (on top) */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">B:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isStartingF = fret === 6; // F on 6th fret B string (root)
+                          const isTargetE = fret === 5; // E on 5th fret B string (target - same string movement)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isStartingF
+                                    ? 'bg-blue-500 text-white border-blue-600'
+                                    : isTargetE
+                                    ? 'bg-amber-400 text-white border-amber-500'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isStartingF ? 'F' : isTargetE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* G String - Lower String (on bottom) */}
+                      <div className="flex items-center">
+                        <div className="w-12 text-right pr-2 font-medium text-xs">G:</div>
+                        {Array.from({length: 10}, (_, i) => {
+                          const fret = i;
+                          const isTargetE = fret === 9; // E on 9th fret G string (cross-string target)
+                          
+                          return (
+                            <div key={fret} className="relative">
+                              <div 
+                                className={`w-8 h-8 border-2 flex items-center justify-center text-xs font-bold
+                                  ${isTargetE
+                                    ? 'bg-amber-500 text-white border-amber-600'
+                                    : 'bg-gray-100 border-gray-300 text-gray-400'
+                                  }`}
+                              >
+                                {isTargetE ? 'E' : '•'}
+                              </div>
+                              <div className="text-xs text-center mt-1 text-gray-600">{fret}</div>
+
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div className="bg-amber-50 p-3 rounded border">
+                      <div className="text-xs space-y-1">
+                        <p><strong>Descending:</strong> F to E = -1 fret (descending)</p>
+                        <p><strong>String interval:</strong> B to G = 4 frets</p>
+                        <p><strong>Formula:</strong> C = M + S = -1 + 4 = +3</p>
+                        <p><strong>Result:</strong> 6 + 3 = 9th fret G ✓</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            
-            <p className="text-sm mt-3">
-              The formula works for everything - from finding the same note (interval = 0) to finding any musical interval!
-            </p>
-          </div>
 
-          <p className="mb-8">
-            These cross-string interval relationships are the foundation of moveable chord shapes and scale patterns. Once you understand how intervals translate across string pairs, you can transpose any musical idea to different positions on the neck.
-          </p>
-
-          {/* Related Posts */}
-          <div className="bg-gray-50 p-6 rounded-lg mb-8">
-            <h3 className="text-xl font-semibold text-amber-700 mb-4">🔗 Related Articles</h3>
-            <div className="grid md:grid-cols-1 gap-4">
-              <Link href="/blog/understanding-guitar-fretboard" className="block p-4 bg-white rounded border hover:shadow-md transition-shadow">
-                <h4 className="font-semibold text-amber-800 mb-2">Part 1: Why Strings Are Tuned This Way</h4>
-                <p className="text-sm text-gray-600">The theoretical foundation behind guitar tuning and cross-string interval relationships</p>
-              </Link>
+              {/* Related Posts */}
+              <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-lg mb-8 shadow-sm">
+                <h3 className="text-xl font-semibold text-amber-700 mb-4">🔗 Related Articles</h3>
+                <Link href="/blog/understanding-guitar-fretboard" className="block p-4 bg-white rounded-lg border hover:shadow-md transition-shadow">
+                  <h4 className="font-semibold text-amber-800 mb-2">Part 1: Why Strings Are Tuned This Way</h4>
+                  <p className="text-sm text-gray-600">The theoretical foundation behind guitar tuning and cross-string interval relationships</p>
+                </Link>
+              </div>
             </div>
           </div>
         </article>
@@ -766,10 +980,10 @@ export default function GuitarFretboardNavigation() {
       {/* Math Modal */}
       {showMathModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-lg">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-gray-800">📐 The Mathematical Relationship</h3>
+                <h3 className="text-2xl font-bold text-gray-800">📐 Mathematical Details</h3>
                 <button 
                   onClick={() => setShowMathModal(false)}
                   className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -779,84 +993,28 @@ export default function GuitarFretboardNavigation() {
               </div>
               
               <div className="space-y-4">
-                <div className="bg-blue-50 p-4 rounded-lg">
+                <div className="bg-amber-50 p-4 rounded-lg">
                   <h4 className="font-semibold mb-2">The Complete Formula</h4>
-                  <p className="mb-2">If you define:</p>
-                  <ul className="list-disc list-inside space-y-1 text-sm">
-                    <li><strong>R</strong> = Root note fret position</li>
-                    <li><strong>S</strong> = Same-string interval (in frets)</li>
-                    <li><strong>T</strong> = String tuning interval (in frets)</li>
-                    <li><strong>C</strong> = Cross-string fret position</li>
-                  </ul>
-                  
+                  <p className="mb-2">General cross-string relationship:</p>
                   <div className="mt-3 p-3 bg-white rounded border">
-                    <p className="text-center font-bold text-lg">C = R + (S - T)</p>
+                    <p className="text-center font-bold text-lg">Cross-String Position = Root + (Same-String Interval - String Tuning)</p>
                   </div>
                 </div>
                 
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Example: Major 3rd</h4>
-                  <div className="space-y-2 text-sm">
-                    <p><strong>Given:</strong></p>
-                    <ul className="list-disc list-inside ml-4">
-                      <li>Root (R) = 8th fret E string</li>
-                      <li>Same-string interval (S) = 4 frets (major 3rd)</li>
-                      <li>String tuning interval (T) = 5 frets (E to A)</li>
-                    </ul>
-                    
-                    <p className="mt-2"><strong>Solution:</strong></p>
-                    <div className="bg-white p-2 rounded border font-mono">
-                      <p>C = R + (S - T)</p>
-                      <p>C = 8 + (4 - 5)</p>
-                      <p>C = 8 + (-1)</p>
-                      <p>C = 7th fret A string ✓</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-yellow-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Algebraic Rearrangements</h4>
-                  <div className="space-y-2 text-sm">
-                    <p>From <strong>C = R + S - T</strong>, you can solve for any variable:</p>
-                    
-                    <div className="grid md:grid-cols-2 gap-3 mt-2">
-                      <div className="bg-white p-2 rounded border">
-                        <p className="font-semibold">Movement from root:</p>
-                        <p className="font-mono">S - T = C - R</p>
-                      </div>
-                      
-                      <div className="bg-white p-2 rounded border">
-                        <p className="font-semibold">Same-string interval:</p>
-                        <p className="font-mono">S = C - R + T</p>
-                      </div>
-                      
-                      <div className="bg-white p-2 rounded border">
-                        <p className="font-semibold">String tuning interval:</p>
-                        <p className="font-mono">T = S - (C - R)</p>
-                      </div>
-                      
-                      <div className="bg-white p-2 rounded border">
-                        <p className="font-semibold">Root position:</p>
-                        <p className="font-mono">R = C - S + T</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Key Insight</h4>
-                  <p className="text-sm">
-                    The term <strong>(S - T)</strong> represents the <em>relative movement</em> from the root fret position, 
-                    not an absolute fret number. This is why negative results mean "move back toward the nut" 
-                    and positive results mean "move forward toward the bridge."
-                  </p>
+                <div className="bg-amber-50 p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2">Movement-Based Simplification</h4>
+                  <p className="text-sm mb-2">For practical use, we can focus on just the movement component:</p>
+                  <ul className="text-sm space-y-1">
+                    <li><strong>Ascending:</strong> Movement = M - S</li>
+                    <li><strong>Descending:</strong> Movement = S - M</li>
+                  </ul>
                 </div>
               </div>
               
               <div className="mt-6 text-center">
                 <button 
                   onClick={() => setShowMathModal(false)}
-                  className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                  className="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700"
                 >
                   Close
                 </button>

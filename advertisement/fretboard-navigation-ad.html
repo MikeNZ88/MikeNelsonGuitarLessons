@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Fretboard Navigation - Mike Nelson Guitar Lessons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 50%, #fef3c7 100%);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .static-ad {
+            width: 800px;
+            height: 800px;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Header Section */
+        .header {
+            background: 
+                linear-gradient(135deg, rgba(180, 83, 9, 0.85) 0%, rgba(217, 119, 6, 0.85) 50%, rgba(234, 88, 12, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            background-blend-mode: overlay;
+            color: white;
+            padding: 18px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #ea580c 100%);
+            clip-path: ellipse(100% 100% at 50% 0%);
+        }
+        
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: 16px 35px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        
+        /* Formula Section */
+        .formula-section {
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 100%);
+            border: 2px solid #fbbf24;
+            border-radius: 0;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .formula-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #b45309;
+            margin-bottom: 6px;
+        }
+        
+        .formula-box {
+            background: white;
+            border: 2px solid #d97706;
+            border-radius: 0;
+            padding: 8px;
+            margin: 6px 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #b45309;
+        }
+        
+        .formula-explanation {
+            font-size: 0.75rem;
+            color: #78716c;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        
+        .string-pairs {
+            background: white;
+            border-radius: 0;
+            padding: 6px;
+            font-size: 0.7rem;
+            color: #57534e;
+        }
+        
+        /* Visual Example */
+        .fretboard-example {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 0;
+            padding: 10px;
+        }
+        
+        .example-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            color: #b45309;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .fretboard-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+        
+        .string-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .string-label {
+            width: 20px;
+            font-weight: 600;
+            color: #b45309;
+            text-align: right;
+            font-size: 0.8rem;
+        }
+        
+        .fret {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #e5e7eb;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: #f9fafb;
+        }
+        
+        .fret.highlighted {
+            background: #fbbf24;
+            color: white;
+            border-color: #d97706;
+            box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+        }
+        
+        .fret.starting-point {
+            background: #10b981;
+            color: white;
+            border-color: #059669;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        
+        .fret-numbers {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 4px;
+        }
+        
+        .fret-number {
+            width: 32px;
+            text-align: center;
+            font-size: 0.55rem;
+            color: #9ca3af;
+        }
+        
+        .example-text {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #57534e;
+            background: #fef7ed;
+            padding: 6px;
+            border-radius: 0;
+            border-left: 4px solid #fbbf24;
+            line-height: 1.1;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 10px 35px;
+            text-align: center;
+        }
+        
+        .cta-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info {
+            font-size: 0.85rem;
+            color: white;
+        }
+        
+        .tagline {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="static-ad">
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="main-title">Guitar Fretboard Navigation</h1>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <p class="subtitle" style="text-align: center; font-size: 0.95rem; color: #b45309; margin-bottom: 8px; font-weight: 600;">You may have heard of the "5 frets back" rule but have you ever thought about this relationship?</p>
+            
+            <!-- 5 Frets Back Rule Diagram -->
+            <div class="fretboard-example">
+                <h3 class="example-title">5 Frets Back Rule</h3>
+                
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <div style="flex: 1;">
+                        <div class="fretboard-visual">
+                            <!-- A String -->
+                            <div class="string-row">
+                                <div class="string-label">A:</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret highlighted">C</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                            </div>
+                            
+                            <!-- E String -->
+                            <div class="string-row">
+                                <div class="string-label">E:</div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret"></div>
+                                <div class="fret highlighted">C</div>
+                            </div>
+                            
+                            <!-- Fret numbers -->
+                            <div class="fret-numbers">
+                                <div class="string-label"></div>
+                                <div class="fret-number">0</div>
+                                <div class="fret-number">1</div>
+                                <div class="fret-number">2</div>
+                                <div class="fret-number">3</div>
+                                <div class="fret-number">4</div>
+                                <div class="fret-number">5</div>
+                                <div class="fret-number">6</div>
+                                <div class="fret-number">7</div>
+                                <div class="fret-number">8</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; margin-left: 8px;">
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px;">
+                            <div style="font-size: 0.6rem; font-weight: 600; color: #b45309; margin-bottom: 4px; text-align: center;">Formula Still Works</div>
+                            <div style="background: white; border: 1px solid #d97706; padding: 4px; margin: 4px 0; text-align: center;">
+                                <div style="font-size: 0.55rem; font-weight: 600; color: #b45309;">5 - 0 = 5</div>
+                            </div>
+                            <div style="font-size: 0.55rem; color: #57534e; line-height: 1.2; text-align: center;">
+                                Zero frets moved forward
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-text">
+                    <strong>Same note, different approach:</strong> C is 5 frets back on the A (3rd fret) than it is on the E (8th fret)
+                </div>
+            </div>
+            
+            <!-- Formula Section -->
+            <div class="formula-section">
+                <h2 class="formula-title">🎸 The Cross-String Formula</h2>
+                <div class="formula-box">
+                    String Tuning Interval - Frets Moved Up = Frets to Move Back
+                </div>
+                <p class="formula-explanation">
+                    <strong>No note names required!</strong> This calculation lets you find any fret position on adjacent strings using only numbers!
+                </p>
+                <div class="string-pairs">
+                    <strong>String tuning interval for each pair:</strong> E-A, A-D, D-G, B-E use <strong>5</strong> • G-B uses <strong>4</strong>
+                </div>
+            </div>
+            
+            <!-- Visual Example -->
+            <div class="fretboard-example">
+                <h3 class="example-title">Using the Cross-String Formula</h3>
+                
+                <div style="display: flex; gap: 8px; justify-content: space-between;">
+                    <!-- E to A Example -->
+                    <div style="flex: 1;">
+                        <div style="text-align: center; font-size: 0.7rem; font-weight: 600; color: #b45309; margin-bottom: 4px;">E to A (Interval: 5)</div>
+                        <div class="fretboard-visual">
+                            <!-- A String -->
+                            <div class="string-row">
+                                <div class="string-label" style="font-size: 0.7rem;">A:</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret highlighted" style="width: 28px; height: 28px; font-size: 0.6rem;">C</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                            </div>
+                            
+                            <!-- E String -->
+                            <div class="string-row">
+                                <div class="string-label" style="font-size: 0.7rem;">E:</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret starting-point" style="width: 28px; height: 28px; font-size: 0.6rem;">A</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret highlighted" style="width: 28px; height: 28px; font-size: 0.6rem;">C</div>
+                            </div>
+                            
+                            <!-- Fret numbers -->
+                            <div class="fret-numbers">
+                                <div class="string-label"></div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">0</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">1</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">2</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">3</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">4</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">5</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">6</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">7</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">8</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- G to B Example -->
+                    <div style="flex: 1;">
+                        <div style="text-align: center; font-size: 0.7rem; font-weight: 600; color: #b45309; margin-bottom: 4px;">G to B (Interval: 4)</div>
+                        <div class="fretboard-visual">
+                            <!-- B String -->
+                            <div class="string-row">
+                                <div class="string-label" style="font-size: 0.7rem;">B:</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret highlighted" style="width: 28px; height: 28px; font-size: 0.6rem;">C</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                            </div>
+                            
+                            <!-- G String -->
+                            <div class="string-row">
+                                <div class="string-label" style="font-size: 0.7rem;">G:</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret starting-point" style="width: 28px; height: 28px; font-size: 0.6rem;">A</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret highlighted" style="width: 28px; height: 28px; font-size: 0.6rem;">C</div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                                <div class="fret" style="width: 28px; height: 28px; font-size: 0.6rem;"></div>
+                            </div>
+                            
+                            <!-- Fret numbers -->
+                            <div class="fret-numbers">
+                                <div class="string-label"></div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">0</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">1</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">2</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">3</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">4</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">5</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">6</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">7</div>
+                                <div class="fret-number" style="width: 28px; font-size: 0.5rem;">8</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="example-text">
+                    <strong>E to A:</strong> <span style="color: #10b981; font-weight: 700;">A (5th fret)</span> → C (8th fret) = 3 up, so 5-3=2 back = <strong>3rd fret A</strong><br>
+                    <strong>G to B:</strong> <span style="color: #10b981; font-weight: 700;">A (2nd fret)</span> → C (5th fret) = 3 up, so 4-3=1 back = <strong>1st fret B</strong>
+                </div>
+            </div>
+            
+            <!-- Disclaimer -->
+            <div style="text-align: center; margin: 6px 0; padding: 6px; background: #fef7ed; border-left: 3px solid #fbbf24;">
+                <div style="font-size: 0.65rem; color: #57534e; line-height: 1.2;">
+                    This isn't a substitute for learning note names, but it can provide a way of thinking about options for where to find the next note. It uses a reference point and therefore helps to find the "next note" to play.
+                </div>
+            </div>
+            
+            <!-- Blog Guide Section -->
+            <div style="text-align: center; margin: 4px 0;">
+                <div style="font-size: 0.7rem; color: #57534e; line-height: 1.2;">
+                    <strong>This approach is from my free guide "Fretboard Navigation - Cross-string interval relationships"</strong><br>
+                    <strong>Available at mikenelsonguitarlessons.co.nz/blog</strong>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="cta-text">Mike Nelson Guitar Lessons - <strong>mikenelsonguitarlessons.co.nz</strong></div>
+        </div>
+    </div>
+</body>
+</html> 
