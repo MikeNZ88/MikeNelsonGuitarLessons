@@ -62,6 +62,19 @@ export default function Blog() {
       author: 'Mike Nelson'
     },
     {
+      id: '17',
+      title: 'Master Guitar Strumming Patterns',
+      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to perfect timing and rhythm with 8 progressive patterns from beginner to advanced.',
+      date: 'July 3, 2025',
+      readTime: '12 min read',
+      category: 'Beginner',
+      topicCategory: 'Guides',
+      skillLevel: 'beginner',
+      image: '/strumming-patterns-thumbnail.svg',
+      slug: 'guitar-strumming-patterns',
+      author: 'Mike Nelson'
+    },
+    {
       id: '4',
       title: 'Smoother Chord Changes: Identifying Common Fingers Between Chords',
       excerpt: 'Learn how to identify common fingers between chords for smoother transitions. Master chord changes with visual diagrams and essential fingering tips.',

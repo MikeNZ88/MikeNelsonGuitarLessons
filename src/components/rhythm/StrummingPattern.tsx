@@ -1,0 +1,386 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GuitarStrumEngine, StrumPattern, SoundMode } from '@/utils/audio/guitarStrumEngine';
+
+interface StrummingPatternProps {
+  pattern: StrumPattern;
+  bpm?: number;
+  autoPlay?: boolean;
+}
+
+export default function StrummingPattern({ 
+  pattern, 
+  bpm: initialBpm = 80,
+  autoPlay = false 
+}: StrummingPatternProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  const [showHandMovement, setShowHandMovement] = useState(false);
+  const [currentStrokeIndex, setCurrentStrokeIndex] = useState(-1);
+  const [bpm, setBpm] = useState(initialBpm);
+  const [soundMode, setSoundMode] = useState<SoundMode>('guitar');
+  const [metronomeEnabled, setMetronomeEnabled] = useState(false);
+  const engineRef = useRef<GuitarStrumEngine | null>(null);
+  const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
+  const loopIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    engineRef.current = new GuitarStrumEngine();
+    engineRef.current.setSoundMode(soundMode);
+    
+    return () => {
+      // Clean up timeouts and loop interval
+      timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+      if (loopIntervalRef.current) {
+        clearTimeout(loopIntervalRef.current);
+      }
+    };
+  }, []);
+
+  const clearTimeouts = () => {
+    timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
+    timeoutRefs.current = [];
+    if (loopIntervalRef.current) {
+      clearTimeout(loopIntervalRef.current);
+      loopIntervalRef.current = null;
+    }
+  };
+
+  const playPattern = async () => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    try {
+      await engineRef.current.ensureStarted();
+      console.log('Starting pattern playback');
+      
+      setIsPlaying(true);
+      setCurrentStrokeIndex(-1);
+
+      const beatDuration = (60 / bpm) * 1000; // Convert to milliseconds
+      const patternDuration = pattern.beatsPerMeasure * beatDuration;
+
+      // Schedule the audio
+      engineRef.current.playPattern(pattern, bpm, metronomeEnabled);
+
+      // Schedule visual updates
+      pattern.strokes.forEach((stroke, index) => {
+        const delay = stroke.time * beatDuration;
+        
+        const timeout = setTimeout(() => {
+          setCurrentStrokeIndex(index);
+        }, delay);
+        
+        timeoutRefs.current.push(timeout);
+      });
+
+      // Reset or loop after pattern completes
+      const resetTimeout = setTimeout(() => {
+        setCurrentStrokeIndex(-1);
+        if (isLooping) {
+          // If looping, restart immediately for seamless playback
+          playPattern();
+        } else {
+          setIsPlaying(false);
+        }
+      }, patternDuration);
+      
+      timeoutRefs.current.push(resetTimeout);
+    } catch (error) {
+      console.error('Failed to play pattern:', error);
+      setIsPlaying(false);
+      setCurrentStrokeIndex(-1);
+    }
+  };
+
+  const stopPattern = () => {
+    clearTimeouts();
+    setIsPlaying(false);
+    setIsLooping(false);
+    setCurrentStrokeIndex(-1);
+  };
+
+  const togglePlay = () => {
+    if (isPlaying) {
+      stopPattern();
+    } else {
+      playPattern();
+    }
+  };
+
+  const toggleLoop = () => {
+    setIsLooping(!isLooping);
+  };
+
+  const toggleHandMovement = () => {
+    setShowHandMovement(!showHandMovement);
+  };
+
+  const toggleSoundMode = () => {
+    const newMode = soundMode === 'guitar' ? 'percussion' : 'guitar';
+    setSoundMode(newMode);
+    if (engineRef.current) {
+      engineRef.current.setSoundMode(newMode);
+    }
+  };
+
+  const toggleMetronome = () => {
+    setMetronomeEnabled(!metronomeEnabled);
+  };
+
+  // Check if pattern has ghost strums (positions without actual strokes)
+  const hasGhostStrums = () => {
+    const positions = [];
+    const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+    
+    if (is16th) {
+      for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+        positions.push(beat, beat + 0.25, beat + 0.5, beat + 0.75);
+      }
+    } else {
+      for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+        positions.push(beat, beat + 0.5);
+      }
+    }
+    
+    // Check if any position doesn't have a stroke
+    return positions.some(time => !pattern.strokes.some(stroke => stroke.time === time));
+  };
+
+  // Auto-play on mount if specified
+  useEffect(() => {
+    if (autoPlay && !isPlaying) {
+      const timer = setTimeout(() => {
+        playPattern();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [autoPlay]);
+
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+      <style jsx>{`
+        .slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 16px;
+          width: 16px;
+          background: #d97706;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+          height: 16px;
+          width: 16px;
+          background: #d97706;
+          border-radius: 50%;
+          cursor: pointer;
+          border: none;
+        }
+        .slider::-webkit-slider-track {
+          background: #f3f4f6;
+          height: 8px;
+          border-radius: 4px;
+        }
+        .slider::-moz-range-track {
+          background: #f3f4f6;
+          height: 8px;
+          border-radius: 4px;
+        }
+      `}</style>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h3 className="text-xl font-semibold text-gray-900">{pattern.name}</h3>
+          <p className="text-sm text-gray-600 mt-1">{pattern.description}</p>
+        </div>
+        <div className="text-right">
+          <div className="text-sm text-gray-500">Tempo</div>
+          <div className="flex items-center space-x-3">
+            <input
+              type="range"
+              min="40"
+              max="160"
+              value={bpm}
+              onChange={(e) => setBpm(parseInt(e.target.value))}
+              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              disabled={isPlaying}
+            />
+            <div className="text-lg font-mono font-bold text-gray-900 min-w-[65px]">{bpm} BPM</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Pattern Visualization */}
+      <div className="mb-8">
+        <div className="bg-gray-50 rounded-lg p-6">
+          <div className={`flex items-center justify-center ${(pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth') ? 'space-x-1' : 'space-x-3'} flex-nowrap overflow-x-auto`}>
+            {(() => {
+              // Create a complete grid showing all possible strum positions
+              const positions = [];
+              
+              // Check if this is a 16th note pattern
+              if (pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth') {
+                // For 16th note pattern, show all 16 positions: 1 e & a 2 e & a 3 e & a 4 e & a
+                for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+                  positions.push({ time: beat, label: (beat + 1).toString() });      // 1, 2, 3, 4
+                  positions.push({ time: beat + 0.25, label: 'e' });               // e
+                  positions.push({ time: beat + 0.5, label: '&' });                // &  
+                  positions.push({ time: beat + 0.75, label: 'a' });               // a
+                }
+              } else {
+                // For other patterns, show 8th note positions: 1, 1&, 2, 2&, 3, 3&, 4, 4&
+                for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+                  // On-beat position
+                  positions.push({ time: beat, label: (beat + 1).toString() });
+                  // Off-beat position (&)
+                  positions.push({ time: beat + 0.5, label: '&' });
+                }
+              }
+              
+              const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+              
+              return positions.map((position, index) => {
+                  // Find if there's an actual stroke at this position
+                  const strokeAtPosition = pattern.strokes.find(stroke => stroke.time === position.time);
+                  const strokeIndex = strokeAtPosition ? pattern.strokes.indexOf(strokeAtPosition) : -1;
+                  const isActive = currentStrokeIndex === strokeIndex;
+                  
+                  // Determine hand movement direction based on alternating pattern
+                  // For 16th notes: every 0.25 alternates, for 8th notes: every 0.5 alternates
+                  const subdivision = is16th ? 0.25 : 0.5;
+                  const subdivisionIndex = Math.round(position.time / subdivision);
+                  const handDirection = subdivisionIndex % 2 === 0 ? 'down' : 'up';
+                  
+                  return (
+                    <div key={`${position.time}-${position.label}`} className={`flex flex-col items-center ${is16th ? 'space-y-1' : 'space-y-2'}`}>
+                      <div
+                        className={`rounded-lg font-bold transition-all duration-200 text-center flex items-center justify-center ${
+                          is16th 
+                            ? 'px-1 py-1 text-xs min-w-[35px] h-8' 
+                            : 'px-3 py-2 text-sm min-w-[50px] h-10'
+                        } ${
+                          strokeAtPosition
+                            ? strokeAtPosition.type === 'down'
+                              ? isActive
+                                ? 'bg-amber-500 text-white scale-110 shadow-lg'
+                                : 'bg-amber-100 text-amber-800 border border-amber-200'
+                              : isActive
+                              ? 'bg-blue-500 text-white scale-110 shadow-lg'
+                              : 'bg-blue-100 text-blue-800 border border-blue-200'
+                            : 'bg-white border border-gray-200 text-gray-400'
+                        }`}
+                      >
+                        {strokeAtPosition 
+                          ? (strokeAtPosition.type === 'down' ? (is16th ? 'D' : 'Down') : (is16th ? 'U' : 'Up'))
+                          : showHandMovement 
+                          ? (handDirection === 'down' ? (is16th ? 'D' : 'Down') : (is16th ? 'U' : 'Up'))
+                          : ''
+                        }
+                      </div>
+                      <div className={`font-medium text-gray-600 ${is16th ? 'text-xs' : 'text-xs'}`}>
+                        {position.label}
+                      </div>
+                    </div>
+                  );
+                });
+            })()}
+          </div>
+        </div>
+      </div>
+
+      {/* Controls */}
+      <div className="flex items-center justify-center space-x-4 flex-wrap">
+        <button
+          onClick={togglePlay}
+          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+            isPlaying
+              ? 'bg-red-600 hover:bg-red-700 text-white'
+              : 'bg-amber-600 hover:bg-amber-700 text-white'
+          }`}
+        >
+          {isPlaying ? '⏸ Stop' : '▶ Play'}
+        </button>
+
+        <button
+          onClick={toggleLoop}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+            isLooping
+              ? 'bg-amber-700 hover:bg-amber-800 text-white'
+              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+          }`}
+        >
+          🔄 Loop
+        </button>
+
+        {hasGhostStrums() && (
+          <button
+            onClick={toggleHandMovement}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+              showHandMovement
+                ? 'bg-amber-700 hover:bg-amber-800 text-white'
+                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+            }`}
+          >
+            👻 {showHandMovement ? 'Hide' : 'Show'} Ghost Strums
+          </button>
+        )}
+
+        <button
+          onClick={toggleSoundMode}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+            soundMode === 'percussion'
+              ? 'bg-amber-700 hover:bg-amber-800 text-white'
+              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+          }`}
+        >
+          {soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}
+        </button>
+
+        <button
+          onClick={toggleMetronome}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+            metronomeEnabled
+              ? 'bg-amber-700 hover:bg-amber-800 text-white'
+              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+          }`}
+        >
+          🎼 Metronome
+        </button>
+        
+        {isPlaying && (
+          <div className="flex items-center text-sm text-gray-600">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+            {isLooping ? 'Looping...' : 'Playing...'}
+          </div>
+        )}
+      </div>
+
+      {/* Stroke Legend */}
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <div className="flex items-center justify-center space-x-6 text-sm flex-wrap gap-y-2">
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></div>
+            <span className="text-gray-600">
+              {soundMode === 'percussion' ? 'Kick Drum' : 'Down Stroke'}
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
+            <span className="text-gray-600">
+              {soundMode === 'percussion' ? 'Snare Drum' : 'Up Stroke'}
+            </span>
+          </div>
+          {hasGhostStrums() && (
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 bg-white border border-gray-300 rounded"></div>
+              <span className="text-gray-600">Ghost Strum{showHandMovement ? ' (hand moves, no contact)' : ''}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+} 
