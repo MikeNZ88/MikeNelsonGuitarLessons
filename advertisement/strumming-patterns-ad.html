@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Strumming Patterns - Mike Nelson Guitar Lessons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 50%, #fef3c7 100%);
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .static-ad {
+            width: 800px;
+            height: 800px;
+            background: white;
+            border-radius: 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Header Section */
+        .header {
+            background: 
+                linear-gradient(135deg, rgba(180, 83, 9, 0.85) 0%, rgba(217, 119, 6, 0.85) 50%, rgba(234, 88, 12, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            background-blend-mode: overlay;
+            color: white;
+            padding: 14px 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #ea580c 100%);
+            clip-path: ellipse(100% 100% at 50% 0%);
+        }
+        
+        /* Main Content */
+        .content {
+            flex: 1;
+            padding: 6px 35px 3px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        
+        /* Golden Rule Section */
+        .golden-rule-section {
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 100%);
+            border: 2px solid #fbbf24;
+            border-radius: 0;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .golden-rule-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: #b45309;
+            margin-bottom: 8px;
+        }
+        
+        .golden-rule-text {
+            font-size: 0.75rem;
+            color: #78716c;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        
+        /* Pattern Example */
+        .pattern-example {
+            background: white;
+            border: 2px solid #f3f4f6;
+            border-radius: 0;
+            padding: 6px;
+        }
+        
+        .example-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: #b45309;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .pattern-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        
+        .beat-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .beat-label {
+            width: 35px;
+            font-weight: 600;
+            color: #b45309;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .stroke-box {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #e5e7eb;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: #f9fafb;
+        }
+        
+        .stroke-box.downstroke {
+            background: #f59e0b;
+            color: white;
+            border-color: #d97706;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+        
+        .stroke-box.upstroke {
+            background: #3b82f6;
+            color: white;
+            border-color: #2563eb;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .stroke-box.ghost {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border: 2px dashed #d1d5db;
+        }
+        
+        .pattern-description {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #57534e;
+            background: #fef7ed;
+            padding: 6px;
+            border-radius: 0;
+            border-left: 4px solid #fbbf24;
+            line-height: 1.1;
+        }
+        
+        /* Features Section */
+        .features-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px solid #0ea5e9;
+            border-radius: 0;
+            padding: 6px;
+        }
+        
+        .features-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: #0c4a6e;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        
+        .feature-box {
+            background: white;
+            border: 1px solid #0ea5e9;
+            border-radius: 0;
+            padding: 6px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+        
+        .feature-text {
+            font-size: 0.65rem;
+            color: #0c4a6e;
+            font-weight: 600;
+        }
+        
+        /* Difficulty Indicators */
+        .difficulty-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        
+        .difficulty-item {
+            flex: 1;
+            text-align: center;
+            padding: 4px;
+            border-radius: 0;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-easy {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #22c55e;
+        }
+        
+        .difficulty-medium {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+        }
+        
+        .difficulty-hard {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 8px 35px;
+            text-align: center;
+        }
+        
+        .cta-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .contact-info {
+            font-size: 0.85rem;
+            color: white;
+        }
+        
+        .tagline {
+            font-size: 0.85rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="static-ad">
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="main-title">Guitar Strumming Patterns</h1>
+            <p class="subtitle">Understanding Rhythm Through Visual & Audio Learning</p>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Golden Rule -->
+            <div class="golden-rule-section">
+                <h2 class="golden-rule-title">The Golden Rule of Strumming</h2>
+                <p class="golden-rule-text">
+                    <strong>Your strumming hand should move continuously down-up-down-up like a metronome.</strong><br>
+                    The magic: <strong>not every movement needs to hit the strings!</strong>
+                </p>
+                <div style="background: #fbbf24; color: white; padding: 4px; margin-top: 6px; font-size: 0.7rem; font-weight: 600;">
+                    Consistent hand movement = Perfect timing
+                </div>
+            </div>
+            
+            <!-- Pattern Example -->
+            <div class="pattern-example">
+                <h3 class="example-title">Example: Skipping a Down and an Up</h3>
+                
+                <div class="pattern-visual">
+                    <!-- Beat counting row -->
+                    <div class="beat-row">
+                        <div class="beat-label">Beat:</div>
+                        <div class="beat-label">1</div>
+                        <div class="beat-label">&</div>
+                        <div class="beat-label">2</div>
+                        <div class="beat-label">&</div>
+                        <div class="beat-label">3</div>
+                        <div class="beat-label">&</div>
+                        <div class="beat-label">4</div>
+                        <div class="beat-label">&</div>
+                    </div>
+                    
+                    <!-- Strum pattern row -->
+                    <div class="beat-row">
+                        <div class="beat-label">Strum:</div>
+                        <div class="stroke-box downstroke">D</div>
+                        <div class="stroke-box ghost">-</div>
+                        <div class="stroke-box downstroke">D</div>
+                        <div class="stroke-box upstroke">U</div>
+                        <div class="stroke-box ghost">-</div>
+                        <div class="stroke-box upstroke">U</div>
+                        <div class="stroke-box downstroke">D</div>
+                        <div class="stroke-box upstroke">U</div>
+                    </div>
+                    
+                    <!-- Hand movement row -->
+                    <div class="beat-row">
+                        <div class="beat-label">Hand:</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↓</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↑</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↓</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↑</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↓</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↑</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↓</div>
+                        <div class="stroke-box" style="background: #e5e7eb; color: #6b7280;">↑</div>
+                    </div>
+                </div>
+                
+                <div class="pattern-description">
+                    <strong>Key:</strong> D = Downstroke (hits strings), U = Upstroke (hits strings), - = Ghost strum (hand moves but doesn't hit strings)<br>
+                    <strong>Note:</strong> We're not really "skipping" - your hand keeps moving, it just doesn't hit the strings on ghost strums.
+                </div>
+            </div>
+            
+            <!-- Learning Features -->
+            <div class="features-section">
+                <h3 class="features-title">How This Teaching Tool Works</h3>
+                
+                <div style="background: white; border: 1px solid #0ea5e9; padding: 8px; margin-bottom: 6px; text-align: left;">
+                    <div style="font-size: 0.7rem; color: #0c4a6e; line-height: 1.4;">
+                        <strong>• Visual Learning:</strong> See exactly when to strum and when to use ghost strums<br>
+                        <strong>• Audio Feedback:</strong> Synthesized chord sounds help you hear the rhythm<br>
+                        <strong>• Tempo Control:</strong> Speed up or slow down patterns<br>
+                        <strong>• Practice Mode:</strong> Loop patterns to play along<br>
+                        <strong>• Sound Options:</strong> Change to percussive sounds to play along
+                    </div>
+                </div>
+                
+                <div style="background: #fff7ed; padding: 6px; text-align: center; border: 1px solid #f59e0b; font-size: 0.65rem; color: #92400e;">
+                    <strong>Note:</strong> Audio uses synthesized chord tones - practice with your real guitar for best results!
+                </div>
+            </div>
+            
+            <!-- Progressive Learning -->
+            <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #22c55e; padding: 8px; text-align: center;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 0.9rem; color: #166534; margin-bottom: 8px;">
+                    8 Progressive Patterns
+                </h3>
+                
+                <div style="background: white; border: 1px solid #22c55e; padding: 8px;">
+                    <div style="font-size: 0.75rem; color: #166534; line-height: 1.4;">
+                        The patterns start simple with basic movements and gradually become more complex, building your skills step by step.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p class="cta-text">Learn More: Free Interactive Tutorial</p>
+            <p class="contact-info">mikenelsonguitarlessons.co.nz/blog/guitar-strumming-patterns</p>
+            <p class="tagline">Educational resource • Practice at your own pace • Build solid technique</p>
+        </div>
+    </div>
+</body>
+</html> 

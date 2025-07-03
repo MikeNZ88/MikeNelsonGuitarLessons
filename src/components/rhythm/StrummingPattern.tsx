@@ -161,7 +161,7 @@ export default function StrummingPattern({
   }, [autoPlay]);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+    <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-8 shadow-sm">
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
@@ -191,111 +191,142 @@ export default function StrummingPattern({
         }
       `}</style>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-xl font-semibold text-gray-900">{pattern.name}</h3>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+        <div className="flex-1">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{pattern.name}</h3>
           <p className="text-sm text-gray-600 mt-1">{pattern.description}</p>
         </div>
-        <div className="text-right">
+        <div className="text-center sm:text-right">
           <div className="text-sm text-gray-500">Tempo</div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <input
               type="range"
               min="40"
               max="160"
               value={bpm}
               onChange={(e) => setBpm(parseInt(e.target.value))}
-              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              className="w-16 sm:w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
               disabled={isPlaying}
             />
-            <div className="text-lg font-mono font-bold text-gray-900 min-w-[65px]">{bpm} BPM</div>
+            <div className="text-base sm:text-lg font-mono font-bold text-gray-900 min-w-[55px] sm:min-w-[65px]">{bpm} BPM</div>
           </div>
         </div>
       </div>
 
       {/* Pattern Visualization */}
       <div className="mb-8">
-        <div className="bg-gray-50 rounded-lg p-6">
-          <div className={`flex items-center justify-center ${(pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth') ? 'space-x-1' : 'space-x-3'} flex-nowrap overflow-x-auto`}>
-            {(() => {
-              // Create a complete grid showing all possible strum positions
-              const positions = [];
-              
-              // Check if this is a 16th note pattern
-              if (pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth') {
-                // For 16th note pattern, show all 16 positions: 1 e & a 2 e & a 3 e & a 4 e & a
-                for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
-                  positions.push({ time: beat, label: (beat + 1).toString() });      // 1, 2, 3, 4
-                  positions.push({ time: beat + 0.25, label: 'e' });               // e
-                  positions.push({ time: beat + 0.5, label: '&' });                // &  
-                  positions.push({ time: beat + 0.75, label: 'a' });               // a
-                }
-              } else {
-                // For other patterns, show 8th note positions: 1, 1&, 2, 2&, 3, 3&, 4, 4&
-                for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
-                  // On-beat position
-                  positions.push({ time: beat, label: (beat + 1).toString() });
-                  // Off-beat position (&)
-                  positions.push({ time: beat + 0.5, label: '&' });
-                }
+        <div className="bg-gray-50 rounded-lg p-3 sm:p-6">
+          {(() => {
+            // Create a complete grid showing all possible strum positions
+            const positions = [];
+            
+            // Check if this is a 16th note pattern
+            const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+            
+            if (is16th) {
+              // For 16th note pattern, show all 16 positions: 1 e & a 2 e & a 3 e & a 4 e & a
+              for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+                positions.push({ time: beat, label: (beat + 1).toString() });      // 1, 2, 3, 4
+                positions.push({ time: beat + 0.25, label: 'e' });               // e
+                positions.push({ time: beat + 0.5, label: '&' });                // &  
+                positions.push({ time: beat + 0.75, label: 'a' });               // a
               }
+            } else {
+              // For other patterns, show 8th note positions: 1, 1&, 2, 2&, 3, 3&, 4, 4&
+              for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
+                // On-beat position
+                positions.push({ time: beat, label: (beat + 1).toString() });
+                // Off-beat position (&)
+                positions.push({ time: beat + 0.5, label: '&' });
+              }
+            }
+            
+            const renderPosition = (position: { time: number; label: string }, index: number) => {
+              // Find if there's an actual stroke at this position (with small tolerance for floating point precision)
+              const strokeAtPosition = pattern.strokes.find(stroke => Math.abs(stroke.time - position.time) < 0.001);
+              const strokeIndex = strokeAtPosition ? pattern.strokes.indexOf(strokeAtPosition) : -1;
+              const isActive = currentStrokeIndex === strokeIndex;
               
-              const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+              // Determine hand movement direction based on alternating pattern
+              // For 16th notes: every 0.25 alternates, for 8th notes: every 0.5 alternates
+              const subdivision = is16th ? 0.25 : 0.5;
+              const subdivisionIndex = Math.round(position.time / subdivision);
+              const handDirection = subdivisionIndex % 2 === 0 ? 'down' : 'up';
               
-              return positions.map((position, index) => {
-                  // Find if there's an actual stroke at this position
-                  const strokeAtPosition = pattern.strokes.find(stroke => stroke.time === position.time);
-                  const strokeIndex = strokeAtPosition ? pattern.strokes.indexOf(strokeAtPosition) : -1;
-                  const isActive = currentStrokeIndex === strokeIndex;
-                  
-                  // Determine hand movement direction based on alternating pattern
-                  // For 16th notes: every 0.25 alternates, for 8th notes: every 0.5 alternates
-                  const subdivision = is16th ? 0.25 : 0.5;
-                  const subdivisionIndex = Math.round(position.time / subdivision);
-                  const handDirection = subdivisionIndex % 2 === 0 ? 'down' : 'up';
-                  
-                  return (
-                    <div key={`${position.time}-${position.label}`} className={`flex flex-col items-center ${is16th ? 'space-y-1' : 'space-y-2'}`}>
-                      <div
-                        className={`rounded-lg font-bold transition-all duration-200 text-center flex items-center justify-center ${
-                          is16th 
-                            ? 'px-1 py-1 text-xs min-w-[35px] h-8' 
-                            : 'px-3 py-2 text-sm min-w-[50px] h-10'
-                        } ${
-                          strokeAtPosition
-                            ? strokeAtPosition.type === 'down'
-                              ? isActive
-                                ? 'bg-amber-500 text-white scale-110 shadow-lg'
-                                : 'bg-amber-100 text-amber-800 border border-amber-200'
-                              : isActive
-                              ? 'bg-blue-500 text-white scale-110 shadow-lg'
-                              : 'bg-blue-100 text-blue-800 border border-blue-200'
-                            : 'bg-white border border-gray-200 text-gray-400'
-                        }`}
-                      >
-                        {strokeAtPosition 
-                          ? (strokeAtPosition.type === 'down' ? (is16th ? 'D' : 'Down') : (is16th ? 'U' : 'Up'))
-                          : showHandMovement 
-                          ? (handDirection === 'down' ? (is16th ? 'D' : 'Down') : (is16th ? 'U' : 'Up'))
-                          : ''
-                        }
-                      </div>
-                      <div className={`font-medium text-gray-600 ${is16th ? 'text-xs' : 'text-xs'}`}>
-                        {position.label}
-                      </div>
+              return (
+                <div key={`${position.time}-${position.label}`} className={`flex flex-col items-center ${is16th ? 'space-y-0.5 sm:space-y-1' : 'space-y-1 sm:space-y-2'}`}>
+                  <div
+                    className={`rounded-lg font-bold transition-all duration-200 text-center flex items-center justify-center ${
+                      is16th 
+                        ? 'px-0.5 py-0.5 text-xs min-w-[28px] sm:min-w-[35px] h-6 sm:h-8' 
+                        : 'px-1 py-1 text-xs sm:text-sm min-w-[32px] sm:min-w-[50px] h-7 sm:h-10'
+                    } ${
+                      strokeAtPosition
+                        ? strokeAtPosition.type === 'down'
+                          ? isActive
+                            ? 'bg-amber-500 text-white scale-110 shadow-lg'
+                            : 'bg-amber-100 text-amber-800 border border-amber-200'
+                          : isActive
+                          ? 'bg-blue-500 text-white scale-110 shadow-lg'
+                          : 'bg-blue-100 text-blue-800 border border-blue-200'
+                        : 'bg-white border border-gray-200 text-gray-400'
+                    }`}
+                  >
+                    {strokeAtPosition 
+                      ? (strokeAtPosition.type === 'down' ? 'D' : 'U')
+                      : showHandMovement 
+                      ? (handDirection === 'down' ? 'D' : 'U')
+                      : ''
+                    }
+                  </div>
+                  <div className={`font-medium text-gray-600 ${is16th ? 'text-xs' : 'text-xs'}`}>
+                    {position.label}
+                  </div>
+                </div>
+              );
+            };
+            
+            if (is16th) {
+              // On mobile: Split into two rows (beats 1-2, then 3-4)
+              // On desktop: Single row
+              const firstHalf = positions.slice(0, 8);   // Beats 1-2 (1 e & a 2 e & a)
+              const secondHalf = positions.slice(8, 16); // Beats 3-4 (3 e & a 4 e & a)
+              
+              return (
+                <>
+                  {/* Mobile: Two rows */}
+                  <div className="block sm:hidden">
+                    <div className="flex items-center justify-center space-x-0.5 mb-4">
+                      {firstHalf.map(renderPosition)}
                     </div>
-                  );
-                });
-            })()}
-          </div>
+                    <div className="flex items-center justify-center space-x-0.5">
+                      {secondHalf.map(renderPosition)}
+                    </div>
+                  </div>
+                  
+                  {/* Desktop: Single row */}
+                  <div className="hidden sm:flex items-center justify-center space-x-1 flex-nowrap overflow-x-auto pb-2">
+                    {positions.map(renderPosition)}
+                  </div>
+                </>
+              );
+            } else {
+              // 8th note patterns: Always single row
+              return (
+                <div className={`flex items-center justify-center space-x-1 sm:space-x-3 flex-nowrap overflow-x-auto pb-2`}>
+                  {positions.map(renderPosition)}
+                </div>
+              );
+            }
+          })()}
         </div>
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-center space-x-4 flex-wrap">
+      <div className="flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
         <button
           onClick={togglePlay}
-          className={`px-6 py-2 rounded-lg font-semibold transition-colors duration-200 ${
+          className={`px-4 sm:px-6 py-2 rounded-lg font-semibold transition-colors duration-200 text-sm sm:text-base ${
             isPlaying
               ? 'bg-red-600 hover:bg-red-700 text-white'
               : 'bg-amber-600 hover:bg-amber-700 text-white'
@@ -306,7 +337,7 @@ export default function StrummingPattern({
 
         <button
           onClick={toggleLoop}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 ${
+          className={`px-3 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
             isLooping
               ? 'bg-amber-700 hover:bg-amber-800 text-white'
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
@@ -318,36 +349,39 @@ export default function StrummingPattern({
         {hasGhostStrums() && (
           <button
             onClick={toggleHandMovement}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+            className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
               showHandMovement
                 ? 'bg-amber-700 hover:bg-amber-800 text-white'
                 : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
             }`}
           >
-            👻 {showHandMovement ? 'Hide' : 'Show'} Ghost Strums
+            <span className="hidden sm:inline">👻 {showHandMovement ? 'Hide' : 'Show'} Ghost Strums</span>
+            <span className="sm:hidden">👻 Ghost</span>
           </button>
         )}
 
         <button
           onClick={toggleSoundMode}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+          className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
             soundMode === 'percussion'
               ? 'bg-amber-700 hover:bg-amber-800 text-white'
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
           }`}
         >
-          {soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}
+          <span className="hidden sm:inline">{soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}</span>
+          <span className="sm:hidden">{soundMode === 'guitar' ? '🥁' : '🎸'}</span>
         </button>
 
         <button
           onClick={toggleMetronome}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+          className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
             metronomeEnabled
               ? 'bg-amber-700 hover:bg-amber-800 text-white'
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
           }`}
         >
-          🎼 Metronome
+          <span className="hidden sm:inline">🎼 Metronome</span>
+          <span className="sm:hidden">🎼</span>
         </button>
         
         {isPlaying && (
@@ -360,7 +394,7 @@ export default function StrummingPattern({
 
       {/* Stroke Legend */}
       <div className="mt-4 pt-4 border-t border-gray-200">
-        <div className="flex items-center justify-center space-x-6 text-sm flex-wrap gap-y-2">
+        <div className="flex items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm flex-wrap">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></div>
             <span className="text-gray-600">
