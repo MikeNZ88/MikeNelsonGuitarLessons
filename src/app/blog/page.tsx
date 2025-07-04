@@ -5,7 +5,9 @@ import { Music, BookOpen, Target, Store, Wrench, Star, User, Users, Award } from
 import { useState } from 'react';
 
 export default function Blog() {
-  const [selectedCategory, setSelectedCategory] = useState('All Posts');
+  const [selectedTopicCategory, setSelectedTopicCategory] = useState('All Posts');
+  const [selectedSkillLevel, setSelectedSkillLevel] = useState('All Levels');
+  
   const posts = [
     // BEGINNER LEVEL
     {
@@ -156,7 +158,7 @@ export default function Blog() {
       readTime: '15 min read',
       category: 'Intermediate',
       topicCategory: 'Guides',
-      skillLevel: 'intermediate-advanced',
+      skillLevel: 'intermediate',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'guitar-fretboard-navigation',
       author: 'Mike Nelson'
@@ -181,7 +183,7 @@ export default function Blog() {
       readTime: '9 min read',
       category: 'Intermediate',
       topicCategory: 'Tips',
-      skillLevel: 'intermediate-advanced',
+      skillLevel: 'intermediate',
       image: '/scale-explorer-thumbnail.svg',
       slug: 'scale-explorer-tool',
       author: 'Mike Nelson'
@@ -218,13 +220,22 @@ export default function Blog() {
     }
   ];
 
-  // Define categories with both skill levels and topic categories
-  const categories = ['All Posts', 'Beginner', 'Intermediate', 'Advanced', 'Guides', 'Tips', 'Gear'];
+  // Define hierarchical categories
+  const topicCategories = ['All Posts', 'Guides', 'Tips', 'Gear'];
+  const skillLevels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
 
-  // Filter posts by category (check both category and topicCategory)
-  const filteredPosts = selectedCategory === 'All Posts' 
-    ? posts 
-    : posts.filter(post => post.category === selectedCategory || post.topicCategory === selectedCategory);
+  // Filter posts by both topic category and skill level
+  const filteredPosts = posts.filter(post => {
+    const matchesTopicCategory = selectedTopicCategory === 'All Posts' || post.topicCategory === selectedTopicCategory;
+    const matchesSkillLevel = selectedSkillLevel === 'All Levels' || 
+                             post.skillLevel === selectedSkillLevel.toLowerCase() || 
+                             post.skillLevel === 'all' ||
+                             (post.skillLevel === 'intermediate' && selectedSkillLevel === 'Intermediate') ||
+                             (post.skillLevel === 'beginner' && selectedSkillLevel === 'Beginner') ||
+                             (post.skillLevel === 'advanced' && selectedSkillLevel === 'Advanced');
+    
+    return matchesTopicCategory && matchesSkillLevel;
+  });
 
   // Use filtered posts without sorting by date
   const sortedPosts = filteredPosts;
@@ -283,20 +294,20 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* Filters and Sorting */}
+      {/* Hierarchical Filters */}
       <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            {/* Category Filter */}
+          <div className="flex flex-col gap-6">
+            {/* Topic Category Filter */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-gray-700 font-medium">Filter by category:</span>
+              <span className="text-gray-700 font-medium">Category:</span>
               <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
+                {topicCategories.map((category) => (
                   <button
                     key={category}
-                    onClick={() => setSelectedCategory(category)}
+                    onClick={() => setSelectedTopicCategory(category)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                      selectedCategory === category
+                      selectedTopicCategory === category
                         ? 'bg-amber-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-700'
                     }`}
@@ -307,14 +318,35 @@ export default function Blog() {
               </div>
             </div>
 
-
+            {/* Skill Level Filter */}
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-gray-700 font-medium">Level:</span>
+              <div className="flex flex-wrap gap-2">
+                {skillLevels.map((level) => (
+                  <button
+                    key={level}
+                    onClick={() => setSelectedSkillLevel(level)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      selectedSkillLevel === level
+                        ? 'bg-orange-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
+                    }`}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Results Count */}
-          <div className="mt-4 text-gray-600 text-sm">
+          <div className="mt-6 text-gray-600 text-sm">
             Showing {sortedPosts.length} of {posts.length} posts
-            {selectedCategory !== 'All Posts' && (
-              <span> in "{selectedCategory}"</span>
+            {(selectedTopicCategory !== 'All Posts' || selectedSkillLevel !== 'All Levels') && (
+              <span>
+                {selectedTopicCategory !== 'All Posts' && ` in "${selectedTopicCategory}"`}
+                {selectedSkillLevel !== 'All Levels' && ` for "${selectedSkillLevel}"`}
+              </span>
             )}
           </div>
         </div>
@@ -330,14 +362,19 @@ export default function Blog() {
               </div>
               <h3 className="text-xl font-semibold text-gray-600 mb-2">No posts found</h3>
               <p className="text-gray-500 mb-6">
-                Try selecting a different category or adjusting your filters.
+                Try selecting different filters or reset to see all posts.
               </p>
-              <button
-                onClick={() => setSelectedCategory('All Posts')}
-                className="bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
-              >
-                Show All Posts
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => {
+                    setSelectedTopicCategory('All Posts');
+                    setSelectedSkillLevel('All Levels');
+                  }}
+                  className="bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
+                >
+                  Reset Filters
+                </button>
+              </div>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
