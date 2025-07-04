@@ -43,9 +43,7 @@ export default function ChordTransitionsPost() {
             🎸 Smoother Chord Changes: Identifying Common Fingers Between Chords on Guitar
           </h1>
           
-          <div className="text-gray-600 mb-8">
-            <time>Published: May 5, 2025</time>
-          </div>
+
         </div>
 
         <div className="prose prose-lg max-w-none">

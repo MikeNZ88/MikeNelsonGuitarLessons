@@ -1,11 +1,27 @@
-'use client';
-
-import React, { useState } from 'react';
+import { Metadata } from 'next';
+import React from 'react';
 import Link from 'next/link';
 
-export default function GuitarFretboardNavigation() {
-  const [showMathModal, setShowMathModal] = useState(false);
+export const metadata: Metadata = {
+  title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas | Mike Nelson Guitar Lessons',
+  description: 'Master practical techniques for finding notes and intervals across guitar strings. Learn the mathematical relationships that make fretboard navigation easy with step-by-step formulas.',
+  keywords: 'guitar fretboard navigation, cross-string movement, guitar intervals, fretboard formulas, guitar theory, learn guitar fretboard',
+  openGraph: {
+    title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas',
+    description: 'Master practical techniques for finding notes and intervals across guitar strings with mathematical formulas and visual examples.',
+    type: 'article',
+    images: [
+      {
+        url: '/guitar-tuning-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Guitar Fretboard Navigation Guide'
+      }
+    ]
+  }
+};
 
+export default function GuitarFretboardNavigation() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="container mx-auto px-6 py-12">
@@ -40,9 +56,7 @@ export default function GuitarFretboardNavigation() {
                 </p>
               </div>
 
-              <div className="text-sm text-gray-500">
-                Published: June 27, 2025
-              </div>
+
             </div>
 
             <div className="prose prose-lg max-w-none">
@@ -976,53 +990,6 @@ export default function GuitarFretboardNavigation() {
           </div>
         </article>
       </div>
-
-      {/* Math Modal */}
-      {showMathModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-lg">
-            <div className="p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-gray-800">📐 Mathematical Details</h3>
-                <button 
-                  onClick={() => setShowMathModal(false)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl"
-                >
-                  ×
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="bg-amber-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">The Complete Formula</h4>
-                  <p className="mb-2">General cross-string relationship:</p>
-                  <div className="mt-3 p-3 bg-white rounded border">
-                    <p className="text-center font-bold text-lg">Cross-String Position = Root + (Same-String Interval - String Tuning)</p>
-                  </div>
-                </div>
-                
-                <div className="bg-amber-50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Movement-Based Simplification</h4>
-                  <p className="text-sm mb-2">For practical use, we can focus on just the movement component:</p>
-                  <ul className="text-sm space-y-1">
-                    <li><strong>Ascending:</strong> Movement = M - S</li>
-                    <li><strong>Descending:</strong> Movement = S - M</li>
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="mt-6 text-center">
-                <button 
-                  onClick={() => setShowMathModal(false)}
-                  className="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 } 

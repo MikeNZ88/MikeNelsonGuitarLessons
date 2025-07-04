@@ -32,7 +32,7 @@ export default function IntroducingPracticeTrack() {
               <Target className="w-4 h-4" />
               <span>Practice Tools</span>
             </div>
-            <span>May 12, 2025</span>
+
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">

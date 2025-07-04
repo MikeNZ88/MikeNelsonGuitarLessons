@@ -19,8 +19,6 @@ export default function WhenShouldYouStartLearningGuitar() {
               When Should You Start Learning Guitar? What the Research Actually Says
             </h1>
             <div className="flex items-center text-gray-600 text-sm">
-              <span>April 30, 2025</span>
-              <span className="mx-2">•</span>
               <span>12 min read</span>
             </div>
           </header>

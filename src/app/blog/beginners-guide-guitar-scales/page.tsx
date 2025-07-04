@@ -1,10 +1,24 @@
 import React from 'react';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
-export const metadata = {
-  title: "Beginner's Guide to Guitar Scales - Start with One String",
+export const metadata: Metadata = {
+  title: "Beginner's Guide to Guitar Scales - Start with One String | Mike Nelson Guitar Lessons",
   description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns. Simple, practical approach for beginners.",
-  keywords: "guitar scales, beginner guitar theory, one string scales, C major scale, guitar notes, music theory"
+  keywords: "guitar scales, beginner guitar theory, one string scales, C major scale, guitar notes, music theory, learn guitar scales",
+  openGraph: {
+    title: "Beginner's Guide to Guitar Scales - Start with One String",
+    description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns. Perfect for beginners.",
+    type: 'article',
+    images: [
+      {
+        url: '/beginners-guide-scales-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Beginner Guitar Scales Guide'
+      }
+    ]
+  }
 };
 
 export default function BeginnersGuideGuitarScales() {

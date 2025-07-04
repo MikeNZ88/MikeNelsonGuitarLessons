@@ -16,7 +16,7 @@ export default function MajorScaleGuitarGuide() {
               Master essential guitar shapes and patterns across the fretboard with this comprehensive guide to major scale modes and arpeggios.
             </p>
             <div className="mt-6 text-sm text-amber-600">
-              Published: January 15, 2025 | Reading time: 6 minutes
+              Reading time: 6 minutes
             </div>
           </div>
 

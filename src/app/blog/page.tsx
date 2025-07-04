@@ -6,14 +6,12 @@ import { useState } from 'react';
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState('All Posts');
-  const [sortOrder, setSortOrder] = useState('newest');
   const posts = [
     // BEGINNER LEVEL
     {
       id: '8',
       title: 'The Complete Beginner\'s Guide to Learning Guitar',
       excerpt: 'A comprehensive roadmap for absolute beginners, covering everything from first chords to single notes and picking techniques. Your complete starting guide.',
-      date: 'April 20, 2025',
       readTime: '15 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -26,7 +24,6 @@ export default function Blog() {
       id: '7',
       title: 'When Should You Start Learning Guitar? What the Research Actually Says',
       excerpt: 'Discover the optimal age to start guitar based on neuroscience research. From children to seniors, learn the advantages and challenges at every life stage.',
-      date: 'April 30, 2025',
       readTime: '12 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -39,7 +36,6 @@ export default function Blog() {
       id: '9',
       title: 'Beginner Electric Guitar Guide - New Zealand 2025',
       excerpt: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, current pricing, and where to buy for beginners.',
-      date: 'June 24, 2025',
       readTime: '6 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -52,7 +48,7 @@ export default function Blog() {
       id: '16',
       title: 'How to Read Chord Diagrams',
       excerpt: 'Master the fundamentals of reading guitar chord diagrams with this comprehensive video tutorial. Learn to interpret chord charts and start playing songs faster.',
-      date: 'April 27, 2025',
+
       readTime: '3 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -62,10 +58,22 @@ export default function Blog() {
       author: 'Mike Nelson'
     },
     {
+      id: '18',
+      title: 'Open Chord Library',
+      excerpt: 'Master guitar chords with my comprehensive interactive reference tool featuring visual diagrams, fingering patterns, and chord variations. Perfect for beginners and advanced players.',
+      readTime: '',
+      category: 'Beginner',
+      topicCategory: 'Guides',
+      skillLevel: 'beginner',
+      image: '/open-chord-library-thumbnail.svg',
+      slug: 'guitar-chord-reference-tool',
+      author: 'Mike Nelson'
+    },
+    {
       id: '17',
       title: 'Master Guitar Strumming Patterns',
       excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to perfect timing and rhythm with 8 progressive patterns from beginner to advanced.',
-      date: 'July 3, 2025',
+
       readTime: '12 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -78,7 +86,7 @@ export default function Blog() {
       id: '4',
       title: 'Smoother Chord Changes: Identifying Common Fingers Between Chords',
       excerpt: 'Learn how to identify common fingers between chords for smoother transitions. Master chord changes with visual diagrams and essential fingering tips.',
-      date: 'May 5, 2025',
+
       readTime: '7 min read',
       category: 'Beginner',
       topicCategory: 'Tips',
@@ -91,7 +99,7 @@ export default function Blog() {
       id: '1',
       title: '6 Essential Practice Tips for Guitar Students',
       excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
-      date: 'May 16, 2025',
+
       readTime: '8 min read',
       category: 'All',
       topicCategory: 'Tips',
@@ -104,7 +112,7 @@ export default function Blog() {
       id: '6',
       title: 'Introducing PracticeTrack: Your Musical Journey Companion',
       excerpt: 'Transform your practice sessions with deliberate tracking, goal setting, and analytics. A free tool to help you stay consistent and see your progress over time.',
-      date: 'May 12, 2025',
+
       readTime: '6 min read',
       category: 'Beginner',
       topicCategory: 'Tips',
@@ -117,7 +125,7 @@ export default function Blog() {
       id: '11',
       title: 'Beginner\'s Guide to Guitar Scales',
       excerpt: 'Everything you need to know about guitar scales, from the basics of notes and intervals to practical application and improvisation. Learn C major, pentatonic, and minor scales step by step.',
-      date: 'April 28, 2025',
+
       readTime: '25 min read',
       category: 'Beginner',
       topicCategory: 'Guides',
@@ -132,7 +140,7 @@ export default function Blog() {
       id: '15',
       title: 'Major Scale Guitar Guide',
       excerpt: 'Master essential guitar shapes and patterns across the fretboard with this comprehensive guide to major scale modes and arpeggios. A different approach to scale learning.',
-      date: 'April 4, 2025',
+
       readTime: '6 min read',
       category: 'Intermediate',
       topicCategory: 'Guides',
@@ -145,7 +153,6 @@ export default function Blog() {
       id: '13',
       title: 'Guitar Fretboard Navigation: Cross-String Interval Relationships (Part 2)',
       excerpt: 'Master practical techniques for finding notes and intervals across guitar strings. Complete with formulas, visual diagrams, and step-by-step examples. Contains beginner-friendly sections.',
-      date: 'June 27, 2025',
       readTime: '15 min read',
       category: 'Intermediate',
       topicCategory: 'Guides',
@@ -158,7 +165,6 @@ export default function Blog() {
       id: '12',
       title: 'Understanding the Guitar Fretboard: Why Strings Are Tuned This Way (Part 1)',
       excerpt: 'Why are guitar strings tuned E-A-D-G-B-E instead of something more logical? Discover the fascinating constraints and compromises that created this system. Contains beginner-friendly explanations.',
-      date: 'June 27, 2025',
       readTime: '20 min read',
       category: 'Advanced',
       topicCategory: 'Guides',
@@ -171,7 +177,7 @@ export default function Blog() {
       id: '5',
       title: 'Master Guitar Scales with the Interactive Scale Explorer Tool',
       excerpt: 'Discover how to use the Scale Explorer tool to visualize guitar scales, learn fretboard patterns, and understand music theory through interactive features.',
-      date: 'June 18, 2025',
+
       readTime: '9 min read',
       category: 'Intermediate',
       topicCategory: 'Tips',
@@ -220,16 +226,8 @@ export default function Blog() {
     ? posts 
     : posts.filter(post => post.category === selectedCategory || post.topicCategory === selectedCategory);
 
-  // Sort posts
-  const sortedPosts = [...filteredPosts].sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    if (sortOrder === 'newest') {
-      return dateB.getTime() - dateA.getTime();
-    } else {
-      return dateA.getTime() - dateB.getTime();
-    }
-  });
+  // Use filtered posts without sorting by date
+  const sortedPosts = filteredPosts;
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -309,18 +307,7 @@ export default function Blog() {
               </div>
             </div>
 
-            {/* Sort Options */}
-            <div className="flex items-center gap-3">
-              <span className="text-gray-700 font-medium">Sort by:</span>
-              <select
-                value={sortOrder}
-                onChange={(e) => setSortOrder(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-              </select>
-            </div>
+
           </div>
 
           {/* Results Count */}
@@ -380,8 +367,12 @@ export default function Blog() {
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-gray-500">
                         <span>By {post.author}</span>
-                        <span className="mx-2">•</span>
-                        <span>{post.date}</span>
+                        {post.date && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <span>{post.date}</span>
+                          </>
+                        )}
                       </div>
                       <Link 
                         href={`/blog/${post.slug}`}

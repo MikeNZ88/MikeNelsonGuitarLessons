@@ -6,6 +6,26 @@ export const metadata: Metadata = {
   title: "6 Essential Practice Tips for Guitar Students | Mike Nelson Guitar Lessons",
   description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
   keywords: "guitar practice tips, learn guitar wellington, guitar teacher advice, effective practice, guitar lessons",
+  openGraph: {
+    title: "6 Essential Practice Tips for Guitar Students",
+    description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
+    images: [
+      {
+        url: '/blog-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: '6 Essential Practice Tips for Guitar Students',
+      },
+    ],
+    type: 'article',
+
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "6 Essential Practice Tips for Guitar Students",
+    description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
+    images: ['/blog-thumbnail.svg'],
+  },
 };
 
 export default function EssentialPracticeTips() {
@@ -32,7 +52,7 @@ export default function EssentialPracticeTips() {
               <Target className="w-4 h-4" />
               <span>Practice Methods</span>
             </div>
-            <span>January 15, 2025</span>
+
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">
