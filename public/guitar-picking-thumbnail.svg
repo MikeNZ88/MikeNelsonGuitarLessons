@@ -1,0 +1,35 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="400" fill="#fef3c7"/>
+  
+  <!-- Accurate guitar pick shape centered and positioned to avoid cutoff -->
+  <path d="M200 103
+           C250 103, 290 123, 290 153
+           C290 183, 290 193, 280 213
+           L210 283
+           C204 289, 196 289, 190 283
+           L120 213
+           C110 193, 110 183, 110 153
+           C110 123, 150 103, 200 103 Z" 
+        fill="#e74c3c" 
+        stroke="#c0392b" 
+        stroke-width="2"/>
+  
+  <!-- MN initials on the pick -->
+  <text x="200" y="175" 
+        font-family="Arial, sans-serif" 
+        font-size="28" 
+        font-weight="bold" 
+        fill="#ffffff" 
+        text-anchor="middle" 
+        opacity="0.9">MN</text>
+  
+  <!-- GL underneath -->
+  <text x="200" y="200" 
+        font-family="Arial, sans-serif" 
+        font-size="28" 
+        font-weight="bold" 
+        fill="#ffffff" 
+        text-anchor="middle" 
+        opacity="0.9">GL</text>
+</svg> 

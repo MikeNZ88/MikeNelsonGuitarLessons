@@ -191,6 +191,18 @@ export default function Blog() {
 
     // ADVANCED LEVEL
     {
+      id: '19',
+      title: 'Guitar Picking Technique: Complete Progressive Guide',
+      excerpt: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
+      readTime: '30 min read',
+      category: 'All',
+      topicCategory: 'Guides',
+      skillLevel: 'all',
+      image: '/guitar-picking-thumbnail.svg',
+      slug: 'guitar-picking-technique-guide',
+      author: 'Mike Nelson'
+    },
+    {
       id: '10',
       title: 'My Kiesel A2 7-String',
       excerpt: 'In-depth review of the Kiesel A2 7-String guitar. From ordering process to playing experience, plus my complete studio setup for metal and extended range guitars.',

@@ -227,6 +227,103 @@ export default function CompleteBeginnerGuide() {
               </div>
             </section>
 
+            {/* Holding the Pick */}
+            <section className="mb-12">
+              <h2 className="text-3xl font-bold text-amber-800 mb-6">How to Hold the Pick</h2>
+              
+              <p className="text-lg mb-6">
+                Before learning chords, it's essential to master the basic technique of holding and using a pick. 
+                Proper pick grip and hand position will make everything easier as you progress.
+              </p>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-6">
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Pick Grip Setup</h3>
+                <ol className="list-decimal list-inside space-y-2 text-amber-700">
+                  <li><strong>Pick placement:</strong> Rest pick on the side pad of your index finger (not the fingertip)</li>
+                  <li><strong>Thumb position:</strong> Place thumb on top of pick, covering about half of it</li>
+                  <li><strong>Angle:</strong> The pick should not be angled excessively side-to-side—aim for a neutral, centered position</li>
+                  <li><strong>Pressure:</strong> Firm enough that pick won't slip, loose enough to allow flexibility</li>
+                </ol>
+              </div>
+
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 mb-6">
+                <h3 className="text-xl font-bold text-orange-800 mb-4">Visual Check</h3>
+                <ul className="list-disc list-inside space-y-2 text-orange-700">
+                  <li>Look at your hand from the side - you should see about 2-3mm of pick extending beyond your fingers</li>
+                  <li>From above, the pick should appear centered between thumb and finger</li>
+                  <li>No white knuckles or excessive tension visible</li>
+                </ul>
+              </div>
+
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-6">
+                <h3 className="text-xl font-bold text-red-800 mb-4">Common Beginner Mistakes</h3>
+                <ul className="list-disc list-inside space-y-2 text-red-700">
+                  <li>❌ Holding pick with fingertip instead of finger pad</li>
+                  <li>❌ Gripping too tightly (causes fatigue and poor tone)</li>
+                  <li>❌ Too much pick exposed (reduces control)</li>
+                  <li>❌ Pick angled incorrectly (causes string catching)</li>
+                </ul>
+              </div>
+
+              <h3 className="text-xl font-bold text-amber-800 mb-4">Basic Hand Position</h3>
+
+              <div className="bg-amber-50 border-l-4 border-amber-500 p-6 mb-6">
+                <h4 className="font-semibold text-amber-800 mb-3">Where to Position Your Hand:</h4>
+                <ol className="list-decimal list-inside space-y-3 text-amber-700">
+                  <li><strong>Bridge area:</strong> Rest the heel of your palm lightly on the bridge/saddles</li>
+                  <li><strong>Pick angle:</strong> Hold the pick at a slight angle so the edge (not the flat face) makes first contact with the string</li>
+                  <li><strong>Wrist position:</strong> Slight arch - not completely flat, not extremely bent</li>
+                  <li><strong>Arm position:</strong> Let your arm hang naturally from your shoulder</li>
+                </ol>
+              </div>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+                <h4 className="font-semibold text-yellow-800 mb-3">Understanding Edge Picking</h4>
+                <p className="text-yellow-700 mb-3">
+                  When you hold the pick at a slight angle, you're not hitting the string with the flat face of the pick. 
+                  Instead, the pick's <strong>edge</strong> makes first contact.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-yellow-100 p-4 rounded-lg">
+                    <div className="font-semibold text-yellow-800 mb-2">❌ Flat Pick Attack</div>
+                    <div className="text-sm text-yellow-700">The full face of the pick hits the string directly - creates more resistance and a harsher tone</div>
+                  </div>
+                  <div className="bg-yellow-100 p-4 rounded-lg">
+                    <div className="font-semibold text-yellow-800 mb-2">✅ Angled Pick Attack</div>
+                    <div className="text-sm text-yellow-700">The pick contacts the string like a knife slicing at an angle - smoother, cleaner tone</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-6">
+                <h4 className="font-semibold text-amber-800 mb-3">Ready to Learn More?</h4>
+                <p className="text-amber-700 mb-3">
+                  This covers the essential picking fundamentals you need to get started. For advanced picking techniques, 
+                  string crossing, and detailed motion mechanics, check out my comprehensive picking guide.
+                </p>
+                <Link 
+                  href="/blog/guitar-picking-technique-guide" 
+                  className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                >
+                  Master Guitar Picking Technique <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+
+              <div className="bg-orange-50 border-l-4 border-orange-400 p-6">
+                <h4 className="font-semibold text-orange-800 mb-3">Strumming Pattern Practice</h4>
+                <p className="text-orange-700 mb-3">
+                  Once you're comfortable with basic pick technique, you'll want to develop your strumming patterns 
+                  for chord playing. Proper strumming technique builds directly on these picking fundamentals.
+                </p>
+                <Link 
+                  href="/blog/guitar-strumming-patterns" 
+                  className="inline-flex items-center text-orange-600 hover:text-orange-800 font-semibold underline"
+                >
+                  Master Guitar Strumming Patterns <ArrowRight className="ml-1 h-4 w-4" />
+                </Link>
+              </div>
+            </section>
+
             {/* Your First Chords */}
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First Essential Chords</h2>
@@ -288,9 +385,24 @@ export default function CompleteBeginnerGuide() {
                     <strong>Why this song:</strong> Uses only two of the easiest chords to form and change between, 
                     with a simple strumming pattern that's perfect for beginners.
                   </p>
-                  <p className="text-amber-700">
+                  <p className="text-amber-700 mb-3">
                     <strong>What you'll learn:</strong> Basic chord changes and steady strumming rhythm.
                   </p>
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <p className="text-amber-800 font-semibold mb-2">
+                      🎵 Strumming Pattern: Folk Pattern (Pattern 3)
+                    </p>
+                    <p className="text-amber-700 text-sm mb-3">
+                      This song uses the classic "Folk Pattern" from my strumming guide - perfect for 
+                      building steady rhythm while you focus on chord changes.
+                    </p>
+                    <Link 
+                      href="/blog/guitar-strumming-patterns" 
+                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                    >
+                      Learn This Pattern <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Song 2 */}
