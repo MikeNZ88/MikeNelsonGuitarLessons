@@ -1,21 +1,77 @@
+'use client';
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Guitar, Clock, CheckCircle, Star, ArrowRight, Music, Users, BookOpen, Target } from 'lucide-react'
-
-export const metadata: Metadata = {
-  title: 'Complete Beginner\'s Guide to Learning Guitar | Mike Nelson Guitar Lessons',
-  description: 'Everything you need to know to start learning guitar as a complete beginner. From choosing your first guitar to learning your first songs - your complete roadmap to guitar success.',
-  keywords: 'beginner guitar guide, how to learn guitar, guitar for beginners, first guitar chords, guitar lessons for beginners, learn guitar from scratch',
-  openGraph: {
-    title: 'Complete Beginner\'s Guide to Learning Guitar',
-    description: 'Everything you need to know to start learning guitar as a complete beginner. Your complete roadmap to guitar success.',
-    images: [{ url: '/blog-thumbnail.svg' }],
-  },
-}
+import SongStrummingPattern from '@/components/rhythm/SongStrummingPattern'
+import SongStructurePlayer from '@/components/rhythm/SongStructurePlayer'
+import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine'
+import React, { useState } from 'react'
 
 export default function CompleteBeginnerGuide() {
+  const patterns = GuitarStrumEngine.PATTERNS;
+
+  // BAD MOON RISING TOGGLE
+  const [badMoonSection, setBadMoonSection] = useState<'full' | 'verse' | 'chorus'>('full');
+  const badMoonSections = [
+    {
+      name: 'Verse',
+      measures: [
+        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'A (1-2), G (3-4)', pattern: patterns[0], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 }
+      ]
+    },
+    {
+      name: 'Chorus',
+      measures: [
+        { chord: 'G', pattern: patterns[6], beats: 4 },
+        { chord: 'G', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'A', pattern: patterns[6], beats: 4 },
+        { chord: 'G', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[6], beats: 4 }
+      ]
+    }
+  ];
+  const badMoonPlayerSections =
+    badMoonSection === 'full' ? badMoonSections :
+    badMoonSection === 'verse' ? [badMoonSections[0]] : [badMoonSections[1]];
+
+  // BROWN EYED GIRL TOGGLE
+  const [begSection, setBegSection] = useState<'full' | 'verse' | 'chorus'>('full');
+  const begSections = [
+    {
+      name: 'Verse',
+      measures: [
+        { chord: 'G', pattern: patterns[3], beats: 4 },
+        { chord: 'C', pattern: patterns[3], beats: 4 },
+        { chord: 'G', pattern: patterns[3], beats: 4 },
+        { chord: 'D', pattern: patterns[3], beats: 4 }
+      ]
+    },
+    {
+      name: 'Chorus',
+      measures: [
+        { chord: 'C', pattern: patterns[3], beats: 4 },
+        { chord: 'D', pattern: patterns[3], beats: 4 },
+        { chord: 'G', pattern: patterns[3], beats: 4 },
+        { chord: 'Em', pattern: patterns[3], beats: 4 },
+        { chord: 'C', pattern: patterns[3], beats: 4 },
+        { chord: 'D', pattern: patterns[3], beats: 4 },
+        { chord: 'G', pattern: patterns[3], beats: 4 },
+        { chord: 'D', pattern: patterns[3], beats: 4 }
+      ]
+    }
+  ];
+  const begPlayerSections =
+    begSection === 'full' ? begSections :
+    begSection === 'verse' ? [begSections[0]] : [begSections[1]];
+
   return (
-    <div className="min-h-screen bg-amber-50">
+    <div className="min-h-screen bg-amber-50" style={{ scrollBehavior: 'smooth' }}>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white section-padding">
         <div className="container-max">
@@ -28,9 +84,51 @@ export default function CompleteBeginnerGuide() {
             </p>
             <div className="flex items-center justify-center space-x-4 text-amber-200">
               <Clock className="h-5 w-5" />
-              <span>15 minute read</span>
-              <Star className="h-5 w-5" />
-              <span>Beginner Friendly</span>
+              <span>35 minute read</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Table of Contents */}
+      <section className="bg-amber-100 border-b border-amber-200">
+        <div className="container-max section-padding">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-amber-800 mb-6 text-center">What You'll Learn</h2>
+            <div className="flex flex-col items-center gap-4">
+              {/* Row 1: 3 cards */}
+              <div className="flex justify-center gap-4">
+                <a href="#choosing-guitar" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">Choosing Your First Guitar</h3>
+                  <p className="text-amber-700 text-sm">Guitar types, sizes, and recommendations for New Zealand</p>
+                </a>
+                <a href="#holding-pick" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">How to Hold the Pick</h3>
+                  <p className="text-amber-700 text-sm">Proper pick grip and hand position</p>
+                </a>
+                <a href="#first-chords" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">First Essential Chords</h3>
+                  <p className="text-amber-700 text-sm">8 fundamental chords and chord resources</p>
+                </a>
+              </div>
+              {/* Row 2: 2 cards */}
+              <div className="flex justify-center gap-4">
+                <a href="#essential-gear" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">Essential Gear</h3>
+                  <p className="text-amber-700 text-sm">Must-have and nice-to-have accessories</p>
+                </a>
+                <a href="#learning-roadmap" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">Learning Roadmap</h3>
+                  <p className="text-amber-700 text-sm">Progressive stages to build your skills</p>
+                </a>
+              </div>
+              {/* Row 3: 1 card */}
+              <div className="flex justify-center">
+                <a href="#first-songs" className="bg-amber-50 p-4 rounded-xl border-2 border-amber-400 shadow-md hover:shadow-lg transition-all duration-200 text-center w-72">
+                  <h3 className="font-semibold text-amber-800 mb-1">Your First 3 Songs</h3>
+                  <p className="text-amber-700 text-sm">Learn with simple interactive diagrams</p>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -56,19 +154,19 @@ export default function CompleteBeginnerGuide() {
 
             {/* Teaching Style Note */}
             <section className="mb-12">
-              <div className="bg-green-50 border-l-4 border-green-400 p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-green-800 mb-3">About My Teaching Approach</h3>
-                <p className="text-green-700 mb-3">
+              <div className="bg-orange-50 border-l-4 border-orange-400 p-6 rounded-lg">
+                <h3 className="text-xl font-bold text-orange-800 mb-3">About My Teaching Approach</h3>
+                <p className="text-orange-700 mb-3">
                   While I teach a variety of musical styles, I can loosely be categorised as a "rock" guitar teacher. Classical guitar has a different approach, predominantly due to the use of fingers in the plucking/picking hand rather than a pick.
                 </p>
-                <p className="text-green-700">
+                <p className="text-orange-700">
                   I do teach some fingerstyle playing when requested, however my method is rooted in playing with a pick. If you're specifically interested in classical guitar technique, you may want to seek out a teacher who specializes in that approach.
                 </p>
               </div>
             </section>
 
             {/* Choosing Your First Guitar Section */}
-            <section className="mb-12">
+            <section className="mb-12" id="choosing-guitar" style={{ scrollMarginTop: '2rem' }}>
               <h2 className="text-3xl font-bold text-amber-800 mb-6">Choosing Your First Guitar</h2>
               
               <p className="text-lg mb-6">
@@ -177,7 +275,7 @@ export default function CompleteBeginnerGuide() {
             </section>
 
             {/* Essential Gear */}
-            <section className="mb-12">
+            <section className="mb-12" id="essential-gear" style={{ scrollMarginTop: '2rem' }}>
               <h2 className="text-3xl font-bold text-amber-800 mb-6">Essential Gear You'll Need</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -228,7 +326,7 @@ export default function CompleteBeginnerGuide() {
             </section>
 
             {/* Holding the Pick */}
-            <section className="mb-12">
+            <section className="mb-12" id="holding-pick" style={{ scrollMarginTop: '2rem' }}>
               <h2 className="text-3xl font-bold text-amber-800 mb-6">How to Hold the Pick</h2>
               
               <p className="text-lg mb-6">
@@ -324,9 +422,9 @@ export default function CompleteBeginnerGuide() {
               </div>
             </section>
 
-            {/* Your First Chords */}
-            <section className="mb-12">
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First Essential Chords</h2>
+            {/* First Essential Chords */}
+            <section className="mb-12" id="first-chords" style={{ scrollMarginTop: '2rem' }}>
+              <h2 className="text-3xl font-bold text-amber-800 mb-6">First Essential Chords</h2>
               
               <p className="text-lg mb-6">
                 These eight chords form the foundation of thousands of songs. Master these, and you'll be 
@@ -344,27 +442,68 @@ export default function CompleteBeginnerGuide() {
                 ))}
               </div>
 
-              <div className="bg-amber-50 border-l-4 border-amber-400 p-6">
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-6">
                 <h3 className="text-xl font-bold text-amber-800 mb-3">Learning Tip</h3>
                 <p className="text-amber-700">
                   Start with the easiest chords first: <strong>A and E</strong>. These two chords alone will 
                   let you play your first song! Once you're comfortable with these, gradually add the others.
                 </p>
               </div>
+
+              <div className="bg-white border border-amber-300 rounded-lg p-6">
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Chord Resources</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-amber-800 mb-2">📚 How to Read Chord Diagrams</h4>
+                    <p className="text-amber-700 text-sm mb-3">
+                      Learn to read chord charts with this comprehensive video tutorial.
+                    </p>
+                    <Link 
+                      href="/blog/how-to-read-chord-diagrams" 
+                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                    >
+                      Watch Tutorial <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-amber-800 mb-2">🎸 Open Chord Library</h4>
+                    <p className="text-amber-700 text-sm mb-3">
+                      Interactive chord reference with visual diagrams and fingering patterns.
+                    </p>
+                    <Link 
+                      href="/blog/guitar-chord-reference-tool" 
+                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                    >
+                      View Library <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </section>
 
-            {/* Your First Songs */}
-            <section className="mb-12">
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First Songs</h2>
+            {/* Song Recommendations */}
+            <section className="mb-12" id="first-songs" style={{ scrollMarginTop: '2rem' }}>
+              <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First 3 Songs</h2>
               
+              {/* Strumming Patterns Guide Callout */}
+              <div className="bg-amber-100 border-l-4 border-amber-400 p-4 mb-6 rounded flex items-center gap-3">
+                <span className="text-2xl">🎸</span>
+                <div>
+                  <span className="font-semibold text-amber-800">New to strumming?</span> Check out the{' '}
+                  <Link href="/blog/guitar-strumming-patterns" className="text-amber-700 underline font-semibold hover:text-amber-900 transition-colors">
+                    10 Strumming Patterns & Technique Guide
+                  </Link>
+                  {' '}for essential tips and patterns every beginner should know.
+                </div>
+              </div>
               <p className="text-lg mb-6">
                 Learning songs is the most enjoyable way to practice your chords. Here's your progression 
                 of first songs, carefully chosen to build your skills step by step:
               </p>
               
-              <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-6">
-                <h3 className="text-xl font-bold text-blue-800 mb-3">Essential Learning Tip</h3>
-                <p className="text-blue-700">
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 mb-6">
+                <h3 className="text-xl font-bold text-amber-800 mb-3">Essential Learning Tip</h3>
+                <p className="text-amber-700">
                   <strong>Always start by learning songs at a slow tempo</strong> - sometimes quite a lot slower depending on your skill level. 
                   It's essential that you first learn to play accurately at slow speed before gradually increasing the tempo. 
                   Clean, accurate playing at slow speed will naturally develop into smooth playing at full speed.
@@ -381,28 +520,37 @@ export default function CompleteBeginnerGuide() {
                   <p className="text-amber-700 mb-3">
                     <strong>Chords used:</strong> A and E
                   </p>
-                  <p className="text-amber-700 mb-3">
-                    <strong>Why this song:</strong> Uses only two of the easiest chords to form and change between, 
-                    with a simple strumming pattern that's perfect for beginners.
+                  <p className="text-amber-700 text-sm mb-3">
+                    This song uses a Down Down Up Down Down Up pattern throughout.
                   </p>
                   <p className="text-amber-700 mb-3">
                     <strong>What you'll learn:</strong> Basic chord changes and steady strumming rhythm.
                   </p>
-                  <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <p className="text-amber-800 font-semibold mb-2">
-                      🎵 Strumming Pattern: Folk Pattern (Pattern 3)
-                    </p>
-                    <p className="text-amber-700 text-sm mb-3">
-                      This song uses the classic "Folk Pattern" from my strumming guide - perfect for 
-                      building steady rhythm while you focus on chord changes.
-                    </p>
-                    <Link 
-                      href="/blog/guitar-strumming-patterns" 
-                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
-                    >
-                      Learn This Pattern <ArrowRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </div>
+                  
+                  {/* Interactive Song Structure Player */}
+                  <SongStructurePlayer
+                    songTitle="Achy Breaky Heart"
+                    artist="Billy Ray Cyrus"
+                    sections={[
+                      {
+                        name: "Verse",
+                        measures: [
+                          { chord: "A", pattern: patterns[2], beats: 4 },
+                          { chord: "A", pattern: patterns[2], beats: 4 },
+                          { chord: "A", pattern: patterns[2], beats: 4 },
+                          { chord: "E", pattern: patterns[2], beats: 4 },
+                          { chord: "E", pattern: patterns[2], beats: 4 },
+                          { chord: "E", pattern: patterns[2], beats: 4 },
+                          { chord: "E", pattern: patterns[2], beats: 4 },
+                          { chord: "A", pattern: patterns[2], beats: 4 }
+                        ]
+                      }
+                    ]}
+                    bpm={120}
+                    initialTempo={60}
+                    forcePercussion
+                    hideSoundModeToggle
+                  />
                 </div>
 
                 {/* Song 2 */}
@@ -414,14 +562,26 @@ export default function CompleteBeginnerGuide() {
                   <p className="text-amber-700 mb-3">
                     <strong>Chords used:</strong> D, A, G
                   </p>
-                  <p className="text-amber-700 mb-3">
-                    <strong>Why this song:</strong> Introduces the G and D chords while building on your A foundation. 
-                    The strumming pattern is still beginner-friendly but adds a bit more complexity to help develop 
-                    your rhythm skills step by step.
+                  <p className="text-amber-700 text-sm mb-3">
+                    This song mostly uses a Down Down Up Down Up pattern, but uses a pattern of all downs on beats 1, 2, 3, 4 for the A and G chords in the verse. You can think of the A and G chords as taking up half of this all-down pattern, or as them changing half way through this pattern.
                   </p>
-                  <p className="text-amber-700">
+                  <p className="text-amber-700 mb-3">
                     <strong>What you'll learn:</strong> Three-chord progressions and more complex chord changes.
                   </p>
+                  <div className="flex gap-2 mb-4">
+                    <button onClick={() => setBadMoonSection('full')} className={`px-3 py-1 rounded ${badMoonSection==='full'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse & Chorus</button>
+                    <button onClick={() => setBadMoonSection('verse')} className={`px-3 py-1 rounded ${badMoonSection==='verse'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse</button>
+                    <button onClick={() => setBadMoonSection('chorus')} className={`px-3 py-1 rounded ${badMoonSection==='chorus'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Chorus</button>
+                  </div>
+                  <SongStructurePlayer
+                    songTitle="Bad Moon Rising"
+                    artist="Creedence Clearwater Revival"
+                    sections={badMoonPlayerSections}
+                    bpm={150}
+                    initialTempo={75}
+                    forcePercussion
+                    hideSoundModeToggle
+                  />
                 </div>
 
                 {/* Song 3 */}
@@ -433,19 +593,44 @@ export default function CompleteBeginnerGuide() {
                   <p className="text-amber-700 mb-3">
                     <strong>Chords used:</strong> G, C, D, Em
                   </p>
+                  <p className="text-amber-700 text-sm mb-3">
+                    This song uses a Down Down Up Down Up pattern throughout.
+                  </p>
                   <p className="text-amber-700 mb-3">
-                    <strong>Why this song:</strong> A classic four-chord song that introduces C and Em, 
-                    expanding your chord vocabulary.
+                    <strong>What you'll learn:</strong> Four-chord progressions and more chord transitions.
                   </p>
-                  <p className="text-amber-700">
-                    <strong>What you'll learn:</strong> Four-chord progressions and smoother chord transitions.
-                  </p>
+                  
+                  {/* Interactive Song Structure Player */}
+                  <div className="flex gap-2 mb-4">
+                    <button onClick={() => setBegSection('full')} className={`px-3 py-1 rounded ${begSection==='full'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse & Chorus</button>
+                    <button onClick={() => setBegSection('verse')} className={`px-3 py-1 rounded ${begSection==='verse'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse</button>
+                    <button onClick={() => setBegSection('chorus')} className={`px-3 py-1 rounded ${begSection==='chorus'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Chorus</button>
+                  </div>
+                  <SongStructurePlayer
+                    songTitle="Brown Eyed Girl"
+                    artist="Van Morrison"
+                    sections={begPlayerSections}
+                    bpm={148}
+                    initialTempo={75}
+                    forcePercussion
+                    hideSoundModeToggle
+                  />
                 </div>
+              </div>
+
+              {/* Link to 10 Strumming Patterns Guide */}
+              <div className="flex justify-center my-8">
+                <Link
+                  href="/blog/guitar-strumming-patterns"
+                  className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition-colors text-lg"
+                >
+                  Explore More Strumming Patterns: 10 Strumming Patterns Guide
+                </Link>
               </div>
             </section>
 
             {/* Practice Schedule */}
-            <section className="mb-12">
+            <section className="mb-12" id="practice-sessions" style={{ scrollMarginTop: '2rem' }}>
               <h2 className="text-3xl font-bold text-amber-800 mb-6">Effective Practice Sessions</h2>
               
               <p className="text-lg mb-6">
@@ -476,17 +661,30 @@ export default function CompleteBeginnerGuide() {
                   <li><strong>5 minutes:</strong> Play through your current song</li>
                 </ul>
               </div>
+
+              {/* Practice Tips Guide Callout */}
+              <div className="bg-amber-100 border-l-4 border-amber-400 p-4 my-8 rounded flex items-center gap-3">
+                <span className="text-2xl">💡</span>
+                <div>
+                  <span className="font-semibold text-amber-800">Want more practice advice?</span> Check out the{' '}
+                  <Link href="/blog/essential-practice-tips" className="text-amber-700 underline font-semibold hover:text-amber-900 transition-colors">
+                    Practice Tips Guide
+                  </Link>
+                  {' '}for actionable tips to make your practice more effective.
+                </div>
+              </div>
             </section>
 
-            {/* Learning Plan */}
-            <section className="mb-12">
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">Your Learning Roadmap</h2>
+            {/* Learning Roadmap */}
+            <section className="mb-12" id="learning-roadmap" style={{ scrollMarginTop: '2rem' }}>
+              <h2 className="text-3xl font-bold text-amber-800 mb-6 text-center">Learning Roadmap</h2>
               
-              <p className="text-lg mb-6">
+              <p className="text-lg mb-6 text-center">
                 Follow this structured approach to build your skills progressively. Each stage builds on 
                 the previous one, ensuring solid foundations:
               </p>
 
+              <div className="max-w-3xl mx-auto">
               <div className="space-y-6">
                 {/* Stage 1 */}
                 <div className="bg-white border border-amber-200 rounded-lg p-6">
@@ -511,8 +709,11 @@ export default function CompleteBeginnerGuide() {
                   <p className="text-amber-700 mb-3">
                     Learn the G and D chords and practice three-chord progressions. This opens up hundreds of songs.
                   </p>
-                  <p className="text-amber-600">
+                  <p className="text-amber-600 mb-2">
                     <strong>Song to learn:</strong> Bad Moon Rising - Creedence Clearwater Revival
+                  </p>
+                  <p className="text-amber-600">
+                    <strong>Strumming:</strong> Combines <Link href="/blog/guitar-strumming-patterns" className="text-amber-600 hover:text-amber-800 underline">Pattern 6: Down Beats and Syncopated Ending</Link> with all downstrokes
                   </p>
                 </div>
 
@@ -525,8 +726,11 @@ export default function CompleteBeginnerGuide() {
                   <p className="text-amber-700 mb-3">
                     Add C and Em chords to your repertoire. Now you can play the famous four-chord progression found in countless songs.
                   </p>
-                  <p className="text-amber-600">
+                  <p className="text-amber-600 mb-2">
                     <strong>Song to learn:</strong> Brown Eyed Girl - Van Morrison
+                  </p>
+                  <p className="text-amber-600">
+                    <strong>Strumming:</strong> <Link href="/blog/guitar-strumming-patterns" className="text-amber-600 hover:text-amber-800 underline">Pattern 4: Skipping an Up and a Down</Link>
                   </p>
                 </div>
 
@@ -583,6 +787,7 @@ export default function CompleteBeginnerGuide() {
                     <strong>Achievement:</strong> You can now play hundreds of popular songs!
                   </p>
                 </div>
+                </div>
               </div>
             </section>
 
@@ -633,61 +838,7 @@ export default function CompleteBeginnerGuide() {
               </div>
             </section>
 
-            {/* When to Get Lessons */}
-            <section className="mb-12">
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">When Should You Consider Guitar Lessons?</h2>
-              
-              <p className="text-lg mb-6">
-                While you can start learning on your own, professional lessons can accelerate your progress 
-                and help you avoid developing bad habits. Here's when to consider getting a teacher:
-              </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
-                  <h3 className="text-xl font-bold text-amber-800 mb-4">Right from the Start</h3>
-                  <ul className="space-y-2 text-amber-700">
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-amber-600 mr-2 mt-1 flex-shrink-0" />
-                      Learn proper technique from day one
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-amber-600 mr-2 mt-1 flex-shrink-0" />
-                      Avoid developing bad habits
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-amber-600 mr-2 mt-1 flex-shrink-0" />
-                      Get personalized guidance
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-amber-600 mr-2 mt-1 flex-shrink-0" />
-                      Stay motivated with structured learning
-                    </li>
-                  </ul>
-                </div>
-                
-                <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">After Self-Learning</h3>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-gray-600 mr-2 mt-1 flex-shrink-0" />
-                      When you feel stuck or plateau
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-gray-600 mr-2 mt-1 flex-shrink-0" />
-                      To correct technique issues
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-gray-600 mr-2 mt-1 flex-shrink-0" />
-                      When you want to learn specific genres
-                    </li>
-                    <li className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-gray-600 mr-2 mt-1 flex-shrink-0" />
-                      To accelerate your progress
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </section>
 
             {/* Call to Action */}
             <section className="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-8 rounded-lg text-center">
