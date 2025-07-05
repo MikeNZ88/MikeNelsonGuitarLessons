@@ -503,6 +503,37 @@ export class GuitarStrumEngine {
       ]
     },
     {
+      id: 'pattern-6',
+      name: 'Pattern 6',
+      beatsPerMeasure: 4,
+      description: 'Strong downbeat emphasis with syncopated ending',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        // Skip 1&
+        { type: 'down', time: 1, label: '2' },
+        // Skip 2&, 3
+        { type: 'up', time: 2.5, label: '&' },
+        { type: 'down', time: 3, label: '4' },
+        { type: 'up', time: 3.5, label: '&' },
+      ]
+    },
+    {
+      id: 'pattern-7',
+      name: 'Pattern 7',
+      beatsPerMeasure: 4,
+      description: 'Syncopated pattern with upstroke emphasis',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        { type: 'up', time: 0.5, label: '&' },
+        // Skip 2
+        { type: 'up', time: 1.5, label: '&' },
+        // Skip 3
+        { type: 'up', time: 2.5, label: '&' },
+        { type: 'down', time: 3, label: '4' },
+        { type: 'up', time: 3.5, label: '&' },
+      ]
+    },
+    {
       id: 'skank',
       name: 'Skank Pattern',
       beatsPerMeasure: 4,

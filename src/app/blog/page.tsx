@@ -14,10 +14,10 @@ export default function Blog() {
       id: '8',
       title: 'The Complete Beginner\'s Guide to Learning Guitar',
       excerpt: 'A comprehensive roadmap for absolute beginners, covering everything from first chords to single notes and picking techniques. Your complete starting guide.',
-      readTime: '15 min read',
+      readTime: '35 min read',
       category: 'Beginner',
       primaryCategory: 'Getting Started',
-      categories: ['Getting Started', 'Guides'],
+      categories: ['Getting Started'],
       skillLevel: 'beginner',
       image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'complete-beginners-guide-guitar',
@@ -80,7 +80,7 @@ export default function Blog() {
     {
       id: '17',
       title: 'Master Guitar Strumming Patterns',
-      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to perfect timing and rhythm with 8 progressive patterns from beginner to advanced.',
+      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 10 progressive patterns from beginner to advanced.',
       readTime: '12 min read',
       category: 'Beginner',
       primaryCategory: 'Rhythm',
@@ -112,7 +112,7 @@ export default function Blog() {
       readTime: '25 min read',
       category: 'Beginner',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard', 'Guides'],
+      categories: ['Scales and Fretboard'],
       skillLevel: 'beginner',
       image: '/beginners-guide-scales-thumbnail.svg',
       slug: 'beginners-guide-guitar-scales',
@@ -125,7 +125,7 @@ export default function Blog() {
       readTime: 'PDF',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard', 'Guides'],
+      categories: ['Scales and Fretboard'],
       skillLevel: 'intermediate',
       image: '/major-scale-guide.png',
       slug: 'major-scale-guitar-guide',
@@ -138,7 +138,7 @@ export default function Blog() {
       readTime: '15 min read',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard', 'Guides'],
+      categories: ['Scales and Fretboard'],
       skillLevel: 'intermediate',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'guitar-fretboard-navigation',
@@ -151,7 +151,7 @@ export default function Blog() {
       readTime: '20 min read',
       category: 'Advanced',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard', 'Guides'],
+      categories: ['Scales and Fretboard'],
       skillLevel: 'advanced',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'understanding-guitar-fretboard',
@@ -164,7 +164,7 @@ export default function Blog() {
       readTime: '9 min read',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard', 'Guides'],
+      categories: ['Scales and Fretboard'],
       skillLevel: 'intermediate',
       image: '/scale-explorer-thumbnail.svg',
       slug: 'scale-explorer-tool',
@@ -179,7 +179,7 @@ export default function Blog() {
       readTime: '30 min read',
       category: 'All',
       primaryCategory: 'Technique',
-      categories: ['Technique', 'Guides'],
+      categories: ['Technique'],
       skillLevel: 'all',
       image: '/guitar-picking-thumbnail.svg',
       slug: 'guitar-picking-technique-guide',
@@ -244,7 +244,7 @@ export default function Blog() {
   ];
 
   // Define new lesson topic categories
-  const topicCategories = ['All Posts', 'Getting Started', 'Guides', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear'];
+  const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear'];
   const skillLevels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
 
   // Smart display logic for categories
@@ -297,7 +297,7 @@ export default function Blog() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Guitar Learning Blog</h1>
           <p className="text-xl text-amber-200 max-w-2xl mx-auto">
-            Tips, techniques, and insights to accelerate your guitar journey
+            Comprehensive guides and interactive tools for all guitarists
           </p>
         </div>
       </section>

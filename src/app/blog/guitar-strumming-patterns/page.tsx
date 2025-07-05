@@ -3,12 +3,12 @@ import StrummingPattern from '@/components/rhythm/StrummingPattern';
 import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine';
 
 export const metadata: Metadata = {
-  title: 'Master Guitar Strumming Patterns: 8 Essential Patterns Every Guitarist Needs | Mike Nelson Guitar Lessons',
-  description: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to perfect timing and rhythm with 8 progressive patterns from beginner to advanced.',
+  title: 'Master Guitar Strumming Patterns: 10 Essential Patterns Every Guitarist Needs | Mike Nelson Guitar Lessons',
+  description: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 10 progressive patterns from beginner to advanced.',
   keywords: 'guitar strumming patterns, guitar rhythm, learn guitar strumming, guitar timing, guitar lessons Wellington, guitar chords strumming',
       openGraph: {
       title: 'Master Guitar Strumming Patterns: Interactive Guide with Audio',
-      description: 'Learn guitar strumming patterns with playable examples. Progressive lessons from basic downstrokes to advanced 16th note patterns - 8 essential patterns included.',
+      description: 'Learn guitar strumming patterns with playable examples. Progressive lessons from basic downstrokes to advanced 16th note patterns - 10 essential patterns included.',
     type: 'article',
     images: [
       {
@@ -32,16 +32,19 @@ export default function GuitarStrummingPatternsPage() {
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Master Guitar Strumming Patterns
           </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            The secret to perfect timing and rhythm with 8 progressive patterns every guitarist needs
+          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+            The secret to solid timing and rhythm with 10 progressive patterns every guitarist needs
           </p>
+          <a href="#patterns" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors mb-8">
+            Go Straight to Strumming Patterns
+          </a>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-2xl mx-auto">
             <p className="text-amber-800 text-sm mb-3">
-              🎵 <strong>Interactive Audio Guide:</strong> Each pattern below includes playable audio examples.
+              <strong>Interactive Audio Guide:</strong> Each pattern below includes playable audio examples.
               Click the play button to hear how each pattern sounds with an Em chord.
             </p>
             <p className="text-amber-800 text-sm">
-              🎼 <strong>Use the metronome</strong> to hear the pulse of each beat - especially helpful for 
+              <strong>Use the metronome</strong> to hear the pulse of each beat - especially helpful for 
               patterns that don't start on beat one.
             </p>
           </div>
@@ -82,19 +85,19 @@ export default function GuitarStrummingPatternsPage() {
             <ul className="space-y-2 text-gray-700 mb-6">
               <li className="flex items-start">
                 <span className="text-amber-500 mr-2">•</span>
-                <strong>Consistent timing:</strong> Your hand becomes a natural metronome
+                <strong>Consistent timing: </strong>Your hand becomes a natural metronome
               </li>
               <li className="flex items-start">
                 <span className="text-amber-500 mr-2">•</span>
-                <strong>Easier transitions:</strong> Moving between patterns becomes seamless
+                <strong>Easier transitions: </strong>Moving between patterns becomes seamless
               </li>
               <li className="flex items-start">
                 <span className="text-amber-500 mr-2">•</span>
-                <strong>Better feel:</strong> You develop an internal sense of rhythm
+                <strong>Better feel: </strong>You develop an internal sense of rhythm
               </li>
               <li className="flex items-start">
                 <span className="text-amber-500 mr-2">•</span>
-                <strong>Faster learning:</strong> Complex patterns become combinations of simple movements
+                <strong>Faster learning: </strong>Complex patterns become combinations of simple movements
               </li>
             </ul>
 
@@ -120,8 +123,11 @@ export default function GuitarStrummingPatternsPage() {
 
             <div className="grid md:grid-cols-2 gap-8 mb-6">
               <div className="bg-amber-50 rounded-lg p-6 border border-amber-200">
-                <h3 className="text-lg font-semibold text-amber-900 mb-3">
-                  ⬇️ Downstrokes
+                <h3 className="text-lg font-semibold text-amber-900 mb-3 flex items-center">
+                  <svg className="w-6 h-6 mr-3 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2L12 20M5 13L12 20L19 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                  Downstrokes
                 </h3>
                 <ul className="space-y-2 text-sm text-amber-800">
                   <li>• <strong>Hit all strings</strong> unless specifically avoiding one (like the low E string)</li>
@@ -131,12 +137,15 @@ export default function GuitarStrummingPatternsPage() {
                 </ul>
               </div>
 
-              <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                  ⬆️ Upstrokes
+              <div className="bg-amber-50 rounded-lg p-6 border border-amber-200">
+                <h3 className="text-lg font-semibold text-amber-900 mb-3 flex items-center">
+                  <svg className="w-6 h-6 mr-3 text-amber-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 22L12 4M5 11L12 4L19 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                  Upstrokes
                 </h3>
-                <ul className="space-y-2 text-sm text-gray-800">
-                  <li>• <strong>Often only hit 3-4 higher strings</strong> (B, high E, G, D strings)</li>
+                <ul className="space-y-2 text-sm text-amber-800">
+                  <li>• <strong>Often only hit 3-4 higher strings</strong> (D, G, B, high E strings)</li>
                   <li>• Lighter touch than downstrokes</li>
                   <li>• It's natural to miss some strings - this is correct!</li>
                 </ul>
@@ -145,7 +154,7 @@ export default function GuitarStrummingPatternsPage() {
 
             <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                🎯 Why This Technique Works
+                Why This Technique Works
               </h3>
               <p className="text-gray-700 text-sm leading-relaxed">
                 This natural difference between downstrokes (fuller, all strings) and upstrokes (lighter, fewer strings) 
@@ -175,7 +184,7 @@ export default function GuitarStrummingPatternsPage() {
                 <li>• Hand: <strong>D U D U D U D U</strong></li>
                 <li>• Beats 1,2,3,4 = Downstrokes</li>
                 <li>• "&" beats = Upstrokes</li>
-                <li>• Used in Patterns 1-6</li>
+                <li>• Used in Patterns 1-8</li>
               </ul>
             </div>
             
@@ -186,7 +195,7 @@ export default function GuitarStrummingPatternsPage() {
                 <li>• Hand: <strong>D U D U D U D U D U D U D U D U</strong></li>
                 <li>• 1,&,2,&,3,&,4,& = Downstrokes</li>
                 <li>• e,a,e,a,e,a,e,a = Upstrokes</li>
-                <li>• Used in Patterns 7 & 8</li>
+                <li>• Used in Patterns 9 & 10</li>
               </ul>
             </div>
           </div>
@@ -202,7 +211,7 @@ export default function GuitarStrummingPatternsPage() {
         {/* Pattern 1: Basic Alternating */}
         <div className="mb-12">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+            <h2 id="patterns" className="text-2xl font-bold text-gray-900 mb-3">
               Pattern 1: Basic Alternating - The Foundation
             </h2>
             <p className="text-gray-600">
@@ -279,15 +288,15 @@ export default function GuitarStrummingPatternsPage() {
 
         </div>
 
-        {/* Pattern 6: Skank Pattern */}
+        {/* Pattern 6: Down Beats and Syncopated Ending */}
         <div className="mb-12">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Pattern 6: Skank Pattern
+              Pattern 6: Down Beats and Syncopated Ending
             </h2>
             <p className="text-gray-600">
-              The classic skank rhythm emphasizes beats 2 and 4 along with their off-beats. 
-              This creates a distinctive rhythmic feel used in ska, reggae, and punk music.
+              This pattern emphasizes the strong downbeats (1 and 2) with a syncopated ending that 
+              creates forward momentum. Great for driving rock and pop songs.
             </p>
           </div>
           <StrummingPattern pattern={patterns[6]} bpm={150} />
@@ -295,11 +304,43 @@ export default function GuitarStrummingPatternsPage() {
 
         </div>
 
-        {/* Pattern 7: 16th Note Pattern */}
+        {/* Pattern 7: Upstroke Emphasis */}
         <div className="mb-12">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Pattern 7: 16th Note Pattern
+              Pattern 7: Upstroke Emphasis
+            </h2>
+            <p className="text-gray-600">
+              This syncopated pattern heavily features upstrokes, creating a lighter, more flowing 
+              feel. The emphasis on off-beats gives it a distinctive rhythmic character.
+            </p>
+          </div>
+          <StrummingPattern pattern={patterns[7]} bpm={120} />
+          
+
+        </div>
+
+        {/* Pattern 8: Skank Pattern */}
+        <div className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Pattern 8: Skank Pattern
+            </h2>
+            <p className="text-gray-600">
+              The classic skank rhythm emphasizes beats 2 and 4 along with their off-beats. 
+              This creates a distinctive rhythmic feel used in ska, reggae, and punk music.
+            </p>
+          </div>
+          <StrummingPattern pattern={patterns[8]} bpm={150} />
+          
+
+        </div>
+
+        {/* Pattern 9: 16th Note Pattern */}
+        <div className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Pattern 9: 16th Note Pattern
             </h2>
             <p className="text-gray-600">
               Ready for a challenge? This pattern uses 16th note subdivisions. Each beat is divided into 
@@ -311,18 +352,18 @@ export default function GuitarStrummingPatternsPage() {
 
         </div>
 
-        {/* Pattern 8: Funk 16th Note Pattern */}
+        {/* Pattern 10: Funk 16th Note Pattern */}
         <div className="mb-12">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Pattern 8: Funk 16th Note Pattern
+              Pattern 10: Funk 16th Note Pattern
             </h2>
             <p className="text-gray-600">
               This advanced funk pattern uses complex 16th note syncopation. It's all about the groove - 
               the strategic placement of strums and ghost strums creates that infectious funk rhythm.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[7]} bpm={120} />
+          <StrummingPattern pattern={patterns[9]} bpm={120} />
           
 
         </div>
