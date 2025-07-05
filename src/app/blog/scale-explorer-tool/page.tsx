@@ -27,6 +27,9 @@ export default function ScaleExplorerTool() {
             Scale Explorer: Interactive Guitar Learning Tool
           </h1>
 
+          <div className="flex items-center gap-2 mb-4 text-sm text-amber-600">
+            <span>5 min read</span>
+          </div>
           <p className="text-xl text-gray-700 leading-relaxed">
             Most guitarists learn scales as isolated fretboard shapes. Scale Explorer teaches you to understand the connections between scales, chords, and music theory - starting with the major scale as your foundation.
           </p>
