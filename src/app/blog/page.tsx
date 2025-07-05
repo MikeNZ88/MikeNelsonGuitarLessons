@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Music, BookOpen, Target, Store, Wrench, Star, User, Users, Award } from 'lucide-react';
+import { Music } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Blog() {
@@ -9,14 +9,15 @@ export default function Blog() {
   const [selectedSkillLevel, setSelectedSkillLevel] = useState('All Levels');
   
   const posts = [
-    // BEGINNER LEVEL
+    // GETTING STARTED
     {
       id: '8',
       title: 'The Complete Beginner\'s Guide to Learning Guitar',
       excerpt: 'A comprehensive roadmap for absolute beginners, covering everything from first chords to single notes and picking techniques. Your complete starting guide.',
       readTime: '15 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Getting Started',
+      categories: ['Getting Started', 'Guides'],
       skillLevel: 'beginner',
       image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'complete-beginners-guide-guitar',
@@ -28,7 +29,8 @@ export default function Blog() {
       excerpt: 'Discover the optimal age to start guitar based on neuroscience research. From children to seniors, learn the advantages and challenges at every life stage.',
       readTime: '12 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Getting Started',
+      categories: ['Getting Started'],
       skillLevel: 'beginner',
       image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'when-should-you-start-learning-guitar',
@@ -40,20 +42,23 @@ export default function Blog() {
       excerpt: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, current pricing, and where to buy for beginners.',
       readTime: '6 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Getting Started',
+      categories: ['Getting Started', 'Gear'],
       skillLevel: 'beginner',
       image: '/yamaha-pac112j.webp',
       slug: 'electric-guitar-beginner-guide-nz',
       author: 'Mike Nelson'
     },
+
+    // CHORDS
     {
       id: '16',
       title: 'How to Read Chord Diagrams',
       excerpt: 'Master the fundamentals of reading guitar chord diagrams with this comprehensive video tutorial. Learn to interpret chord charts and start playing songs faster.',
-
       readTime: '3 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Chords',
+      categories: ['Chords'],
       skillLevel: 'beginner',
       image: '/youtube-logo.svg',
       slug: 'how-to-read-chord-diagrams',
@@ -65,7 +70,8 @@ export default function Blog() {
       excerpt: 'Master guitar chords with my comprehensive interactive reference tool featuring visual diagrams, fingering patterns, and chord variations. Perfect for beginners and advanced players.',
       readTime: '',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Chords',
+      categories: ['Chords'],
       skillLevel: 'beginner',
       image: '/open-chord-library-thumbnail.svg',
       slug: 'guitar-chord-reference-tool',
@@ -75,10 +81,10 @@ export default function Blog() {
       id: '17',
       title: 'Master Guitar Strumming Patterns',
       excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to perfect timing and rhythm with 8 progressive patterns from beginner to advanced.',
-
       readTime: '12 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Rhythm',
+      categories: ['Rhythm', 'Chords', 'Technique'],
       skillLevel: 'beginner',
       image: '/strumming-patterns-thumbnail.svg',
       slug: 'guitar-strumming-patterns',
@@ -88,66 +94,40 @@ export default function Blog() {
       id: '4',
       title: 'Smoother Chord Changes: Identifying Common Fingers Between Chords',
       excerpt: 'Learn how to identify common fingers between chords for smoother transitions. Master chord changes with visual diagrams and essential fingering tips.',
-
       readTime: '7 min read',
       category: 'Beginner',
-      topicCategory: 'Tips',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Technique'],
       skillLevel: 'beginner',
       image: '/chord-transitions-thumbnail.svg',
       slug: 'chord-transitions-common-fingers',
       author: 'Mike Nelson'
     },
-    {
-      id: '1',
-      title: '6 Essential Practice Tips for Guitar Students',
-      excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
 
-      readTime: '8 min read',
-      category: 'All',
-      topicCategory: 'Tips',
-      skillLevel: 'all',
-      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-      slug: 'essential-practice-tips',
-      author: 'Mike Nelson'
-    },
-    {
-      id: '6',
-      title: 'Introducing PracticeTrack: Your Musical Journey Companion',
-      excerpt: 'Transform your practice sessions with deliberate tracking, goal setting, and analytics. A free tool to help you stay consistent and see your progress over time.',
-
-      readTime: '6 min read',
-      category: 'Beginner',
-      topicCategory: 'Tips',
-      skillLevel: 'beginner',
-      image: '/practicetrack-thumbnail.svg',
-      slug: 'introducing-practicetrack',
-      author: 'Mike Nelson'
-    },
+    // SCALES AND FRETBOARD
     {
       id: '11',
       title: 'Beginner\'s Guide to Guitar Scales',
-      excerpt: 'Everything you need to know about guitar scales, from the basics of notes and intervals to practical application and improvisation. Learn C major, pentatonic, and minor scales step by step.',
-
+      excerpt: 'A simple introduction to guitar scales covering the basics of notes, intervals, and the C major scale. Perfect starting point for beginners.',
       readTime: '25 min read',
       category: 'Beginner',
-      topicCategory: 'Guides',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Guides'],
       skillLevel: 'beginner',
       image: '/beginners-guide-scales-thumbnail.svg',
       slug: 'beginners-guide-guitar-scales',
       author: 'Mike Nelson'
     },
-
-    // INTERMEDIATE LEVEL
     {
       id: '15',
       title: 'Major Scale Guitar Guide',
       excerpt: 'Master essential guitar shapes and patterns across the fretboard with this comprehensive guide to major scale modes and arpeggios. A different approach to scale learning.',
-
-      readTime: '6 min read',
+      readTime: 'PDF',
       category: 'Intermediate',
-      topicCategory: 'Guides',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Guides'],
       skillLevel: 'intermediate',
-      image: '/major-scale-guide-20-thumbnail.svg',
+      image: '/major-scale-guide.png',
       slug: 'major-scale-guitar-guide',
       author: 'Mike Nelson'
     },
@@ -157,7 +137,8 @@ export default function Blog() {
       excerpt: 'Master practical techniques for finding notes and intervals across guitar strings. Complete with formulas, visual diagrams, and step-by-step examples. Contains beginner-friendly sections.',
       readTime: '15 min read',
       category: 'Intermediate',
-      topicCategory: 'Guides',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Guides'],
       skillLevel: 'intermediate',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'guitar-fretboard-navigation',
@@ -169,7 +150,8 @@ export default function Blog() {
       excerpt: 'Why are guitar strings tuned E-A-D-G-B-E instead of something more logical? Discover the fascinating constraints and compromises that created this system. Contains beginner-friendly explanations.',
       readTime: '20 min read',
       category: 'Advanced',
-      topicCategory: 'Guides',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Guides'],
       skillLevel: 'advanced',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'understanding-guitar-fretboard',
@@ -179,29 +161,58 @@ export default function Blog() {
       id: '5',
       title: 'Master Guitar Scales with the Interactive Scale Explorer Tool',
       excerpt: 'Discover how to use the Scale Explorer tool to visualize guitar scales, learn fretboard patterns, and understand music theory through interactive features.',
-
       readTime: '9 min read',
       category: 'Intermediate',
-      topicCategory: 'Tips',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Guides'],
       skillLevel: 'intermediate',
       image: '/scale-explorer-thumbnail.svg',
       slug: 'scale-explorer-tool',
       author: 'Mike Nelson'
     },
 
-    // ADVANCED LEVEL
+    // TECHNIQUE
     {
       id: '19',
       title: 'Guitar Picking Technique: Complete Progressive Guide',
       excerpt: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
       readTime: '30 min read',
       category: 'All',
-      topicCategory: 'Guides',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Guides'],
       skillLevel: 'all',
       image: '/guitar-picking-thumbnail.svg',
       slug: 'guitar-picking-technique-guide',
       author: 'Mike Nelson'
     },
+    {
+      id: '1',
+      title: '6 Essential Practice Tips for Guitar Students',
+      excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
+      readTime: '8 min read',
+      category: 'All',
+      primaryCategory: 'Technique',
+      categories: ['Technique'],
+      skillLevel: 'all',
+      image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+      slug: 'essential-practice-tips',
+      author: 'Mike Nelson'
+    },
+    {
+      id: '6',
+      title: 'Introducing PracticeTrack: Your Musical Journey Companion',
+      excerpt: 'Transform your practice sessions with deliberate tracking, goal setting, and analytics. A free tool to help you stay consistent and see your progress over time.',
+      readTime: '6 min read',
+      category: 'Beginner',
+      primaryCategory: 'Technique',
+      categories: ['Technique'],
+      skillLevel: 'beginner',
+      image: '/practicetrack-thumbnail.svg',
+      slug: 'introducing-practicetrack',
+      author: 'Mike Nelson'
+    },
+
+    // GEAR
     {
       id: '10',
       title: 'My Kiesel A2 7-String',
@@ -209,14 +220,13 @@ export default function Blog() {
       date: 'June 25, 2025',
       readTime: '12 min read',
       category: 'All',
-      topicCategory: 'Gear',
+      primaryCategory: 'Gear',
+      categories: ['Gear'],
       skillLevel: 'all',
       image: '/Kiesel logo.jpg',
       slug: 'kiesel-a2-7-string-review',
       author: 'Mike Nelson'
     },
-
-    // ALL POSTS (General/Informational - no specific skill level)
     {
       id: '2',
       title: 'Wellington\'s Vanishing Instrument Stores',
@@ -224,7 +234,8 @@ export default function Blog() {
       date: 'June 22, 2025',
       readTime: '6 min read',
       category: 'All',
-      topicCategory: 'Gear',
+      primaryCategory: 'Gear',
+      categories: ['Gear'],
       skillLevel: 'all',
       image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       slug: 'wellington-music-stores',
@@ -232,13 +243,21 @@ export default function Blog() {
     }
   ];
 
-  // Define hierarchical categories
-  const topicCategories = ['All Posts', 'Guides', 'Tips', 'Gear'];
+  // Define new lesson topic categories
+  const topicCategories = ['All Posts', 'Getting Started', 'Guides', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear'];
   const skillLevels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
+
+  // Smart display logic for categories
+  const getDisplayCategory = (post: any, selectedFilter: string) => {
+    if (selectedFilter === 'All Posts') {
+      return post.primaryCategory;
+    }
+    return post.categories.includes(selectedFilter) ? selectedFilter : post.primaryCategory;
+  };
 
   // Filter posts by both topic category and skill level
   const filteredPosts = posts.filter(post => {
-    const matchesTopicCategory = selectedTopicCategory === 'All Posts' || post.topicCategory === selectedTopicCategory;
+    const matchesTopicCategory = selectedTopicCategory === 'All Posts' || post.categories.includes(selectedTopicCategory);
     const matchesSkillLevel = selectedSkillLevel === 'All Levels' || 
                              post.skillLevel === selectedSkillLevel.toLowerCase() || 
                              post.skillLevel === 'all' ||
@@ -252,45 +271,22 @@ export default function Blog() {
   // Use filtered posts without sorting by date
   const sortedPosts = filteredPosts;
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Beginner':
-        return <User className="w-5 h-5" />;
-      case 'Intermediate':
-        return <Users className="w-5 h-5" />;
-      case 'Advanced':
-        return <Award className="w-5 h-5" />;
-      case 'All':
-        return <Music className="w-5 h-5" />;
-      case 'Guides':
-        return <BookOpen className="w-5 h-5" />;
-      case 'Tips':
-        return <Wrench className="w-5 h-5" />;
-      case 'Gear':
-        return <Store className="w-5 h-5" />;
-      default:
-        return <Music className="w-5 h-5" />;
-    }
-  };
+
 
   const getCategoryColor = (category: string) => {
+    // Use different colors only for skill levels
     switch (category) {
       case 'Beginner':
-        return 'text-green-600';
+        return 'bg-amber-100 text-amber-800';
       case 'Intermediate':
-        return 'text-blue-600';
+        return 'bg-orange-100 text-orange-800';
       case 'Advanced':
-        return 'text-purple-600';
+        return 'bg-amber-200 text-amber-900';
       case 'All':
-        return 'text-amber-600';
-      case 'Guides':
-        return 'text-teal-600';
-      case 'Tips':
-        return 'text-yellow-600';
-      case 'Gear':
-        return 'text-pink-600';
+        return 'bg-orange-200 text-orange-900';
       default:
-        return 'text-amber-600';
+        // All topic categories use amber
+        return 'bg-amber-100 text-amber-800';
     }
   };
 
@@ -312,7 +308,7 @@ export default function Blog() {
           <div className="flex flex-col gap-6">
             {/* Topic Category Filter */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-gray-700 font-medium">Category:</span>
+              <span className="text-gray-700 font-medium">Topic:</span>
               <div className="flex flex-wrap gap-2">
                 {topicCategories.map((category) => (
                   <button
@@ -390,49 +386,57 @@ export default function Blog() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sortedPosts.map((post) => (
-                <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                  <img 
-                    src={post.image} 
-                    alt={post.title}
-                    className="w-full h-48 object-cover object-right"
-                  />
-                  <div className="p-6">
-                    <div className="flex items-center mb-3">
-                      <div className={`flex items-center mr-3 ${getCategoryColor(post.category)}`}>
-                        {getCategoryIcon(post.category)}
-                        <span className="ml-1 text-sm font-medium">{post.category}</span>
+              {sortedPosts.map((post) => {
+                const displayCategory = getDisplayCategory(post, selectedTopicCategory);
+                return (
+                  <Link key={post.id} href={`/blog/${post.slug}`} className="group">
+                    <article className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                      <div className={`aspect-video relative overflow-hidden ${
+                        post.image === '/major-scale-guide.png' 
+                          ? 'bg-amber-800' 
+                          : 'bg-gray-200'
+                      }`}>
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className={`w-full h-full transition-transform duration-300 ${
+                            post.image === '/major-scale-guide.png' 
+                              ? 'object-contain scale-110 group-hover:scale-115' 
+                              : 'object-cover group-hover:scale-105'
+                          }`}
+                        />
                       </div>
-                      {post.category !== post.topicCategory && (
-                        <div className={`flex items-center mr-3 ${getCategoryColor(post.topicCategory)}`}>
-                          {getCategoryIcon(post.topicCategory)}
-                          <span className="ml-1 text-sm font-medium">{post.topicCategory}</span>
+                      <div className="p-6">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`text-xs font-medium px-3 py-1 rounded ${getCategoryColor(displayCategory)}`}>
+                              {displayCategory}
+                            </span>
+                            <span className={`text-xs font-medium px-3 py-1 rounded ${getCategoryColor(post.category === 'All' ? 'All' : post.category)}`}>
+                              {post.category === 'All' ? 'All Levels' : post.category}
+                            </span>
+                          </div>
+                          {post.readTime && (
+                            <span className="text-gray-500 text-sm flex-shrink-0">{post.readTime}</span>
+                          )}
                         </div>
-                      )}
-                      <span className="text-gray-500 text-sm">{post.readTime}</span>
-                    </div>
-                    <h2 className="text-xl font-bold text-gray-800 mb-3">{post.title}</h2>
-                    <p className="text-gray-600 mb-4 line-clamp-3">{post.excerpt}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm text-gray-500">
-                        <span>By {post.author}</span>
-                        {post.date && (
-                          <>
-                            <span className="mx-2">•</span>
-                            <span>{post.date}</span>
-                          </>
-                        )}
+                        <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-amber-600 transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-gray-600 mb-4 line-clamp-3">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-500">By {post.author}</span>
+                          <span className="text-amber-600 font-medium text-sm group-hover:text-amber-700">
+                            Read More →
+                          </span>
+                        </div>
                       </div>
-                      <Link 
-                        href={`/blog/${post.slug}`}
-                        className="text-amber-600 hover:text-amber-700 font-medium"
-                      >
-                        Read More →
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                    </article>
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
