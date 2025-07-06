@@ -95,36 +95,31 @@ export default function CompleteBeginnerGuide() {
         <div className="container-max section-padding">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-amber-800 mb-6 text-center">What You'll Learn</h2>
-            <div className="flex flex-col items-center gap-4">
-              {/* Row 1: 3 cards */}
-              <div className="flex justify-center gap-4">
-                <a href="#choosing-guitar" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+            {/* Responsive layout: pyramid on desktop, stacked/grid on mobile */}
+            <div className="w-full flex flex-col items-center">
+              {/* Mobile: 2-2-1 grid, Desktop: pyramid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mb-4">
+                <a href="#choosing-guitar" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">Choosing Your First Guitar</h3>
-                  <p className="text-amber-700 text-sm">Guitar types, sizes, and recommendations for New Zealand</p>
+                  <p className="text-amber-700 text-sm">How to pick the right guitar for you</p>
                 </a>
-                <a href="#holding-pick" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                <a href="#holding-pick" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">How to Hold the Pick</h3>
-                  <p className="text-amber-700 text-sm">Proper pick grip and hand position</p>
+                  <p className="text-amber-700 text-sm">Get a relaxed, confident grip</p>
                 </a>
-                <a href="#first-chords" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                <a href="#first-chords" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">First Essential Chords</h3>
-                  <p className="text-amber-700 text-sm">8 fundamental chords and chord resources</p>
+                  <p className="text-amber-700 text-sm">The chords every beginner should know</p>
                 </a>
-              </div>
-              {/* Row 2: 2 cards */}
-              <div className="flex justify-center gap-4">
-                <a href="#essential-gear" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                <a href="#essential-gear" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">Essential Gear</h3>
-                  <p className="text-amber-700 text-sm">Must-have and nice-to-have accessories</p>
+                  <p className="text-amber-700 text-sm">What you need (and what you don't)</p>
                 </a>
-                <a href="#learning-roadmap" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-72">
+                <a href="#learning-roadmap" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">Learning Roadmap</h3>
-                  <p className="text-amber-700 text-sm">Progressive stages to build your skills</p>
+                  <p className="text-amber-700 text-sm">Your step-by-step path to progress</p>
                 </a>
-              </div>
-              {/* Row 3: 1 card */}
-              <div className="flex justify-center">
-                <a href="#first-songs" className="bg-amber-50 p-4 rounded-xl border-2 border-amber-400 shadow-md hover:shadow-lg transition-all duration-200 text-center w-72">
+                <a href="#your-first-songs" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">Your First 3 Songs</h3>
                   <p className="text-amber-700 text-sm">Learn with simple interactive diagrams</p>
                 </a>
@@ -481,8 +476,8 @@ export default function CompleteBeginnerGuide() {
               </div>
             </section>
 
-            {/* Song Recommendations */}
-            <section className="mb-12" id="first-songs" style={{ scrollMarginTop: '2rem' }}>
+            {/* Song Recommendations / Your First 3 Songs */}
+            <section className="mb-12" id="your-first-songs" style={{ scrollMarginTop: '2rem' }}>
               <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First 3 Songs</h2>
               
               {/* Strumming Patterns Guide Callout */}

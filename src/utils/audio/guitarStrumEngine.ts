@@ -307,7 +307,8 @@ export class GuitarStrumEngine {
   }
 
   playDownstrokePercussion(delay: number = 0): void {
-    this.createPercussionSound(true, delay);
+    // Use snare sound for both downstrokes and upstrokes for maximum compatibility
+    this.createPercussionSound(false, delay);
   }
 
   playUpstrokePercussion(delay: number = 0): void {
