@@ -30,8 +30,11 @@ const Footer = () => {
               <Link href="/lessons" className="block hover:text-amber-200 transition-colors">
                 Book a Lesson
               </Link>
-              <Link href="/resources" className="block hover:text-amber-200 transition-colors">
-                Guitar Resources
+              <Link href="/blog" className="block hover:text-amber-200 transition-colors">
+                Guitar Blog
+              </Link>
+              <Link href="/tools" className="block hover:text-amber-200 transition-colors">
+                Tools
               </Link>
               <Link href="/about" className="block hover:text-amber-200 transition-colors">
                 About Mike
