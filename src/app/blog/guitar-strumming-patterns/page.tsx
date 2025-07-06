@@ -219,7 +219,7 @@ export default function GuitarStrummingPatternsPage() {
               foundation of all strumming. Your hand never stops moving - this is the core principle.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[1]} bpm={70} />
+          <StrummingPattern pattern={patterns[1]} bpm={70} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -235,7 +235,7 @@ export default function GuitarStrummingPatternsPage() {
               your hand moves up without hitting the strings. This creates strong downbeat emphasis.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[0]} bpm={60} />
+          <StrummingPattern pattern={patterns[0]} bpm={60} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -251,7 +251,7 @@ export default function GuitarStrummingPatternsPage() {
               moves down-up-down-up, but some movements don't hit the strings.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[2]} bpm={100} />
+          <StrummingPattern pattern={patterns[2]} bpm={100} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -267,7 +267,7 @@ export default function GuitarStrummingPatternsPage() {
               driving and musical. Notice the double upstroke that gives it character.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[3]} bpm={120} />
+          <StrummingPattern pattern={patterns[3]} bpm={120} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -283,7 +283,7 @@ export default function GuitarStrummingPatternsPage() {
               Your hand still moves down, but doesn't hit the strings - it's a ghost strum!
             </p>
           </div>
-          <StrummingPattern pattern={patterns[5]} bpm={100} />
+          <StrummingPattern pattern={patterns[5]} bpm={100} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -299,7 +299,7 @@ export default function GuitarStrummingPatternsPage() {
               creates forward momentum. Great for driving rock and pop songs.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[6]} bpm={150} />
+          <StrummingPattern pattern={patterns[6]} bpm={150} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -315,7 +315,7 @@ export default function GuitarStrummingPatternsPage() {
               feel. The emphasis on off-beats gives it a distinctive rhythmic character.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[7]} bpm={120} />
+          <StrummingPattern pattern={patterns[7]} bpm={120} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -331,7 +331,7 @@ export default function GuitarStrummingPatternsPage() {
               This creates a distinctive rhythmic feel used in ska, reggae, and punk music.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[8]} bpm={150} />
+          <StrummingPattern pattern={patterns[8]} bpm={150} forcePercussion hideSoundModeToggle />
           
 
         </div>

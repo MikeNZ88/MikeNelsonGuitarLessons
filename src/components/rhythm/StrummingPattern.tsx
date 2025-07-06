@@ -7,12 +7,16 @@ interface StrummingPatternProps {
   pattern: StrumPattern;
   bpm?: number;
   autoPlay?: boolean;
+  forcePercussion?: boolean;
+  hideSoundModeToggle?: boolean;
 }
 
 export default function StrummingPattern({ 
   pattern, 
   bpm: initialBpm = 80,
-  autoPlay = false 
+  autoPlay = false,
+  forcePercussion = false,
+  hideSoundModeToggle = false
 }: StrummingPatternProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
@@ -27,8 +31,12 @@ export default function StrummingPattern({
 
   useEffect(() => {
     engineRef.current = new GuitarStrumEngine();
-    engineRef.current.setSoundMode(soundMode);
-    
+    if (forcePercussion) {
+      setSoundMode('percussion');
+      engineRef.current.setSoundMode('percussion');
+    } else {
+      engineRef.current.setSoundMode(soundMode);
+    }
     return () => {
       // Clean up timeouts and loop interval
       timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
@@ -36,7 +44,7 @@ export default function StrummingPattern({
         clearTimeout(loopIntervalRef.current);
       }
     };
-  }, []);
+  }, [forcePercussion]);
 
   const clearTimeouts = () => {
     timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
@@ -120,6 +128,7 @@ export default function StrummingPattern({
   };
 
   const toggleSoundMode = () => {
+    if (forcePercussion) return;
     const newMode = soundMode === 'guitar' ? 'percussion' : 'guitar';
     setSoundMode(newMode);
     if (engineRef.current) {
@@ -360,17 +369,19 @@ export default function StrummingPattern({
           </button>
         )}
 
-        <button
-          onClick={toggleSoundMode}
-          className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
-            soundMode === 'percussion'
-              ? 'bg-amber-700 hover:bg-amber-800 text-white'
-              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-          }`}
-        >
-          <span className="hidden sm:inline">{soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}</span>
-          <span className="sm:hidden">{soundMode === 'guitar' ? '🥁' : '🎸'}</span>
-        </button>
+        {!hideSoundModeToggle && (
+          <button
+            onClick={toggleSoundMode}
+            className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
+              soundMode === 'percussion'
+                ? 'bg-amber-700 hover:bg-amber-800 text-white'
+                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+            }`}
+          >
+            <span className="hidden sm:inline">{soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}</span>
+            <span className="sm:hidden">{soundMode === 'guitar' ? '🥁' : '🎸'}</span>
+          </button>
+        )}
 
         <button
           onClick={toggleMetronome}
