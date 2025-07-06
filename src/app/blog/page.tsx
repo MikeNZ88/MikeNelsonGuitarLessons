@@ -253,6 +253,19 @@ export default function Blog() {
       image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       slug: 'wellington-music-stores',
       author: 'Mike Nelson'
+    },
+    {
+      id: '21',
+      title: 'Triads on 3-String Sets: Major, Minor, and Diminished',
+      excerpt: 'Visualize and master triads across the neck using 3-string sets. See every inversion, shape, and fretboard map for major, minor, and diminished triads.',
+      readTime: '15 min read',
+      category: 'Intermediate',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Scales and Fretboard'],
+      skillLevel: 'intermediate',
+      image: '/triads-thumbnail.svg',
+      slug: 'triads-on-3-string-sets',
+      author: 'Mike Nelson'
     }
   ];
 
