@@ -197,7 +197,7 @@ const C_MAJOR_REFERENCE_2_4 = {
 const C_MAJOR_REFERENCE_3_5 = {
   // Shape 1: Root position (C on A string, 3rd fret)
   shape1: {
-    frets: [-1, 3, 2, 0, -1, -1],
+    frets: [-1, 3, 2, 0, -1, -1], // E A D G B e
     fingers: ['', '3', '2', '0', '', ''],
     startFret: 0,
     notes: ['C', 'E', 'G'], // A, D, G strings
@@ -205,18 +205,18 @@ const C_MAJOR_REFERENCE_3_5 = {
   },
   // Shape 2: 1st inversion (E on A string, 7th fret)
   shape2: {
-    frets: [-1, 7, 5, 5, -1, -1],
+    frets: [-1, 7, 5, 5, -1, -1], // E A D G B e
     fingers: ['', '3', '1', '1', '', ''],
     startFret: 5,
-    notes: ['E', 'G', 'C'],
+    notes: ['E', 'G', 'C'], // A, D, G strings
     cagedShape: 'G',
   },
   // Shape 3: 2nd inversion (G on A string, 10th fret)
   shape3: {
-    frets: [-1, 10, 9, 7, -1, -1],
+    frets: [-1, 10, 10, 9, -1, -1], // E A D G B e
     fingers: ['', '3', '2', '1', '', ''],
-    startFret: 7,
-    notes: ['G', 'C', 'E'],
+    startFret: 9,
+    notes: ['G', 'C', 'E'], // A, D, G strings
     cagedShape: 'E',
   },
 };
@@ -502,9 +502,10 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
           frets[j] = frets[j] + offset;
         }
       }
-      const activeFrets = frets.filter(f => f > 0);
-      const minFret = Math.min(...activeFrets);
-      const startFret = Math.max(1, minFret - 1);
+      // Improved startFret logic: set to 0 if any open string, else to min played fret
+      const playedFrets = frets.filter(f => f >= 0);
+      const minFret = playedFrets.length ? Math.min(...playedFrets) : 1;
+      const startFret = minFret === 0 ? 0 : minFret;
       return {
         frets,
         fingers,
@@ -515,12 +516,11 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     });
     // For horizontal map, build triadNotes for all three shapes
     // (use the correct string mapping for each set)
-    // For simplicity, just use the notes from the diagrams
     const triadNotes = diagrams.flatMap((diagram, idx) => {
       // Find the played strings for this diagram
       const playedStrings = diagram.frets
         .map((fret, stringIdx) => ({ fret, stringIdx }))
-        .filter(({ fret }) => fret > 0)
+        .filter(({ fret }) => fret >= 0)
         .map(({ stringIdx }) => stringIdx);
       return playedStrings.map((stringIdx, noteIdx) => ({
         string: stringIdx + 1,
@@ -874,9 +874,19 @@ export default function TriadsOn3StringSets() {
         : undefined
     })) : triadNotesWithShape;
     
+    // Calculate dynamic fret range for the horizontal map
+    const playedFrets = triadNotesWithShape.map(n => n.fret).filter(f => f >= 0);
+    const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
+    const maxFret = playedFrets.length ? Math.max(...playedFrets) : 5;
+    const dynamicStartFret = minFret === 0 ? 0 : Math.max(1, minFret - 1);
+    const dynamicFretCount = Math.max(5, maxFret - dynamicStartFret + 1);
+
+    // Find the label for the selected string set
+    const selectedStringSetLabel = STRING_SETS.find(s => s.value === selectedStringSet)?.label || 'Strings 1–3';
+
     return (
       <div className="mb-16">
-        <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedKey} {displayType} Triads on Strings 1–3</h3>
+        <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedKey} {displayType} Triads on {selectedStringSetLabel}</h3>
         {/* Shape Names Legend */}
         {showShapeNames && (
           <div className="flex justify-center gap-6 mb-6 text-sm">
@@ -920,11 +930,11 @@ export default function TriadsOn3StringSets() {
         </div>
         {/* Horizontal Fretboard View */}
         <div className="bg-gray-50 rounded-lg p-8 mb-8">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">{selectedKey} {displayType} Triads on Strings 1–3: Fretboard Map</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">{selectedKey} {displayType} Triads on {selectedStringSetLabel}: Fretboard Map</h3>
           <HorizontalTriadMap 
             triadNotes={coloredTriadNotes} 
-            startFret={showFullFretboard ? 1 : 3} 
-            fretCount={showFullFretboard ? 24 : 13} 
+            startFret={dynamicStartFret} 
+            fretCount={dynamicFretCount} 
             labelModeDefault="none"
             showShapeNames={showShapeNames}
             showFullFretboard={showFullFretboard}
@@ -997,37 +1007,31 @@ export default function TriadsOn3StringSets() {
         </div>
       </div>
 
-      {/* Section: Triads on Strings 1-3 */}
-      <section id="triads-1-3" className="mb-16">
-        <h2 className="text-2xl font-bold text-amber-800 mb-6 text-center">{selectedKey} {selectedTriadType} Triads on Strings 1–3</h2>
-        
-        {selectedTriadType === 'Diminished & Augmented' ? (
-          <div>
-            {/* Diminished Section */}
-            <div className="mb-12">
-              <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Diminished Triads</h3>
-              <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
-                <p>Diminished triads have a minor 3rd and diminished 5th (flattened 5th). They occur naturally in the major scale on the 7th degree.</p>
-              </div>
-              {renderTriadSection('Diminished & Augmented', 'Diminished')}
+      {/* Only render the dynamic triad section for the selected string set */}
+      {selectedTriadType === 'Diminished & Augmented' ? (
+        <div>
+          {/* Diminished Section */}
+          <div className="mb-12">
+            <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Diminished Triads</h3>
+            <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
+              <p>Diminished triads have a minor 3rd and diminished 5th (flattened 5th). They occur naturally in the major scale on the 7th degree.</p>
             </div>
-            
-            {/* Augmented Section */}
-            <div className="mb-12">
-              <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Augmented Triads</h3>
-              <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
-                <p>Augmented triads have a major 3rd and augmented 5th (sharpened 5th). They don't occur naturally in the major scale but are common in jazz and classical music.</p>
-              </div>
-              {renderTriadSection('Diminished & Augmented', 'Augmented')}
+            {renderTriadSection('Diminished & Augmented', 'Diminished')}
+          </div>
+          {/* Augmented Section */}
+          <div className="mb-12">
+            <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Augmented Triads</h3>
+            <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
+              <p>Augmented triads have a major 3rd and augmented 5th (sharpened 5th). They don't occur naturally in the major scale but are common in jazz and classical music.</p>
             </div>
+            {renderTriadSection('Diminished & Augmented', 'Augmented')}
           </div>
-        ) : (
-          <div>
-            {renderTriadSection(selectedTriadType)}
-          </div>
-        )}
-      </section>
-      {/* TODO: Add more sections for other string sets and triad sequence maps */}
+        </div>
+      ) : (
+        <div>
+          {renderTriadSection(selectedTriadType)}
+        </div>
+      )}
     </div>
   );
 } 
