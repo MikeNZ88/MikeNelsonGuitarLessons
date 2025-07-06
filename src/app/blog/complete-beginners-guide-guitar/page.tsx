@@ -121,7 +121,7 @@ export default function CompleteBeginnerGuide() {
                 </a>
                 <a href="#your-first-songs" className="bg-white p-4 rounded-xl border border-amber-200 shadow-sm hover:shadow-lg transition-all duration-200 text-center w-full min-w-[180px]">
                   <h3 className="font-semibold text-amber-800 mb-1">Your First 3 Songs</h3>
-                  <p className="text-amber-700 text-sm">Learn with simple interactive diagrams</p>
+                  <p className="text-amber-700 text-sm">Learn with simple strumming patterns and interactive diagrams</p>
                 </a>
               </div>
             </div>
@@ -249,6 +249,9 @@ export default function CompleteBeginnerGuide() {
                 <p className="text-amber-700 mb-4">
                   Current pricing in New Zealand ranges from $668-$798 for a complete beginner setup 
                   including guitar, amp, and essential accessories.
+                </p>
+                <p className="text-amber-700 mb-4">
+                  It is more expensive to purchase an electric guitar + amp than an acoustic. This is another reason that it's often best to start on an acoustic until you're really sure that learning the guitar is for you.
                 </p>
                 <div className="bg-white border border-amber-300 rounded-lg p-4">
                   <p className="text-amber-800 font-semibold mb-2">
