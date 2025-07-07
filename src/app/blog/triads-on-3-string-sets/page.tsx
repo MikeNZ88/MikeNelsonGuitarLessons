@@ -525,19 +525,25 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     shapes = reference ? [reference.shape1, reference.shape2, reference.shape3] : null;
   }
 
+  function transposeNote(rootNote: string, semitones: number, isMinor = false): string {
+    const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const rootIdx = chromatic.indexOf(rootNote);
+    return chromatic[(rootIdx + semitones) % 12];
+  }
+
   function adjustForHighFrets(frets: number[], originalStartFret: number) {
-    const activeFrets = frets.filter(f => f > 0);
+    const activeFrets = frets.filter(f => f >= 0);
     const maxFret = Math.max(...activeFrets);
     const minFret = Math.min(...activeFrets);
     let adjustedFrets = frets;
     let adjustedStartFret = originalStartFret;
     if (maxFret > 15) {
       adjustedFrets = frets.map(f => f > 0 ? f - 12 : f);
-      const newActiveFrets = adjustedFrets.filter(f => f > 0);
+      const newActiveFrets = adjustedFrets.filter(f => f >= 0);
       const newMinFret = Math.min(...newActiveFrets);
-      adjustedStartFret = Math.max(1, newMinFret - 1);
+      adjustedStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
     } else {
-      adjustedStartFret = Math.max(1, minFret - 1);
+      adjustedStartFret = minFret === 0 ? 0 : Math.max(1, minFret - 1);
     }
     return { frets: adjustedFrets, startFret: adjustedStartFret };
   }
@@ -559,7 +565,7 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
       const fingers = [...shape.fingers];
       // Offset the frets for the selected key
       for (let j = 0; j < frets.length; j++) {
-        if (typeof frets[j] === 'number' && frets[j] > 0) {
+        if (typeof frets[j] === 'number' && frets[j] >= 0) {
           frets[j] = frets[j] + offset;
         }
       }
@@ -575,9 +581,44 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
         notes: shape.notes,
       };
     });
-    // For horizontal map, build triadNotes for all three shapes
-    // (use the correct string mapping for each set)
-    const triadNotes = diagrams.flatMap((diagram, idx) => {
+    // Apply octave-down rule to these diagrams too
+    const octaveAdjustedDiagrams = diagrams.map(diagram => {
+      const playedFrets = diagram.frets.filter((f: number) => f >= 0);
+      const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
+      
+      if (minFret >= 12) {
+        const octaveDownFrets = diagram.frets.map((f: number) => f >= 0 ? f - 12 : f);
+        const newPlayedFrets = octaveDownFrets.filter((f: number) => f >= 0);
+        const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
+        const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
+        
+        return {
+          ...diagram,
+          frets: octaveDownFrets,
+          startFret: newStartFret
+        };
+      }
+      
+      return diagram;
+    });
+
+    // Sort diagrams by their final startFret and min played fret positions
+    const sortedDiagrams = octaveAdjustedDiagrams.slice().sort((a, b) => {
+      const sfA = a.startFret ?? 0;
+      const sfB = b.startFret ?? 0;
+      if (sfA !== sfB) return sfA - sfB;
+      const playedA = a.frets.filter((f: number) => f >= 0);
+      const playedB = b.frets.filter((f: number) => f >= 0);
+      for (let i = 0; i < Math.max(playedA.length, playedB.length); i++) {
+        if ((playedA[i] ?? 100) !== (playedB[i] ?? 100)) {
+          return (playedA[i] ?? 100) - (playedB[i] ?? 100);
+        }
+      }
+      return 0;
+    });
+
+    // For horizontal map, build triadNotes using the sorted octave-adjusted diagrams
+    const triadNotes = sortedDiagrams.flatMap((diagram, idx) => {
       // Find the played strings for this diagram
       const playedStrings = diagram.frets
         .map((fret, stringIdx) => ({ fret, stringIdx }))
@@ -592,7 +633,8 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
         shapeIndex: idx,
       }));
     });
-    return { diagrams, triadNotes, reference: diagrams };
+
+    return { diagrams: sortedDiagrams, triadNotes, reference: sortedDiagrams };
   }
   
   // Extrapolate all major triad shapes across the fretboard if showFullFretboard is true
@@ -774,66 +816,43 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
   // Flatten for the map
   const triadNotes = triadNotesByShape.flat();
 
-  // Robust sort: by startFret, then lexicographically by played frets
-  function getPlayedFrets(diagram: ChordData): number[] {
-    return diagram.frets.filter((f: number) => f >= 0);
-  }
-  const sortedDiagrams = diagrams.slice().sort((a, b) => {
+  // Apply octave-down rule first: if lowest fret is 13+, move down an octave
+  const octaveAdjustedDiagrams = diagrams.map(diagram => {
+    const playedFrets = diagram.frets.filter((f: number) => f >= 0);
+    const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
+    
+    if (minFret >= 12) {
+      const octaveDownFrets = diagram.frets.map((f: number) => f >= 0 ? f - 12 : f);
+      const newPlayedFrets = octaveDownFrets.filter((f: number) => f >= 0);
+      const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
+      const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
+      
+      return {
+        ...diagram,
+        frets: octaveDownFrets,
+        startFret: newStartFret
+      };
+    }
+    
+    return diagram;
+  });
+
+  // Then sort diagrams by their final startFret and min played fret positions
+  const sortedDiagrams = octaveAdjustedDiagrams.slice().sort((a, b) => {
     const sfA = a.startFret ?? 0;
     const sfB = b.startFret ?? 0;
     if (sfA !== sfB) return sfA - sfB;
-    const aFrets = getPlayedFrets(a);
-    const bFrets = getPlayedFrets(b);
-    for (let i = 0; i < Math.max(aFrets.length, bFrets.length); i++) {
-      if ((aFrets[i] ?? 100) !== (bFrets[i] ?? 100)) {
-        return (aFrets[i] ?? 100) - (bFrets[i] ?? 100);
+    const playedA = a.frets.filter((f: number) => f >= 0);
+    const playedB = b.frets.filter((f: number) => f >= 0);
+    for (let i = 0; i < Math.max(playedA.length, playedB.length); i++) {
+      if ((playedA[i] ?? 100) !== (playedB[i] ?? 100)) {
+        return (playedA[i] ?? 100) - (playedB[i] ?? 100);
       }
     }
     return 0;
   });
 
-  // Assign inversion labels and chord names based on the actual lowest note in each shape
-  const INVERSION_LABELS = ['Root Position', '1st Inversion', '2nd Inversion'];
-  const root = key;
-  // Use minor 3rd for minor triads, major 3rd otherwise
-  const third = transposeNote(key, triadType === 'Minor' ? 3 : 4, triadType === 'Minor');
-  const fifth = transposeNote(key, 7);
-  const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-  const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
-  const diagramData = sortedDiagrams.map((diagram, idx) => {
-    // Find the lowest played string (lowest index with fret >= 0)
-    let lowestStringIdx = -1;
-    let lowestFret = 100;
-    for (let i = 0; i < diagram.frets.length; i++) {
-      if (diagram.frets[i] >= 0 && diagram.frets[i] < lowestFret) {
-        lowestFret = diagram.frets[i];
-        lowestStringIdx = i;
-      }
-    }
-    // Get the open string note for that string
-    let openNote = stringNames[lowestStringIdx];
-    // Calculate the note at that fret
-    let note = '';
-    if (lowestStringIdx !== -1) {
-      const openIdx = chromatic.indexOf(openNote.replace('E', lowestStringIdx === 5 ? 'E' : 'E'));
-      note = chromatic[(openIdx + lowestFret) % 12];
-    }
-    // Assign inversion label
-    let label = '';
-    if (note === root) label = 'Root Position';
-    else if (note === third) label = '1st Inversion';
-    else if (note === fifth) label = '2nd Inversion';
-    else label = '';
-    return {
-      diagram,
-      label,
-      chordName: `${key} ${triadType === 'Diminished & Augmented' ? (subType === 'Augmented' ? 'Augmented' : 'Diminished') : triadType} (${label})`,
-      cagedShape: diagram.cagedShape || '',
-      triadIdx: idx,
-    };
-  });
-
-  return { diagrams: diagramData, triadNotes, reference };
+  return { diagrams: sortedDiagrams, triadNotes, reference };
 }
 
 const TRIAD_LABELS = [
@@ -1001,24 +1020,103 @@ export default function TriadsOn3StringSets() {
     const { diagrams, triadNotes, reference } = buildTriadDataForKey(selectedKey, triadType, subType, showFullFretboard, selectedStringSet);
     const displayType = subType || triadType;
 
-    // Sort diagrams by startFret, then by min played fret, in renderTriadSection
-    const sortedDiagrams = diagrams.slice().sort((a, b) => {
-      const sfA = a.startFret ?? 0;
-      const sfB = b.startFret ?? 0;
-      if (sfA !== sfB) return sfA - sfB;
-      const playedA = a.frets.filter((f: number) => f >= 0);
-      const playedB = b.frets.filter((f: number) => f >= 0);
-      for (let i = 0; i < Math.max(playedA.length, playedB.length); i++) {
-        if ((playedA[i] ?? 100) !== (playedB[i] ?? 100)) {
-          return (playedA[i] ?? 100) - (playedB[i] ?? 100);
+
+
+    // Hardcoded inversion lookup table for first diagram of each key/stringset/triadtype
+    const INVERSION_LOOKUP: Record<string, Record<string, Record<string, string>>> = {
+      'Major': {
+        '1_3': { 'C': 'Root Position', 'D': '2nd Inversion', 'E': '2nd Inversion', 'F': '1st Inversion', 'G': '1st Inversion', 'A': '1st Inversion', 'B': 'Root Position' },
+        '2_4': { 'C': '2nd Inversion', 'D': '1st Inversion', 'E': '1st Inversion', 'F': 'Root Position', 'G': 'Root Position', 'A': '2nd Inversion', 'B': '2nd Inversion' },
+        '3_5': { 'C': '1st Inversion', 'D': 'Root Position', 'E': '2nd Inversion', 'F': '2nd Inversion', 'G': '2nd Inversion', 'A': '1st Inversion', 'B': '1st Inversion' },
+        '4_6': { 'C': '2nd Inversion', 'D': '2nd Inversion', 'E': '1st Inversion', 'F': '1st Inversion', 'G': '1st Inversion', 'A': 'Root Position', 'B': '2nd Inversion' }
+      },
+      'Minor': {
+        '1_3': { 'C': 'Root Position', 'D': '2nd Inversion', 'E': '2nd Inversion', 'F': '1st Inversion', 'G': '1st Inversion', 'A': '1st Inversion', 'B': 'Root Position' },
+        '2_4': { 'C': '2nd Inversion', 'D': '1st Inversion', 'E': '1st Inversion', 'F': 'Root Position', 'G': 'Root Position', 'A': '2nd Inversion', 'B': '2nd Inversion' },
+        '3_5': { 'C': '1st Inversion', 'D': 'Root Position', 'E': 'Root Position', 'F': '2nd Inversion', 'G': '2nd Inversion', 'A': '1st Inversion', 'B': '1st Inversion' },
+        '4_6': { 'C': '2nd Inversion', 'D': '2nd Inversion', 'E': '1st Inversion', 'F': '1st Inversion', 'G': '1st Inversion', 'A': 'Root Position', 'B': 'Root Position' }
+      }
+    };
+
+    // Inversion rotation order for each string set
+    const INVERSION_ROTATION: Record<string, string[]> = {
+      '1_3': ['Root Position', '1st Inversion', '2nd Inversion'],
+      '2_4': ['2nd Inversion', 'Root Position', '1st Inversion'], 
+      '3_5': ['1st Inversion', '2nd Inversion', 'Root Position'],
+      '4_6': ['Root Position', '1st Inversion', '2nd Inversion']
+    };
+
+    // Verification function to check if frets produce correct triad notes
+    function verifyTriadNotes(frets: number[], stringSet: string, key: string, triadType: TriadType) {
+      const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+      const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      
+      // Build expected triad
+      const root = key;
+      const third = transposeNote(key, triadType === 'Minor' ? 3 : 4, triadType === 'Minor');
+      const fifth = transposeNote(key, 7);
+      const expectedTriad = new Set([root, third, fifth]);
+      
+      // Get actual notes from frets
+      const actualNotes = new Set();
+      frets.forEach((fret: number, stringIdx: number) => {
+        if (fret >= 0) {
+          const openNote = stringNames[stringIdx];
+          const openIdx = chromatic.indexOf(openNote);
+          const note = chromatic[(openIdx + fret) % 12];
+          actualNotes.add(note);
+        }
+      });
+      
+      // Check if all actual notes are in the expected triad
+      const isValid = [...actualNotes].every(note => expectedTriad.has(note));
+      return { isValid, expectedTriad: [...expectedTriad], actualNotes: [...actualNotes] };
+    }
+
+    // Assign inversion labels dynamically based on bass note (lowest played string)
+    const labeledDiagrams = diagrams.map((diagram, idx) => {
+      // Find the bass note (lowest string that's played)
+      const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
+      const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+      
+      // Find the lowest string index that has a fret >= 0
+      let bassStringIdx = -1;
+      let bassFret = -1;
+      for (let i = 0; i < diagram.frets.length; i++) {
+        if (diagram.frets[i] >= 0) {
+          bassStringIdx = i;
+          bassFret = diagram.frets[i];
+          break;
         }
       }
-      return 0;
+      
+      let inversionLabel = 'Root Position'; // default
+      if (bassStringIdx >= 0) {
+        const openNote = stringNames[bassStringIdx];
+        const openIdx = chromatic.indexOf(openNote);
+        const bassNote = chromatic[(openIdx + bassFret) % 12];
+        
+        // Determine expected notes for this triad type
+        const root = selectedKey;
+        const thirdInterval = triadType === 'Minor' ? 3 : 4;
+        const third = transposeNote(selectedKey, thirdInterval, triadType === 'Minor');
+        const fifth = transposeNote(selectedKey, 7);
+        
+        // Determine inversion based on bass note
+        if (bassNote === root) inversionLabel = 'Root Position';
+        else if (bassNote === third) inversionLabel = '1st Inversion';
+        else if (bassNote === fifth) inversionLabel = '2nd Inversion';
+      }
+      
+      // Verify this diagram produces correct triad notes
+      const verification = verifyTriadNotes(diagram.frets, selectedStringSet, selectedKey, triadType);
+      
+      return { 
+        ...diagram, 
+        inversionLabel,
+        verification 
+      };
     });
-
-    // Build array of {diagram, label, fingering, chordName, cagedShape}
-    // Use the new diagramData from buildTriadDataForKey, which already has correct labels and chord names
-    // Remove the old mapping logic here
 
     // Assign shapeIndex for partial mode (main three shapes)
     let triadNotesWithShape = triadNotes;
@@ -1084,10 +1182,10 @@ export default function TriadsOn3StringSets() {
         </div>
         {/* Chord Diagram View (vertical) */}
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
-          {sortedDiagrams.map((data, idx) => (
+          {labeledDiagrams.map((data, idx) => (
             <div key={idx} className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`} 
                  style={showShapeNames ? {borderColor: TRIAD_LABELS[data.triadIdx]?.shapeColor} : {}}>
-              <div className="mb-2 text-xs text-gray-500 text-center">Fingering: {TRIAD_LABELS[data.triadIdx]?.fingering(triadType, subType)}</div>
+              <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{data.inversionLabel}</div>
               <ChordDiagram chordName={data.chordName} chordData={data} showLabels={true} />
               {data.cagedShape && (
                 <div className="mt-2 text-xs text-gray-400 text-center">
