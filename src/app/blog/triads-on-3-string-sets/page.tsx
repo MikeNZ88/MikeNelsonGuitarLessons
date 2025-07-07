@@ -836,6 +836,7 @@ const TRIAD_LABELS = [
 
 const C_MINOR_REFERENCE_1_3 = C_MINOR_REFERENCE;
 const C_MINOR_REFERENCE_2_4 = {
+  // Root position: C (D string 10), Eb (G string 8), G (B string 8)
   shape1: {
     frets: [-1, -1, 10, 8, 8, -1],
     fingers: ['', '', '3', '1', '1', ''],
@@ -843,63 +844,71 @@ const C_MINOR_REFERENCE_2_4 = {
     notes: ['C', 'Eb', 'G'],
     cagedShape: 'Gm',
   },
+  // 1st inversion: Eb (D string 13), G (G string 12), C (B string 13)
   shape2: {
-    frets: [-1, -1, 1, 1, 1, -1],
-    fingers: ['', '', '1', '1', '1', ''],
-    startFret: 1,
+    frets: [-1, -1, 13, 12, 13, -1],
+    fingers: ['', '', '3', '1', '4', ''],
+    startFret: 12,
     notes: ['Eb', 'G', 'C'],
     cagedShape: 'Em',
   },
+  // 2nd inversion: G (D string 5), C (G string 5), Eb (B string 4)
   shape3: {
-    frets: [-1, -1, 5, 4, 3, -1],
-    fingers: ['', '', '3', '2', '1', ''],
-    startFret: 3,
+    frets: [-1, -1, 5, 5, 4, -1],
+    fingers: ['', '', '2', '3', '1', ''],
+    startFret: 4,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'Cm',
   },
 };
 const C_MINOR_REFERENCE_3_5 = {
+  // Root position: C (A string 15), Eb (D string 13), G (G string 12)
   shape1: {
-    frets: [-1, 3, 1, 0, -1, -1],
-    fingers: ['', '3', '1', '0', '', ''],
-    startFret: 0,
+    frets: [-1, 15, 13, 12, -1, -1],
+    fingers: ['', '4', '2', '1', '', ''],
+    startFret: 12,
     notes: ['C', 'Eb', 'G'],
     cagedShape: 'Am',
   },
+  // 1st inversion: Eb (A string 6), G (D string 5), C (G string 5)
   shape2: {
-    frets: [-1, 6, 5, 4, -1, -1],
-    fingers: ['', '3', '2', '1', '', ''],
-    startFret: 4,
+    frets: [-1, 6, 5, 5, -1, -1],
+    fingers: ['', '3', '1', '1', '', ''],
+    startFret: 5,
     notes: ['Eb', 'G', 'C'],
     cagedShape: 'Gm',
   },
+  // 2nd inversion: G (A string 10), C (D string 10), Eb (G string 8)
   shape3: {
-    frets: [-1, 10, 8, 8, -1, -1],
-    fingers: ['', '3', '1', '1', '', ''],
+    frets: [-1, 10, 10, 8, -1, -1],
+    fingers: ['', '3', '2', '1', '', ''],
     startFret: 8,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'Em',
   },
 };
 const C_MINOR_REFERENCE_4_6 = {
+  // Root position: C (E string 8), Eb (A string 6), G (D string 5)
   shape1: {
-    frets: [8, 10, 8, -1, -1, -1],
-    fingers: ['1', '3', '1', '', '', ''],
-    startFret: 8,
+    frets: [8, 6, 5, -1, -1, -1],
+    fingers: ['3', '2', '1', '', '', ''],
+    startFret: 5,
     notes: ['C', 'Eb', 'G'],
     cagedShape: 'Em',
   },
+  // 1st inversion: Eb (E string 11), G (A string 10), C (D string 10)
   shape2: {
-    frets: [11, 10, 8, -1, -1, -1],
+    frets: [11, 10, 10, -1, -1, -1],
     fingers: ['3', '2', '1', '', '', ''],
-    startFret: 8,
+    startFret: 10,
     notes: ['Eb', 'G', 'C'],
     cagedShape: 'Cm',
   },
+  // 2nd inversion: G (E string 3), C (A string 3), Eb (D string 1)
   shape3: {
-    frets: [3, 1, 0, -1, -1, -1],
-    fingers: ['3', '1', '0', '', '', ''],
-    startFret: 0,
+    frets: [3, 3, 1, -1, -1, -1],
+    fingers: ['3', '2', '1', '', '', ''],
+    startFret: 1,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'Am',
   },
@@ -938,6 +947,14 @@ export default function TriadsOn3StringSets() {
       let label = getInversionLabelForShape(shape?.notes, selectedKey);
       if (selectedStringSet === '2_4') label = INVERSION_LABELS_2_4[idx];
       if (selectedStringSet === '3_5') label = INVERSION_LABELS_3_5[idx];
+      // PATCH: Swap Root and 2nd Inversion labels for C minor, strings 3-5 only
+      if (selectedKey === 'C' && triadType === 'Minor' && selectedStringSet === '3_5') {
+        // INVERSION_LABELS_3_5 = ['Root Position', '2nd Inversion', '1st Inversion']
+        // idx: 0 = Root, 1 = 2nd, 2 = 1st (as currently assigned)
+        if (idx === 0) label = '2nd Inversion';
+        else if (idx === 1) label = '1st Inversion';
+        else if (idx === 2) label = 'Root Position';
+      }
       let chordName = TRIAD_LABELS[i].name(selectedKey, triadType, subType);
       if (selectedStringSet === '2_4' || selectedStringSet === '3_5') {
         chordName = `${selectedKey} ${displayType} (${label})`;
