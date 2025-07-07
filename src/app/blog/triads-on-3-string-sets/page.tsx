@@ -262,7 +262,7 @@ const C_MAJOR_REFERENCE_3_5 = {
   // Shape 3: Root position (C on A string, 15th fret)
   shape3: {
     frets: [-1, 15, 14, 12, -1, -1],
-    fingers: ['', '4', '2', '1', '', ''],
+    fingers: ['', '4', '3', '1', '', ''],
     startFret: 12,
     notes: ['C', 'E', 'G'],
     cagedShape: 'A',
@@ -531,6 +531,39 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     return chromatic[(rootIdx + semitones) % 12];
   }
 
+  function adjustFingersForOctaveDown(frets: number[], originalFingers: string[]): string[] {
+    const adjustedFingers = [...originalFingers];
+    // Clear all finger assignments first
+    for (let i = 0; i < adjustedFingers.length; i++) {
+      adjustedFingers[i] = '';
+    }
+    // Find all played frets (ignore -1)
+    const playedFrets = frets
+      .map((fret, stringIdx) => ({ fret, stringIdx }))
+      .filter(({ fret }) => fret >= 0);
+    if (playedFrets.length === 0) return adjustedFingers;
+    // Find the lowest non-zero fret (ignore open strings)
+    const nonOpenFrets = playedFrets.filter(({ fret }) => fret > 0);
+    if (nonOpenFrets.length === 0) {
+      // All open strings, just mark as '0'
+      for (const { fret, stringIdx } of playedFrets) {
+        if (fret === 0) adjustedFingers[stringIdx] = '0';
+      }
+      return adjustedFingers;
+    }
+    const minFret = Math.min(...nonOpenFrets.map(({ fret }) => fret));
+    // Assign fingers based on ergonomic rule
+    for (const { fret, stringIdx } of playedFrets) {
+      if (fret === 0) {
+        adjustedFingers[stringIdx] = '0';
+      } else {
+        const fingerNum = Math.min(4, fret - minFret + 1); // 1 for minFret, 2 for minFret+1, etc.
+        adjustedFingers[stringIdx] = fingerNum.toString();
+      }
+    }
+    return adjustedFingers;
+  }
+
   function adjustForHighFrets(frets: number[], originalStartFret: number) {
     const activeFrets = frets.filter(f => f >= 0);
     const maxFret = Math.max(...activeFrets);
@@ -582,7 +615,7 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
       };
     });
     // Apply octave-down rule to these diagrams too
-    const octaveAdjustedDiagrams = diagrams.map(diagram => {
+    const octaveAdjustedDiagrams = diagrams.map((diagram, idx) => {
       const playedFrets = diagram.frets.filter((f: number) => f >= 0);
       const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
       
@@ -592,10 +625,14 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
         const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
         const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
         
+        // Adjust fingerings for octave-down shapes
+        const adjustedFingers = adjustFingersForOctaveDown(octaveDownFrets, diagram.fingers);
+        
         return {
           ...diagram,
           frets: octaveDownFrets,
-          startFret: newStartFret
+          startFret: newStartFret,
+          fingers: adjustedFingers
         };
       }
       
@@ -816,23 +853,27 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
   // Flatten for the map
   const triadNotes = triadNotesByShape.flat();
 
-  // Apply octave-down rule first: if lowest fret is 13+, move down an octave
-  const octaveAdjustedDiagrams = diagrams.map(diagram => {
+  // Apply octave-down rule first: if lowest fret is 12+, move down an octave
+  const octaveAdjustedDiagrams = diagrams.map((diagram, idx) => {
     const playedFrets = diagram.frets.filter((f: number) => f >= 0);
     const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
     
-    if (minFret >= 12) {
-      const octaveDownFrets = diagram.frets.map((f: number) => f >= 0 ? f - 12 : f);
-      const newPlayedFrets = octaveDownFrets.filter((f: number) => f >= 0);
-      const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
-      const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
-      
-      return {
-        ...diagram,
-        frets: octaveDownFrets,
-        startFret: newStartFret
-      };
-    }
+           if (minFret >= 12) {
+         const octaveDownFrets = diagram.frets.map((f: number) => f >= 0 ? f - 12 : f);
+         const newPlayedFrets = octaveDownFrets.filter((f: number) => f >= 0);
+         const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
+         const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
+         
+         // Adjust fingerings for octave-down shapes
+         const adjustedFingers = adjustFingersForOctaveDown(octaveDownFrets, (diagram as any).fingers || []);
+         
+         return {
+           ...diagram,
+           frets: octaveDownFrets,
+           startFret: newStartFret,
+           fingers: adjustedFingers
+         };
+       }
     
     return diagram;
   });
@@ -1187,11 +1228,6 @@ export default function TriadsOn3StringSets() {
                  style={showShapeNames ? {borderColor: TRIAD_LABELS[data.triadIdx]?.shapeColor} : {}}>
               <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{data.inversionLabel}</div>
               <ChordDiagram chordName={data.chordName} chordData={data} showLabels={true} />
-              {data.cagedShape && (
-                <div className="mt-2 text-xs text-gray-400 text-center">
-                  The CAGED system calls this part of the "{data.cagedShape}" shape
-                </div>
-              )}
             </div>
           ))}
         </div>
