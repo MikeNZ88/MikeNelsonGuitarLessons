@@ -34,6 +34,29 @@ const STRING_SETS = [
 const INVERSION_LABELS = ['Root Position', '1st Inversion', '2nd Inversion'];
 const STRING_SET_OFFSETS: Record<string, number> = { '1_3': 0, '2_4': 1, '3_5': 2, '4_6': 3 };
 
+// Inversion rotation offsets for each string set
+const INVERSION_ROTATION_OFFSETS: Record<string, number> = {
+  '1_3': 0, // Root, 1st, 2nd
+  '2_4': 2, // 2nd, Root, 1st
+  '3_5': 1, // 1st, 2nd, Root
+  '4_6': 0, // Root, 1st, 2nd
+};
+
+const INVERSION_LABELS_ROTATED: string[][] = [
+  ['Root Position', '1st Inversion', '2nd Inversion'], // 1_3
+  ['2nd Inversion', 'Root Position', '1st Inversion'], // 2_4
+  ['1st Inversion', '2nd Inversion', 'Root Position'], // 3_5
+  ['Root Position', '1st Inversion', '2nd Inversion'], // 4_6
+];
+
+// Inversion mapping table for each string set
+const INVERSION_MAPPING: Record<string, number[]> = {
+  '1_3': [0, 1, 2], // Root, 1st, 2nd
+  '2_4': [2, 0, 1], // 2nd, Root, 1st
+  '3_5': [1, 2, 0], // 1st, 2nd, Root
+  '4_6': [0, 1, 2], // Root, 1st, 2nd
+};
+
 // Helper: get fret for a note on a string
 function getFretForNote(rootNote: string, targetNote: string, minFret: number = 0) {
   // All notes as semitones from C
@@ -58,26 +81,26 @@ function transposeNote(root: string, semitones: number, preferFlat: boolean = fa
 const C_MAJOR_REFERENCE = {
   // Shape 1: Root position (C on G string, 5th fret)
   shape1: {
-    frets: [-1, -1, -1, 5, 5, 3], // E A D G B e
+    frets: [-1, -1, -1, 5, 5, 3],
     fingers: ['', '', '', '3', '4', '1'],
     startFret: 3,
-    notes: ['C', 'E', 'G'], // G, B, E strings
+    notes: ['C', 'E', 'G'],
     cagedShape: 'A',
   },
   // Shape 2: 1st inversion (E on G string, 9th fret)
   shape2: {
-    frets: [-1, -1, -1, 9, 8, 8], // E A D G B e
+    frets: [-1, -1, -1, 9, 8, 8],
     fingers: ['', '', '', '2', '1', '1'],
     startFret: 8,
-    notes: ['E', 'G', 'C'], // G, B, E strings
+    notes: ['E', 'G', 'C'],
     cagedShape: 'E',
   },
   // Shape 3: 2nd inversion (G on G string, 12th fret)
   shape3: {
-    frets: [-1, -1, -1, 12, 13, 12], // E A D G B e
+    frets: [-1, -1, -1, 12, 13, 12],
     fingers: ['', '', '', '1', '3', '2'],
     startFret: 12,
-    notes: ['G', 'C', 'E'], // G, B, E strings
+    notes: ['G', 'C', 'E'],
     cagedShape: 'D',
   },
 };
@@ -167,21 +190,46 @@ const C_AUGMENTED_REFERENCE = {
 };
 
 // Major triad reference shapes for each string set (C as root)
-const C_MAJOR_REFERENCE_1_3 = C_MAJOR_REFERENCE;
+const C_MAJOR_REFERENCE_1_3 = {
+  // Shape 1: Root position (C on G string, 5th fret)
+  shape1: {
+    frets: [-1, -1, -1, 5, 5, 3],
+    fingers: ['', '', '', '3', '4', '1'],
+    startFret: 3,
+    notes: ['C', 'E', 'G'],
+    cagedShape: 'A',
+  },
+  // Shape 2: 1st inversion (E on G string, 9th fret)
+  shape2: {
+    frets: [-1, -1, -1, 9, 8, 8],
+    fingers: ['', '', '', '2', '1', '1'],
+    startFret: 8,
+    notes: ['E', 'G', 'C'],
+    cagedShape: 'E',
+  },
+  // Shape 3: 2nd inversion (G on G string, 12th fret)
+  shape3: {
+    frets: [-1, -1, -1, 12, 13, 12],
+    fingers: ['', '', '', '1', '3', '2'],
+    startFret: 12,
+    notes: ['G', 'C', 'E'],
+    cagedShape: 'D',
+  },
+};
 const C_MAJOR_REFERENCE_2_4 = {
   // Shape 1: Root position (C on D string, 10th fret)
   shape1: {
-    frets: [-1, -1, 10, 9, 8, -1], // E A D G B e
+    frets: [-1, -1, 10, 9, 8, -1],
     fingers: ['', '', '3', '2', '1', ''],
     startFret: 8,
-    notes: ['C', 'E', 'G'], // D, G, B strings
+    notes: ['C', 'E', 'G'],
     cagedShape: 'G',
   },
-  // Shape 2: 1st inversion (E on D string, 2nd fret)
+  // Shape 2: 1st inversion (E on D string, 14th fret)
   shape2: {
-    frets: [-1, -1, 2, 2, 1, -1],
-    fingers: ['', '', '2', '1', '1', ''],
-    startFret: 1,
+    frets: [-1, -1, 14, 12, 13, -1],
+    fingers: ['', '', '3', '1', '2', ''],
+    startFret: 12,
     notes: ['E', 'G', 'C'],
     cagedShape: 'E',
   },
@@ -195,53 +243,53 @@ const C_MAJOR_REFERENCE_2_4 = {
   },
 };
 const C_MAJOR_REFERENCE_3_5 = {
-  // Shape 1: Root position (C on A string, 3rd fret)
+  // Shape 1: 2nd inversion (G on A string, 10th fret)
   shape1: {
-    frets: [-1, 3, 2, 0, -1, -1], // E A D G B e
-    fingers: ['', '3', '2', '0', '', ''],
-    startFret: 0,
-    notes: ['C', 'E', 'G'], // A, D, G strings
-    cagedShape: 'A',
+    frets: [-1, 10, 10, 9, -1, -1],
+    fingers: ['', '3', '2', '1', '', ''],
+    startFret: 9,
+    notes: ['G', 'C', 'E'],
+    cagedShape: 'E',
   },
   // Shape 2: 1st inversion (E on A string, 7th fret)
   shape2: {
-    frets: [-1, 7, 5, 5, -1, -1], // E A D G B e
+    frets: [-1, 7, 5, 5, -1, -1],
     fingers: ['', '3', '1', '1', '', ''],
     startFret: 5,
-    notes: ['E', 'G', 'C'], // A, D, G strings
+    notes: ['E', 'G', 'C'],
     cagedShape: 'G',
   },
-  // Shape 3: 2nd inversion (G on A string, 10th fret)
+  // Shape 3: Root position (C on A string, 15th fret)
   shape3: {
-    frets: [-1, 10, 10, 9, -1, -1], // E A D G B e
-    fingers: ['', '3', '2', '1', '', ''],
-    startFret: 9,
-    notes: ['G', 'C', 'E'], // A, D, G strings
-    cagedShape: 'E',
+    frets: [-1, 15, 14, 12, -1, -1],
+    fingers: ['', '4', '2', '1', '', ''],
+    startFret: 12,
+    notes: ['C', 'E', 'G'],
+    cagedShape: 'A',
   },
 };
 const C_MAJOR_REFERENCE_4_6 = {
-  // Shape 1: Root position (C on E string, 8th fret)
+  // Root position: C (8th fret E), E (7th fret A), G (5th fret D)
   shape1: {
-    frets: [8, 10, 10, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 8,
-    notes: ['C', 'E', 'G'], // E, A, D strings
+    frets: [8, 7, 5, -1, -1, -1], // E, A, D, G, B, e
+    fingers: ['3', '2', '1', '', '', ''],
+    startFret: 5,
+    notes: ['C', 'E', 'G'],
     cagedShape: 'E',
   },
-  // Shape 2: 1st inversion (E on E string, 12th fret)
+  // 1st inversion: E (12th fret E), G (10th fret A), C (10th fret D)
   shape2: {
-    frets: [12, 14, 14, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 12,
+    frets: [12, 10, 10, -1, -1, -1], // E, A, D, G, B, e
+    fingers: ['3', '1', '1', '', '', ''],
+    startFret: 10,
     notes: ['E', 'G', 'C'],
     cagedShape: 'C',
   },
-  // Shape 3: 2nd inversion (G on E string, 3rd fret)
+  // 2nd inversion: G (3rd fret E), C (3rd fret A), E (2nd fret D)
   shape3: {
-    frets: [3, 5, 5, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 3,
+    frets: [3, 3, 2, -1, -1, -1], // E, A, D, G, B, e
+    fingers: ['2', '3', '1', '', '', ''],
+    startFret: 2,
     notes: ['G', 'C', 'E'],
     cagedShape: 'A',
   },
@@ -447,6 +495,19 @@ const STRING_SET_TO_STRINGS: Record<string, [number, number, number]> = {
   '3_5': [5, 4, 3],
   '4_6': [6, 5, 4],
 };
+
+// Helper to get inversion label based on lowest note in the shape
+function getInversionLabelForShape(notes: string[], key: string): string {
+  // notes: [lowest, middle, highest]
+  if (!notes || notes.length < 1) return '';
+  const root = key;
+  const third = transposeNote(key, 4);
+  const fifth = transposeNote(key, 7);
+  if (notes[0] === root) return 'Root Position';
+  if (notes[0] === third) return '1st Inversion';
+  if (notes[0] === fifth) return '2nd Inversion';
+  return '';
+}
 
 // Update buildTriadDataForKey to accept stringSet and selectedInversion as parameters:
 function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Diminished' | 'Augmented', showFullFretboard?: boolean, stringSet: string = '1_3') {
@@ -844,6 +905,18 @@ const C_MINOR_REFERENCE_4_6 = {
   },
 };
 
+function getInversionLabelsForSet(stringSet: string) {
+  if (stringSet === '1_3') return ['Root Position', '1st Inversion', '2nd Inversion'];
+  if (stringSet === '2_4') return ['Root Position', '1st Inversion', '2nd Inversion'].slice(2).concat(['Root Position', '1st Inversion']);
+  if (stringSet === '3_5') return ['Root Position', '1st Inversion', '2nd Inversion'].slice(1).concat(['Root Position']);
+  if (stringSet === '4_6') return ['Root Position', '1st Inversion', '2nd Inversion'];
+  return ['Root Position', '1st Inversion', '2nd Inversion'];
+}
+
+const INVERSION_LABEL_ORDER = ['Root Position', '1st Inversion', '2nd Inversion'];
+const INVERSION_LABELS_2_4 = ['1st Inversion', '2nd Inversion', 'Root Position'];
+const INVERSION_LABELS_3_5 = ['Root Position', '2nd Inversion', '1st Inversion'];
+
 export default function TriadsOn3StringSets() {
   const [selectedKey, setSelectedKey] = useState('C');
   const [selectedTriadType, setSelectedTriadType] = useState<TriadType>('Major');
@@ -856,6 +929,30 @@ export default function TriadsOn3StringSets() {
   const renderTriadSection = (triadType: TriadType, subType?: 'Diminished' | 'Augmented') => {
     const { diagrams, triadNotes, reference } = buildTriadDataForKey(selectedKey, triadType, subType, showFullFretboard, selectedStringSet);
     const displayType = subType || triadType;
+
+    // Use the inversion mapping for this string set
+    const mapping = INVERSION_MAPPING[selectedStringSet] || [0, 1, 2];
+    // Build array of {diagram, label, fingering, chordName, cagedShape}
+    let diagramData = mapping.map((i, idx) => {
+      const shape = reference[`shape${i+1}`];
+      let label = getInversionLabelForShape(shape?.notes, selectedKey);
+      if (selectedStringSet === '2_4') label = INVERSION_LABELS_2_4[idx];
+      if (selectedStringSet === '3_5') label = INVERSION_LABELS_3_5[idx];
+      let chordName = TRIAD_LABELS[i].name(selectedKey, triadType, subType);
+      if (selectedStringSet === '2_4' || selectedStringSet === '3_5') {
+        chordName = `${selectedKey} ${displayType} (${label})`;
+      }
+      return {
+        diagram: diagrams[i],
+        label,
+        fingering: TRIAD_LABELS[i].fingering(triadType, subType),
+        chordName,
+        cagedShape: shape?.cagedShape || '',
+        triadIdx: i,
+      };
+    });
+    // Always sort by inversion label order: Root, 1st, 2nd
+    diagramData.sort((a, b) => INVERSION_LABEL_ORDER.indexOf(a.label) - INVERSION_LABEL_ORDER.indexOf(b.label));
 
     // Assign shapeIndex for partial mode (main three shapes)
     let triadNotesWithShape = triadNotes;
@@ -906,27 +1003,18 @@ export default function TriadsOn3StringSets() {
         )}
         {/* Chord Diagram View (vertical) */}
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
-          {diagrams.map((diagram, idx) => {
-            let cagedShape = '';
-            if (reference && typeof reference === 'object' && reference[`cagedShape`]) {
-              cagedShape = reference.cagedShape;
-            } else if (reference && typeof reference === 'object' && reference[`shape${idx + 1}`] && reference[`shape${idx + 1}`].cagedShape) {
-              cagedShape = reference[`shape${idx + 1}`].cagedShape;
-            }
-            return (
-              <div key={idx} className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`} 
-                   style={showShapeNames ? {borderColor: TRIAD_LABELS[idx].shapeColor} : {}}>
-                <div className="font-semibold mb-2 text-center">{TRIAD_LABELS[idx].label}</div>
-                <div className="mb-2 text-xs text-gray-500 text-center">Fingering: {TRIAD_LABELS[idx].fingering(triadType, subType)}</div>
-                <ChordDiagram chordName={TRIAD_LABELS[idx].name(selectedKey, triadType, subType)} chordData={diagram} showLabels={true} />
-                {cagedShape && (
-                  <div className="mt-2 text-xs text-gray-400 text-center">
-                    The CAGED system calls this part of the "{cagedShape}" shape
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {diagramData.map((data, idx) => (
+            <div key={idx} className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`} 
+                 style={showShapeNames ? {borderColor: TRIAD_LABELS[data.triadIdx].shapeColor} : {}}>
+              <div className="mb-2 text-xs text-gray-500 text-center">Fingering: {data.fingering}</div>
+              <ChordDiagram chordName={data.chordName} chordData={data.diagram} showLabels={true} />
+              {data.cagedShape && (
+                <div className="mt-2 text-xs text-gray-400 text-center">
+                  The CAGED system calls this part of the "{data.cagedShape}" shape
+                </div>
+              )}
+            </div>
+          ))}
         </div>
         {/* Horizontal Fretboard View */}
         <div className="bg-gray-50 rounded-lg p-8 mb-8">
