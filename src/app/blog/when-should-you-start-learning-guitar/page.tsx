@@ -52,9 +52,13 @@ export default function WhenShouldYouStartLearningGuitar() {
               <strong>Starting before age 6 is typically too early</strong>. The combination of limited attention spans and guitar's physical demands often creates frustration. However, early musical exposure through singing and simple instruments provides excellent preparation.
             </p>
 
+            <p className="mb-6">
+              <strong>But here's the crucial caveat</strong>: Every child is different. Some 6-year-olds might be ready if they show strong interest and focus, while others benefit from waiting until 9 or 10. Individual readiness matters more than hitting a specific age target.
+            </p>
+
             <h3 className="text-2xl font-semibold text-amber-700 mt-8 mb-4">The neuroplasticity advantage</h3>
             <p className="mb-4">
-              Research shows that musical training before ages 7-9 creates lasting brain structure changes and enhanced musical processing abilities¹. Children who start in this window do show certain advantages in musical tasks later in life.
+              Research shows that musical training starting around ages 7-8 creates lasting brain structure changes and enhanced musical processing abilities¹. Children who start in this window do show certain advantages in musical tasks later in life.
             </p>
             
             <p className="mb-6">
