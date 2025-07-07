@@ -60,10 +60,6 @@ export default function WhenShouldYouStartLearningGuitar() {
             <p className="mb-4">
               Research shows that musical training starting around ages 7-8 creates lasting brain structure changes and enhanced musical processing abilities¹. Children who start in this window do show certain advantages in musical tasks later in life.
             </p>
-            
-            <p className="mb-6">
-              <strong>But here's the crucial caveat</strong>: Every child is different. Some 6-year-olds might be ready if they show strong interest and focus, while others benefit from waiting until 9 or 10. Individual readiness matters more than hitting a specific age target.
-            </p>
 
             <h2 className="text-3xl font-bold text-amber-600 mt-12 mb-6">Adults: Different Strengths, Different Timeline</h2>
             
