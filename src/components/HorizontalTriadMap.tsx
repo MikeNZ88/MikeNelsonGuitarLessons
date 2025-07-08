@@ -15,10 +15,6 @@ interface HorizontalTriadMapProps {
   startFret?: number;
   fretCount?: number;
   labelModeDefault?: 'none' | 'note' | 'finger';
-  showShapeNames?: boolean;
-  showFullFretboard?: boolean;
-  onToggleFullFretboard?: () => void;
-  onToggleShapeNames?: () => void;
 }
 
 const stringNames = ['E', 'B', 'G', 'D', 'A', 'E']; // 1 (high) to 6 (low)
@@ -38,10 +34,6 @@ export default function HorizontalTriadMap({
   startFret = 3,
   fretCount = 13,
   labelModeDefault = 'none',
-  showShapeNames = false,
-  showFullFretboard = false,
-  onToggleFullFretboard,
-  onToggleShapeNames,
 }: HorizontalTriadMapProps) {
   // labelMode: 'none' | 'note' | 'finger'
   const [labelMode, setLabelMode] = useState<'none' | 'note' | 'finger'>(labelModeDefault);
@@ -72,7 +64,7 @@ export default function HorizontalTriadMap({
         width={svgWidth}
         height={svgHeight}
         viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-        className="bg-white rounded shadow"
+        className="bg-white rounded shadow mx-auto"
       >
         {/* Frets */}
         {[...Array(fretCount + 1)].map((_, fret) => {
@@ -135,7 +127,7 @@ export default function HorizontalTriadMap({
           const stringIdx = stringNames.length - n.string;
           const y = topMargin + stringIdx * stringSpacing;
           const x = leftMargin + (n.fret - startFret + 1) * fretWidth - fretWidth / 2;
-          const fillColor = showShapeNames && n.shapeColor ? n.shapeColor : intervalColors[n.interval];
+          const fillColor = intervalColors[n.interval];
           return (
             <g key={`triad-${n.string}-${n.fret}-${idx}`}>
               <circle
@@ -175,21 +167,11 @@ export default function HorizontalTriadMap({
         })}
       </svg>
       {/* Color Legend */}
-      {!showShapeNames && (
-        <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root</div>
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 3rd</div>
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
-        </div>
-      )}
-      {/* Shape Legend */}
-      {showShapeNames && (
-        <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
-          <div className="flex items-center gap-2"><span style={{background: '#ef4444', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root Position</div>
-          <div className="flex items-center gap-2"><span style={{background: '#3b82f6', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 1st Inversion</div>
-          <div className="flex items-center gap-2"><span style={{background: '#10b981', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 2nd Inversion</div>
-        </div>
-      )}
+      <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
+        <div className="flex items-center gap-2"><span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root</div>
+        <div className="flex items-center gap-2"><span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 3rd</div>
+        <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
+      </div>
       <div className="flex justify-center gap-3 mt-4">
         <button
           className="px-3 py-1 rounded bg-amber-600 text-white text-sm font-medium"
@@ -197,22 +179,6 @@ export default function HorizontalTriadMap({
         >
           {buttonText}
         </button>
-        {onToggleFullFretboard && (
-          <button
-            className={`px-3 py-1 rounded text-sm font-medium ${showFullFretboard ? 'bg-amber-600 text-white' : 'bg-amber-200 text-amber-800 hover:bg-amber-300'}`}
-            onClick={onToggleFullFretboard}
-          >
-            {showFullFretboard ? 'Partial Fretboard' : 'Full Fretboard'}
-          </button>
-        )}
-        {onToggleShapeNames && (
-          <button
-            className={`px-3 py-1 rounded text-sm font-medium ${showShapeNames ? 'bg-amber-600 text-white' : 'bg-amber-200 text-amber-800 hover:bg-amber-300'}`}
-            onClick={onToggleShapeNames}
-          >
-            {showShapeNames ? 'Hide Shape Names' : 'Show Shape Names'}
-          </button>
-        )}
       </div>
     </div>
   );

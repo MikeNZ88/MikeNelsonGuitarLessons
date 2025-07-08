@@ -1110,9 +1110,6 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
             onToggleShapeNames={() => setShowShapeNames(!showShapeNames)}
           />
         </div>
-        <div className="text-xs text-gray-500 text-center mt-2 mb-4">
-          Only complete triad shapes that fit within the fretboard range are shown. Open-position triads may not be displayed.
-        </div>
       </div>
     );
 }
