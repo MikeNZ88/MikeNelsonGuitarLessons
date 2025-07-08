@@ -182,6 +182,14 @@ export default function HorizontalTriadMap({
           <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
         </div>
       )}
+      {/* Shape Legend */}
+      {showShapeNames && (
+        <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
+          <div className="flex items-center gap-2"><span style={{background: '#ef4444', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root Position</div>
+          <div className="flex items-center gap-2"><span style={{background: '#3b82f6', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 1st Inversion</div>
+          <div className="flex items-center gap-2"><span style={{background: '#10b981', width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 2nd Inversion</div>
+        </div>
+      )}
       <div className="flex justify-center gap-3 mt-4">
         <button
           className="px-3 py-1 rounded bg-amber-600 text-white text-sm font-medium"

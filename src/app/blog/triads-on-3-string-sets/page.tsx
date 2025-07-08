@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import HorizontalTriadMap from '@/components/HorizontalTriadMap';
 import ChordDiagram, { ChordData } from '@/components/ChordDiagram';
+import { getDiminishedShapes } from '@/utils/triads/diminishedTriads';
 
 // Natural note keys
 const MAJOR_KEYS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
@@ -22,8 +23,12 @@ const KEY_OFFSETS = {
 // Open string notes (E A D G B e)
 const STRING_NOTES = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-// Add at the top of the component:
-const STRING_SETS = [
+// Add type for string sets
+interface StringSetOption {
+  label: string;
+  value: string;
+}
+const STRING_SETS: StringSetOption[] = [
   { label: 'Strings 1–3', value: '1_3' },
   { label: 'Strings 2–4', value: '2_4' },
   { label: 'Strings 3–5', value: '3_5' },
@@ -55,6 +60,22 @@ const INVERSION_MAPPING: Record<string, number[]> = {
   '2_4': [2, 0, 1], // 2nd, Root, 1st
   '3_5': [1, 2, 0], // 1st, 2nd, Root
   '4_6': [0, 1, 2], // Root, 1st, 2nd
+};
+
+// Add a mapping from UI string set values to data keys
+const STRING_SET_KEY_MAP: Record<string, string> = {
+  '1_3': '1_2_3',
+  '2_4': '2_3_4',
+  '3_5': '3_4_5',
+  '4_6': '4_5_6',
+};
+
+// Add mapping for triad string labels
+const TRIAD_STRING_LABELS: Record<string, string[]> = {
+  '1_3': ['G', 'B', 'E'],
+  '2_4': ['D', 'G', 'B'],
+  '3_5': ['A', 'D', 'G'],
+  '4_6': ['E', 'A', 'D'],
 };
 
 // Helper: get fret for a note on a string
@@ -130,62 +151,6 @@ const C_MINOR_REFERENCE = {
     startFret: 11,
     notes: ['G', 'C', 'Eb'], // G, B, E strings
     cagedShape: 'Dm',
-  },
-};
-
-// Original C diminished triad data (flatten the 3rd and 5th)
-const C_DIMINISHED_REFERENCE = {
-  // Shape 1: Root position (C on G string, 5th fret)
-  shape1: {
-    frets: [-1, -1, -1, 5, 4, 2], // E A D G B e (B string -1, E string -1 from major)
-    fingers: ['', '', '', '4', '3', '1'],
-    startFret: 2,
-    notes: ['C', 'Eb', 'Gb'], // G, B, E strings
-    cagedShape: 'Am',
-  },
-  // Shape 2: 1st inversion (Eb on G string, 8th fret) - B string one fret lower
-  shape2: {
-    frets: [-1, -1, -1, 8, 7, 8], // E A D G B e (B string -1 fret from barred pattern)
-    fingers: ['', '', '', '2', '1', '3'],
-    startFret: 7,
-    notes: ['Eb', 'Gb', 'C'], // G, B, E strings
-    cagedShape: 'Em',
-  },
-  // Shape 3: 2nd inversion (Gb on G string, 11th fret) - fix E string +1 fret
-  shape3: {
-    frets: [-1, -1, -1, 11, 13, 11], // E A D G B e (E string corrected +1 fret)
-    fingers: ['', '', '', '1', '3', '1'],
-    startFret: 11,
-    notes: ['Gb', 'C', 'Eb'], // G, B, E strings
-    cagedShape: 'Dm',
-  },
-};
-
-// Original C augmented triad data (sharpen the 5th) - all same shape due to symmetry
-const C_AUGMENTED_REFERENCE = {
-  // Shape 1: Root position (C on G string, 5th fret)
-  shape1: {
-    frets: [-1, -1, -1, 5, 5, 4], // E A D G B e (E string +1 from major)
-    fingers: ['', '', '', '2', '3', '1'],
-    startFret: 3,
-    notes: ['C', 'E', 'G#'], // G, B, E strings
-    cagedShape: 'A',
-  },
-  // Shape 2: 1st inversion (E on G string, 9th fret) - same pattern as Shape 1
-  shape2: {
-    frets: [-1, -1, -1, 9, 9, 8], // E A D G B e (same pattern: +0, +0, -1)
-    fingers: ['', '', '', '2', '3', '1'],
-    startFret: 8,
-    notes: ['E', 'G#', 'C'], // G, B, E strings
-    cagedShape: 'E',
-  },
-  // Shape 3: 2nd inversion (G# on G string, 13th fret) - same pattern as Shape 1
-  shape3: {
-    frets: [-1, -1, -1, 13, 13, 12], // E A D G B e (same pattern: +0, +0, -1)
-    fingers: ['', '', '', '2', '3', '1'],
-    startFret: 12,
-    notes: ['G#', 'C', 'E'], // G, B, E strings
-    cagedShape: 'D',
   },
 };
 
@@ -311,166 +276,6 @@ function getMinorReferenceForSet(set: string) {
   return C_MINOR_REFERENCE_1_3;
 }
 
-// Diminished triad reference shapes for each string set (C as root)
-const C_DIMINISHED_REFERENCE_1_3 = C_DIMINISHED_REFERENCE;
-const C_DIMINISHED_REFERENCE_2_4 = {
-  shape1: {
-    frets: [-1, -1, 10, 8, 7, -1],
-    fingers: ['', '', '3', '1', '1', ''],
-    startFret: 7,
-    notes: ['C', 'Eb', 'Gb'],
-    cagedShape: 'Gm',
-  },
-  shape2: {
-    frets: [-1, -1, 1, 1, 0, -1],
-    fingers: ['', '', '1', '1', '1', ''],
-    startFret: 0,
-    notes: ['Eb', 'Gb', 'C'],
-    cagedShape: 'Em',
-  },
-  shape3: {
-    frets: [-1, -1, 4, 4, 3, -1],
-    fingers: ['', '', '2', '1', '1', ''],
-    startFret: 3,
-    notes: ['Gb', 'C', 'Eb'],
-    cagedShape: 'Cm',
-  },
-};
-const C_DIMINISHED_REFERENCE_3_5 = {
-  shape1: {
-    frets: [-1, 3, 1, -1, -1, -1],
-    fingers: ['', '3', '1', '', '', ''],
-    startFret: 1,
-    notes: ['C', 'Eb', 'Gb'],
-    cagedShape: 'Am',
-  },
-  shape2: {
-    frets: [-1, 6, 4, 4, -1, -1],
-    fingers: ['', '3', '1', '1', '', ''],
-    startFret: 4,
-    notes: ['Eb', 'Gb', 'C'],
-    cagedShape: 'Gm',
-  },
-  shape3: {
-    frets: [-1, 9, 7, 7, -1, -1],
-    fingers: ['', '3', '1', '1', '', ''],
-    startFret: 7,
-    notes: ['Gb', 'C', 'Eb'],
-    cagedShape: 'Em',
-  },
-};
-const C_DIMINISHED_REFERENCE_4_6 = {
-  shape1: {
-    frets: [8, 9, 7, -1, -1, -1],
-    fingers: ['2', '3', '1', '', '', ''],
-    startFret: 7,
-    notes: ['C', 'Eb', 'Gb'],
-    cagedShape: 'Em',
-  },
-  shape2: {
-    frets: [11, 9, 8, -1, -1, -1],
-    fingers: ['3', '1', '2', '', '', ''],
-    startFret: 8,
-    notes: ['Eb', 'Gb', 'C'],
-    cagedShape: 'Cm',
-  },
-  shape3: {
-    frets: [2, 1, 0, -1, -1, -1],
-    fingers: ['2', '1', '0', '', '', ''],
-    startFret: 0,
-    notes: ['Gb', 'C', 'Eb'],
-    cagedShape: 'Am',
-  },
-};
-
-// Augmented triad reference shapes for each string set (C as root)
-const C_AUGMENTED_REFERENCE_1_3 = C_AUGMENTED_REFERENCE;
-const C_AUGMENTED_REFERENCE_2_4 = {
-  shape1: {
-    frets: [-1, -1, 10, 9, 9, -1],
-    fingers: ['', '', '2', '1', '1', ''],
-    startFret: 9,
-    notes: ['C', 'E', 'G#'],
-    cagedShape: 'G',
-  },
-  shape2: {
-    frets: [-1, -1, 3, 2, 1, -1],
-    fingers: ['', '', '3', '2', '1', ''],
-    startFret: 1,
-    notes: ['E', 'G#', 'C'],
-    cagedShape: 'E',
-  },
-  shape3: {
-    frets: [-1, -1, 5, 5, 5, -1],
-    fingers: ['', '', '1', '1', '1', ''],
-    startFret: 5,
-    notes: ['G#', 'C', 'E'],
-    cagedShape: 'C',
-  },
-};
-const C_AUGMENTED_REFERENCE_3_5 = {
-  shape1: {
-    frets: [-1, 3, 3, 1, -1, -1],
-    fingers: ['', '3', '4', '1', '', ''],
-    startFret: 1,
-    notes: ['C', 'E', 'G#'],
-    cagedShape: 'A',
-  },
-  shape2: {
-    frets: [-1, 7, 5, 5, -1, -1],
-    fingers: ['', '3', '1', '1', '', ''],
-    startFret: 5,
-    notes: ['E', 'G#', 'C'],
-    cagedShape: 'G',
-  },
-  shape3: {
-    frets: [-1, 11, 9, 9, -1, -1],
-    fingers: ['', '4', '2', '1', '', ''],
-    startFret: 9,
-    notes: ['G#', 'C', 'E'],
-    cagedShape: 'E',
-  },
-};
-const C_AUGMENTED_REFERENCE_4_6 = {
-  shape1: {
-    frets: [8, 12, 12, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 8,
-    notes: ['C', 'E', 'G#'],
-    cagedShape: 'E',
-  },
-  shape2: {
-    frets: [12, 16, 16, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 12,
-    notes: ['E', 'G#', 'C'],
-    cagedShape: 'C',
-  },
-  shape3: {
-    frets: [4, 8, 8, -1, -1, -1],
-    fingers: ['1', '3', '4', '', '', ''],
-    startFret: 4,
-    notes: ['G#', 'C', 'E'],
-    cagedShape: 'A',
-  },
-};
-
-function getDiminishedReferenceForSet(set: string) {
-  if (set === '1_3') return C_DIMINISHED_REFERENCE_1_3;
-  if (set === '2_4') return C_DIMINISHED_REFERENCE_2_4;
-  if (set === '3_5') return C_DIMINISHED_REFERENCE_3_5;
-  if (set === '4_6') return C_DIMINISHED_REFERENCE_4_6;
-  return C_DIMINISHED_REFERENCE_1_3;
-}
-
-function getAugmentedReferenceForSet(set: string) {
-  if (set === '1_3') return C_AUGMENTED_REFERENCE_1_3;
-  if (set === '2_4') return C_AUGMENTED_REFERENCE_2_4;
-  if (set === '3_5') return C_AUGMENTED_REFERENCE_3_5;
-  if (set === '4_6') return C_AUGMENTED_REFERENCE_4_6;
-  return C_AUGMENTED_REFERENCE_1_3;
-}
-
 // Helper: map inversion index for each string set based on selected inversion for 1-3
 function getMappedInversion(selectedInversion: number, stringSet: string): number {
   // Rotation logic:
@@ -511,6 +316,9 @@ function getInversionLabelForShape(notes: string[], key: string): string {
 
 // Update buildTriadDataForKey to accept stringSet and selectedInversion as parameters:
 function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Diminished' | 'Augmented', showFullFretboard?: boolean, stringSet: string = '1_3') {
+  if (triadType === 'Diminished & Augmented') {
+    return { diagrams: [], triadNotes: [], reference: null };
+  }
   const offset = KEY_OFFSETS[key as keyof typeof KEY_OFFSETS];
   let reference: any = null;
   let shapes: any[] | null = null;
@@ -521,8 +329,15 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     reference = getMinorReferenceForSet(stringSet);
     shapes = [reference.shape1, reference.shape2, reference.shape3];
   } else if (triadType === 'Diminished & Augmented') {
-    reference = subType === 'Augmented' ? getAugmentedReferenceForSet(stringSet) : getDiminishedReferenceForSet(stringSet);
-    shapes = reference ? [reference.shape1, reference.shape2, reference.shape3] : null;
+    if (subType === 'Diminished') {
+      const dataStringSet = STRING_SET_KEY_MAP[stringSet] || stringSet;
+      reference = getDiminishedShapes(key, dataStringSet);
+      if (!reference) return { diagrams: [], triadNotes: [], reference: null };
+      shapes = [reference.shape1, reference.shape2, reference.shape3];
+    } else {
+      // Augmented logic (leave as is or update as needed)
+      // ...
+    }
   }
 
   function transposeNote(rootNote: string, semitones: number, isMinor = false): string {
@@ -581,7 +396,12 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     return { frets: adjustedFrets, startFret: adjustedStartFret };
   }
 
-  if ((triadType === 'Major' || triadType === 'Minor') && !showFullFretboard) {
+  // Add type guard for triadType (move outside component)
+  function isMajorOrMinorTriadType(type: TriadType): type is 'Major' | 'Minor' {
+    return type === 'Major' || type === 'Minor';
+  }
+
+  if (isMajorOrMinorTriadType(triadType) && !showFullFretboard) {
     if (!shapes) return { diagrams: [], triadNotes: [], reference: null };
     const inversionOffsets: Record<string, number> = {
       '1_3': 0,
@@ -594,20 +414,20 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
       const mappedInversion = (offsetIdx + i) % 3;
       const shape = shapes[mappedInversion];
       // Use the correct string mapping for each set
-      const frets = [...shape.frets];
+      const numberFrets = [...shape.frets];
       const fingers = [...shape.fingers];
       // Offset the frets for the selected key
-      for (let j = 0; j < frets.length; j++) {
-        if (typeof frets[j] === 'number' && frets[j] >= 0) {
-          frets[j] = frets[j] + offset;
+      for (let j = 0; j < numberFrets.length; j++) {
+        if (typeof numberFrets[j] === 'number' && numberFrets[j] >= 0) {
+          numberFrets[j] = numberFrets[j] + offset;
         }
       }
       // Improved startFret logic: set to 0 if any open string, else to min played fret
-      const playedFrets = frets.filter(f => f >= 0);
+      const playedFrets = numberFrets.filter(f => f >= 0);
       const minFret = playedFrets.length ? Math.min(...playedFrets) : 1;
       const startFret = minFret === 0 ? 0 : minFret;
       return {
-        frets,
+        frets: numberFrets,
         fingers,
         startFret,
         cagedShape: shape.cagedShape,
@@ -616,12 +436,12 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
     });
     // Apply octave-down rule to these diagrams too
     const octaveAdjustedDiagrams = diagrams.map((diagram, idx) => {
-      const playedFrets = diagram.frets.filter((f: number) => f >= 0);
+      const playedFrets = diagram.frets.filter((f): f is number => typeof f === 'number' && f >= 0);
       const minFret = playedFrets.length ? Math.min(...playedFrets) : 0;
       
       if (minFret >= 12) {
         const octaveDownFrets = diagram.frets.map((f: number) => f >= 0 ? f - 12 : f);
-        const newPlayedFrets = octaveDownFrets.filter((f: number) => f >= 0);
+        const newPlayedFrets = octaveDownFrets.filter((f): f is number => typeof f === 'number' && f >= 0);
         const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
         const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
         
@@ -671,7 +491,7 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
       }));
     });
 
-    return { diagrams: sortedDiagrams, triadNotes, reference: sortedDiagrams };
+    return { diagrams: sortedDiagrams, triadNotes, reference };
   }
   
   // Extrapolate all major triad shapes across the fretboard if showFullFretboard is true
@@ -806,48 +626,39 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
   const adjustedShape3 = shape3Frets;
 
   // Calculate note names based on triad type
-  let thirdInterval, fifthInterval, useFlats;
+  let thirdInterval: number = 4, fifthInterval: number = 7, useFlats: boolean = false;
   
-  if (triadType === 'Diminished & Augmented') {
-    if (subType === 'Augmented') {
-      thirdInterval = 4; // Major 3rd
-      fifthInterval = 8; // Augmented 5th
-      useFlats = false;
-    } else {
-      thirdInterval = 3; // Minor 3rd
-      fifthInterval = 6; // Diminished 5th
-      useFlats = true;
-    }
-  } else {
-    thirdInterval = triadType === 'Major' ? 4 : 3;
-    fifthInterval = 7; // Perfect 5th
-    useFlats = triadType === 'Minor';
-  }
+  // For Major and Minor triads only
+  thirdInterval = triadType === 'Major' ? 4 : 3;
+  fifthInterval = 7; // Perfect 5th
+  useFlats = triadType === 'Minor';
   
   const stringNumbers = STRING_SET_TO_STRINGS[stringSet] || [3, 2, 1];
 
   // Group triad notes by shape for sorting
   const triadNotesByShape = [
     [
-      { string: stringNumbers[0], fret: adjustedShape1[0], note: transposeNote(key, 0), interval: '1' as const, finger: reference.shape1.fingers[3] },
-      { string: stringNumbers[1], fret: adjustedShape1[1], note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: reference.shape1.fingers[4] },
-      { string: stringNumbers[2], fret: adjustedShape1[2], note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: reference.shape1.fingers[5] },
+      { string: stringNumbers[0], fret: adjustedShape1[0] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape1.fingers[3] ?? '').toString() },
+      { string: stringNumbers[1], fret: adjustedShape1[1] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape1.fingers[4] ?? '').toString() },
+      { string: stringNumbers[2], fret: adjustedShape1[2] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape1.fingers[5] ?? '').toString() },
     ],
     [
-      { string: stringNumbers[0], fret: adjustedShape2[0], note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: reference.shape2.fingers[3] },
-      { string: stringNumbers[1], fret: adjustedShape2[1], note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: reference.shape2.fingers[4] },
-      { string: stringNumbers[2], fret: adjustedShape2[2], note: transposeNote(key, 0), interval: '1' as const, finger: reference.shape2.fingers[5] },
+      { string: stringNumbers[0], fret: adjustedShape2[0] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape2.fingers[3] ?? '').toString() },
+      { string: stringNumbers[1], fret: adjustedShape2[1] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape2.fingers[4] ?? '').toString() },
+      { string: stringNumbers[2], fret: adjustedShape2[2] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape2.fingers[5] ?? '').toString() },
     ],
     [
-      { string: stringNumbers[0], fret: adjustedShape3[0], note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: reference.shape3.fingers[3] },
-      { string: stringNumbers[1], fret: adjustedShape3[1], note: transposeNote(key, 0), interval: '1' as const, finger: reference.shape3.fingers[4] },
-      { string: stringNumbers[2], fret: adjustedShape3[2], note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: reference.shape3.fingers[5] },
+      { string: stringNumbers[0], fret: adjustedShape3[0] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape3.fingers[3] ?? '').toString() },
+      { string: stringNumbers[1], fret: adjustedShape3[1] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape3.fingers[4] ?? '').toString() },
+      { string: stringNumbers[2], fret: adjustedShape3[2] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape3.fingers[5] ?? '').toString() },
     ],
   ];
   // Sort shapes by minimum fret (ignoring muted strings)
   triadNotesByShape.sort((a, b) => {
-    const minA = Math.min(...a.map(n => n.fret).filter(f => f > 0));
-    const minB = Math.min(...b.map(n => n.fret).filter(f => f > 0));
+    const aFrets = a.map(n => n.fret).filter(f => f > 0);
+    const bFrets = b.map(n => n.fret).filter(f => f > 0);
+    const minA = Math.min(...(aFrets.length ? aFrets : [0]));
+    const minB = Math.min(...(bFrets.length ? bFrets : [0]));
     return minA - minB;
   });
   // Flatten for the map
@@ -1048,20 +859,174 @@ const INVERSION_LABEL_ORDER = ['Root Position', '1st Inversion', '2nd Inversion'
 const INVERSION_LABELS_2_4 = ['1st Inversion', '2nd Inversion', 'Root Position'];
 const INVERSION_LABELS_3_5 = ['Root Position', '2nd Inversion', '1st Inversion'];
 
+// Helper: map triad frets/fingers to 6-string arrays for the selected string set
+function padTriadToSixStrings(frets3: number[], fingers3: number[], stringSet: string) {
+  // E A D G B E
+  const sixFrets = [-1, -1, -1, -1, -1, -1];
+  const sixFingers = ['', '', '', '', '', ''];
+  let idxs;
+  if (stringSet === '1_3') idxs = [3, 4, 5]; // G B E
+  else if (stringSet === '2_4') idxs = [2, 3, 4]; // D G B
+  else if (stringSet === '3_5') idxs = [1, 2, 3]; // A D G
+  else if (stringSet === '4_6') idxs = [0, 1, 2]; // E A D
+  else idxs = [3, 4, 5];
+  // Reverse the triad arrays so lowest string in set goes to lowest idx
+  const revFrets = [...frets3].reverse();
+  const revFingers = [...fingers3].reverse();
+  for (let i = 0; i < 3; i++) {
+    sixFrets[idxs[i]] = revFrets[i];
+    sixFingers[idxs[i]] = revFingers[i] === 0 ? '' : revFingers[i].toString();
+  }
+  return { sixFrets, sixFingers };
+}
+
 export default function TriadsOn3StringSets() {
   const [selectedKey, setSelectedKey] = useState('C');
   const [selectedTriadType, setSelectedTriadType] = useState<TriadType>('Major');
   const [showFullFretboard, setShowFullFretboard] = useState(false);
   const [showShapeNames, setShowShapeNames] = useState(false);
-  const [selectedStringSet, setSelectedStringSet] = useState('1_3');
+  const [selectedStringSet, setSelectedStringSet] = useState<string>('1_3');
   const [selectedInversion, setSelectedInversion] = useState(0);
+  const [showOpenShapes, setShowOpenShapes] = useState(false);
 
   // Helper function to render a triad section
   const renderTriadSection = (triadType: TriadType, subType?: 'Diminished' | 'Augmented') => {
+    if (triadType === 'Diminished & Augmented' && subType === 'Diminished') {
+      // Get the three authoritative shapes for the selected key and string set
+      const shapes = getDiminishedShapes(selectedKey, STRING_SET_KEY_MAP[selectedStringSet] || selectedStringSet);
+      
+      // Define interval colors (for note coloring)
+      const intervalColors: Record<string, string> = {
+        '1': '#ef4444', // root - red
+        '3': '#a855f7', // 3rd - purple
+        '5': '#f59e42', // 5th - orange
+      };
+      
+      // Map each shape's frets to the correct 6-string array for the horizontal map
+      const triadNotes: any[] = [];
+      let allFrets: number[] = [];
+      
+      shapes.forEach((shape, shapeIdx) => {
+        // Map 3-string frets to 6-string array
+        const { sixFrets } = padTriadToSixStrings(shape.frets, shape.fingers, selectedStringSet);
+        
+        // Determine interval assignment based on inversion
+        let intervalMapping: string[];
+        if (shape.inversion === 'Root Position') {
+          intervalMapping = ['1', '3', '5']; // root, 3rd, 5th from lowest to highest string
+        } else if (shape.inversion === '1st Inversion') {
+          intervalMapping = ['3', '5', '1']; // 3rd, 5th, root from lowest to highest string  
+        } else { // 2nd Inversion
+          intervalMapping = ['5', '1', '3']; // 5th, root, 3rd from lowest to highest string
+        }
+        
+        // Determine which strings are played for this shape (in order from lowest to highest)
+        const playedStrings: number[] = [];
+        sixFrets.forEach((fret, stringIdx) => {
+          if (fret >= 0) {
+            playedStrings.push(stringIdx);
+          }
+        });
+        
+        // Sort played strings from lowest to highest (bass to treble)
+        playedStrings.sort((a, b) => a - b);
+        
+        // For each played string, add a triad note for the map with correct interval
+        playedStrings.forEach((stringIdx, intervalIdx) => {
+          const fret = sixFrets[stringIdx];
+          const interval = intervalMapping[intervalIdx] || '1';
+          
+          // Calculate note name based on string tuning and fret
+          const stringNames = ['E', 'A', 'D', 'G', 'B', 'E']; // Low E to High E (0-indexed)
+          const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+          const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+          const openNote = stringNames[stringIdx];
+          const openIdx = chromatic.indexOf(openNote);
+          const noteName = chromaticFlats[(openIdx + fret) % 12]; // Use flats for diminished triads
+          
+          // Get finger number from the original shape data
+          const { sixFingers } = padTriadToSixStrings(shape.frets, shape.fingers, selectedStringSet);
+          const fingerNumber = sixFingers[stringIdx];
+          
+          triadNotes.push({
+            string: stringIdx + 1,
+            fret,
+            note: noteName,
+            interval,
+            finger: fingerNumber,
+            shapeIndex: shapeIdx,
+            shapeColor: showShapeNames 
+              ? TRIAD_LABELS[shapeIdx]?.shapeColor 
+              : (intervalColors[interval] || '#000000'),
+          });
+          allFrets.push(fret);
+        });
+      });
+      
+      // Calculate dynamic fret range based on only the frets used in the three shapes
+      const validFrets = allFrets.filter(f => typeof f === 'number' && !isNaN(f));
+      const minFret = validFrets.length ? Math.min(...validFrets) : 0;
+      const maxFret = validFrets.length ? Math.max(...validFrets) : 5;
+      const dynamicStartFret = minFret === 0 ? 0 : Math.max(1, minFret - 1);
+      const dynamicFretCount = Math.max(3, maxFret - dynamicStartFret + 2); // +2 for padding
+      
+      return (
+        <div className="mb-16">
+          <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">Diminished Triads on {STRING_SETS.find(s => s.value === selectedStringSet)?.label}</h3>
+          
+          <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
+            {shapes.map((shape, idx) => {
+              const { sixFrets, sixFingers } = padTriadToSixStrings(shape.frets, shape.fingers, selectedStringSet);
+              return (
+                <div 
+                  key={idx} 
+                  className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`}
+                  style={showShapeNames ? {borderColor: TRIAD_LABELS[idx]?.shapeColor} : {}}
+                >
+                  <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{shape.inversion}</div>
+                  <ChordDiagram chordName={shape.inversion} chordData={{
+                    frets: sixFrets,
+                    fingers: sixFingers,
+                    startFret: Math.min(...sixFrets.filter(f => f > 0)) || 0,
+                  }} showLabels={true} />
+                </div>
+              );
+            })}
+          </div>
+          
+          {/* Horizontal Fretboard View for Diminished */}
+          <div className="bg-gray-50 rounded-lg p-8 mb-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">{selectedKey} Diminished Triads: Fretboard Map</h3>
+            <HorizontalTriadMap
+              triadNotes={triadNotes}
+              startFret={dynamicStartFret}
+              fretCount={dynamicFretCount}
+              labelModeDefault="none"
+              showShapeNames={showShapeNames}
+              onToggleShapeNames={() => setShowShapeNames(!showShapeNames)}
+            />
+          </div>
+          
+          <div className="text-xs text-gray-500 text-center mt-2 mb-4">
+            Only the notes and frets used in the three chord diagrams above are shown on the map.
+          </div>
+        </div>
+      );
+    }
+    if (triadType === 'Diminished & Augmented') {
+      return (
+        <div className="mb-16">
+          <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{subType || triadType} Triads</h3>
+          <div className="text-center text-gray-600 max-w-2xl mx-auto mb-8">
+            <p>Coming soon!</p>
+          </div>
+        </div>
+      );
+    }
+    
+    // Only call buildTriadDataForKey for Major and Minor triads
     const { diagrams, triadNotes, reference } = buildTriadDataForKey(selectedKey, triadType, subType, showFullFretboard, selectedStringSet);
     const displayType = subType || triadType;
-
-
 
     // Hardcoded inversion lookup table for first diagram of each key/stringset/triadtype
     const INVERSION_LOOKUP: Record<string, Record<string, Record<string, string>>> = {
@@ -1140,7 +1105,7 @@ export default function TriadsOn3StringSets() {
         // Determine expected notes for this triad type
         const root = selectedKey;
         const thirdInterval = triadType === 'Minor' ? 3 : 4;
-        const third = transposeNote(selectedKey, thirdInterval, triadType === 'Minor');
+        const third = transposeNote(selectedKey, thirdInterval, Boolean(triadType === 'Minor'));
         const fifth = transposeNote(selectedKey, 7);
         
         // Determine inversion based on bass note
@@ -1150,7 +1115,7 @@ export default function TriadsOn3StringSets() {
       }
       
       // Verify this diagram produces correct triad notes
-      const verification = verifyTriadNotes(diagram.frets, selectedStringSet, selectedKey, triadType);
+      const verification = verifyTriadNotes(diagram.frets as number[], selectedStringSet, selectedKey, triadType);
       
       return { 
         ...diagram, 
@@ -1225,7 +1190,7 @@ export default function TriadsOn3StringSets() {
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
           {labeledDiagrams.map((data, idx) => (
             <div key={idx} className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`} 
-                 style={showShapeNames ? {borderColor: TRIAD_LABELS[data.triadIdx]?.shapeColor} : {}}>
+                 style={showShapeNames ? {borderColor: TRIAD_LABELS[idx]?.shapeColor} : {}}>
               <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{data.inversionLabel}</div>
               <ChordDiagram chordName={data.chordName} chordData={data} showLabels={true} />
             </div>

@@ -60,7 +60,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             key={`fret-${i}`}
             x1="20"
             y1={20 + i * 18}
-            x2="120"
+            x2={20 + (stringNames.length - 1) * 20}
             y2={20 + i * 18}
             stroke={i === 0 ? "#1f2937" : "#9ca3af"}
             strokeWidth={i === 0 ? "3" : "1"}
