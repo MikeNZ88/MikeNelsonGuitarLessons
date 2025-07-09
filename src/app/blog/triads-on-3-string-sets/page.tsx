@@ -14,6 +14,12 @@ const MAJOR_KEYS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const TRIAD_TYPES = ['Major', 'Minor', 'Diminished', 'Augmented', 'Major Key Sequence'] as const;
 type TriadType = typeof TRIAD_TYPES[number];
 
+interface AugShape {
+  frets: number[];
+  label: string;
+  fingers: string[];
+}
+
 // Semitones from C for each key
 const KEY_OFFSETS = {
   C: 0,
@@ -1646,7 +1652,7 @@ export default function TriadsOn3StringSets() {
   };
 
   const renderAugmentedTriads = () => {
-    const triadData = AUGMENTED_TRIADS_DATA[selectedKey][selectedStringSet];
+    const triadData = AUGMENTED_TRIADS_DATA[selectedKey as keyof typeof AUGMENTED_TRIADS_DATA][selectedStringSet as keyof typeof AUGMENTED_TRIADS_DATA[keyof typeof AUGMENTED_TRIADS_DATA]];
     return (
       <div className="mb-16">
         <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedKey} Augmented Triads on Strings {selectedStringSet.replace('_', '–')}</h3>
@@ -1657,7 +1663,7 @@ export default function TriadsOn3StringSets() {
         </div>
         
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
-          {triadData.map((shape: AugShape, idx: number) => shape ? (
+          {triadData.map((shape: AugShape | null, idx: number) => shape ? (
             <div key={idx} className="bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center border-4" style={{borderColor: ['#ef4444', '#3b82f6', '#10b981'][idx]}}>
               <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{shape.label}</div>
               <div className="text-xs text-gray-600 mb-2">
@@ -1665,7 +1671,7 @@ export default function TriadsOn3StringSets() {
                  `Also known as ${idx === 1 ? transposeNote(selectedKey, 4) : transposeNote(selectedKey, 8)} Augmented`}
               </div>
               {(() => {
-                const { sixFrets, sixFingers } = padTriadToSixStrings(shape.frets, shape.fingers || [], selectedStringSet);
+                const { sixFrets, sixFingers } = padTriadToSixStrings(shape.frets, shape.fingers?.map(f => f === '0' ? 0 : parseInt(f)) || [], selectedStringSet);
                 const playedFrets = sixFrets.filter(f => f >= 0);
                 const startFret = playedFrets.length > 0 ? Math.min(...playedFrets) : 1;
                 
