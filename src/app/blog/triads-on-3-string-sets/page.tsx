@@ -1111,6 +1111,13 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
             onToggleShapeNames={() => setShowShapeNames(!showShapeNames)}
           />
         </div>
+        
+        {/* Scale Explorer reference - only show for Major triads */}
+        {displayType === 'Major' && (
+          <p className="text-sm text-orange-600 mt-3 text-center">
+            💡 <strong>Want to see full 6-string fretboard diagrams?</strong> Check out the <a href="/scale-explorer/index.html" className="underline font-medium hover:text-orange-800" target="_blank" rel="noopener noreferrer">Scale Explorer tool</a> which shows triads across all strings and positions.
+          </p>
+        )}
       </div>
     );
 }
