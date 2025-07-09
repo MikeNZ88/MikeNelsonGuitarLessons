@@ -1064,7 +1064,7 @@ const C_AUGMENTED_REFERENCE_4_6 = {
   },
 };
 
-function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selectedKey, showFullFretboard, showShapeNames, selectedStringSet, setShowFullFretboard, setShowShapeNames}: any) {
+function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selectedKey, showFullFretboard, showShapeNames, selectedStringSet, setShowFullFretboard, setShowShapeNames, showTheoryModal, setShowTheoryModal}: any) {
     // Assign inversion labels dynamically based on bass note (lowest played string)
       const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
       const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -1226,13 +1226,169 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
             startFret={dynamicStartFret} 
             fretCount={dynamicFretCount} 
             labelModeDefault="none"
-            showShapeNames={showShapeNames}
-          showFullFretboard={showFullFretboard}
-          onToggleFullFretboard={() => setShowFullFretboard(!showFullFretboard)}
-            onToggleShapeNames={() => setShowShapeNames(!showShapeNames)}
+            triadType={displayType}
           />
         </div>
         
+        {/* Enhanced Fret Movement Information */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-8 max-w-3xl mx-auto shadow-sm">
+          <h4 className="text-lg font-bold text-amber-800 mb-4 text-center">Inversion Movement Pattern</h4>
+          <p className="text-sm text-amber-700 text-center mb-6">Bass note movement between inversions (lowest string in each chord)</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {displayType === 'Major' && (
+              <>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">Root → 1st Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+4</div>
+                  <div className="text-xs text-amber-600">frets (4 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">1st → 2nd Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+3</div>
+                  <div className="text-xs text-amber-600">frets (3 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">2nd → Root Position</div>
+                  <div className="text-2xl font-bold text-amber-600">+5</div>
+                  <div className="text-xs text-amber-600">frets (5 half steps)</div>
+                </div>
+              </>
+            )}
+            {displayType === 'Minor' && (
+              <>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">Root → 1st Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+3</div>
+                  <div className="text-xs text-amber-600">frets (3 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">1st → 2nd Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+4</div>
+                  <div className="text-xs text-amber-600">frets (4 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">2nd → Root Position</div>
+                  <div className="text-2xl font-bold text-amber-600">+5</div>
+                  <div className="text-xs text-amber-600">frets (5 half steps)</div>
+                </div>
+              </>
+            )}
+          </div>
+          
+          <div className="bg-amber-100 rounded-lg p-4 text-center">
+            <div className="text-sm font-semibold text-amber-800 mb-1">Complete Cycle</div>
+            <div className="text-xl font-bold text-amber-700">12 frets = 1 octave</div>
+            <div className="text-xs text-amber-600 mt-1">{displayType === 'Major' ? '4 + 3 + 5 = 12' : '3 + 4 + 5 = 12'}</div>
+          </div>
+          
+          {/* Clarification Note */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
+            <div className="text-sm text-amber-800">
+              <strong>📝 Note about shape order:</strong> If you're looking at the chord or fretboard diagrams wondering why the shapes seem out of order, remember that we're using frets 0-12 as much as possible. The pattern naturally repeats: root position → 1st inversion → 2nd inversion → root position → 1st inversion → 2nd inversion, etc. Some diagrams may not start with root position—it depends on which notes are available in that fret range.
+            </div>
+          </div>
+        </div>
+        
+        {/* Theory Modal Button and Modal */}
+        <div className="flex justify-center mt-6 mb-4">
+          <button
+            onClick={() => setShowTheoryModal(true)}
+            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            📚 Theory Explanation
+          </button>
+        </div>
+
+        {/* Theory Modal */}
+        {showTheoryModal && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            onClick={() => setShowTheoryModal(false)}
+          >
+            <div 
+              className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-2xl p-6 max-w-2xl max-h-[80vh] overflow-y-auto border border-amber-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-amber-900 flex items-center gap-2">
+                  📚 {displayType} Triad Theory
+                </h3>
+                <button
+                  onClick={() => setShowTheoryModal(false)}
+                  className="text-amber-600 hover:text-amber-800 text-3xl font-bold transition-colors duration-200 hover:bg-amber-100 rounded-full w-10 h-10 flex items-center justify-center"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="space-y-5 text-amber-800">
+                {displayType === 'Major' && (
+                  <>
+                                          <div className="bg-white rounded-lg p-4 border border-amber-200">
+                        <h4 className="font-semibold text-amber-900 mb-2">Where the Numbers Come From:</h4>
+                        <p>The names come from the major scale, which has 7 notes numbered <strong>1, 2, 3, 4, 5, 6, 7</strong>. The starting note "1" is called the <strong>root</strong> of the scale. We number notes for chords too, and if any notes fit into the major scale we label them with the numbers from the scale. The scale is a reference because each note is a certain distance apart.</p>
+                        <p>A note that is <strong>4 half-steps higher</strong> than the root is called a <strong>"major third"</strong>. A note that is <strong>7 half-steps higher</strong> than the root is called a <strong>"perfect fifth"</strong>. So a major chord has three of the major scale's 7 notes: the <strong>1, 3, and 5</strong> (root, 3rd and 5th).</p>
+                        <p>Numbers that don't fit the scale are written as flattened or sharpened intervals. For example, a minor chord has a <strong>"flat 3rd"</strong> - it's 3 semitones (not 4) above its root.</p>
+                      </div>
+                    
+                                          <div className="bg-white rounded-lg p-4 border border-amber-200">
+                        <h4 className="font-semibold text-amber-900 mb-2">Formula:</h4>
+                        <p>1 - 3 - 5 (root, major third, perfect fifth)</p>
+                      </div>
+
+                    <div className="bg-white rounded-lg p-4 border border-amber-200">
+                      <h4 className="font-semibold text-amber-900 mb-2">Inversions:</h4>
+                      <p className="mb-3">As triads have 3 notes, we can choose each of those notes as the lowest note ("bass note") in the triad. It's still the same chord but the order of notes is different. They will sound slightly different although technically all the same chord. It makes a difference when the pitch of these notes is lower or higher relative to each other.</p>
+                      <ul className="list-disc list-inside space-y-1 mb-3">
+                        <li><strong>Root Position:</strong> Root in bass (1-3-5)</li>
+                        <li><strong>1st Inversion:</strong> Third in bass (3-5-1)</li>
+                        <li><strong>2nd Inversion:</strong> Fifth in bass (5-1-3)</li>
+                      </ul>
+                      <p className="text-sm">For example, compared with the "root position" C major, the 2nd inversion has the note G as lower than C, but retains its 3rd (E) being higher than the C. The 1st inversion on the other hand has the 3rd (E) and 5th (G) lower than its root (C).</p>
+                    </div>
+
+                    <div className="bg-white rounded-lg p-4 border border-amber-200">
+                      <h4 className="font-semibold text-amber-900 mb-2">Sound Character:</h4>
+                      <p>Stable, bright, and resolved. Forms the foundation of Western harmony.</p>
+                    </div>
+                  </>
+                )}
+
+                {displayType === 'Minor' && (
+                  <>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">How Minor Differs from Major:</h4>
+                      <p>A minor third is found <strong>one half-step lower</strong> than a major third. That's why we write <strong>♭3</strong> (flat 3). The minor chord has exactly the same shape as major, except <strong>one note is moved down one fret</strong> - the flattened 3rd!</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Formula:</h4>
+                      <p>1 - ♭3 - 5 (root, minor third, perfect fifth)</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Inversions:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li><strong>Root Position:</strong> Root in bass (1-♭3-5)</li>
+                        <li><strong>1st Inversion:</strong> Minor third in bass (♭3-5-1)</li>
+                        <li><strong>2nd Inversion:</strong> Fifth in bass (5-1-♭3)</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Sound Character:</h4>
+                      <p>Darker, more introspective than major triads. The lowered third creates a more somber mood.</p>
+                    </div>
+                  </>
+                )}
+
+
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Scale Explorer reference - only show for Major triads */}
         {displayType === 'Major' && (
           <p className="text-sm text-orange-600 mt-3 text-center">
@@ -1251,6 +1407,7 @@ export default function TriadsOn3StringSets() {
   const [selectedStringSet, setSelectedStringSet] = useState<string>('1_3');
   const [selectedInversion, setSelectedInversion] = useState(0);
   const [showOpenShapes, setShowOpenShapes] = useState(false);
+  const [showTheoryModal, setShowTheoryModal] = useState(false);
 
   const renderTriadSection = (triadType: TriadType, subType?: 'Diminished' | 'Augmented') => {
     switch (triadType) {
@@ -1360,15 +1517,117 @@ export default function TriadsOn3StringSets() {
             {/* Horizontal Fretboard View for Diminished */}
             <div className="bg-gray-50 rounded-lg p-8 mb-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">{selectedKey} Diminished Triads: Fretboard Map</h3>
-              <HorizontalTriadMap
+                              <HorizontalTriadMap
                 triadNotes={triadNotes}
                 startFret={dynamicStartFret}
                 fretCount={dynamicFretCount}
                 labelModeDefault="none"
-                showShapeNames={showShapeNames}
-                onToggleShapeNames={() => setShowShapeNames(!showShapeNames)}
+                triadType="Diminished"
               />
             </div>
+            
+            {/* Enhanced Fret Movement Information for Diminished */}
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-6 max-w-3xl mx-auto shadow-sm">
+              <h4 className="text-lg font-bold text-amber-800 mb-4 text-center">Inversion Movement Pattern</h4>
+              <p className="text-sm text-amber-700 text-center mb-6">Bass note movement between inversions (lowest string in each chord)</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">Root → 1st Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+3</div>
+                  <div className="text-xs text-amber-600">frets (3 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">1st → 2nd Inversion</div>
+                  <div className="text-2xl font-bold text-amber-600">+3</div>
+                  <div className="text-xs text-amber-600">frets (3 half steps)</div>
+                </div>
+                <div className="bg-white rounded-lg p-4 border border-amber-200 text-center">
+                  <div className="text-sm font-semibold text-amber-800 mb-2">2nd → Root Position</div>
+                  <div className="text-2xl font-bold text-amber-600">+6</div>
+                  <div className="text-xs text-amber-600">frets (6 half steps)</div>
+                </div>
+              </div>
+              
+              <div className="bg-amber-100 rounded-lg p-4 text-center">
+                <div className="text-sm font-semibold text-amber-800 mb-1">Complete Cycle</div>
+                <div className="text-xl font-bold text-amber-700">12 frets = 1 octave</div>
+                <div className="text-xs text-amber-600 mt-1">3 + 3 + 6 = 12</div>
+              </div>
+              
+              {/* Clarification Note */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">
+                <div className="text-sm text-amber-800">
+                  <strong>📝 Note about shape order:</strong> If you're looking at the chord or fretboard diagrams wondering why the shapes seem out of order, remember that we're using frets 0-12 as much as possible. The pattern naturally repeats: root position → 1st inversion → 2nd inversion → root position → 1st inversion → 2nd inversion, etc. Some diagrams may not start with root position—it depends on which notes are available in that fret range.
+                </div>
+              </div>
+            </div>
+            
+            {/* Theory Modal Button and Modal for Diminished */}
+            <div className="flex justify-center mt-6 mb-4">
+              <button
+                onClick={() => setShowTheoryModal(true)}
+                className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                📚 Theory Explanation
+              </button>
+            </div>
+
+            {/* Theory Modal for Diminished */}
+            {showTheoryModal && (
+              <div 
+                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                onClick={() => setShowTheoryModal(false)}
+              >
+                <div 
+                  className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-2xl p-6 max-w-2xl max-h-[80vh] overflow-y-auto border border-amber-200"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Diminished Triad Theory
+                    </h3>
+                    <button
+                      onClick={() => setShowTheoryModal(false)}
+                      className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                    >
+                      ×
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-4 text-gray-700">
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">How Diminished Differs from Minor:</h4>
+                      <p>A diminished fifth is found <strong>one half-step lower</strong> than a perfect fifth. That's why we write <strong>♭5</strong> (flat 5). Diminished triads have both a <strong>♭3</strong> (like minor chords) and a <strong>♭5</strong> (flattened fifth).</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Formula:</h4>
+                      <p>1 - ♭3 - ♭5 (root, minor third, diminished fifth)</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Inversions:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        <li><strong>Root Position:</strong> Root in bass (1-♭3-♭5)</li>
+                        <li><strong>1st Inversion:</strong> Minor third in bass (♭3-♭5-1)</li>
+                        <li><strong>2nd Inversion:</strong> Diminished fifth in bass (♭5-1-♭3)</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Natural Occurrence:</h4>
+                      <p>Diminished triads occur naturally on the 7th degree of the major scale (vii°). In C major, this would be B diminished (B-D-F).</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-2">Sound Character:</h4>
+                      <p>Unstable and tense due to the tritone interval (♭5). Creates strong pull toward resolution, often used as leading tones or passing chords.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
             
         <div className="text-xs text-gray-500 text-center mt-2 mb-4">
               Only the notes and frets used in the three chord diagrams above are shown on the map.
@@ -1381,7 +1640,7 @@ export default function TriadsOn3StringSets() {
       case 'Minor':
       default: {
         const { diagrams, triadNotes, reference } = buildTriadDataForKey(selectedKey, triadType, subType, showFullFretboard, selectedStringSet);
-        return renderTriadDisplay({diagrams, triadNotes, reference, displayType: triadType, selectedKey, showFullFretboard, showShapeNames, selectedStringSet, setShowFullFretboard, setShowShapeNames});
+        return renderTriadDisplay({diagrams, triadNotes, reference, displayType: triadType, selectedKey, showFullFretboard, showShapeNames, selectedStringSet, setShowFullFretboard, setShowShapeNames, showTheoryModal, setShowTheoryModal});
       }
     }
   };
@@ -1429,31 +1688,100 @@ export default function TriadsOn3StringSets() {
             </div>
           ))}
         </div>
+        
+        {/* Theory Modal Button and Modal for Augmented */}
+        <div className="flex justify-center mt-6 mb-4">
+          <button
+            onClick={() => setShowTheoryModal(true)}
+            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg font-semibold hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+          >
+            📚 Theory Explanation
+          </button>
+        </div>
+
+                 {/* Theory Modal for Augmented */}
+         {showTheoryModal && (
+           <div 
+             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+             onClick={() => setShowTheoryModal(false)}
+           >
+             <div 
+               className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl shadow-2xl p-6 max-w-2xl max-h-[80vh] overflow-y-auto border border-amber-200"
+               onClick={(e) => e.stopPropagation()}
+             >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-gray-900">
+                  Augmented Triad Theory
+                </h3>
+                <button
+                  onClick={() => setShowTheoryModal(false)}
+                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <div className="space-y-4 text-gray-700">
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Structure:</h4>
+                  <p>Augmented triads contain a <strong>root</strong>, <strong>major third</strong> (4 semitones), and <strong>augmented fifth</strong> (8 semitones).</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Formula:</h4>
+                  <p>1 - 3 - #5 (root, major third, sharpened fifth)</p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Symmetrical Nature:</h4>
+                  <p>Augmented triads are completely symmetrical - every interval is 4 semitones (major third). This means each inversion sounds identical and the chord repeats every 4 frets.</p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Enharmonic Equivalents:</h4>
+                  <p>Due to the symmetry, {selectedKey} augmented = {transposeNote(selectedKey, 4)} augmented = {transposeNote(selectedKey, 8)} augmented. Each "shape" is actually the same chord with different root names.</p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Sound Character:</h4>
+                  <p>Mysterious and unsettled due to the augmented fifth. Creates tension that wants to expand outward, often used in impressionistic and romantic period music.</p>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Usage:</h4>
+                  <p>Common in jazz as passing chords, chromatic mediants, or as part of whole-tone scales. Less common in traditional rock/pop but adds sophisticated color.</p>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Removed horizontal fretboard map for augmented triads */}
       </div>
     );
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="text-center mb-6 sm:mb-8 px-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
           Triads on 3-String Sets
         </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-          We often play chords on guitar using all strings. The major and minor chord shapes you already know are made of these triad building blocks. <br/>
-          This guide shows you the three essential triad shapes for each triad type (e.g. major triad) and for each string group, in both classic chord diagram and horizontal fretboard views. You'll see how inversions connect and move along the neck, making it easy to visualize and play triads in any key.
+        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+          Master the building blocks of guitar chords! Learn the three essential triad shapes on each string group with chord diagrams and fretboard maps.
         </p>
       </div>
 
       {/* Triad Type Selector */}
-      <div className="flex justify-center mb-6">
-        <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
+      <div className="flex justify-center mb-6 px-4">
+        <div className="bg-white rounded-lg shadow-md p-1 flex flex-wrap justify-center gap-1 w-full max-w-4xl">
           {TRIAD_TYPES.map((type) => (
             <button
               key={type}
-              className={`px-8 py-3 rounded-md font-semibold transition-all duration-200 ${selectedTriadType === type ? 'bg-amber-600 text-white' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
+              className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-semibold transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedTriadType === type ? 'bg-amber-600 text-white' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
               onClick={() => setSelectedTriadType(type)}
             >
               {type} Triads
@@ -1463,14 +1791,14 @@ export default function TriadsOn3StringSets() {
       </div>
 
       {/* Key Selector */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
+      <div className="flex justify-center mb-8 px-4">
+        <div className="bg-white rounded-lg shadow-md p-1 flex flex-wrap justify-center gap-1 w-full max-w-2xl">
           {MAJOR_KEYS
             .filter((key) => selectedTriadType !== 'Major Key Sequence' || key === 'C')
             .map((key) => (
             <button
               key={key}
-              className={`px-6 py-3 rounded-md font-medium transition-all duration-200 ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base min-w-[2.5rem] ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
               onClick={() => setSelectedKey(key)}
             >
               {key}
@@ -1480,14 +1808,14 @@ export default function TriadsOn3StringSets() {
       </div>
 
       {/* String Set Selector */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
+      <div className="flex justify-center mb-8 px-4">
+        <div className="bg-white rounded-lg shadow-md p-1 flex flex-wrap justify-center gap-1 w-full max-w-3xl">
           {STRING_SETS
             .filter((set) => selectedTriadType !== 'Major Key Sequence' || set.value === '1_3')
             .map((set) => (
             <button
               key={set.value}
-              className={`px-6 py-3 rounded-md font-medium transition-all duration-200 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
+              className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
               onClick={() => setSelectedStringSet(set.value)}
             >
               {set.label}
@@ -1525,10 +1853,39 @@ export default function TriadsOn3StringSets() {
           <div className="mb-12">
             <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Major Key Triad Sequence</h3>
             <div className="mb-6 text-center text-gray-600 max-w-3xl mx-auto">
-              <p className="mb-3">This shows all seven diatonic triads that occur naturally in a major key: I (major), ii (minor), iii (minor), IV (major), V (major), vi (minor), and vii° (diminished). This sequence forms the foundation of Western harmony.</p>
-              <p className="text-sm italic">Note: The sequence below shows C major on strings 1–3, but the pattern works for any key when transposed to different fret positions.</p>
+              <p>This shows all seven diatonic triads that occur naturally in a major key. This sequence forms the foundation of Western harmony.</p>
             </div>
             <MajorKeyTriadSequence keyName={selectedKey} stringSet={selectedStringSet} />
+            
+            {/* Detailed explanation below diagrams */}
+            <div className="mt-8 space-y-4 max-w-4xl mx-auto px-4">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                <h4 className="text-lg font-semibold text-amber-900 mb-3">Understanding the Sequence</h4>
+                <p className="text-amber-800 mb-4">The seven diatonic triads: <strong>I (major)</strong>, <strong>ii (minor)</strong>, <strong>iii (minor)</strong>, <strong>IV (major)</strong>, <strong>V (major)</strong>, <strong>vi (minor)</strong>, and <strong>vii° (diminished)</strong>.</p>
+                
+                <h4 className="text-lg font-semibold text-amber-900 mb-3">Apply to Any String Set</h4>
+                <p className="text-amber-800 mb-4">This pattern works on <strong>all four string sets</strong> (1-3, 2-4, 3-5, 4-6). The relationships between triads remain the same—only the fret positions change based on string tuning.</p>
+                
+                <h4 className="text-lg font-semibold text-amber-900 mb-3">Transposition</h4>
+                <p className="text-amber-800">You can use this exact sequence pattern for <strong>any major key</strong>! Simply move every fret position up or down by the same number of frets. For example: move everything up 2 frets for D major, up 4 frets for E major, up 5 frets for F major, etc. The same shapes can also be found ±12 frets (one octave higher or lower).</p>
+              </div>
+              
+              {/* Scale Explorer Link */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
+                <p className="text-amber-800 mb-3">
+                  <strong>🎯 Want to explore triads across the entire fretboard?</strong>
+                </p>
+                <a 
+                  href="/scale-explorer/index.html" 
+                  className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition-colors duration-200 shadow-md"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  Open Scale Explorer Tool →
+                </a>
+                <p className="text-sm text-amber-600 mt-2">Interactive tool showing triads, scales, and chord relationships across all strings and positions</p>
+              </div>
+            </div>
           </div>
         </div>
       ) : (

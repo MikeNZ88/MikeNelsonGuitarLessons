@@ -256,9 +256,9 @@ export default function Blog() {
     },
     {
       id: '21',
-      title: 'Triads on 3-String Sets: Major, Minor, and Diminished',
+      title: 'Triads on 3-String Sets',
       excerpt: 'Visualize and master triads across the neck using 3-string sets. See every inversion, shape, and fretboard map for major, minor, and diminished triads.',
-      readTime: '15 min read',
+      readTime: 'Interactive Tool',
       category: 'Intermediate',
       primaryCategory: 'Chords',
       categories: ['Chords', 'Scales and Fretboard'],

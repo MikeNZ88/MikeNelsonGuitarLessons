@@ -19,6 +19,7 @@ interface HorizontalTriadMapProps {
   useStandardStringOrder?: boolean; // true = tab style (high E at bottom), false = inverted (high E at top)
   hideLegend?: boolean; // Hide the interval legend (Root, 3rd, 5th)
   skipFingerMode?: boolean; // Skip finger mode in button toggle (only show note names and hide all)
+  triadType?: 'Major' | 'Minor' | 'Diminished' | 'Augmented'; // Triad type for proper interval labeling
 }
 
 const stringNames = ['E', 'B', 'G', 'D', 'A', 'E']; // 1 (high) to 6 (low)
@@ -41,6 +42,7 @@ export default function HorizontalTriadMap({
   useStandardStringOrder = true, // Default to tab style (high E at bottom)
   hideLegend = false,
   skipFingerMode = false,
+  triadType = 'Major',
 }: HorizontalTriadMapProps) {
   // labelMode: 'none' | 'note' | 'finger'
   const [labelMode, setLabelMode] = useState<'none' | 'note' | 'finger'>(labelModeDefault);
@@ -67,8 +69,40 @@ export default function HorizontalTriadMap({
     ? (labelMode === 'none' ? 'Show Note Names' : 'Hide All Labels')
     : (labelMode === 'none' ? 'Show Note Names' : labelMode === 'note' ? 'Show Finger Numbers' : 'Hide All Labels');
 
+  // Get proper interval labels based on triad type
+  const getIntervalLabel = (interval: string) => {
+    if (interval === '1') return 'Root (1)';
+    if (interval === '3') {
+      if (triadType === 'Major') return 'Major 3rd (3)';
+      if (triadType === 'Minor' || triadType === 'Diminished') return 'Minor 3rd (♭3)';
+      return '3rd';
+    }
+    if (interval === '5') {
+      if (triadType === 'Diminished') return 'Diminished 5th (♭5)';
+      return 'Perfect 5th (5)';
+    }
+    return interval;
+  };
+
   return (
     <div className="overflow-x-auto">
+      {/* Color Legend - moved above fretboard */}
+      {!hideLegend && (
+        <div className="flex justify-center gap-6 mb-4 text-sm">
+          <div className="flex items-center gap-2">
+            <span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 
+            {getIntervalLabel('1')}
+          </div>
+          <div className="flex items-center gap-2">
+            <span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 
+            {getIntervalLabel('3')}
+          </div>
+          <div className="flex items-center gap-2">
+            <span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 
+            {getIntervalLabel('5')}
+          </div>
+        </div>
+      )}
       <svg
         width={svgWidth}
         height={svgHeight}
@@ -177,14 +211,6 @@ export default function HorizontalTriadMap({
           );
         })}
       </svg>
-      {/* Color Legend */}
-      {!hideLegend && (
-        <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root</div>
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 3rd</div>
-          <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
-        </div>
-      )}
       <div className="flex justify-center gap-3 mt-4">
         <button
           className="px-3 py-1 rounded bg-amber-600 text-white text-sm font-medium"
