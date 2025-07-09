@@ -29,16 +29,15 @@ export default function StrummingPattern({
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
   const loopIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Determine if this is a 16th note pattern
+  const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+
+  // Always use percussive mode
   useEffect(() => {
     engineRef.current = new GuitarStrumEngine();
-    if (forcePercussion) {
-      setSoundMode('percussion');
-      engineRef.current.setSoundMode('percussion');
-    } else {
-      engineRef.current.setSoundMode(soundMode);
-    }
+    setSoundMode('percussion');
+    engineRef.current.setSoundMode('percussion');
     return () => {
-      // Clean up timeouts and loop interval
       timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
       if (loopIntervalRef.current) {
         clearTimeout(loopIntervalRef.current);
@@ -127,14 +126,7 @@ export default function StrummingPattern({
     setShowHandMovement(!showHandMovement);
   };
 
-  const toggleSoundMode = () => {
-    if (forcePercussion) return;
-    const newMode = soundMode === 'guitar' ? 'percussion' : 'guitar';
-    setSoundMode(newMode);
-    if (engineRef.current) {
-      engineRef.current.setSoundMode(newMode);
-    }
-  };
+  // Remove sound mode toggle button from controls
 
   const toggleMetronome = () => {
     setMetronomeEnabled(!metronomeEnabled);
@@ -369,19 +361,7 @@ export default function StrummingPattern({
           </button>
         )}
 
-        {!hideSoundModeToggle && (
-          <button
-            onClick={toggleSoundMode}
-            className={`px-2 sm:px-4 py-2 rounded-lg font-medium transition-colors duration-200 text-xs sm:text-sm ${
-              soundMode === 'percussion'
-                ? 'bg-amber-700 hover:bg-amber-800 text-white'
-                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-            }`}
-          >
-            <span className="hidden sm:inline">{soundMode === 'guitar' ? '🥁' : '🎸'} {soundMode === 'guitar' ? 'Percussion' : 'Guitar'}</span>
-            <span className="sm:hidden">{soundMode === 'guitar' ? '🥁' : '🎸'}</span>
-          </button>
-        )}
+        {/* Remove sound mode toggle button from controls */}
 
         <button
           onClick={toggleMetronome}
@@ -391,8 +371,7 @@ export default function StrummingPattern({
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
           }`}
         >
-          <span className="hidden sm:inline">🎼 Metronome</span>
-          <span className="sm:hidden">🎼</span>
+          Metronome
         </button>
         
         {isPlaying && (
@@ -408,15 +387,11 @@ export default function StrummingPattern({
         <div className="flex items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm flex-wrap">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></div>
-            <span className="text-gray-600">
-              {soundMode === 'percussion' ? 'Kick Drum' : 'Down Stroke'}
-            </span>
+            <span className="text-gray-600">Kick Drum</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
-            <span className="text-gray-600">
-              {soundMode === 'percussion' ? 'Snare Drum' : 'Up Stroke'}
-            </span>
+            <span className="text-gray-600">Snare Drum</span>
           </div>
           {hasGhostStrums() && (
             <div className="flex items-center space-x-2">

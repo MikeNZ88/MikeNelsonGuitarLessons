@@ -32,10 +32,11 @@ export default function SongStrummingPattern({
   const engineRef = useRef<GuitarStrumEngine | null>(null);
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
 
+  // Always use percussive mode
   useEffect(() => {
     engineRef.current = new GuitarStrumEngine();
-    engineRef.current.setSoundMode(soundMode);
-    
+    setSoundMode('percussion');
+    engineRef.current.setSoundMode('percussion');
     return () => {
       timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
     };
@@ -125,14 +126,6 @@ export default function SongStrummingPattern({
 
   const toggleLoop = () => {
     setIsLooping(!isLooping);
-  };
-
-  const toggleSoundMode = () => {
-    const newMode = soundMode === 'guitar' ? 'percussion' : 'guitar';
-    setSoundMode(newMode);
-    if (engineRef.current) {
-      engineRef.current.setSoundMode(newMode);
-    }
   };
 
   const toggleMetronome = () => {
@@ -251,16 +244,7 @@ export default function SongStrummingPattern({
           🔄 Loop
         </button>
 
-        <button
-          onClick={toggleSoundMode}
-          className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
-            soundMode === 'percussion'
-              ? 'bg-amber-700 hover:bg-amber-800 text-white'
-              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-          }`}
-        >
-          {soundMode === 'guitar' ? '🥁' : '🎸'}
-        </button>
+        {/* Remove sound mode toggle button from controls */}
 
         <button
           onClick={toggleMetronome}
@@ -270,7 +254,7 @@ export default function SongStrummingPattern({
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
           }`}
         >
-          🎼
+          Metronome
         </button>
         
         {isPlaying && (
@@ -286,11 +270,11 @@ export default function SongStrummingPattern({
         <div className="flex items-center justify-center gap-4 text-xs flex-wrap">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></div>
-            <span className="text-amber-600">Down Stroke</span>
+            <span className="text-amber-600">Kick Drum</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
-            <span className="text-amber-600">Up Stroke</span>
+            <span className="text-amber-600">Snare Drum</span>
           </div>
         </div>
       </div>

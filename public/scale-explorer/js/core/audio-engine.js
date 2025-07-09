@@ -12,7 +12,7 @@ class AudioEngine {
         this.isInitialized = false;
         this.activeNotes = new Map();
         this.settings = {
-            volume: 0.7,
+            volume: 0.9,
             tempo: 85, // Reduced from 100 for better timing precision
             noteLength: 0.6,
             chordSpread: 0.03,

@@ -37,7 +37,7 @@ export class GuitarStrumEngine {
     try {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       this.masterGain = this.audioContext.createGain();
-      this.masterGain.gain.value = 0.4;
+      this.masterGain.gain.value = 0.8;
       this.masterGain.connect(this.audioContext.destination);
       this.isInitialized = true;
       console.log('Audio context initialized successfully');
@@ -130,8 +130,8 @@ export class GuitarStrumEngine {
       filter.Q.value = 1.2;
       
       // More natural attack and decay for wooden sound
-      const baseGain = isUpstroke ? 0.25 : 0.4;
-      const stringGain = (baseGain * harmonic.gain) * (0.7 + stringIndex * 0.08);
+      const baseGain = isUpstroke ? 0.4 : 0.6;
+      const stringGain = (baseGain * harmonic.gain) * (0.9 + stringIndex * 0.08);
       
       // Wooden guitar envelope: quick attack, slow decay
       gain.gain.setValueAtTime(0, startTime);
@@ -152,6 +152,103 @@ export class GuitarStrumEngine {
 
     // Add subtle pick noise for realism
     this.addPickNoise(startTime, isUpstroke, stringIndex);
+  }
+
+  private createKickSound(startTime: number): void {
+    if (!this.audioContext || !this.masterGain) return;
+
+    // Kick drum - low frequency with quick pitch sweep
+    const osc = this.audioContext.createOscillator();
+    const gain = this.audioContext.createGain();
+    const filter = this.audioContext.createBiquadFilter();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(60, startTime);
+    osc.frequency.exponentialRampToValueAtTime(30, startTime + 0.1);
+    
+    filter.type = 'lowpass';
+    filter.frequency.value = 100;
+    filter.Q.value = 1;
+    
+    gain.gain.setValueAtTime(1.0, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+    
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+    
+    osc.start(startTime);
+    osc.stop(startTime + 0.2);
+  }
+
+  private createSnareSound(startTime: number): void {
+    if (!this.audioContext || !this.masterGain) return;
+
+    // Snare drum - noise burst with tonal component
+    const noise = this.audioContext.createBufferSource();
+    const noiseGain = this.audioContext.createGain();
+    const noiseFilter = this.audioContext.createBiquadFilter();
+    
+    // Create noise buffer
+    const bufferSize = this.audioContext.sampleRate * 0.1;
+    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.3;
+    }
+    
+    noise.buffer = buffer;
+    
+    // Filter for snare-like sound
+    noiseFilter.type = 'bandpass';
+    noiseFilter.frequency.value = 200;
+    noiseFilter.Q.value = 1;
+    
+    noiseGain.gain.setValueAtTime(0.6, startTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.15);
+    
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+    
+    noise.start(startTime);
+    noise.stop(startTime + 0.15);
+    
+    // Add tonal component for more musical snare
+    const toneOsc = this.audioContext.createOscillator();
+    const toneGain = this.audioContext.createGain();
+    
+    toneOsc.type = 'triangle';
+    toneOsc.frequency.value = 200;
+    
+    toneGain.gain.setValueAtTime(0.3, startTime);
+    toneGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08);
+    
+    toneOsc.connect(toneGain);
+    toneGain.connect(this.masterGain);
+    
+    toneOsc.start(startTime);
+    toneOsc.stop(startTime + 0.08);
+  }
+
+  private createPercussionSound(isDownstroke: boolean, startTime: number): void {
+    if (!this.audioContext || !this.masterGain) {
+      console.error('Audio context not initialized');
+      return;
+    }
+
+    try {
+      const now = this.audioContext.currentTime + startTime;
+      
+      if (isDownstroke) {
+        this.createKickSound(now);
+      } else {
+        this.createSnareSound(now);
+      }
+    } catch (error) {
+      console.error('Error creating percussion sound:', error);
+    }
   }
 
   private addPickNoise(startTime: number, isUpstroke: boolean, stringIndex: number): void {
@@ -209,106 +306,8 @@ export class GuitarStrumEngine {
     return this.soundMode;
   }
 
-  private createPercussionSound(isDownstroke: boolean, startTime: number): void {
-    if (!this.audioContext || !this.masterGain) {
-      console.error('Audio context not initialized');
-      return;
-    }
-
-    try {
-      const now = this.audioContext.currentTime + startTime;
-      
-      if (isDownstroke) {
-        this.createKickSound(now);
-      } else {
-        this.createSnareSound(now);
-      }
-    } catch (error) {
-      console.error('Error creating percussion sound:', error);
-    }
-  }
-
-  private createKickSound(startTime: number): void {
-    if (!this.audioContext || !this.masterGain) return;
-
-    // Kick drum - low frequency with quick pitch sweep
-    const osc = this.audioContext.createOscillator();
-    const gain = this.audioContext.createGain();
-    const filter = this.audioContext.createBiquadFilter();
-    
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(60, startTime);
-    osc.frequency.exponentialRampToValueAtTime(30, startTime + 0.1);
-    
-    filter.type = 'lowpass';
-    filter.frequency.value = 100;
-    filter.Q.value = 1;
-    
-    gain.gain.setValueAtTime(0.8, startTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
-    
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.masterGain);
-    
-    osc.start(startTime);
-    osc.stop(startTime + 0.2);
-  }
-
-  private createSnareSound(startTime: number): void {
-    if (!this.audioContext || !this.masterGain) return;
-
-    // Snare drum - noise burst with tonal component
-    const noise = this.audioContext.createBufferSource();
-    const noiseGain = this.audioContext.createGain();
-    const noiseFilter = this.audioContext.createBiquadFilter();
-    
-    // Create noise buffer
-    const bufferSize = this.audioContext.sampleRate * 0.1;
-    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
-    const data = buffer.getChannelData(0);
-    
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * 0.3;
-    }
-    
-    noise.buffer = buffer;
-    
-    // Filter for snare-like sound
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.value = 200;
-    noiseFilter.Q.value = 1;
-    
-    noiseGain.gain.setValueAtTime(0.4, startTime);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.15);
-    
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(this.masterGain);
-    
-    noise.start(startTime);
-    noise.stop(startTime + 0.15);
-    
-    // Add tonal component for more musical snare
-    const toneOsc = this.audioContext.createOscillator();
-    const toneGain = this.audioContext.createGain();
-    
-    toneOsc.type = 'triangle';
-    toneOsc.frequency.value = 200;
-    
-    toneGain.gain.setValueAtTime(0.2, startTime);
-    toneGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08);
-    
-    toneOsc.connect(toneGain);
-    toneGain.connect(this.masterGain);
-    
-    toneOsc.start(startTime);
-    toneOsc.stop(startTime + 0.08);
-  }
-
   playDownstrokePercussion(delay: number = 0): void {
-    // Use snare sound for both downstrokes and upstrokes for maximum compatibility
-    this.createPercussionSound(false, delay);
+    this.createPercussionSound(true, delay);
   }
 
   playUpstrokePercussion(delay: number = 0): void {

@@ -49,12 +49,8 @@ export default function SongStructurePlayer({
 
   useEffect(() => {
     engineRef.current = new GuitarStrumEngine();
-    if (forcePercussion) {
-      setSoundMode('percussion');
-      engineRef.current.setSoundMode('percussion');
-    } else {
-      engineRef.current.setSoundMode(soundMode);
-    }
+    setSoundMode('percussion');
+    engineRef.current.setSoundMode('percussion');
     return () => {
       timeoutRefs.current.forEach(timeout => clearTimeout(timeout));
     };
@@ -347,19 +343,6 @@ export default function SongStructurePlayer({
           🔄 Loop
         </button>
 
-        {!hideSoundModeToggle && (
-          <button
-            onClick={toggleSoundMode}
-            className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
-              soundMode === 'percussion'
-                ? 'bg-amber-700 hover:bg-amber-800 text-white'
-                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-            }`}
-          >
-            {soundMode === 'guitar' ? '🥁' : '🎸'}
-          </button>
-        )}
-
         <button
           onClick={toggleMetronome}
           className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
@@ -368,7 +351,7 @@ export default function SongStructurePlayer({
               : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
           }`}
         >
-          🎼
+          Metronome
         </button>
         
         {isPlaying && (
