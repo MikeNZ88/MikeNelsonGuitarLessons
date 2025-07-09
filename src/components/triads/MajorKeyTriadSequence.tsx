@@ -47,8 +47,11 @@ const MajorKeyTriadSequence: React.FC<MajorKeyTriadSequenceProps> = ({ keyName, 
         {keyName} Major Key Triad Sequence ({selectedInversion})
       </h3>
       
-      <div className="mb-6 text-center text-gray-600 max-w-3xl mx-auto">
-        <p>All seven diatonic triads flowing horizontally across the fretboard. Each color represents a different degree of the major scale.</p>
+      <div className="mb-6 text-center text-gray-600 max-w-4xl mx-auto">
+        <p className="mb-4">All seven diatonic triads of the C major scale flowing horizontally across the fretboard on strings 1–3 (G, B, E). Each color represents a different degree of the major scale.</p>
+        <p className="text-sm bg-amber-50 border border-amber-200 rounded-lg p-4 mx-auto">
+          <strong>Transposition tip:</strong> You can use this exact sequence pattern for any major key! Simply move every fret position up or down by the same number of frets. For example, move everything up 2 frets for D major, up 4 frets for E major, up 5 frets for F major, etc. <strong>Remember:</strong> The same shapes can also be found ±12 frets (one octave higher or lower).
+        </p>
       </div>
 
       <div className="flex justify-center gap-4 mb-6">
@@ -70,6 +73,8 @@ const MajorKeyTriadSequence: React.FC<MajorKeyTriadSequenceProps> = ({ keyName, 
           startFret={startFret}
           fretCount={fretCount}
           useStandardStringOrder={false}
+          hideLegend={true}
+          skipFingerMode={true}
         />
       </div>
       

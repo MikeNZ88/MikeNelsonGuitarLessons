@@ -1396,8 +1396,9 @@ export default function TriadsOn3StringSets() {
           {/* Major Key Sequence Section */}
           <div className="mb-12">
             <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Major Key Triad Sequence</h3>
-            <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
-              <p>This shows all seven diatonic triads that occur naturally in a major key: I (major), ii (minor), iii (minor), IV (major), V (major), vi (minor), and vii° (diminished). This sequence forms the foundation of Western harmony.</p>
+            <div className="mb-6 text-center text-gray-600 max-w-3xl mx-auto">
+              <p className="mb-3">This shows all seven diatonic triads that occur naturally in a major key: I (major), ii (minor), iii (minor), IV (major), V (major), vi (minor), and vii° (diminished). This sequence forms the foundation of Western harmony.</p>
+              <p className="text-sm italic">Note: The sequence below shows C major on strings 1–3, but the pattern works for any key when transposed to different fret positions.</p>
             </div>
             <MajorKeyTriadSequence keyName={selectedKey} stringSet={selectedStringSet} />
           </div>

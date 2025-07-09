@@ -17,6 +17,8 @@ interface HorizontalTriadMapProps {
   fretCount?: number;
   labelModeDefault?: 'none' | 'note' | 'finger';
   useStandardStringOrder?: boolean; // true = tab style (high E at bottom), false = inverted (high E at top)
+  hideLegend?: boolean; // Hide the interval legend (Root, 3rd, 5th)
+  skipFingerMode?: boolean; // Skip finger mode in button toggle (only show note names and hide all)
 }
 
 const stringNames = ['E', 'B', 'G', 'D', 'A', 'E']; // 1 (high) to 6 (low)
@@ -37,6 +39,8 @@ export default function HorizontalTriadMap({
   fretCount = 13,
   labelModeDefault = 'none',
   useStandardStringOrder = true, // Default to tab style (high E at bottom)
+  hideLegend = false,
+  skipFingerMode = false,
 }: HorizontalTriadMapProps) {
   // labelMode: 'none' | 'note' | 'finger'
   const [labelMode, setLabelMode] = useState<'none' | 'note' | 'finger'>(labelModeDefault);
@@ -55,11 +59,13 @@ export default function HorizontalTriadMap({
   }
 
   // Button label logic
-  const nextLabelMode = labelMode === 'none' ? 'note' : labelMode === 'note' ? 'finger' : 'none';
-  const buttonText =
-    labelMode === 'none' ? 'Show Note Names' :
-    labelMode === 'note' ? 'Show Finger Numbers' :
-    'Hide All Labels';
+  const nextLabelMode = skipFingerMode 
+    ? (labelMode === 'none' ? 'note' : 'none')  // Skip finger mode: none -> note -> none
+    : (labelMode === 'none' ? 'note' : labelMode === 'note' ? 'finger' : 'none'); // Normal: none -> note -> finger -> none
+  
+  const buttonText = skipFingerMode
+    ? (labelMode === 'none' ? 'Show Note Names' : 'Hide All Labels')
+    : (labelMode === 'none' ? 'Show Note Names' : labelMode === 'note' ? 'Show Finger Numbers' : 'Hide All Labels');
 
   return (
     <div className="overflow-x-auto">
@@ -172,11 +178,13 @@ export default function HorizontalTriadMap({
         })}
       </svg>
       {/* Color Legend */}
-      <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
-        <div className="flex items-center gap-2"><span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root</div>
-        <div className="flex items-center gap-2"><span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 3rd</div>
-        <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
-      </div>
+      {!hideLegend && (
+        <div className="flex justify-center gap-6 mt-3 mb-2 text-sm">
+          <div className="flex items-center gap-2"><span style={{background: intervalColors['1'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> Root</div>
+          <div className="flex items-center gap-2"><span style={{background: intervalColors['3'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 3rd</div>
+          <div className="flex items-center gap-2"><span style={{background: intervalColors['5'], width: 16, height: 16, borderRadius: 8, display: 'inline-block', border: '1px solid #aaa'}}></span> 5th</div>
+        </div>
+      )}
       <div className="flex justify-center gap-3 mt-4">
         <button
           className="px-3 py-1 rounded bg-amber-600 text-white text-sm font-medium"
