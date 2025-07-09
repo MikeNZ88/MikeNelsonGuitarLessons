@@ -69,6 +69,7 @@ const MajorKeyTriadSequence: React.FC<MajorKeyTriadSequenceProps> = ({ keyName, 
           labelModeDefault="note" 
           startFret={startFret}
           fretCount={fretCount}
+          useStandardStringOrder={false}
         />
       </div>
       

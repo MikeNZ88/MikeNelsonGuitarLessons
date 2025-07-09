@@ -16,6 +16,7 @@ interface HorizontalTriadMapProps {
   startFret?: number;
   fretCount?: number;
   labelModeDefault?: 'none' | 'note' | 'finger';
+  useStandardStringOrder?: boolean; // true = tab style (high E at bottom), false = inverted (high E at top)
 }
 
 const stringNames = ['E', 'B', 'G', 'D', 'A', 'E']; // 1 (high) to 6 (low)
@@ -35,6 +36,7 @@ export default function HorizontalTriadMap({
   startFret = 3,
   fretCount = 13,
   labelModeDefault = 'none',
+  useStandardStringOrder = true, // Default to tab style (high E at bottom)
 }: HorizontalTriadMapProps) {
   // labelMode: 'none' | 'note' | 'finger'
   const [labelMode, setLabelMode] = useState<'none' | 'note' | 'finger'>(labelModeDefault);
@@ -124,8 +126,10 @@ export default function HorizontalTriadMap({
         })}
         {/* Triad Notes */}
         {triadNotes.map((n, idx) => {
-          // SVG string index: 1 (high E) = top (index 0), 6 (low E) = bottom (index 5)
-          const stringIdx = n.string - 1;
+          // SVG string index calculation based on string order preference
+          const stringIdx = useStandardStringOrder 
+            ? stringNames.length - n.string  // Tab style: 1 (high E) = bottom, 6 (low E) = top
+            : n.string - 1;                  // Inverted: 1 (high E) = top, 6 (low E) = bottom
           const y = topMargin + stringIdx * stringSpacing;
           const x = leftMargin + (n.fret - startFret + 1) * fretWidth - fretWidth / 2;
           const fillColor = n.color || intervalColors[n.interval];
