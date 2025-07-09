@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beginner Guitar Guide - Mike Nelson Guitar Lessons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 50%, #fef3c7 100%);
+            width: 100vw;
+            height: 100vw;
+            min-height: 800px;
+            min-width: 800px;
+            max-width: 800px;
+            max-height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .static-ad {
+            width: 800px;
+            height: 800px;
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        .header {
+            background: 
+                linear-gradient(135deg, rgba(180, 83, 9, 0.85) 0%, rgba(217, 119, 6, 0.85) 50%, rgba(234, 88, 12, 0.85) 100%),
+                url('https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            background-blend-mode: overlay;
+            color: white;
+            padding: 14px 40px;
+            text-align: center;
+            position: relative;
+        }
+        .header .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #ea580c 100%);
+            clip-path: ellipse(100% 100% at 50% 0%);
+        }
+        .content {
+            flex: 1;
+            padding: 22px 32px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+        .learn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .learn-card {
+            background: #fff7ed;
+            border: 2px solid #fbbf24;
+            border-radius: 0;
+            padding: 18px 8px 14px 8px;
+            text-align: center;
+            min-height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(251,191,36,0.07);
+        }
+        .learn-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.13rem;
+            color: #b45309;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
+        }
+        .learn-card-desc {
+            font-size: 0.92rem;
+            color: #92400e;
+        }
+        .golden-rule-section {
+            background: linear-gradient(135deg, #fef7ed 0%, #fff7ed 100%);
+            border: 2px solid #fbbf24;
+            border-radius: 0;
+            padding: 14px 12px 12px 12px;
+            text-align: center;
+        }
+        .golden-rule-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.13rem;
+            color: #b45309;
+            margin-bottom: 7px;
+        }
+        .golden-rule-text {
+            font-size: 0.98rem;
+            color: #78716c;
+            line-height: 1.35;
+            margin-bottom: 7px;
+        }
+        .tips-section {
+            background: #fef7ed;
+            border: 2px solid #fbbf24;
+            border-radius: 0;
+            padding: 11px 10px 9px 10px;
+            margin-bottom: 6px;
+        }
+        .tips-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.01rem;
+            color: #b45309;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        .tips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.92rem;
+            color: #92400e;
+            font-weight: 600;
+            text-align: center;
+        }
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 10px 30px 8px 30px;
+            text-align: center;
+        }
+        .cta-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .contact-info {
+            font-size: 0.85rem;
+            color: white;
+        }
+        .tagline {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="static-ad">
+        <!-- Header Section -->
+        <div class="header">
+            <h1 class="main-title">Beginner Guitar Guide</h1>
+            <div class="subtitle">What to buy, what to learn, and your first steps</div>
+        </div>
+        <!-- Main Content -->
+        <div class="content">
+            <!-- What You'll Learn Grid -->
+            <div class="learn-grid">
+                <div class="learn-card">
+                    <div class="learn-card-title">Choosing Your First Guitar</div>
+                    <div class="learn-card-desc">Find the right guitar for you</div>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-card-title">How to Hold the Pick</div>
+                    <div class="learn-card-desc">Get a relaxed, confident grip</div>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-card-title">First Essential Chords</div>
+                    <div class="learn-card-desc">The chords every beginner should know</div>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-card-title">Essential Gear</div>
+                    <div class="learn-card-desc">What you need (and what you don't)</div>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-card-title">Learning Roadmap</div>
+                    <div class="learn-card-desc">Your step-by-step path to progress</div>
+                </div>
+                <div class="learn-card">
+                    <div class="learn-card-title">Your First 3 Songs</div>
+                    <div class="learn-card-desc">Learn with simple strumming patterns and interactive diagrams</div>
+                </div>
+            </div>
+            <!-- Golden Rule -->
+            <div class="golden-rule-section">
+                <div class="golden-rule-title">Golden Rule for Beginners</div>
+                <div class="golden-rule-text">
+                    Consistent, focused practice beats long, infrequent sessions.<br>
+                    Start slow, build accuracy, then increase speed.
+                </div>
+                <div style="background: #fbbf24; color: white; padding: 5px; margin-top: 6px; font-size: 0.85rem; font-weight: 600;">
+                    Solid foundations = Fast progress
+                </div>
+            </div>
+            <!-- Quick Tips -->
+            <div class="tips-section">
+                <div class="tips-title">Quick Tips</div>
+                <div class="tips-list">
+                    <div>• Use a medium pick for control</div>
+                    <div>• Learn 2-3 chords first, then add more</div>
+                    <div>• Practice changing chords slowly and cleanly</div>
+                    <div>• Play real songs as soon as possible!</div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div class="footer">
+            <p class="cta-text">Free Interactive Guide</p>
+            <p class="contact-info">mikenelsonguitarlessons.co.nz/blog/complete-beginners-guide-guitar</p>
+            <p class="tagline">Educational resource • Practice at your own pace • Build solid technique</p>
+        </div>
+    </div>
+</body>
+</html> 
