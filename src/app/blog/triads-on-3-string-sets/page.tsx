@@ -98,8 +98,25 @@ function getFretForNote(rootNote: string, targetNote: string, minFret: number = 
 function transposeNote(root: string, semitones: number, preferFlat: boolean = false) {
   const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-  const scale = preferFlat ? chromaticFlats : chromatic;
+  
+  // Key-specific enharmonic preferences for correct spelling
+  const keySpecificPreferences: Record<string, Record<number, string>> = {
+    'B': { 6: 'F#' }, // B major/minor uses F# not Gb
+    'F#': { 6: 'F#' }, // F# major/minor uses F# not Gb
+    'C#': { 1: 'C#', 6: 'F#', 8: 'G#' }, // C# major/minor
+    'G#': { 8: 'G#' }, // G# major/minor uses G# not Ab
+    'D#': { 3: 'D#' }, // D# major/minor uses D# not Eb
+    'A#': { 10: 'A#' }, // A# major/minor uses A# not Bb
+  };
+  
   const idx = (chromatic.indexOf(root) + semitones) % 12;
+  
+  // Check if we have a key-specific preference for this note
+  if (keySpecificPreferences[root] && keySpecificPreferences[root][idx]) {
+    return keySpecificPreferences[root][idx];
+  }
+  
+  const scale = preferFlat ? chromaticFlats : chromatic;
   return scale[idx];
 }
 
@@ -329,9 +346,6 @@ function getInversionLabelForShape(notes: string[], key: string): string {
 
 // Update buildTriadDataForKey to accept stringSet and selectedInversion as parameters:
 function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Diminished' | 'Augmented', showFullFretboard?: boolean, stringSet: string = '1_3') {
-  if (triadType === 'Diminished') {
-    return { diagrams: [], triadNotes: [], reference: null };
-  }
   const offset = KEY_OFFSETS[key as keyof typeof KEY_OFFSETS];
   let reference: any = null;
   let shapes: any[] | null = null;
@@ -501,7 +515,22 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
         .filter(({ fret }) => fret >= 0)
         .map(({ stringIdx }) => stringIdx);
       return playedStrings.map((stringIdx, noteIdx) => {
-        const noteName = diagram.notes[noteIdx];
+        // Calculate the actual note name based on string tuning and fret position
+        const stringNames = ['E', 'A', 'D', 'G', 'B', 'E']; // Low E to High E (0-indexed)
+        const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const openNote = stringNames[stringIdx];
+        const openIdx = chromatic.indexOf(openNote);
+        const actualFret = diagram.frets[stringIdx];
+        const scale = triadType === 'Minor' ? chromaticFlats : chromatic;
+        let noteName = scale[(openIdx + actualFret) % 12];
+        
+        // Fix enharmonic for B minor: use F# instead of Gb
+        if (key === 'B' && triadType === 'Minor' && noteName === 'Gb') {
+          noteName = 'F#';
+        }
+        
+        // Calculate interval based on the actual note and selected key
         let interval = '1';
         const root = key;
         const third = transposeNote(key, triadType === 'Major' ? 4 : 3, triadType === 'Minor');
@@ -672,32 +701,69 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
   
   const stringNumbers = STRING_SET_TO_STRINGS[stringSet] || [3, 2, 1];
 
-  // Group triad notes by shape for sorting
-  const triadNotesByShape = [
-    [
-      { string: stringNumbers[0], fret: adjustedShape1[0] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape1.fingers[3] ?? '').toString() },
-      { string: stringNumbers[1], fret: adjustedShape1[1] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape1.fingers[4] ?? '').toString() },
-      { string: stringNumbers[2], fret: adjustedShape1[2] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape1.fingers[5] ?? '').toString() },
-    ],
-    [
-      { string: stringNumbers[0], fret: adjustedShape2[0] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape2.fingers[3] ?? '').toString() },
-      { string: stringNumbers[1], fret: adjustedShape2[1] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape2.fingers[4] ?? '').toString() },
-      { string: stringNumbers[2], fret: adjustedShape2[2] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape2.fingers[5] ?? '').toString() },
-    ],
-    [
-      { string: stringNumbers[0], fret: adjustedShape3[0] ?? 0, note: transposeNote(key, fifthInterval, useFlats), interval: '5' as const, finger: (reference.shape3.fingers[3] ?? '').toString() },
-      { string: stringNumbers[1], fret: adjustedShape3[1] ?? 0, note: transposeNote(key, 0), interval: '1' as const, finger: (reference.shape3.fingers[4] ?? '').toString() },
-      { string: stringNumbers[2], fret: adjustedShape3[2] ?? 0, note: transposeNote(key, thirdInterval, useFlats), interval: '3' as const, finger: (reference.shape3.fingers[5] ?? '').toString() },
-    ],
+  // Get the correct finger indices based on string set
+  const getFingerIndices = (stringSet: string) => {
+    switch (stringSet) {
+      case '1_3': return [3, 4, 5]; // strings G, B, E (indices 3, 4, 5)
+      case '2_4': return [2, 3, 4]; // strings D, G, B (indices 2, 3, 4)
+      case '3_5': return [1, 2, 3]; // strings A, D, G (indices 1, 2, 3)
+      case '4_6': return [0, 1, 2]; // strings E, A, D (indices 0, 1, 2)
+      default: return [3, 4, 5];
+    }
+  };
+
+  const fingerIndices = getFingerIndices(stringSet);
+
+  // Helper function to get interval from reference note
+  function getIntervalFromReferenceNote(note: string, triadType: TriadType): string {
+    if (note === 'C') return '1'; // root
+    if (triadType === 'Major') {
+      if (note === 'E') return '3'; // major 3rd
+      if (note === 'G') return '5'; // perfect 5th
+    } else if (triadType === 'Minor') {
+      if (note === 'Eb') return '3'; // minor 3rd
+      if (note === 'G') return '5'; // perfect 5th
+    }
+    return '1'; // fallback to root
+  }
+
+    // Create shape data with reference info for proper sorting and labeling
+  const shapesWithData = [
+    {
+      notes: adjustedShape1,
+      reference: reference.shape1,
+      shapeIndex: 0,
+      originalLabel: 'Root Position'
+    },
+    {
+      notes: adjustedShape2,
+      reference: reference.shape2,
+      shapeIndex: 1,
+      originalLabel: '1st Inversion'
+    },
+    {
+      notes: adjustedShape3,
+      reference: reference.shape3,
+      shapeIndex: 2,
+      originalLabel: '2nd Inversion'
+    }
   ];
-  // Sort shapes by minimum fret (ignoring muted strings)
-  triadNotesByShape.sort((a, b) => {
-    const aFrets = a.map(n => n.fret).filter(f => f > 0);
-    const bFrets = b.map(n => n.fret).filter(f => f > 0);
+
+  // Sort by minimum fret
+  shapesWithData.sort((a, b) => {
+    const aFrets = a.notes.filter((f: number) => f > 0);
+    const bFrets = b.notes.filter((f: number) => f > 0);
     const minA = Math.min(...(aFrets.length ? aFrets : [0]));
     const minB = Math.min(...(bFrets.length ? bFrets : [0]));
     return minA - minB;
   });
+
+  // Build triad notes using sorted shapes with correct reference data
+  const triadNotesByShape = shapesWithData.map(shapeData => [
+    { string: stringNumbers[0], fret: shapeData.notes[0] ?? 0, note: transposeNote(shapeData.reference.notes[0], offset, useFlats), interval: getIntervalFromReferenceNote(shapeData.reference.notes[0], triadType), finger: (shapeData.reference.fingers[fingerIndices[0]] ?? '').toString() },
+    { string: stringNumbers[1], fret: shapeData.notes[1] ?? 0, note: transposeNote(shapeData.reference.notes[1], offset, useFlats), interval: getIntervalFromReferenceNote(shapeData.reference.notes[1], triadType), finger: (shapeData.reference.fingers[fingerIndices[1]] ?? '').toString() },
+    { string: stringNumbers[2], fret: shapeData.notes[2] ?? 0, note: transposeNote(shapeData.reference.notes[2], offset, useFlats), interval: getIntervalFromReferenceNote(shapeData.reference.notes[2], triadType), finger: (shapeData.reference.fingers[fingerIndices[2]] ?? '').toString() }
+  ]);
   // Flatten for the map
   const triadNotes = triadNotesByShape.flat();
 
@@ -858,9 +924,9 @@ const C_MINOR_REFERENCE_3_5 = {
   },
 };
 const C_MINOR_REFERENCE_4_6 = {
-  // Root position: C (8th fret E), Eb (7th fret A), G (5th fret D)
+  // Root position: C (8th fret E), Eb (6th fret A), G (5th fret D)
   shape1: {
-    frets: [8, 7, 5, -1, -1, -1], // E, A, D, G, B, e
+    frets: [8, 6, 5, -1, -1, -1], // E, A, D, G, B, e
     fingers: ['3', '2', '1', '', '', ''],
     startFret: 5,
     notes: ['C', 'Eb', 'G'],
@@ -1089,13 +1155,66 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
         )}
         {/* Chord Diagram View (vertical) */}
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
-        {labeledDiagrams.map((data: any, idx: number) => (
+        {labeledDiagrams.map((data: any, idx: number) => {
+          // Calculate interval colors for each string in this diagram
+          const intervalColors = data.frets.map((fret: number, stringIdx: number) => {
+            if (fret < 0) return '#000000'; // Muted string, color doesn't matter
+            
+            // Calculate the actual note name based on string tuning and fret position
+            const stringNames = ['E', 'A', 'D', 'G', 'B', 'E']; // Low E to High E (0-indexed)
+            const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+            const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+            const openNote = stringNames[stringIdx];
+            const openIdx = chromatic.indexOf(openNote);
+            const scale = displayType === 'Minor' ? chromaticFlats : chromatic;
+            let noteName = scale[(openIdx + fret) % 12];
+            
+            // Fix enharmonic for B minor: use F# instead of Gb
+            if (selectedKey === 'B' && displayType === 'Minor' && noteName === 'Gb') {
+              noteName = 'F#';
+            }
+            
+            // Calculate interval based on the actual note and selected key
+            const root = selectedKey;
+            const third = transposeNote(selectedKey, displayType === 'Major' ? 4 : 3, displayType === 'Minor');
+            const thirdSharp = transposeNote(selectedKey, displayType === 'Major' ? 4 : 3, false);
+            const thirdFlat = transposeNote(selectedKey, displayType === 'Major' ? 4 : 3, true);
+            const fifth = transposeNote(selectedKey, 7);
+            
+            // Helper to get chromatic index for a note name (handles sharps/flats)
+            function getChromaticIndex(note: string) {
+              const chromatic = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+              const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+              let idx = chromatic.indexOf(note);
+              if (idx === -1) idx = chromaticFlats.indexOf(note);
+              return idx;
+            }
+            
+            const noteIdxVal = getChromaticIndex(noteName);
+            const rootIdx = getChromaticIndex(root);
+            const thirdIdx = getChromaticIndex(third);
+            const thirdSharpIdx = getChromaticIndex(thirdSharp);
+            const thirdFlatIdx = getChromaticIndex(thirdFlat);
+            const fifthIdx = getChromaticIndex(fifth);
+            
+            if (noteIdxVal === rootIdx) return intervalColorMap['1']; // red
+            else if (noteIdxVal === thirdIdx || noteIdxVal === thirdSharpIdx || noteIdxVal === thirdFlatIdx) return intervalColorMap['3']; // purple
+            else if (noteIdxVal === fifthIdx) return intervalColorMap['5']; // orange
+            else return '#000000'; // fallback
+          });
+          
+          return (
             <div key={idx} className={`bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center ${showShapeNames ? 'border-4' : ''}`} 
                style={showShapeNames ? {borderColor: (data.inversionLabel && inversionColorMap[data.inversionLabel]) || TRIAD_LABELS[idx]?.shapeColor} : {}}>
               <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{data.inversionLabel}</div>
-              <ChordDiagram chordName={data.chordName} chordData={data} showLabels={true} />
+              <ChordDiagram 
+                chordName={data.chordName} 
+                chordData={data} 
+                showLabels={true} 
+              />
             </div>
-          ))}
+          );
+        })}
         </div>
         {/* Horizontal Fretboard View */}
         <div className="bg-gray-50 rounded-lg p-8 mb-8">

@@ -129,13 +129,15 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             // Fretted note - between frets
             const displayFret = startFret > 0 ? fret - startFret + 1 : fret;
             const y = 20 + (displayFret - 0.5) * 18;
+            // Use shape color or default
+            const noteColor = shapeColor || "#1f2937";
             return (
               <g key={`fret-${stringIndex}`}>
                 <circle
                   cx={x}
                   cy={y}
                   r="6"
-                  fill={isHighlighted ? "#f97316" : (shapeColor || "#1f2937")}
+                  fill={isHighlighted ? "#f97316" : noteColor}
                   stroke={isHighlighted ? "#ea580c" : "#374151"}
                   strokeWidth="2"
                 />
