@@ -233,7 +233,7 @@ const C_MAJOR_REFERENCE_3_5 = {
   // Shape 1: 2nd inversion (G on A string, 10th fret)
   shape1: {
     frets: [-1, 10, 10, 9, -1, -1],
-    fingers: ['', '3', '2', '1', '', ''],
+    fingers: ['', '3', '3', '1', '', ''], // Changed D string finger from '2' to '3'
     startFret: 9,
     notes: ['G', 'C', 'E'],
     cagedShape: 'E',
@@ -898,26 +898,26 @@ const C_MINOR_REFERENCE_2_4 = {
   },
 };
 const C_MINOR_REFERENCE_3_5 = {
-  // Root position: C (A string 15), Eb (D string 13), G (G string 12)
+  // Shape 1: Root position - C (A string 15), Eb (D string 13), G (G string 12)
   shape1: {
     frets: [-1, 15, 13, 12, -1, -1],
-    fingers: ['', '4', '2', '1', '', ''],
+    fingers: ['', '3', '4', '1', '', ''], // Swapped fingers 4 and 2 to 3 and 4
     startFret: 12,
     notes: ['C', 'Eb', 'G'],
     cagedShape: 'Am',
   },
-  // 1st inversion: Eb (A string 6), G (D string 5), C (G string 5)
+  // Shape 2: 1st inversion - Eb (A string 6), G (D string 5), C (G string 5)
   shape2: {
     frets: [-1, 6, 5, 5, -1, -1],
-    fingers: ['', '3', '1', '1', '', ''],
+    fingers: ['', '2', '1', '1', '', ''], // Changed A string finger from '3' to '2'
     startFret: 5,
     notes: ['Eb', 'G', 'C'],
     cagedShape: 'Gm',
   },
-  // 2nd inversion: G (A string 10), C (D string 10), Eb (G string 8)
+  // Shape 3: 2nd inversion - G (A string 10), C (D string 10), Eb (G string 8)
   shape3: {
     frets: [-1, 10, 10, 8, -1, -1],
-    fingers: ['', '3', '2', '1', '', ''],
+    fingers: ['', '3', '4', '1', '', ''], // Swapped A and D string fingers (4,3 -> 3,4)
     startFret: 8,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'Em',
@@ -943,7 +943,7 @@ const C_MINOR_REFERENCE_4_6 = {
   // 2nd inversion: G (3rd fret E), C (3rd fret A), Eb (1st fret D)
   shape3: {
     frets: [3, 3, 1, -1, -1, -1], // E, A, D, G, B, e
-    fingers: ['2', '3', '1', '', '', ''],
+    fingers: ['3', '4', '1', '', '', ''], // Changed from 2,3,1 to 3,4,1
     startFret: 1,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'A',
@@ -951,16 +951,9 @@ const C_MINOR_REFERENCE_4_6 = {
 };
 
 function getInversionLabelsForSet(stringSet: string) {
-  if (stringSet === '1_3') return ['Root Position', '1st Inversion', '2nd Inversion'];
-  if (stringSet === '2_4') return ['Root Position', '1st Inversion', '2nd Inversion'].slice(2).concat(['Root Position', '1st Inversion']);
-  if (stringSet === '3_5') return ['Root Position', '1st Inversion', '2nd Inversion'].slice(1).concat(['Root Position']);
-  if (stringSet === '4_6') return ['Root Position', '1st Inversion', '2nd Inversion'];
+  // Always use dynamic calculation - these static arrays were causing incorrect labels
   return ['Root Position', '1st Inversion', '2nd Inversion'];
 }
-
-const INVERSION_LABEL_ORDER = ['Root Position', '1st Inversion', '2nd Inversion'];
-const INVERSION_LABELS_2_4 = ['1st Inversion', '2nd Inversion', 'Root Position'];
-const INVERSION_LABELS_3_5 = ['Root Position', '2nd Inversion', '1st Inversion'];
 
 // Augmented triad reference shapes for each string set (C+ as root)
 const C_AUGMENTED_REFERENCE_1_3 = {
@@ -1090,8 +1083,17 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
       if (bassStringIdx >= 0) {
         const openNote = stringNames[bassStringIdx];
         const openIdx = chromatic.indexOf(openNote);
-        const bassNote = chromatic[(openIdx + bassFret) % 12];
-      // Use C major intervals for inversion
+        // Use the same scale preference as the interval calculation
+        const chromaticFlats = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+        const scale = displayType === 'Minor' ? chromaticFlats : chromatic;
+        let bassNote = scale[(openIdx + bassFret) % 12];
+        
+        // Fix enharmonic for B minor: use F# instead of Gb
+        if (selectedKey === 'B' && displayType === 'Minor' && bassNote === 'Gb') {
+          bassNote = 'F#';
+        }
+        
+      // Use correct intervals for inversion detection
         const root = selectedKey;
       const third = transposeNote(selectedKey, displayType === 'Minor' ? 3 : 4, displayType === 'Minor');
       const fifth = transposeNote(selectedKey, displayType === 'Augmented' ? 8 : 7);
