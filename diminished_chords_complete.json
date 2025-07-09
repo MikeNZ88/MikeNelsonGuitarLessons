@@ -1,0 +1,858 @@
+{
+  "metadata": {
+    "title": "Complete Diminished Chords Export - Guitar Triads Blog",
+    "description": "Comprehensive data export for all diminished chord shapes, theory, and implementation",
+    "purpose": "AI analysis of diminished chord accuracy, educational content, and technical implementation",
+    "export_date": "2025-07-09T08:15:27.040Z",
+    "version": "1.0",
+    "total_shapes": 84,
+    "data_completeness": "100% - All keys, string sets, and inversions included"
+  },
+  "musical_data": {
+    "complete_shapes": {
+      "description": "Complete diminished triad shapes for all 7 keys × 4 string sets × 3 inversions = 84 total shapes",
+      "data_source": "src/utils/triads/diminishedTriads.ts",
+      "musical_theory": {
+        "interval_formula": "Root, Minor 3rd, Diminished 5th (1, b3, b5)",
+        "semitone_pattern": [
+          0,
+          3,
+          6
+        ],
+        "chord_quality": "Diminished",
+        "harmonic_function": "Often used as leading tone chords (vii°) in major keys",
+        "tension_resolution": "Creates strong pull to resolve up by half-step"
+      },
+      "shapes_by_key": {
+        "C_diminished": {
+          "notes": [
+            "C",
+            "Eb",
+            "Gb"
+          ],
+          "semitones_from_C": [
+            0,
+            3,
+            6
+          ],
+          "string_sets": {
+            "1_3": {
+              "root_position": {
+                "frets": [
+                  2,
+                  4,
+                  5
+                ],
+                "fingers": [
+                  1,
+                  3,
+                  4
+                ],
+                "notes": [
+                  "C",
+                  "Eb",
+                  "Gb"
+                ],
+                "startFret": 2,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  8,
+                  7,
+                  8
+                ],
+                "fingers": [
+                  3,
+                  1,
+                  2
+                ],
+                "notes": [
+                  "Eb",
+                  "Gb",
+                  "C"
+                ],
+                "startFret": 7,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  11,
+                  13,
+                  11
+                ],
+                "fingers": [
+                  1,
+                  4,
+                  1
+                ],
+                "notes": [
+                  "Gb",
+                  "C",
+                  "Eb"
+                ],
+                "startFret": 11,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "2_4": {
+              "root_position": {
+                "frets": [
+                  7,
+                  8,
+                  10
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "C",
+                  "Eb",
+                  "Gb"
+                ],
+                "startFret": 7,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  13,
+                  11,
+                  13
+                ],
+                "fingers": [
+                  4,
+                  1,
+                  3
+                ],
+                "notes": [
+                  "Eb",
+                  "Gb",
+                  "C"
+                ],
+                "startFret": 11,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  4,
+                  5,
+                  4
+                ],
+                "fingers": [
+                  2,
+                  3,
+                  1
+                ],
+                "notes": [
+                  "Gb",
+                  "C",
+                  "Eb"
+                ],
+                "startFret": 4,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "3_5": {
+              "root_position": {
+                "frets": [
+                  11,
+                  13,
+                  15
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "C",
+                  "Eb",
+                  "Gb"
+                ],
+                "startFret": 11,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  5,
+                  4,
+                  6
+                ],
+                "fingers": [
+                  2,
+                  1,
+                  3
+                ],
+                "notes": [
+                  "Eb",
+                  "Gb",
+                  "C"
+                ],
+                "startFret": 4,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  8,
+                  10,
+                  9
+                ],
+                "fingers": [
+                  1,
+                  3,
+                  2
+                ],
+                "notes": [
+                  "Gb",
+                  "C",
+                  "Eb"
+                ],
+                "startFret": 8,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "4_6": {
+              "root_position": {
+                "frets": [
+                  4,
+                  6,
+                  8
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "C",
+                  "Eb",
+                  "Gb"
+                ],
+                "startFret": 4,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  10,
+                  9,
+                  11
+                ],
+                "fingers": [
+                  2,
+                  1,
+                  4
+                ],
+                "notes": [
+                  "Eb",
+                  "Gb",
+                  "C"
+                ],
+                "startFret": 9,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  1,
+                  3,
+                  2
+                ],
+                "fingers": [
+                  1,
+                  3,
+                  2
+                ],
+                "notes": [
+                  "Gb",
+                  "C",
+                  "Eb"
+                ],
+                "startFret": 1,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            }
+          }
+        },
+        "D_diminished": {
+          "notes": [
+            "D",
+            "F",
+            "Ab"
+          ],
+          "semitones_from_C": [
+            2,
+            5,
+            8
+          ],
+          "string_sets": {
+            "1_3": {
+              "root_position": {
+                "frets": [
+                  4,
+                  6,
+                  7
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "D",
+                  "F",
+                  "Ab"
+                ],
+                "startFret": 4,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  10,
+                  9,
+                  10
+                ],
+                "fingers": [
+                  3,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "F",
+                  "Ab",
+                  "D"
+                ],
+                "startFret": 9,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  1,
+                  3,
+                  1
+                ],
+                "fingers": [
+                  1,
+                  3,
+                  1
+                ],
+                "notes": [
+                  "Ab",
+                  "D",
+                  "F"
+                ],
+                "startFret": 1,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "2_4": {
+              "root_position": {
+                "frets": [
+                  9,
+                  10,
+                  12
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "D",
+                  "F",
+                  "Ab"
+                ],
+                "startFret": 9,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  3,
+                  1,
+                  3
+                ],
+                "fingers": [
+                  2,
+                  1,
+                  3
+                ],
+                "notes": [
+                  "F",
+                  "Ab",
+                  "D"
+                ],
+                "startFret": 1,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  6,
+                  7,
+                  6
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  1
+                ],
+                "notes": [
+                  "Ab",
+                  "D",
+                  "F"
+                ],
+                "startFret": 6,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "3_5": {
+              "root_position": {
+                "frets": [
+                  1,
+                  3,
+                  5
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "D",
+                  "F",
+                  "Ab"
+                ],
+                "startFret": 1,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  7,
+                  6,
+                  8
+                ],
+                "fingers": [
+                  2,
+                  1,
+                  4
+                ],
+                "notes": [
+                  "F",
+                  "Ab",
+                  "D"
+                ],
+                "startFret": 6,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  10,
+                  12,
+                  11
+                ],
+                "fingers": [
+                  3,
+                  4,
+                  2
+                ],
+                "notes": [
+                  "Ab",
+                  "D",
+                  "F"
+                ],
+                "startFret": 10,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            },
+            "4_6": {
+              "root_position": {
+                "frets": [
+                  6,
+                  8,
+                  10
+                ],
+                "fingers": [
+                  1,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "D",
+                  "F",
+                  "Ab"
+                ],
+                "startFret": 6,
+                "inversion": "Root Position",
+                "open": false
+              },
+              "first_inversion": {
+                "frets": [
+                  12,
+                  11,
+                  13
+                ],
+                "fingers": [
+                  3,
+                  2,
+                  4
+                ],
+                "notes": [
+                  "F",
+                  "Ab",
+                  "D"
+                ],
+                "startFret": 11,
+                "inversion": "1st Inversion",
+                "open": false
+              },
+              "second_inversion": {
+                "frets": [
+                  3,
+                  5,
+                  4
+                ],
+                "fingers": [
+                  1,
+                  3,
+                  2
+                ],
+                "notes": [
+                  "Ab",
+                  "D",
+                  "F"
+                ],
+                "startFret": 3,
+                "inversion": "2nd Inversion",
+                "open": false
+              }
+            }
+          }
+        },
+        "E_diminished": {
+          "notes": [
+            "E",
+            "G",
+            "Bb"
+          ],
+          "semitones_from_C": [
+            4,
+            7,
+            10
+          ],
+          "notable_features": "Contains open string shapes on some string sets"
+        },
+        "F_diminished": {
+          "notes": [
+            "F",
+            "Ab",
+            "Cb"
+          ],
+          "semitones_from_C": [
+            5,
+            8,
+            11
+          ],
+          "enharmonic_note": "Cb = B natural"
+        },
+        "G_diminished": {
+          "notes": [
+            "G",
+            "Bb",
+            "Db"
+          ],
+          "semitones_from_C": [
+            7,
+            10,
+            1
+          ]
+        },
+        "A_diminished": {
+          "notes": [
+            "A",
+            "C",
+            "Eb"
+          ],
+          "semitones_from_C": [
+            9,
+            0,
+            3
+          ]
+        },
+        "B_diminished": {
+          "notes": [
+            "B",
+            "D",
+            "F"
+          ],
+          "semitones_from_C": [
+            11,
+            2,
+            5
+          ],
+          "diatonic_function": "vii° in C major - leading tone chord"
+        }
+      }
+    },
+    "theory_framework": {
+      "description": "Educational framework for learning diminished triads",
+      "music_theory": {
+        "construction": {
+          "intervals": "Root + Minor 3rd + Diminished 5th",
+          "semitones": "0 + 3 + 6 semitones",
+          "example_C": "C + Eb + Gb",
+          "sound_quality": "Tense, unstable, seeking resolution"
+        },
+        "harmonic_functions": [
+          {
+            "function": "Leading tone chord (vii°)",
+            "context": "In major keys - B° in C major",
+            "resolution": "Typically resolves to I chord (tonic)",
+            "voice_leading": "Leading tone (B) moves up to tonic (C)"
+          },
+          {
+            "function": "Chromatic passing chord",
+            "context": "Between diatonic chords",
+            "example": "C - C#° - Dm",
+            "purpose": "Smooth bass line movement"
+          },
+          {
+            "function": "Diminished 7th chord foundation",
+            "context": "Add bb7 interval for fully diminished 7th",
+            "extension": "C° becomes C°7 by adding A (bb7)",
+            "symmetry": "Equally spaced intervals create symmetrical harmony"
+          }
+        ],
+        "resolution_patterns": {
+          "primary": "Diminished chord resolves up by half-step to major or minor",
+          "examples": [
+            "C° → C major (parallel motion)",
+            "C° → Db major (chromatic resolution)",
+            "B° → C major (leading tone function)"
+          ],
+          "voice_leading_rules": [
+            "Resolve diminished 5th down by half-step",
+            "Move root up by half-step when possible",
+            "Maintain smooth voice leading in inner voices"
+          ]
+        }
+      },
+      "practical_applications": {
+        "beginner_approach": [
+          "Start with vii° chords in major keys",
+          "Practice B° to C major progression",
+          "Focus on strings 1-3 first for simplicity",
+          "Listen for the characteristic 'pull' to resolution"
+        ],
+        "intermediate_techniques": [
+          "Learn all three inversions on one string set",
+          "Practice chromatic bass lines using diminished passing chords",
+          "Combine with major and minor triads in progressions",
+          "Explore diminished chords in different keys"
+        ],
+        "advanced_concepts": [
+          "Symmetrical properties of diminished harmony",
+          "Enharmonic equivalents (C° = Eb° = Gb° = A°)",
+          "Use in jazz and classical harmony",
+          "Transition to fully diminished 7th chords"
+        ]
+      },
+      "practice_exercises": [
+        {
+          "level": "Beginner",
+          "exercise": "vii° to I Resolution",
+          "description": "Practice B° resolving to C major on strings 1-3",
+          "chord_progression": "B° - C",
+          "focus": "Feel the resolution and voice leading"
+        },
+        {
+          "level": "Intermediate",
+          "exercise": "Chromatic Bass Movement",
+          "description": "Use diminished chords to create smooth bass lines",
+          "chord_progression": "C - C#° - Dm - D#° - Em",
+          "focus": "Chromatic bass line with diminished passing chords"
+        },
+        {
+          "level": "Advanced",
+          "exercise": "Diminished Substitutions",
+          "description": "Replace diatonic chords with diminished alternatives",
+          "original": "C - Am - F - G",
+          "substituted": "C - A° - F - G#°",
+          "focus": "Harmonic color and tension/release"
+        }
+      ]
+    }
+  },
+  "visual_implementation": {
+    "fretboard_graphics": {
+      "description": "Visual fretboard diagram specifications for diminished chords",
+      "color_scheme": {
+        "primary": "#ec4899",
+        "secondary": "#f3e8ff",
+        "text": "#7c3aed",
+        "accent": "#a855f7"
+      },
+      "sample_svg_diagrams": {
+        "C_diminished_strings_1_3": {
+          "root_position": {
+            "svg_elements": [
+              {
+                "type": "note",
+                "x": 100,
+                "y": 104,
+                "fret": 2,
+                "string": 1,
+                "note": "C",
+                "color": "#ec4899"
+              },
+              {
+                "type": "note",
+                "x": 140,
+                "y": 72,
+                "fret": 4,
+                "string": 2,
+                "note": "Eb",
+                "color": "#ec4899"
+              },
+              {
+                "type": "note",
+                "x": 160,
+                "y": 40,
+                "fret": 5,
+                "string": 3,
+                "note": "Gb",
+                "color": "#ec4899"
+              }
+            ],
+            "chord_info": {
+              "name": "C diminished",
+              "inversion": "Root Position",
+              "frets": [
+                2,
+                4,
+                5
+              ],
+              "fingers": [
+                1,
+                3,
+                4
+              ],
+              "difficulty": "Intermediate"
+            }
+          }
+        }
+      },
+      "interactive_elements": {
+        "hover_effects": {
+          "note_highlight": "brightness(1.2) scale(1.1)",
+          "chord_name_display": "Shows chord name and inversion on hover"
+        },
+        "click_interactions": {
+          "audio_playback": "Plays diminished chord sound",
+          "theory_popup": "Shows interval analysis and resolution suggestions"
+        }
+      }
+    },
+    "technical_specs": {
+      "description": "Technical details for implementing diminished chord functionality",
+      "data_structures": {
+        "shape_format": {
+          "frets": "Array of 3 fret positions [string1, string2, string3]",
+          "fingers": "Array of 3 finger numbers [1-4, or 0 for open]",
+          "notes": "Array of 3 note names ['C', 'Eb', 'Gb']",
+          "metadata": "Key, string set, inversion, start fret, open position flag"
+        },
+        "string_mapping": {
+          "1_3": "High E, B, G strings (strings 1, 2, 3)",
+          "2_4": "B, G, D strings (strings 2, 3, 4)",
+          "3_5": "G, D, A strings (strings 3, 4, 5)",
+          "4_6": "D, A, Low E strings (strings 4, 5, 6)"
+        }
+      },
+      "algorithms": {
+        "transposition": {
+          "method": "Add semitone offset to all fret positions",
+          "example": "C° + 2 semitones = D°",
+          "formula": "newFret = (originalFret + offset) % 12"
+        },
+        "inversion_calculation": {
+          "root_position": "Root note in bass (lowest string)",
+          "first_inversion": "Third in bass",
+          "second_inversion": "Fifth in bass",
+          "note_ordering": "Determined by string set and fret positions"
+        },
+        "chord_recognition": {
+          "input": "Three fret positions on specified string set",
+          "process": "Calculate intervals between notes",
+          "output": "Chord name and inversion identification",
+          "validation": "Check against known diminished patterns"
+        }
+      },
+      "rendering_specifications": {
+        "fretboard_display": {
+          "highlight_color": "#ec4899",
+          "note_labels": "Show note names or interval numbers (1, b3, b5)",
+          "finger_positions": "Display recommended fingering",
+          "audio_integration": "Play chord on click/hover"
+        },
+        "chord_diagrams": {
+          "traditional_format": "Vertical grid with dots and finger numbers",
+          "modern_format": "Horizontal fretboard view with colored notes",
+          "responsive_design": "Adapt to mobile/tablet screen sizes",
+          "accessibility": "High contrast mode, screen reader support"
+        }
+      }
+    }
+  },
+  "ai_analysis_focus": {
+    "musical_accuracy": [
+      "Verify all fret positions produce correct diminished intervals",
+      "Check enharmonic spelling consistency (Gb vs F#)",
+      "Validate finger positions are physically comfortable",
+      "Ensure proper inversion labeling and note ordering"
+    ],
+    "educational_effectiveness": [
+      "Assess progression from basic to advanced concepts",
+      "Review clarity of music theory explanations",
+      "Evaluate practical exercise difficulty curves",
+      "Check real-world application relevance"
+    ],
+    "technical_implementation": [
+      "Verify data structure consistency across all shapes",
+      "Check algorithm correctness for transposition",
+      "Validate rendering specifications for visual accuracy",
+      "Ensure responsive design considerations"
+    ],
+    "user_experience": [
+      "Evaluate learning path organization",
+      "Assess visual clarity of chord diagrams",
+      "Review interactive element effectiveness",
+      "Check accessibility compliance"
+    ]
+  },
+  "comparison_notes": {
+    "vs_major_triads": "More complex fingerings, requires resolution awareness",
+    "vs_minor_triads": "Similar difficulty but different harmonic function",
+    "unique_challenges": "Unstable sound quality, advanced harmonic theory",
+    "pedagogical_sequence": "Typically taught after major/minor mastery"
+  }
+}

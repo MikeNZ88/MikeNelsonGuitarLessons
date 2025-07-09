@@ -23,12 +23,11 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', type: 'image/x-icon', sizes: '16x16' }
     ],
     apple: [
       { url: '/favicon.svg', sizes: '180x180', type: 'image/svg+xml' }
     ],
-    shortcut: '/favicon.ico',
+    shortcut: '/favicon.svg',
   },
   openGraph: {
     title: "Guitar Lessons Near Me Wellington | Mike Nelson Guitar Teacher Pukerua Bay",
@@ -108,6 +107,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

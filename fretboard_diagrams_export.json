@@ -1,0 +1,842 @@
+{
+  "metadata": {
+    "title": "Triads Blog - Visual Fretboard Diagrams Export",
+    "description": "Complete visual rendering data for guitar fretboard diagrams and UI elements",
+    "purpose": "AI analysis of visual design, user experience, and graphical accuracy",
+    "export_date": "2025-07-09T08:09:16.216Z",
+    "version": "1.0",
+    "includes": [
+      "SVG fretboard diagram data",
+      "Traditional chord diagram layouts",
+      "Interactive UI element configurations",
+      "Color schemes and styling",
+      "Animation and interaction data",
+      "Responsive design specifications"
+    ]
+  },
+  "visual_components": {
+    "fretboard_rendering": {
+      "description": "Configuration for SVG fretboard diagram rendering",
+      "layout": {
+        "fretWidth": 40,
+        "stringSpacing": 32,
+        "leftMargin": 60,
+        "topMargin": 40,
+        "noteRadius": 13,
+        "strokeWidth": {
+          "strings": 2,
+          "frets": 1,
+          "nutFret": 3,
+          "noteOutline": 2
+        }
+      },
+      "colors": {
+        "background": "#ffffff",
+        "strings": "#aaaaaa",
+        "frets": "#d1d5db",
+        "nutFret": "#1f2937",
+        "noteOutline": "#333333",
+        "textLabels": "#555555",
+        "intervals": {
+          "root": "#ef4444",
+          "third": "#a855f7",
+          "fifth": "#fbbf24"
+        },
+        "inversions": {
+          "rootPosition": "#ef4444",
+          "firstInversion": "#3b82f6",
+          "secondInversion": "#10b981"
+        }
+      },
+      "fonts": {
+        "fretNumbers": {
+          "size": 12,
+          "weight": "bold",
+          "color": "#888888"
+        },
+        "stringLabels": {
+          "size": 13,
+          "weight": "bold",
+          "color": "#555555"
+        },
+        "noteLabels": {
+          "size": 13,
+          "weight": "bold",
+          "color": "#ffffff"
+        }
+      }
+    },
+    "sample_diagrams": {
+      "description": "Sample SVG representations of fretboard diagrams",
+      "C_major_strings_1_3": {
+        "rootPosition": {
+          "svgData": {
+            "width": 580,
+            "height": 200,
+            "viewBox": "0 0 580 200",
+            "elements": [
+              {
+                "type": "frets",
+                "count": 13,
+                "positions": [
+                  60,
+                  100,
+                  140,
+                  180,
+                  220,
+                  260,
+                  300,
+                  340,
+                  380,
+                  420,
+                  460,
+                  500,
+                  540
+                ]
+              },
+              {
+                "type": "strings",
+                "positions": [
+                  {
+                    "y": 40,
+                    "label": "E"
+                  },
+                  {
+                    "y": 72,
+                    "label": "B"
+                  },
+                  {
+                    "y": 104,
+                    "label": "G"
+                  }
+                ]
+              },
+              {
+                "type": "notes",
+                "data": [
+                  {
+                    "x": 140,
+                    "y": 104,
+                    "fret": 5,
+                    "string": 3,
+                    "note": "C",
+                    "interval": "1",
+                    "color": "#ef4444"
+                  },
+                  {
+                    "x": 140,
+                    "y": 72,
+                    "fret": 5,
+                    "string": 2,
+                    "note": "E",
+                    "interval": "3",
+                    "color": "#a855f7"
+                  },
+                  {
+                    "x": 120,
+                    "y": 40,
+                    "fret": 3,
+                    "string": 1,
+                    "note": "G",
+                    "interval": "5",
+                    "color": "#fbbf24"
+                  }
+                ]
+              }
+            ]
+          },
+          "fretRange": {
+            "start": 3,
+            "count": 5
+          },
+          "chordData": {
+            "frets": [
+              -1,
+              -1,
+              -1,
+              5,
+              5,
+              3
+            ],
+            "fingers": [
+              "",
+              "",
+              "",
+              "3",
+              "4",
+              "1"
+            ],
+            "notes": [
+              "C",
+              "E",
+              "G"
+            ],
+            "inversion": "Root Position"
+          }
+        },
+        "firstInversion": {
+          "svgData": {
+            "width": 580,
+            "height": 200,
+            "viewBox": "0 0 580 200",
+            "elements": [
+              {
+                "type": "notes",
+                "data": [
+                  {
+                    "x": 220,
+                    "y": 104,
+                    "fret": 9,
+                    "string": 3,
+                    "note": "E",
+                    "interval": "3",
+                    "color": "#a855f7"
+                  },
+                  {
+                    "x": 200,
+                    "y": 72,
+                    "fret": 8,
+                    "string": 2,
+                    "note": "G",
+                    "interval": "5",
+                    "color": "#fbbf24"
+                  },
+                  {
+                    "x": 200,
+                    "y": 40,
+                    "fret": 8,
+                    "string": 1,
+                    "note": "C",
+                    "interval": "1",
+                    "color": "#ef4444"
+                  }
+                ]
+              }
+            ]
+          },
+          "fretRange": {
+            "start": 8,
+            "count": 5
+          },
+          "chordData": {
+            "frets": [
+              -1,
+              -1,
+              -1,
+              9,
+              8,
+              8
+            ],
+            "fingers": [
+              "",
+              "",
+              "",
+              "2",
+              "1",
+              "1"
+            ],
+            "notes": [
+              "E",
+              "G",
+              "C"
+            ],
+            "inversion": "1st Inversion"
+          }
+        },
+        "secondInversion": {
+          "svgData": {
+            "width": 580,
+            "height": 200,
+            "viewBox": "0 0 580 200",
+            "elements": [
+              {
+                "type": "notes",
+                "data": [
+                  {
+                    "x": 300,
+                    "y": 104,
+                    "fret": 12,
+                    "string": 3,
+                    "note": "G",
+                    "interval": "5",
+                    "color": "#fbbf24"
+                  },
+                  {
+                    "x": 320,
+                    "y": 72,
+                    "fret": 13,
+                    "string": 2,
+                    "note": "C",
+                    "interval": "1",
+                    "color": "#ef4444"
+                  },
+                  {
+                    "x": 300,
+                    "y": 40,
+                    "fret": 12,
+                    "string": 1,
+                    "note": "E",
+                    "interval": "3",
+                    "color": "#a855f7"
+                  }
+                ]
+              }
+            ]
+          },
+          "fretRange": {
+            "start": 12,
+            "count": 5
+          },
+          "chordData": {
+            "frets": [
+              -1,
+              -1,
+              -1,
+              12,
+              13,
+              12
+            ],
+            "fingers": [
+              "",
+              "",
+              "",
+              "1",
+              "3",
+              "2"
+            ],
+            "notes": [
+              "G",
+              "C",
+              "E"
+            ],
+            "inversion": "2nd Inversion"
+          }
+        }
+      }
+    },
+    "horizontal_fretboard": {
+      "description": "Data structure for horizontal fretboard visualization showing multiple chords",
+      "C_major_key_sequence": {
+        "description": "All seven diatonic triads of C major displayed horizontally",
+        "triadNotes": [
+          {
+            "string": 3,
+            "fret": 5,
+            "note": "C",
+            "interval": "1",
+            "color": "#ef4444",
+            "degree": "I"
+          },
+          {
+            "string": 2,
+            "fret": 5,
+            "note": "E",
+            "interval": "3",
+            "color": "#ef4444",
+            "degree": "I"
+          },
+          {
+            "string": 1,
+            "fret": 3,
+            "note": "G",
+            "interval": "5",
+            "color": "#ef4444",
+            "degree": "I"
+          },
+          {
+            "string": 3,
+            "fret": 7,
+            "note": "D",
+            "interval": "1",
+            "color": "#f97316",
+            "degree": "ii"
+          },
+          {
+            "string": 2,
+            "fret": 6,
+            "note": "F",
+            "interval": "3",
+            "color": "#f97316",
+            "degree": "ii"
+          },
+          {
+            "string": 1,
+            "fret": 5,
+            "note": "A",
+            "interval": "5",
+            "color": "#f97316",
+            "degree": "ii"
+          },
+          {
+            "string": 3,
+            "fret": 9,
+            "note": "E",
+            "interval": "1",
+            "color": "#eab308",
+            "degree": "iii"
+          },
+          {
+            "string": 2,
+            "fret": 8,
+            "note": "G",
+            "interval": "3",
+            "color": "#eab308",
+            "degree": "iii"
+          },
+          {
+            "string": 1,
+            "fret": 7,
+            "note": "B",
+            "interval": "5",
+            "color": "#eab308",
+            "degree": "iii"
+          },
+          {
+            "string": 3,
+            "fret": 10,
+            "note": "F",
+            "interval": "1",
+            "color": "#22c55e",
+            "degree": "IV"
+          },
+          {
+            "string": 2,
+            "fret": 10,
+            "note": "A",
+            "interval": "3",
+            "color": "#22c55e",
+            "degree": "IV"
+          },
+          {
+            "string": 1,
+            "fret": 8,
+            "note": "C",
+            "interval": "5",
+            "color": "#22c55e",
+            "degree": "IV"
+          },
+          {
+            "string": 3,
+            "fret": 12,
+            "note": "G",
+            "interval": "1",
+            "color": "#3b82f6",
+            "degree": "V"
+          },
+          {
+            "string": 2,
+            "fret": 12,
+            "note": "B",
+            "interval": "3",
+            "color": "#3b82f6",
+            "degree": "V"
+          },
+          {
+            "string": 1,
+            "fret": 12,
+            "note": "D",
+            "interval": "5",
+            "color": "#3b82f6",
+            "degree": "V"
+          },
+          {
+            "string": 3,
+            "fret": 14,
+            "note": "A",
+            "interval": "1",
+            "color": "#8b5cf6",
+            "degree": "vi"
+          },
+          {
+            "string": 2,
+            "fret": 13,
+            "note": "C",
+            "interval": "3",
+            "color": "#8b5cf6",
+            "degree": "vi"
+          },
+          {
+            "string": 1,
+            "fret": 12,
+            "note": "E",
+            "interval": "5",
+            "color": "#8b5cf6",
+            "degree": "vi"
+          },
+          {
+            "string": 3,
+            "fret": 16,
+            "note": "B",
+            "interval": "1",
+            "color": "#ec4899",
+            "degree": "vii°"
+          },
+          {
+            "string": 2,
+            "fret": 15,
+            "note": "D",
+            "interval": "3",
+            "color": "#ec4899",
+            "degree": "vii°"
+          },
+          {
+            "string": 1,
+            "fret": 15,
+            "note": "F",
+            "interval": "5",
+            "color": "#ec4899",
+            "degree": "vii°"
+          }
+        ],
+        "fretRange": {
+          "start": 3,
+          "count": 15
+        },
+        "stringSet": "1_3",
+        "keySignature": "C major"
+      }
+    },
+    "traditional_chords": {
+      "description": "Traditional vertical chord diagram representations",
+      "C_major_root_position": {
+        "gridData": {
+          "strings": 6,
+          "frets": 5,
+          "startFret": 3,
+          "nutPosition": false
+        },
+        "fingerPositions": [
+          {
+            "string": 6,
+            "fret": -1,
+            "finger": "",
+            "note": ""
+          },
+          {
+            "string": 5,
+            "fret": -1,
+            "finger": "",
+            "note": ""
+          },
+          {
+            "string": 4,
+            "fret": -1,
+            "finger": "",
+            "note": ""
+          },
+          {
+            "string": 3,
+            "fret": 5,
+            "finger": "3",
+            "note": "C"
+          },
+          {
+            "string": 2,
+            "fret": 5,
+            "finger": "4",
+            "note": "E"
+          },
+          {
+            "string": 1,
+            "fret": 3,
+            "finger": "1",
+            "note": "G"
+          }
+        ],
+        "metadata": {
+          "chordName": "C Major Triad",
+          "inversion": "Root Position",
+          "stringSet": "1-3",
+          "cagedShape": "A",
+          "difficulty": "Intermediate"
+        }
+      }
+    }
+  },
+  "user_interface": {
+    "interactive_elements": {
+      "description": "Data for interactive controls and user interface elements",
+      "controls": {
+        "keySelector": {
+          "type": "button-group",
+          "options": [
+            {
+              "value": "C",
+              "label": "C",
+              "active": true
+            },
+            {
+              "value": "D",
+              "label": "D",
+              "active": false
+            },
+            {
+              "value": "E",
+              "label": "E",
+              "active": false
+            },
+            {
+              "value": "F",
+              "label": "F",
+              "active": false
+            },
+            {
+              "value": "G",
+              "label": "G",
+              "active": false
+            },
+            {
+              "value": "A",
+              "label": "A",
+              "active": false
+            },
+            {
+              "value": "B",
+              "label": "B",
+              "active": false
+            }
+          ],
+          "styling": {
+            "activeClass": "bg-amber-200 text-amber-900",
+            "inactiveClass": "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+          }
+        },
+        "triadTypeSelector": {
+          "type": "tab-group",
+          "options": [
+            {
+              "value": "Major",
+              "label": "Major Triads",
+              "active": true
+            },
+            {
+              "value": "Minor",
+              "label": "Minor Triads",
+              "active": false
+            },
+            {
+              "value": "Diminished",
+              "label": "Diminished Triads",
+              "active": false
+            },
+            {
+              "value": "Augmented",
+              "label": "Augmented Triads",
+              "active": false
+            },
+            {
+              "value": "Major Key Sequence",
+              "label": "Major Key Sequence",
+              "active": false
+            }
+          ],
+          "styling": {
+            "activeClass": "bg-amber-600 text-white",
+            "inactiveClass": "text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+          }
+        },
+        "stringSetSelector": {
+          "type": "button-group",
+          "options": [
+            {
+              "value": "1_3",
+              "label": "Strings 1–3",
+              "active": true
+            },
+            {
+              "value": "2_4",
+              "label": "Strings 2–4",
+              "active": false
+            },
+            {
+              "value": "3_5",
+              "label": "Strings 3–5",
+              "active": false
+            },
+            {
+              "value": "4_6",
+              "label": "Strings 4–6",
+              "active": false
+            }
+          ]
+        },
+        "labelModeToggle": {
+          "type": "single-button",
+          "states": [
+            "Show Note Names",
+            "Show Finger Numbers",
+            "Hide All Labels"
+          ],
+          "currentState": 0,
+          "styling": {
+            "buttonClass": "px-3 py-1 rounded bg-amber-600 text-white text-sm font-medium"
+          }
+        }
+      },
+      "legends": {
+        "intervalLegend": {
+          "items": [
+            {
+              "color": "#ef4444",
+              "label": "Root",
+              "shape": "circle"
+            },
+            {
+              "color": "#a855f7",
+              "label": "3rd",
+              "shape": "circle"
+            },
+            {
+              "color": "#fbbf24",
+              "label": "5th",
+              "shape": "circle"
+            }
+          ]
+        },
+        "inversionLegend": {
+          "items": [
+            {
+              "color": "#ef4444",
+              "label": "Root Position"
+            },
+            {
+              "color": "#3b82f6",
+              "label": "1st Inversion"
+            },
+            {
+              "color": "#10b981",
+              "label": "2nd Inversion"
+            }
+          ]
+        }
+      }
+    },
+    "animations": {
+      "description": "Animation and interaction configurations for visual elements",
+      "transitions": {
+        "buttonHover": {
+          "duration": "200ms",
+          "easing": "ease",
+          "properties": [
+            "background-color",
+            "color"
+          ]
+        },
+        "tabSwitch": {
+          "duration": "300ms",
+          "easing": "ease-in-out",
+          "properties": [
+            "opacity",
+            "transform"
+          ]
+        },
+        "diagramLoad": {
+          "duration": "400ms",
+          "easing": "ease-out",
+          "staggerDelay": "50ms"
+        }
+      },
+      "interactions": {
+        "noteHover": {
+          "effects": [
+            "scale(1.1)",
+            "brightness(1.1)"
+          ],
+          "cursor": "pointer"
+        },
+        "buttonClick": {
+          "effects": [
+            "scale(0.95)"
+          ],
+          "duration": "100ms"
+        }
+      }
+    },
+    "responsive_design": {
+      "description": "Responsive layout configurations for different screen sizes",
+      "breakpoints": {
+        "mobile": {
+          "max": "640px",
+          "fretboardScale": 0.8,
+          "stackVertical": true
+        },
+        "tablet": {
+          "min": "641px",
+          "max": "1024px",
+          "fretboardScale": 0.9,
+          "stackVertical": false
+        },
+        "desktop": {
+          "min": "1025px",
+          "fretboardScale": 1,
+          "stackVertical": false
+        }
+      },
+      "adaptations": {
+        "mobile": {
+          "fretWidth": 32,
+          "stringSpacing": 28,
+          "noteRadius": 11,
+          "fontSize": {
+            "fretNumbers": 10,
+            "stringLabels": 11,
+            "noteLabels": 11
+          }
+        },
+        "tablet": {
+          "fretWidth": 36,
+          "stringSpacing": 30,
+          "noteRadius": 12,
+          "fontSize": {
+            "fretNumbers": 11,
+            "stringLabels": 12,
+            "noteLabels": 12
+          }
+        }
+      }
+    }
+  },
+  "rendering_instructions": {
+    "svg_generation": {
+      "description": "How to programmatically generate SVG fretboard diagrams",
+      "steps": [
+        "1. Create SVG canvas with calculated dimensions",
+        "2. Draw fret lines at specified intervals",
+        "3. Draw string lines horizontally",
+        "4. Add fret number labels above each fret",
+        "5. Add string name labels to the left",
+        "6. Place colored circles for each triad note",
+        "7. Add note names or finger numbers inside circles",
+        "8. Apply styling and colors according to interval or inversion"
+      ],
+      "coordinate_system": "SVG coordinate system with (0,0) at top-left",
+      "units": "pixels"
+    },
+    "chord_diagram_generation": {
+      "description": "How to generate traditional vertical chord diagrams",
+      "grid_layout": "6 strings × variable frets with dot markers",
+      "finger_notation": "Numbers 1-4 inside dots, X for muted strings",
+      "nut_representation": "Thick line at top for open position chords"
+    }
+  },
+  "ai_analysis_focus": {
+    "visual_accuracy": [
+      "Verify fret positions match musical intervals",
+      "Check color coding consistency across diagrams",
+      "Validate finger positions are physically possible",
+      "Ensure string order matches guitar tuning"
+    ],
+    "user_experience": [
+      "Evaluate clarity of visual hierarchy",
+      "Assess color accessibility and contrast",
+      "Review interactive element responsiveness",
+      "Analyze mobile-friendly adaptations"
+    ],
+    "educational_effectiveness": [
+      "Review progressive complexity of examples",
+      "Assess visual aid clarity for learning",
+      "Evaluate legend and labeling systems",
+      "Check consistency of notation standards"
+    ]
+  }
+}

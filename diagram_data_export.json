@@ -1,0 +1,702 @@
+{
+  "metadata": {
+    "title": "Triads on 3-String Sets - Complete Diagram Data",
+    "description": "Comprehensive export of all chord diagram data from Mike Nelson Guitar Lessons blog",
+    "source": "src/app/blog/triads-on-3-string-sets/page.tsx",
+    "exportDate": "2025-07-09T08:01:44.154Z",
+    "version": "1.0"
+  },
+  "majorTriads": {
+    "description": "Reference shapes for major triads in C, used for all other keys via transposition",
+    "stringSetData": {
+      "1_3": {
+        "shape1": {
+          "type": "Root Position",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            5,
+            5,
+            3
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "3",
+            "4",
+            "1"
+          ],
+          "startFret": 3,
+          "notes": [
+            "C",
+            "E",
+            "G"
+          ],
+          "cagedShape": "A",
+          "description": "C on G string, 5th fret"
+        },
+        "shape2": {
+          "type": "1st Inversion",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            9,
+            8,
+            8
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "2",
+            "1",
+            "1"
+          ],
+          "startFret": 8,
+          "notes": [
+            "E",
+            "G",
+            "C"
+          ],
+          "cagedShape": "E",
+          "description": "E on G string, 9th fret"
+        },
+        "shape3": {
+          "type": "2nd Inversion",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            12,
+            13,
+            12
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "1",
+            "3",
+            "2"
+          ],
+          "startFret": 12,
+          "notes": [
+            "G",
+            "C",
+            "E"
+          ],
+          "cagedShape": "D",
+          "description": "G on G string, 12th fret"
+        }
+      },
+      "2_4": {
+        "shape1": {
+          "type": "Root Position",
+          "frets": [
+            -1,
+            -1,
+            10,
+            9,
+            8,
+            -1
+          ],
+          "fingers": [
+            "",
+            "",
+            "3",
+            "2",
+            "1",
+            ""
+          ],
+          "startFret": 8,
+          "notes": [
+            "C",
+            "E",
+            "G"
+          ],
+          "cagedShape": "G",
+          "description": "C on D string, 10th fret"
+        },
+        "shape2": {
+          "type": "1st Inversion",
+          "frets": [
+            -1,
+            -1,
+            14,
+            12,
+            13,
+            -1
+          ],
+          "fingers": [
+            "",
+            "",
+            "3",
+            "1",
+            "2",
+            ""
+          ],
+          "startFret": 12,
+          "notes": [
+            "E",
+            "G",
+            "C"
+          ],
+          "cagedShape": "E",
+          "description": "E on D string, 14th fret"
+        },
+        "shape3": {
+          "type": "2nd Inversion",
+          "frets": [
+            -1,
+            -1,
+            5,
+            5,
+            5,
+            -1
+          ],
+          "fingers": [
+            "",
+            "",
+            "1",
+            "1",
+            "1",
+            ""
+          ],
+          "startFret": 5,
+          "notes": [
+            "G",
+            "C",
+            "E"
+          ],
+          "cagedShape": "C",
+          "description": "G on D string, 5th fret"
+        }
+      },
+      "3_5": {
+        "shape1": {
+          "type": "2nd Inversion",
+          "frets": [
+            -1,
+            10,
+            10,
+            9,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "",
+            "3",
+            "2",
+            "1",
+            "",
+            ""
+          ],
+          "startFret": 9,
+          "notes": [
+            "G",
+            "C",
+            "E"
+          ],
+          "cagedShape": "E",
+          "description": "G on A string, 10th fret"
+        },
+        "shape2": {
+          "type": "1st Inversion",
+          "frets": [
+            -1,
+            7,
+            5,
+            5,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "",
+            "3",
+            "1",
+            "1",
+            "",
+            ""
+          ],
+          "startFret": 5,
+          "notes": [
+            "E",
+            "G",
+            "C"
+          ],
+          "cagedShape": "G",
+          "description": "E on A string, 7th fret"
+        },
+        "shape3": {
+          "type": "Root Position",
+          "frets": [
+            -1,
+            15,
+            14,
+            12,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "",
+            "4",
+            "3",
+            "1",
+            "",
+            ""
+          ],
+          "startFret": 12,
+          "notes": [
+            "C",
+            "E",
+            "G"
+          ],
+          "cagedShape": "A",
+          "description": "C on A string, 15th fret"
+        }
+      },
+      "4_6": {
+        "shape1": {
+          "type": "Root Position",
+          "frets": [
+            8,
+            7,
+            5,
+            -1,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "3",
+            "2",
+            "1",
+            "",
+            "",
+            ""
+          ],
+          "startFret": 5,
+          "notes": [
+            "C",
+            "E",
+            "G"
+          ],
+          "cagedShape": "E",
+          "description": "C on low E string, 8th fret"
+        },
+        "shape2": {
+          "type": "1st Inversion",
+          "frets": [
+            12,
+            10,
+            10,
+            -1,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "3",
+            "1",
+            "1",
+            "",
+            "",
+            ""
+          ],
+          "startFret": 10,
+          "notes": [
+            "E",
+            "G",
+            "C"
+          ],
+          "cagedShape": "C",
+          "description": "E on low E string, 12th fret"
+        },
+        "shape3": {
+          "type": "2nd Inversion",
+          "frets": [
+            3,
+            3,
+            2,
+            -1,
+            -1,
+            -1
+          ],
+          "fingers": [
+            "2",
+            "3",
+            "1",
+            "",
+            "",
+            ""
+          ],
+          "startFret": 2,
+          "notes": [
+            "G",
+            "C",
+            "E"
+          ],
+          "cagedShape": "A",
+          "description": "G on low E string, 3rd fret"
+        }
+      }
+    }
+  },
+  "minorTriads": {
+    "description": "Reference shapes for minor triads in C, used for all other keys via transposition",
+    "stringSetData": {
+      "1_3": {
+        "shape1": {
+          "type": "Root Position",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            5,
+            4,
+            3
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "3",
+            "2",
+            "1"
+          ],
+          "startFret": 3,
+          "notes": [
+            "C",
+            "Eb",
+            "G"
+          ],
+          "cagedShape": "Am",
+          "description": "C on G string, 5th fret - Am shape"
+        },
+        "shape2": {
+          "type": "1st Inversion",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            8,
+            8,
+            8
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "1",
+            "1",
+            "1"
+          ],
+          "startFret": 8,
+          "notes": [
+            "Eb",
+            "G",
+            "C"
+          ],
+          "cagedShape": "Em",
+          "description": "Eb on G string, 8th fret - Em shape (barred)"
+        },
+        "shape3": {
+          "type": "2nd Inversion",
+          "frets": [
+            -1,
+            -1,
+            -1,
+            12,
+            13,
+            11
+          ],
+          "fingers": [
+            "",
+            "",
+            "",
+            "2",
+            "3",
+            "1"
+          ],
+          "startFret": 11,
+          "notes": [
+            "G",
+            "C",
+            "Eb"
+          ],
+          "cagedShape": "Dm",
+          "description": "G on G string, 12th fret - Dm shape"
+        }
+      }
+    }
+  },
+  "diminishedTriads": {
+    "description": "Sample diminished triad shapes. Full dataset contains all keys and string sets.",
+    "C_diminished": {
+      "1_3": [
+        {
+          "inversion": "Root Position",
+          "frets": [
+            2,
+            4,
+            5
+          ],
+          "fingers": [
+            1,
+            3,
+            4
+          ],
+          "startFret": 2,
+          "notes": [
+            "C",
+            "Eb",
+            "Gb"
+          ]
+        },
+        {
+          "inversion": "1st Inversion",
+          "frets": [
+            8,
+            7,
+            8
+          ],
+          "fingers": [
+            3,
+            1,
+            2
+          ],
+          "startFret": 7,
+          "notes": [
+            "Eb",
+            "Gb",
+            "C"
+          ]
+        },
+        {
+          "inversion": "2nd Inversion",
+          "frets": [
+            11,
+            13,
+            11
+          ],
+          "fingers": [
+            1,
+            4,
+            1
+          ],
+          "startFret": 11,
+          "notes": [
+            "Gb",
+            "C",
+            "Eb"
+          ]
+        }
+      ]
+    }
+  },
+  "augmentedTriads": {
+    "description": "Sample augmented triad shapes. Shows symmetrical nature where shapes repeat every 4 frets.",
+    "C_augmented": {
+      "1_3": [
+        {
+          "label": "Root Position",
+          "frets": [
+            4,
+            5,
+            5
+          ],
+          "fingers": [
+            "1",
+            "2",
+            "2"
+          ],
+          "notes": [
+            "C",
+            "E",
+            "G#"
+          ],
+          "alternateNames": [
+            "C+",
+            "E+",
+            "G#+"
+          ]
+        },
+        {
+          "label": "1st Inversion",
+          "frets": [
+            8,
+            9,
+            9
+          ],
+          "fingers": [
+            "1",
+            "2",
+            "2"
+          ],
+          "notes": [
+            "E",
+            "G#",
+            "C"
+          ],
+          "alternateNames": [
+            "E+",
+            "G#+",
+            "C+"
+          ]
+        },
+        {
+          "label": "2nd Inversion",
+          "frets": [
+            0,
+            1,
+            1
+          ],
+          "fingers": [
+            "0",
+            "1",
+            "1"
+          ],
+          "notes": [
+            "G#",
+            "C",
+            "E"
+          ],
+          "alternateNames": [
+            "G#+",
+            "C+",
+            "E+"
+          ]
+        }
+      ]
+    }
+  },
+  "intervalColors": {
+    "description": "Color coding system used throughout the blog for interval identification",
+    "colors": {
+      "1": {
+        "color": "#ef4444",
+        "name": "red",
+        "description": "Root note"
+      },
+      "3": {
+        "color": "#a855f7",
+        "name": "purple",
+        "description": "Third interval (major or minor)"
+      },
+      "5": {
+        "color": "#f59e42",
+        "name": "orange",
+        "description": "Fifth interval (perfect, diminished, or augmented)"
+      }
+    },
+    "inversionColors": {
+      "Root Position": "#ef4444",
+      "1st Inversion": "#3b82f6",
+      "2nd Inversion": "#10b981"
+    }
+  },
+  "stringSetMappings": {
+    "description": "How string set names map to actual guitar strings",
+    "mappings": {
+      "1_3": {
+        "label": "Strings 1–3",
+        "strings": [
+          "High E (1st)",
+          "B (2nd)",
+          "G (3rd)"
+        ],
+        "arrayIndices": [
+          5,
+          4,
+          3
+        ],
+        "description": "Highest three strings"
+      },
+      "2_4": {
+        "label": "Strings 2–4",
+        "strings": [
+          "B (2nd)",
+          "G (3rd)",
+          "D (4th)"
+        ],
+        "arrayIndices": [
+          4,
+          3,
+          2
+        ],
+        "description": "Middle-high three strings"
+      },
+      "3_5": {
+        "label": "Strings 3–5",
+        "strings": [
+          "G (3rd)",
+          "D (4th)",
+          "A (5th)"
+        ],
+        "arrayIndices": [
+          3,
+          2,
+          1
+        ],
+        "description": "Middle three strings"
+      },
+      "4_6": {
+        "label": "Strings 4–6",
+        "strings": [
+          "D (4th)",
+          "A (5th)",
+          "Low E (6th)"
+        ],
+        "arrayIndices": [
+          2,
+          1,
+          0
+        ],
+        "description": "Lowest three strings"
+      }
+    }
+  },
+  "chordAnalysisFunctions": {
+    "description": "Key functions used to generate and analyze chord diagrams",
+    "functions": {
+      "buildTriadDataForKey": {
+        "description": "Main function that generates triad diagrams for any key",
+        "parameters": [
+          "key",
+          "triadType",
+          "subType",
+          "showFullFretboard",
+          "stringSet"
+        ],
+        "returns": "Object with diagrams, triadNotes, and reference data"
+      },
+      "transposeNote": {
+        "description": "Transposes a note by semitones with enharmonic handling",
+        "parameters": [
+          "rootNote",
+          "semitones",
+          "preferFlat"
+        ],
+        "returns": "Transposed note name"
+      },
+      "padTriadToSixStrings": {
+        "description": "Maps 3-string triad data to 6-string guitar array",
+        "parameters": [
+          "frets3",
+          "fingers3",
+          "stringSet"
+        ],
+        "returns": "Object with sixFrets and sixFingers arrays"
+      }
+    }
+  },
+  "notes": [
+    "All fret arrays use 6-string format: [Low E, A, D, G, B, High E]",
+    "-1 indicates string not played",
+    "Finger numbers: 0=open, 1=index, 2=middle, 3=ring, 4=pinky",
+    "Major and minor data shows C as reference - other keys use transposition",
+    "Diminished and augmented data shows actual shapes for each key",
+    "String sets are numbered from high to low: 1=High E, 6=Low E"
+  ]
+}
