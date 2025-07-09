@@ -2,7 +2,8 @@
 // @ts-nocheck
 
 import React, { useState } from 'react';
-import HorizontalTriadMap from '@/components/HorizontalTriadMap';
+import HorizontalTriadMap from '@/components/triads/HorizontalTriadMap';
+import MajorKeyTriadSequence from '@/components/triads/MajorKeyTriadSequence';
 import ChordDiagram, { ChordData } from '@/components/ChordDiagram';
 import { getDiminishedShapes } from '@/utils/triads/diminishedTriads';
 import AUGMENTED_TRIADS_DATA from '@/utils/triads/augmentedTriads';
@@ -10,7 +11,7 @@ import { padTriadToSixStrings } from '../../../utils/triads/padTriadToSixStrings
 
 // Natural note keys
 const MAJOR_KEYS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
-const TRIAD_TYPES = ['Major', 'Minor', 'Diminished', 'Augmented'] as const;
+const TRIAD_TYPES = ['Major', 'Minor', 'Diminished', 'Augmented', 'Major Key Sequence'] as const;
 type TriadType = typeof TRIAD_TYPES[number];
 
 // Semitones from C for each key
@@ -1056,7 +1057,7 @@ function renderTriadDisplay({diagrams, triadNotes, reference, displayType, selec
   };
   // Always color notes by interval, not shape/inversion
   const coloredTriadNotes = triadNotesWithShape.map((note: any) => ({
-    ...note,
+      ...note,
     shapeColor: intervalColorMap[note.interval] || '#000000',
   }));
     // Calculate dynamic fret range for the horizontal map
@@ -1241,11 +1242,11 @@ export default function TriadsOn3StringSets() {
               />
             </div>
             
-            <div className="text-xs text-gray-500 text-center mt-2 mb-4">
+        <div className="text-xs text-gray-500 text-center mt-2 mb-4">
               Only the notes and frets used in the three chord diagrams above are shown on the map.
-            </div>
-          </div>
-        );
+        </div>
+      </div>
+    );
         break;
       }
       case 'Major':
@@ -1384,6 +1385,17 @@ export default function TriadsOn3StringSets() {
               <p>Augmented triads have a major 3rd and augmented 5th (sharpened 5th). They don't occur naturally in the major scale but are common in jazz and classical music.</p>
             </div>
             {renderAugmentedTriads()}
+          </div>
+        </div>
+      ) : selectedTriadType === 'Major Key Sequence' ? (
+        <div>
+          {/* Major Key Sequence Section */}
+          <div className="mb-12">
+            <h3 className="text-xl font-bold text-amber-700 mb-4 text-center">Major Key Triad Sequence</h3>
+            <div className="mb-6 text-center text-gray-600 max-w-2xl mx-auto">
+              <p>This shows all seven diatonic triads that occur naturally in a major key: I (major), ii (minor), iii (minor), IV (major), V (major), vi (minor), and vii° (diminished). This sequence forms the foundation of Western harmony.</p>
+            </div>
+            <MajorKeyTriadSequence keyName={selectedKey} stringSet={selectedStringSet} />
           </div>
         </div>
       ) : (

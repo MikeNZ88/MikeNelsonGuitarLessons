@@ -20,6 +20,7 @@ export interface ChordDiagramProps {
   showArrow?: boolean | null;
   changeText?: string | null;
   highlightChanges?: number[] | null;
+  shapeColor?: string; // Optional color for shape/inversion
 }
 
 const ChordDiagram: React.FC<ChordDiagramProps> = ({
@@ -30,6 +31,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
   showArrow = null,
   changeText = null,
   highlightChanges = null,
+  shapeColor,
 }) => {
   if (!chordData) return null;
 
@@ -133,7 +135,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   cx={x}
                   cy={y}
                   r="6"
-                  fill={isHighlighted ? "#f97316" : "#1f2937"}
+                  fill={isHighlighted ? "#f97316" : (shapeColor || "#1f2937")}
                   stroke={isHighlighted ? "#ea580c" : "#374151"}
                   strokeWidth="2"
                 />

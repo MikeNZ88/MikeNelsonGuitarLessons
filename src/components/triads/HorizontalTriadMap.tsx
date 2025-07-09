@@ -8,6 +8,7 @@ interface TriadNote {
   interval: '1' | '3' | '5';
   finger?: string; // Optional finger number for this note
   shapeColor?: string; // Optional shape color for shape names mode
+  color?: string; // Optional custom color for this note
 }
 
 interface HorizontalTriadMapProps {
@@ -123,11 +124,11 @@ export default function HorizontalTriadMap({
         })}
         {/* Triad Notes */}
         {triadNotes.map((n, idx) => {
-          // SVG string index: 1 (high E) = bottom, 6 (low E) = top
-          const stringIdx = stringNames.length - n.string;
+          // SVG string index: 1 (high E) = top (index 0), 6 (low E) = bottom (index 5)
+          const stringIdx = n.string - 1;
           const y = topMargin + stringIdx * stringSpacing;
           const x = leftMargin + (n.fret - startFret + 1) * fretWidth - fretWidth / 2;
-          const fillColor = intervalColors[n.interval];
+          const fillColor = n.color || intervalColors[n.interval];
           return (
             <g key={`triad-${n.string}-${n.fret}-${idx}`}>
               <circle
