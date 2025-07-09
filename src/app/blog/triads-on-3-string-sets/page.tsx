@@ -1337,7 +1337,9 @@ export default function TriadsOn3StringSets() {
       {/* Key Selector */}
       <div className="flex justify-center mb-8">
         <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
-          {MAJOR_KEYS.map((key) => (
+          {MAJOR_KEYS
+            .filter((key) => selectedTriadType !== 'Major Key Sequence' || key === 'C')
+            .map((key) => (
             <button
               key={key}
               className={`px-6 py-3 rounded-md font-medium transition-all duration-200 ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
@@ -1352,7 +1354,9 @@ export default function TriadsOn3StringSets() {
       {/* String Set Selector */}
       <div className="flex justify-center mb-8">
         <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
-          {STRING_SETS.map((set) => (
+          {STRING_SETS
+            .filter((set) => selectedTriadType !== 'Major Key Sequence' || set.value === '1_3')
+            .map((set) => (
             <button
               key={set.value}
               className={`px-6 py-3 rounded-md font-medium transition-all duration-200 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
