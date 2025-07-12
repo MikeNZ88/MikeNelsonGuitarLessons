@@ -1788,7 +1788,14 @@ export default function TriadsOn3StringSets() {
             <button
               key={type}
               className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-semibold transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedTriadType === type ? 'bg-amber-600 text-white' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
-              onClick={() => setSelectedTriadType(type)}
+              onClick={() => {
+                setSelectedTriadType(type);
+                // Reset to C major and strings 1-3 when Major Key Sequence is selected
+                if (type === 'Major Key Sequence') {
+                  setSelectedKey('C');
+                  setSelectedStringSet('1_3');
+                }
+              }}
             >
               {type} Triads
             </button>
@@ -1799,34 +1806,42 @@ export default function TriadsOn3StringSets() {
       {/* Key Selector */}
       <div className="flex justify-center mb-8 px-4">
         <div className="bg-white rounded-lg shadow-md p-1 flex flex-wrap justify-center gap-1 w-full max-w-2xl">
-          {MAJOR_KEYS
-            .filter((key) => selectedTriadType !== 'Major Key Sequence' || key === 'C')
-            .map((key) => (
-            <button
-              key={key}
-              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base min-w-[2.5rem] ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
-              onClick={() => setSelectedKey(key)}
-            >
-              {key}
-            </button>
-          ))}
+          {selectedTriadType === 'Major Key Sequence' ? (
+            <div className="px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium text-sm sm:text-base min-w-[2.5rem] bg-amber-200 text-amber-900 cursor-not-allowed">
+              C (Fixed for Major Key Sequence)
+            </div>
+          ) : (
+            MAJOR_KEYS.map((key) => (
+              <button
+                key={key}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base min-w-[2.5rem] ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
+                onClick={() => setSelectedKey(key)}
+              >
+                {key}
+              </button>
+            ))
+          )}
         </div>
       </div>
 
       {/* String Set Selector */}
       <div className="flex justify-center mb-8 px-4">
         <div className="bg-white rounded-lg shadow-md p-1 flex flex-wrap justify-center gap-1 w-full max-w-3xl">
-          {STRING_SETS
-            .filter((set) => selectedTriadType !== 'Major Key Sequence' || set.value === '1_3')
-            .map((set) => (
-            <button
-              key={set.value}
-              className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
-              onClick={() => setSelectedStringSet(set.value)}
-            >
-              {set.label}
-            </button>
-          ))}
+          {selectedTriadType === 'Major Key Sequence' ? (
+            <div className="px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium text-sm sm:text-base flex-shrink-0 bg-amber-100 text-amber-900 cursor-not-allowed">
+              Strings 1–3 (Fixed for Major Key Sequence)
+            </div>
+          ) : (
+            STRING_SETS.map((set) => (
+              <button
+                key={set.value}
+                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
+                onClick={() => setSelectedStringSet(set.value)}
+              >
+                {set.label}
+              </button>
+            ))
+          )}
         </div>
       </div>
 
@@ -1861,7 +1876,7 @@ export default function TriadsOn3StringSets() {
             <div className="mb-6 text-center text-gray-600 max-w-3xl mx-auto">
               <p>This shows all seven diatonic triads that occur naturally in a major key. This sequence forms the foundation of Western harmony.</p>
             </div>
-            <MajorKeyTriadSequence keyName={selectedKey} stringSet={selectedStringSet} />
+            <MajorKeyTriadSequence keyName="C" stringSet="1_3" />
             
             {/* Detailed explanation below diagrams */}
             <div className="mt-8 space-y-4 max-w-4xl mx-auto px-4">
