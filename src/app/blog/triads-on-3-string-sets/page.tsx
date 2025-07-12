@@ -1653,7 +1653,7 @@ export default function TriadsOn3StringSets() {
 
   const renderAugmentedTriads = () => {
     const triadData = AUGMENTED_TRIADS_DATA[selectedKey as keyof typeof AUGMENTED_TRIADS_DATA][selectedStringSet as keyof typeof AUGMENTED_TRIADS_DATA[keyof typeof AUGMENTED_TRIADS_DATA]];
-    return (
+  return (
       <div className="mb-16">
         <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedKey} Augmented Triads on Strings {selectedStringSet.replace('_', '–')}</h3>
         
@@ -1812,13 +1812,13 @@ export default function TriadsOn3StringSets() {
             </div>
           ) : (
             MAJOR_KEYS.map((key) => (
-              <button
-                key={key}
+            <button
+              key={key}
                 className={`px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base min-w-[2.5rem] ${selectedKey === key ? 'bg-amber-200 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
-                onClick={() => setSelectedKey(key)}
-              >
-                {key}
-              </button>
+              onClick={() => setSelectedKey(key)}
+            >
+              {key}
+            </button>
             ))
           )}
         </div>
@@ -1833,13 +1833,13 @@ export default function TriadsOn3StringSets() {
             </div>
           ) : (
             STRING_SETS.map((set) => (
-              <button
-                key={set.value}
+            <button
+              key={set.value}
                 className={`px-3 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 text-sm sm:text-base flex-shrink-0 ${selectedStringSet === set.value ? 'bg-amber-100 text-amber-900' : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'}`}
-                onClick={() => setSelectedStringSet(set.value)}
-              >
-                {set.label}
-              </button>
+              onClick={() => setSelectedStringSet(set.value)}
+            >
+              {set.label}
+            </button>
             ))
           )}
         </div>

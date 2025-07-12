@@ -279,6 +279,19 @@ export default function Blog() {
       image: '/moveable-chord-shapes-thumbnail.svg',
       slug: 'moveable-guitar-chord-shapes',
       author: 'Mike Nelson'
+    },
+    {
+      id: '23',
+      title: 'The CAGED System: A Guitar Fretboard Guide',
+      excerpt: 'Learn how five familiar chord shapes connect across the entire fretboard. Understand transposition, note relationships, and how to use CAGED for minor and seventh chords.',
+      readTime: '15 min read',
+      category: 'Intermediate',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Scales and Fretboard'],
+      skillLevel: 'intermediate',
+      image: '/caged-system-thumbnail.svg',
+      slug: 'caged-system-guitar-guide',
+      author: 'Mike Nelson'
     }
   ];
 

@@ -1169,6 +1169,19 @@ export default function MoveableGuitarChordShapes() {
             {renderChordGrid(shapes)}
           </div>
         ))}
+        
+        {/* CAGED System Link */}
+        <div className="text-center mt-12 p-6 bg-amber-50 rounded-lg border border-amber-200">
+          <p className="text-gray-700 mb-3">
+            Want to understand how these moveable shapes connect across the fretboard?
+          </p>
+          <a 
+            href="/blog/caged-system-guitar-guide" 
+            className="inline-flex items-center px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
+          >
+            Learn the CAGED System →
+          </a>
+        </div>
       </div>
     );
   };
@@ -1182,6 +1195,19 @@ export default function MoveableGuitarChordShapes() {
             {renderChordGrid(shapes)}
           </div>
         ))}
+        
+        {/* CAGED System Link */}
+        <div className="text-center mt-12 p-6 bg-amber-50 rounded-lg border border-amber-200">
+          <p className="text-gray-700 mb-3">
+            Want to understand how these moveable shapes connect across the fretboard?
+          </p>
+          <a 
+            href="/blog/caged-system-guitar-guide" 
+            className="inline-flex items-center px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
+          >
+            Learn the CAGED System →
+          </a>
+        </div>
       </div>
     );
   };
