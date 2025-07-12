@@ -187,11 +187,11 @@ export default function Blog() {
       id: '22',
       title: 'Triads on 3-String Sets',
       excerpt: 'Master the building blocks of guitar chords! Learn the three essential triad shapes on each string group with chord diagrams and fretboard maps.',
-      readTime: '20 min read',
-      category: 'Intermediate',
+      readTime: '',
+      category: 'Intermediate - Advanced',
       primaryCategory: 'Chords',
       categories: ['Chords', 'Scales and Fretboard'],
-      skillLevel: 'intermediate',
+      skillLevel: 'intermediate-advanced',
       image: '/triads-thumbnail.svg',
       slug: 'triads-on-3-string-sets',
       author: 'Mike Nelson'
@@ -201,7 +201,7 @@ export default function Blog() {
     {
       id: '19',
       title: 'Guitar Picking Technique: Complete Progressive Guide',
-      excerpt: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
+      excerpt: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting and escape techniques.',
       readTime: '30 min read',
       category: 'Beginner - Advanced',
       primaryCategory: 'Technique',
@@ -229,10 +229,10 @@ export default function Blog() {
       title: 'Introducing PracticeTrack: Your Musical Journey Companion',
       excerpt: 'Transform your practice sessions with deliberate tracking, goal setting, and analytics. A free tool to help you stay consistent and see your progress over time.',
       readTime: '6 min read',
-      category: 'Beginner',
+      category: 'Beginner - Advanced',
       primaryCategory: 'Technique',
       categories: ['Technique'],
-      skillLevel: 'beginner',
+      skillLevel: 'beginner-advanced',
       image: '/practicetrack-thumbnail.svg',
       slug: 'introducing-practicetrack',
       author: 'Mike Nelson'
@@ -306,7 +306,8 @@ export default function Blog() {
                              (post.skillLevel === 'beginner' && selectedSkillLevel === 'Beginner') ||
                              (post.skillLevel === 'advanced' && selectedSkillLevel === 'Advanced') ||
                              (post.skillLevel === 'beginner-intermediate' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate')) ||
-                             (post.skillLevel === 'beginner-advanced' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced'));
+                             (post.skillLevel === 'beginner-advanced' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced')) ||
+                             (post.skillLevel === 'intermediate-advanced' && (selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced'));
     
     return matchesTopicCategory && matchesSkillLevel;
   });
