@@ -69,10 +69,10 @@ export default function Blog() {
       title: 'Open Chord Library',
       excerpt: 'Master guitar chords with my comprehensive interactive reference tool featuring visual diagrams, fingering patterns, and chord variations. Perfect for beginners and advanced players.',
       readTime: '',
-      category: 'Beginner',
+      category: 'Beginner - Intermediate',
       primaryCategory: 'Chords',
       categories: ['Chords'],
-      skillLevel: 'beginner',
+      skillLevel: 'beginner-intermediate',
       image: '/open-chord-library-thumbnail.svg',
       slug: 'guitar-chord-reference-tool',
       author: 'Mike Nelson'
@@ -82,10 +82,10 @@ export default function Blog() {
       title: 'Master Guitar Strumming Patterns',
       excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 10 progressive patterns from beginner to advanced.',
       readTime: '12 min read',
-      category: 'Beginner',
+      category: 'Beginner - Intermediate',
       primaryCategory: 'Rhythm',
       categories: ['Rhythm', 'Chords', 'Technique'],
-      skillLevel: 'beginner',
+      skillLevel: 'beginner-intermediate',
       image: '/strumming-patterns-thumbnail.svg',
       slug: 'guitar-strumming-patterns',
       author: 'Mike Nelson'
@@ -203,7 +203,7 @@ export default function Blog() {
       title: 'Guitar Picking Technique: Complete Progressive Guide',
       excerpt: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
       readTime: '30 min read',
-      category: 'All',
+      category: 'Beginner - Advanced',
       primaryCategory: 'Technique',
       categories: ['Technique'],
       skillLevel: 'all',
@@ -304,7 +304,9 @@ export default function Blog() {
                              post.skillLevel === 'all' ||
                              (post.skillLevel === 'intermediate' && selectedSkillLevel === 'Intermediate') ||
                              (post.skillLevel === 'beginner' && selectedSkillLevel === 'Beginner') ||
-                             (post.skillLevel === 'advanced' && selectedSkillLevel === 'Advanced');
+                             (post.skillLevel === 'advanced' && selectedSkillLevel === 'Advanced') ||
+                             (post.skillLevel === 'beginner-intermediate' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate')) ||
+                             (post.skillLevel === 'beginner-advanced' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced'));
     
     return matchesTopicCategory && matchesSkillLevel;
   });
@@ -323,6 +325,12 @@ export default function Blog() {
         return 'bg-orange-100 text-orange-800';
       case 'Advanced':
         return 'bg-amber-200 text-amber-900';
+      case 'Beginner - Intermediate':
+        return 'bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900';
+      case 'Beginner - Advanced':
+        return 'bg-gradient-to-r from-amber-100 to-amber-200 text-amber-900';
+      case 'Intermediate - Advanced':
+        return 'bg-gradient-to-r from-orange-100 to-amber-200 text-amber-900';
       case 'All':
         return 'bg-orange-200 text-orange-900';
       default:
