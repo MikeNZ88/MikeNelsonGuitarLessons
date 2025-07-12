@@ -2,6 +2,17 @@ import React from 'react';
 
 export const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
+// Note calculation helper
+const noteNames = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+const stringRootNotes = [4, 9, 2, 7, 11, 4]; // E=4, A=9, D=2, G=7, B=11, E=4 (index in noteNames)
+
+const calculateNoteName = (stringIndex: number, fret: number): string => {
+  if (fret === -1) return '';
+  const rootNote = stringRootNotes[stringIndex];
+  const noteIndex = (rootNote + fret) % 12;
+  return noteNames[noteIndex];
+};
+
 export interface ChordData {
   frets: number[];
   fingers: string[];
@@ -21,6 +32,7 @@ export interface ChordDiagramProps {
   changeText?: string | null;
   highlightChanges?: number[] | null;
   shapeColor?: string; // Optional color for shape/inversion
+  showNotes?: boolean; // New prop to show note names
 }
 
 const ChordDiagram: React.FC<ChordDiagramProps> = ({
@@ -32,6 +44,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
   changeText = null,
   highlightChanges = null,
   shapeColor,
+  showNotes = false,
 }) => {
   if (!chordData) return null;
 
@@ -53,7 +66,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
       )}
       <h3 className="text-lg font-bold text-gray-800 mb-2">{chordName}</h3>
       {startFret > 0 && (
-        <div className="text-xs text-gray-600 mb-2">{startFret}fr</div>
+        <div className="text-xs text-gray-600 mb-2">{startFret === 1 ? '1st' : `${startFret}th`}</div>
       )}
       <svg width="140" height="140" className="bg-gray-50 rounded">
         {/* Frets */}
@@ -95,6 +108,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
         {/* Finger positions */}
         {chordData.frets.map((fret, stringIndex) => {
           const finger = chordData.fingers[stringIndex];
+          const noteName = calculateNoteName(stringIndex, fret);
           const x = 20 + stringIndex * 20;
           const isHighlighted = actualHighlights.includes(stringIndex);
           if (fret === -1) {
@@ -123,6 +137,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   stroke={isHighlighted ? "#f97316" : "#16a34a"}
                   strokeWidth="2"
                 />
+                {showNotes && (
+                  <text
+                    x={x}
+                    y="18"
+                    textAnchor="middle"
+                    className="text-xs font-bold fill-green-700"
+                  >
+                    {noteName}
+                  </text>
+                )}
               </g>
             );
           } else {
@@ -141,7 +165,16 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   stroke={isHighlighted ? "#ea580c" : "#374151"}
                   strokeWidth="2"
                 />
-                {finger && (
+                {showNotes ? (
+                  <text
+                    x={x}
+                    y={y + 3}
+                    textAnchor="middle"
+                    className="text-xs font-bold fill-white"
+                  >
+                    {noteName}
+                  </text>
+                ) : finger ? (
                   <text
                     x={x}
                     y={y + 3}
@@ -150,7 +183,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   >
                     {finger}
                   </text>
-                )}
+                ) : null}
               </g>
             );
           }
@@ -167,11 +200,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
           </text>
         )}
       </svg>
-      {chordData.technique && (
-        <div className="mt-2 text-xs text-gray-600 text-center max-w-32">
-          {chordData.technique}
-        </div>
-      )}
+
       {chordData.worksWith && (
         <div className="mt-2 text-xs text-amber-700 text-center max-w-40 bg-amber-50 px-2 py-1 rounded border border-amber-200">
           <span className="font-semibold">Works with:</span> {chordData.worksWith}

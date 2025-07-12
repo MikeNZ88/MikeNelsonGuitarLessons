@@ -183,6 +183,19 @@ export default function Blog() {
       slug: 'scale-explorer-tool',
       author: 'Mike Nelson'
     },
+    {
+      id: '22',
+      title: 'Triads on 3-String Sets',
+      excerpt: 'Master the building blocks of guitar chords! Learn the three essential triad shapes on each string group with chord diagrams and fretboard maps.',
+      readTime: '20 min read',
+      category: 'Intermediate',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Scales and Fretboard'],
+      skillLevel: 'intermediate',
+      image: '/triads-thumbnail.svg',
+      slug: 'triads-on-3-string-sets',
+      author: 'Mike Nelson'
+    },
 
     // TECHNIQUE
     {
@@ -256,18 +269,20 @@ export default function Blog() {
     },
     {
       id: '21',
-      title: 'Triads on 3-String Sets',
-      excerpt: 'Visualize and master triads across the neck using 3-string sets. See every inversion, shape, and fretboard map for major, minor, and diminished triads.',
-      readTime: 'Interactive Tool',
-      category: 'Intermediate',
+      title: 'Moveable Guitar Chord Shapes',
+      excerpt: 'A comprehensive guide to the most practical and playable moveable chord shapes for guitar. Covers major, minor, 7th chords, extended chords, and modern chord forms.',
+      readTime: '',
+      category: 'Intermediate - Advanced',
       primaryCategory: 'Chords',
-      categories: ['Chords', 'Scales and Fretboard'],
-      skillLevel: 'intermediate',
-      image: '/triads-thumbnail.svg',
-      slug: 'triads-on-3-string-sets',
+      categories: ['Chords', 'Technique'],
+      skillLevel: 'all',
+      image: '/moveable-chord-shapes-thumbnail.svg',
+      slug: 'moveable-guitar-chord-shapes',
       author: 'Mike Nelson'
     }
   ];
+
+  console.log('POSTS LENGTH:', posts.length, posts.map(p => p.title));
 
   // Define new lesson topic categories
   const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear'];
