@@ -1,12 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Music } from 'lucide-react';
+import { Music, Search } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Blog() {
   const [selectedTopicCategory, setSelectedTopicCategory] = useState('All Posts');
   const [selectedSkillLevel, setSelectedSkillLevel] = useState('All Levels');
+  const [searchQuery, setSearchQuery] = useState('');
   
   const posts = [
     // GETTING STARTED
@@ -309,7 +310,7 @@ export default function Blog() {
     return post.categories.includes(selectedFilter) ? selectedFilter : post.primaryCategory;
   };
 
-  // Filter posts by both topic category and skill level
+  // Filter posts by topic category, skill level, and search query
   const filteredPosts = posts.filter(post => {
     const matchesTopicCategory = selectedTopicCategory === 'All Posts' || post.categories.includes(selectedTopicCategory);
     const matchesSkillLevel = selectedSkillLevel === 'All Levels' || 
@@ -322,7 +323,14 @@ export default function Blog() {
                              (post.skillLevel === 'beginner-advanced' && (selectedSkillLevel === 'Beginner' || selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced')) ||
                              (post.skillLevel === 'intermediate-advanced' && (selectedSkillLevel === 'Intermediate' || selectedSkillLevel === 'Advanced'));
     
-    return matchesTopicCategory && matchesSkillLevel;
+    // Search functionality - search through title, excerpt, and categories
+    const matchesSearch = searchQuery === '' || 
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      post.category.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesTopicCategory && matchesSkillLevel && matchesSearch;
   });
 
   // Use filtered posts without sorting by date
@@ -369,6 +377,21 @@ export default function Blog() {
       <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-col gap-6">
+            {/* Search Bar */}
+            <div className="relative max-w-md flex items-center">
+              <span className="absolute left-0 pl-3 flex items-center h-full pointer-events-none">
+                <Search className="h-6 w-6 text-gray-400" />
+              </span>
+              <input
+                type="text"
+                placeholder="Search blog posts..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="block w-full h-12 pl-12 pr-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-base"
+                style={{ boxSizing: 'border-box' }}
+              />
+            </div>
+
             {/* Topic Category Filter */}
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-gray-700 font-medium">Topic:</span>
@@ -413,10 +436,11 @@ export default function Blog() {
           {/* Results Count */}
           <div className="mt-6 text-gray-600 text-sm">
             Showing {sortedPosts.length} of {posts.length} posts
-            {(selectedTopicCategory !== 'All Posts' || selectedSkillLevel !== 'All Levels') && (
+            {(selectedTopicCategory !== 'All Posts' || selectedSkillLevel !== 'All Levels' || searchQuery !== '') && (
               <span>
                 {selectedTopicCategory !== 'All Posts' && ` in "${selectedTopicCategory}"`}
                 {selectedSkillLevel !== 'All Levels' && ` for "${selectedSkillLevel}"`}
+                {searchQuery !== '' && ` matching "${searchQuery}"`}
               </span>
             )}
           </div>
@@ -433,17 +457,21 @@ export default function Blog() {
               </div>
               <h3 className="text-xl font-semibold text-gray-600 mb-2">No posts found</h3>
               <p className="text-gray-500 mb-6">
-                Try selecting different filters or reset to see all posts.
+                {searchQuery !== '' 
+                  ? `No posts found matching "${searchQuery}". Try different search terms or reset filters.`
+                  : 'Try selecting different filters or reset to see all posts.'
+                }
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={() => {
                     setSelectedTopicCategory('All Posts');
                     setSelectedSkillLevel('All Levels');
+                    setSearchQuery('');
                   }}
                   className="bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors"
                 >
-                  Reset Filters
+                  Reset All Filters
                 </button>
               </div>
             </div>
