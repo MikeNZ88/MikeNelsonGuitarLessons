@@ -60,14 +60,7 @@
         <priority>0.6</priority>
     </url>
     
-    <!-- Blog Posts -->
-    <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz</loc>
-        <lastmod>2025-06-15</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
+    <!-- Blog Posts - Getting Started -->
     <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/complete-beginners-guide-guitar</loc>
         <lastmod>2025-01-10</lastmod>
@@ -80,6 +73,115 @@
         <lastmod>2025-04-30</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz</loc>
+        <lastmod>2025-06-15</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Blog Posts - Chords -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/how-to-read-chord-diagrams</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/guitar-chord-reference-tool</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers</loc>
+        <lastmod>2025-05-05</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/caged-system-guitar-guide</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/triads-on-3-string-sets</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <!-- Blog Posts - Rhythm -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/guitar-strumming-patterns</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/rhythm-tool</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Blog Posts - Scales and Fretboard -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-guitar-scales</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/major-scale-guitar-guide</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/guitar-fretboard-navigation</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/understanding-guitar-fretboard</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool</loc>
+        <lastmod>2025-06-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Blog Posts - Technique -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/guitar-picking-technique-guide</loc>
+        <lastmod>2025-01-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
     </url>
     
     <url>
@@ -96,37 +198,17 @@
         <priority>0.5</priority>
     </url>
     
+    <!-- Blog Posts - Gear -->
     <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers</loc>
-        <lastmod>2025-05-05</lastmod>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/kiesel-a2-7-string-review</loc>
+        <lastmod>2025-06-25</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.5</priority>
     </url>
     
     <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores</loc>
         <lastmod>2025-06-22</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    
-    <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool</loc>
-        <lastmod>2025-06-18</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    
-    <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/practicetrack-effective-practice</loc>
-        <lastmod>2025-01-16</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-    
-    <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/reading-guitar-tab</loc>
-        <lastmod>2025-01-16</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>

@@ -23,12 +23,18 @@ export default function ScaleExplorerTool() {
 
         {/* Header */}
         <header className="mb-12">
+          <div className="inline-flex items-center bg-amber-900/30 px-4 py-2 rounded-full text-amber-200 text-sm font-medium mb-6">
+            <Music className="w-4 h-4 mr-2" />
+            Intermediate - Advanced Guide
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
             Scale Explorer: Interactive Guitar Learning Tool
           </h1>
 
           <div className="flex items-center gap-2 mb-4 text-sm text-amber-600">
             <span>5 min read</span>
+            <span>•</span>
+            <span>Intermediate - Advanced Level</span>
           </div>
           <p className="text-xl text-gray-700 leading-relaxed">
             Most guitarists learn scales as isolated fretboard shapes. Scale Explorer teaches you to understand the connections between scales, chords, and music theory - starting with the major scale as your foundation.
