@@ -469,7 +469,7 @@ export default function CompleteBeginnerGuide() {
                       Interactive chord reference with visual diagrams and fingering patterns.
                     </p>
                     <Link 
-                      href="/blog/guitar-chord-reference-tool" 
+                      href="/blog/open-chord-library" 
                       className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
                     >
                       View Library <ArrowRight className="ml-1 h-4 w-4" />

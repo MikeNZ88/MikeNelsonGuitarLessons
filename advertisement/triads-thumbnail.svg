@@ -1,0 +1,23 @@
+<svg width="400" height="220" viewBox="0 0 400 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="220" rx="32" fill="#f59e42"/>
+  
+  <!-- Multicolored "triads" text -->
+  <g font-family="Inter, Arial, sans-serif" font-size="64" font-weight="bold">
+    <!-- "tr" in red -->
+    <text x="125" y="100" fill="#dc2626" dominant-baseline="middle">tr</text>
+    <!-- "ia" in blue -->
+    <text x="175" y="100" fill="#2563eb" dominant-baseline="middle">ia</text>
+    <!-- "ds" in green -->
+    <text x="225" y="100" fill="#16a34a" dominant-baseline="middle">ds</text>
+  </g>
+  
+  <!-- C - E - G underneath -->
+  <text x="50%" y="140" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#fff">
+    C - E - G
+  </text>
+  
+  <!-- 1 - 3 - 5 underneath -->
+  <text x="50%" y="170" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="500" fill="#fff" opacity="0.9">
+    1 - 3 - 5
+  </text>
+</svg> 
