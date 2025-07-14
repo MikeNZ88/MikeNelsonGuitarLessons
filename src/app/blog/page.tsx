@@ -53,6 +53,19 @@ export default function Blog() {
 
     // CHORDS
     {
+      id: '23',
+      title: 'What is a Chord? Understanding Structure, Intervals, and Types',
+      excerpt: 'Learn what guitar chords are, how they\'re built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.',
+      readTime: '25 min read',
+      category: 'Beginner',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Theory'],
+      skillLevel: 'beginner',
+      image: '/what-is-chord-thumbnail.svg',
+      slug: 'what-is-a-chord',
+      author: 'Mike Nelson'
+    },
+    {
       id: '16',
       title: 'How to Read Chord Diagrams',
       excerpt: 'Master the fundamentals of reading guitar chord diagrams with this comprehensive video tutorial. Learn to interpret chord charts and start playing songs faster.',
@@ -75,7 +88,7 @@ export default function Blog() {
       categories: ['Chords'],
       skillLevel: 'beginner-intermediate',
       image: '/open-chord-library-thumbnail.svg',
-      slug: 'guitar-chord-reference-tool',
+      slug: 'open-chord-library',
       author: 'Mike Nelson'
     },
     {
@@ -115,6 +128,19 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/chord-transitions-thumbnail.svg',
       slug: 'chord-transitions-common-fingers',
+      author: 'Mike Nelson'
+    },
+    {
+      id: '25',
+      title: 'Chords in Every Key: Interactive Key Chord Explorer',
+      excerpt: 'Explore all the chords that naturally occur in any major or minor key. Interactive tool for learning chord relationships in every key.',
+      readTime: 'Interactive Tool',
+      category: 'All',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Theory', 'Tools'],
+      skillLevel: 'all',
+      image: '/blog-key-chords-explorer-thumbnail.svg',
+      slug: 'key-chords-explorer',
       author: 'Mike Nelson'
     },
 
@@ -282,7 +308,7 @@ export default function Blog() {
       author: 'Mike Nelson'
     },
     {
-      id: '23',
+      id: '24', // changed from '23' to '24' to ensure uniqueness
       title: 'The CAGED System: A Guitar Fretboard Guide',
       excerpt: 'Learn how five familiar chord shapes connect across the entire fretboard. Understand transposition, note relationships, and how to use CAGED for minor and seventh chords.',
       readTime: '15 min read',

@@ -1,0 +1,17 @@
+<svg width="180" height="80" viewBox="0 0 180 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Puzzle Piece 1: C (left, tab on right) -->
+  <g>
+    <path d="M8 12 q0-10 10-10 h38 q10 0 10 10 v14 a8 8 0 1 1 0 20 v14 q0 10-10 10 h-38 q-10 0-10-10 z" fill="#FFD580" stroke="#B7791F" stroke-width="2.5"/>
+    <text x="27" y="48" text-anchor="middle" font-size="22" font-weight="bold" fill="#B7791F" font-family="sans-serif">C</text>
+  </g>
+  <!-- Puzzle Piece 2: E (middle, slot on left, tab on right) -->
+  <g>
+    <path d="M56 12 q0-10 10-10 h38 q10 0 10 10 v14 a8 8 0 1 1 0 20 v14 q0 10-10 10 h-38 q-10 0-10-10 v-14 a8 8 0 1 0 0-20 z" fill="#F6E05E" stroke="#B7791F" stroke-width="2.5"/>
+    <text x="75" y="48" text-anchor="middle" font-size="22" font-weight="bold" fill="#B7791F" font-family="sans-serif">E</text>
+  </g>
+  <!-- Puzzle Piece 3: G (right, slot on left, fixed top left) -->
+  <g>
+    <path d="M104 12 q0-10 10-10 h38 q10 0 10 10 v14 a8 8 0 1 1 0 20 v14 q0 10-10 10 h-38 q-10 0-10-10 v-14 a8 8 0 1 0 0-20 v-14 q0-10 10-10" fill="#FBD38D" stroke="#B7791F" stroke-width="2.5"/>
+    <text x="123" y="48" text-anchor="middle" font-size="22" font-weight="bold" fill="#B7791F" font-family="sans-serif">G</text>
+  </g>
+</svg> 
