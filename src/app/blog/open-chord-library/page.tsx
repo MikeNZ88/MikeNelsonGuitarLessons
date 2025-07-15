@@ -678,51 +678,55 @@ const GuitarChordReference = () => {
                   {/* C Major Scale Diagram */}
                   <div className="bg-white border border-gray-300 p-3 rounded">
                     <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">C Major Scale in Chromatic Context</h6>
-                    <div className="flex justify-center mb-3">
-                      <div className="flex gap-1 text-center text-xs">
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
-                        <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                        <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">B<br/>7</div>
-                        <div className="text-gray-500 px-2 py-1">...</div>
+                    <div className="overflow-x-auto">
+                      <div className="flex justify-center mb-3 min-w-max">
+                        <div className="flex gap-1 text-center text-xs">
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">B<br/>7</div>
+                          <div className="text-gray-500 px-2 py-1">...</div>
+                        </div>
                       </div>
                     </div>
-                                                              <p className="text-xs text-gray-600 text-center">Notice how 7 (B) comes right before 1 (C) repeats, and so on</p>
-                   </div>
+                    <p className="text-xs text-gray-600 text-center">Notice how 7 (B) comes right before 1 (C) repeats, and so on</p>
+                  </div>
                    
-                   {/* 7 vs b7 Comparison */}
-                   <div className="bg-white border border-gray-300 p-3 rounded mt-4">
-                     <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">Major 7 vs Flat 7 (b7) Comparison</h6>
-                     <div className="flex justify-center mb-3">
-                       <div className="flex gap-1 text-center text-xs">
-                         <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                         <div className="bg-red-200 border border-red-400 px-2 py-1 rounded font-bold">Bb<br/>b7</div>
-                         <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
-                         <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                       </div>
-                     </div>
-                     <p className="text-xs text-gray-600 text-center">b7 (Bb) is 2 semitones below root • 7 (B) is 1 semitone below root</p>
-                   </div>
+                  {/* 7 vs b7 Comparison */}
+                  <div className="bg-white border border-gray-300 p-3 rounded mt-4">
+                    <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">Major 7 vs Flat 7 (b7) Comparison</h6>
+                    <div className="overflow-x-auto">
+                      <div className="flex justify-center mb-3 min-w-max">
+                        <div className="flex gap-1 text-center text-xs">
+                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
+                          <div className="bg-red-200 border border-red-400 px-2 py-1 rounded font-bold">Bb<br/>b7</div>
+                          <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
+                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-600 text-center">b7 (Bb) is 2 semitones below root • 7 (B) is 1 semitone below root</p>
+                  </div>
                  </div>
 
                 <p className="text-center">
@@ -944,15 +948,15 @@ const GuitarChordReference = () => {
       case 'major-minor':
         return (
           <div>
-            <div className="text-center mb-8 relative">
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Major & Minor Chords</h2>
-                              <p className="text-gray-600 max-w-2xl mx-auto">
-                  Master these essential open chords first. They're the foundation of many songs. Open chords use unfretted (open) strings and are typically played in the first few frets, creating a rich, ringing sound that's perfect for beginners.
-                </p>
-              <div className="absolute top-0 right-0">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">Major & Minor Chords</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto px-4 text-sm sm:text-base mb-3">
+                Master these essential open chords first. They're the foundation of many songs. Open chords use unfretted (open) strings and are typically played in the first few frets, creating a rich, ringing sound that's perfect for beginners.
+              </p>
+              <div className="text-center">
                 <a 
                   href="/blog/how-to-read-chord-diagrams" 
-                  className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  className="text-xs sm:text-sm text-blue-600 hover:text-blue-800 underline"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -962,9 +966,9 @@ const GuitarChordReference = () => {
             </div>
             
             {/* Major and Minor Basic Chords */}
-            <div className="mb-16">
-              <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Major Chords</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+            <div className="mb-12 sm:mb-16">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center">Major Chords</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 mb-8 sm:mb-12">
                 {Object.entries(chordDatabase.open.major).map(([chordName, chordData]) => (
                   <ChordDiagram
                     key={chordName}
@@ -974,8 +978,8 @@ const GuitarChordReference = () => {
                 ))}
               </div>
               
-              <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">Minor Chords</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center">Minor Chords</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-8">
                 {Object.entries(chordDatabase.open.minor).map(([chordName, chordData]) => (
                   <ChordDiagram
                     key={chordName}
@@ -987,10 +991,10 @@ const GuitarChordReference = () => {
             </div>
             
             {/* Major to Minor Comparison Section */}
-            <div className="mb-16">
-              <h3 className="text-xl font-bold text-gray-800 mb-8 text-center">Major to Minor Transformations</h3>
-              <div className="bg-blue-50 p-6 rounded-lg mb-8 max-w-4xl mx-auto">
-                <p className="text-sm text-gray-700 text-center">
+            <div className="mb-12 sm:mb-16">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-6 sm:mb-8 text-center">Major to Minor Transformations</h3>
+              <div className="bg-blue-50 p-4 sm:p-6 rounded-lg mb-6 sm:mb-8 max-w-4xl mx-auto">
+                <p className="text-xs sm:text-sm text-gray-700 text-center">
                   <strong>Understanding the "3rd":</strong> This name may be confusing - don't confuse it with finger numbers or fret numbers. 
                   It's a name that comes from music theory. In music theory we can measure the distance between notes based on a scale. A major "3rd" is the 3rd note of the major scale, whereas a minor 3rd is the 3rd note of the minor scale. You can just think of them as the notes that make a chord major or minor. 
                   On the guitar you'll find that this results in the major and minor chord shapes having one fret position difference. 
@@ -999,66 +1003,66 @@ const GuitarChordReference = () => {
                 </p>
               </div>
               
-              <div className="space-y-12">
+              <div className="space-y-8 sm:space-y-12">
                 {/* A to Am */}
-                <div className="flex justify-center items-center gap-8 flex-wrap">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                   <ChordDiagram 
                     chordName="A" 
                     chordData={chordDatabase.open.major.A} 
                   />
-                  <div className="text-2xl text-gray-400">→</div>
-                                     <ChordDiagram 
-                     chordName="Am" 
-                     chordData={chordDatabase.open.minor.Am}
-                     changeText="Lower 3rd"
-                     highlightChanges={[4]}
-                   />
-                  <div className="text-sm text-gray-600 max-w-xs">
+                  <div className="text-xl sm:text-2xl text-gray-400">→</div>
+                  <ChordDiagram 
+                    chordName="Am" 
+                    chordData={chordDatabase.open.minor.Am}
+                    changeText="Lower 3rd"
+                    highlightChanges={[4]}
+                  />
+                  <div className="text-xs sm:text-sm text-gray-600 max-w-xs text-center sm:text-left">
                     <strong>A to Am:</strong> Remove finger from B string (2nd fret) to create 1st fret. The C# (major 3rd) becomes C (minor 3rd).
                   </div>
                 </div>
                 
                 {/* E to Em */}
-                <div className="flex justify-center items-center gap-8 flex-wrap">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                   <ChordDiagram 
                     chordName="E" 
                     chordData={chordDatabase.open.major.E} 
                   />
-                  <div className="text-2xl text-gray-400">→</div>
+                  <div className="text-xl sm:text-2xl text-gray-400">→</div>
                   <ChordDiagram 
                     chordName="Em" 
                     chordData={chordDatabase.open.minor.Em}
                     changeText="Lower 3rd"
                     highlightChanges={[3]}
                   />
-                  <div className="text-sm text-gray-600 max-w-xs">
+                  <div className="text-xs sm:text-sm text-gray-600 max-w-xs text-center sm:text-left">
                     <strong>E to Em:</strong> Remove finger from G string (1st fret) to create open G. The G# (major 3rd) becomes G (minor 3rd).
                   </div>
                 </div>
                 
                 {/* D to Dm */}
-                <div className="flex justify-center items-center gap-8 flex-wrap">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                   <ChordDiagram 
                     chordName="D" 
                     chordData={chordDatabase.open.major.D} 
                   />
-                  <div className="text-2xl text-gray-400">→</div>
-                                     <ChordDiagram 
-                     chordName="Dm" 
-                     chordData={chordDatabase.open.minor.Dm}
-                     changeText="Lower 3rd"
-                     highlightChanges={[5]}
-                   />
-                  <div className="text-sm text-gray-600 max-w-xs">
+                  <div className="text-xl sm:text-2xl text-gray-400">→</div>
+                  <ChordDiagram 
+                    chordName="Dm" 
+                    chordData={chordDatabase.open.minor.Dm}
+                    changeText="Lower 3rd"
+                    highlightChanges={[5]}
+                  />
+                  <div className="text-xs sm:text-sm text-gray-600 max-w-xs text-center sm:text-left">
                     <strong>D to Dm:</strong> Move finger on high E string from 2nd fret to 1st fret. The F# (major 3rd) becomes F (minor 3rd).
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="bg-green-50 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">The Sound of Major & Minor Chords</h3>
-              <ul className="space-y-2 text-gray-700">
+            <div className="bg-green-50 p-4 sm:p-6 rounded-lg">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">The Sound of Major & Minor Chords</h3>
+              <ul className="space-y-2 text-gray-700 text-sm sm:text-base">
                 <li className="flex items-start">
                   <span className="text-green-600 mr-2">•</span>
                   <span><strong>Major chords:</strong> Sound bright, happy, and uplifting - built with root, major 3rd, and 5th</span>
@@ -1083,26 +1087,26 @@ const GuitarChordReference = () => {
       case 'sevenths':
         return (
           <div>
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">7th Chords</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">7th Chords</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto px-4 text-sm sm:text-base">
                 7th chords add sophistication and color to your playing. Learn these essential variations to expand your harmonic palette. For more information on chord construction, refer to <a href="/scale-explorer/index.html" className="text-orange-600 hover:text-orange-700 font-medium" target="_blank" rel="noopener noreferrer">Scale Explorer</a> - scroll down to the chords section and click on "Chord Theory" button.
               </p>
             </div>
             
             {/* All 7th chords in a grid first */}
-                         <div className="mb-16">
-               <h3 className="text-xl font-semibold text-gray-800 mb-6 text-center">All 7th Chords</h3>
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                 {Object.entries(chordDatabase.open.seventh).map(([chordName, chordData]) => (
-                   <ChordDiagram
-                     key={chordName}
-                     chordName={chordName}
-                     chordData={chordData}
-                   />
-                 ))}
-               </div>
-             </div>
+            <div className="mb-12 sm:mb-16">
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center">All 7th Chords</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 mb-6 sm:mb-8">
+                {Object.entries(chordDatabase.open.seventh).map(([chordName, chordData]) => (
+                  <ChordDiagram
+                    key={chordName}
+                    chordName={chordName}
+                    chordData={chordData}
+                  />
+                ))}
+              </div>
+            </div>
             
             {/* Then the chord families educational content */}
             {renderChordFamilies()}
@@ -1112,14 +1116,14 @@ const GuitarChordReference = () => {
       case 'sus':
         return (
           <div>
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Sus & Add9 Chords</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">Sus & Add9 Chords</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto px-4 text-sm sm:text-base">
                 Suspended and add9 chords create beautiful color and tension. Sus chords replace the 3rd with either the 2nd or 4th, while add9 chords add the 9th note for extra richness. The 9 is the same as a 2, but it is usually an octave higher. For more information on chord construction, refer to <a href="/scale-explorer/index.html" className="text-orange-600 hover:text-orange-700 font-medium" target="_blank" rel="noopener noreferrer">Scale Explorer</a> - scroll down to the chords section and click on "Chord Theory" button.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-8 mb-6 sm:mb-8">
               {Object.entries(chordDatabase.open.sus).map(([chordName, chordData]) => (
                 <ChordDiagram
                   key={chordName}
@@ -1129,9 +1133,9 @@ const GuitarChordReference = () => {
               ))}
             </div>
             
-            <div className="bg-purple-50 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Sus & Add9 Chord Tips</h3>
-              <ul className="space-y-2 text-gray-700">
+            <div className="bg-purple-50 p-4 sm:p-6 rounded-lg">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">Sus & Add9 Chord Tips</h3>
+              <ul className="space-y-2 text-gray-700 text-sm sm:text-base">
                 <li className="flex items-start">
                   <span className="text-purple-600 mr-2">•</span>
                   <span><strong>Sus2 chords:</strong> Replace the 3rd with the 2nd - creates open, airy sound</span>
@@ -1854,17 +1858,17 @@ const GuitarChordReference = () => {
       case 'tips':
         return (
           <div>
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-3">Playing Tips & Technique</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
+            <div className="text-center mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3">Playing Tips & Technique</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto px-4 text-sm sm:text-base">
                 Master these fundamental techniques to improve your chord playing and make smoother transitions.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-green-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Finger Placement</h3>
-                <ul className="space-y-3 text-gray-700">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+              <div className="bg-green-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Finger Placement</h3>
+                <ul className="space-y-2 sm:space-y-3 text-gray-700 text-sm sm:text-base">
                   <li className="flex items-start">
                     <span className="text-green-600 mr-2">✓</span>
                     <span>Press just behind the fret wire, not on top of it</span>
@@ -1884,9 +1888,9 @@ const GuitarChordReference = () => {
                 </ul>
               </div>
               
-              <div className="bg-orange-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Chord Transitions</h3>
-                <ul className="space-y-3 text-gray-700">
+              <div className="bg-orange-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Chord Transitions</h3>
+                <ul className="space-y-2 sm:space-y-3 text-gray-700 text-sm sm:text-base">
                   <li className="flex items-start">
                     <span className="text-orange-600 mr-2">→</span>
                     <span>Look for common fingers between chords</span>
@@ -1906,9 +1910,9 @@ const GuitarChordReference = () => {
                 </ul>
               </div>
               
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Common Problems</h3>
-                <ul className="space-y-3 text-gray-700">
+              <div className="bg-blue-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Common Problems</h3>
+                <ul className="space-y-2 sm:space-y-3 text-gray-700 text-sm sm:text-base">
                   <li className="flex items-start">
                     <span className="text-red-600 mr-2">×</span>
                     <span><strong>Buzzing:</strong> Press harder and check finger placement</span>
@@ -1928,9 +1932,9 @@ const GuitarChordReference = () => {
                 </ul>
               </div>
               
-              <div className="bg-purple-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">Practice Routine</h3>
-                <ul className="space-y-3 text-gray-700">
+              <div className="bg-purple-50 p-4 sm:p-6 rounded-lg">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Practice Routine</h3>
+                <ul className="space-y-2 sm:space-y-3 text-gray-700 text-sm sm:text-base">
                   <li className="flex items-start">
                     <span className="text-purple-600 mr-2">1.</span>
                     <span>Start with one chord shape, get it clean</span>
@@ -1951,9 +1955,9 @@ const GuitarChordReference = () => {
               </div>
             </div>
             
-            <div className="mt-8 bg-gradient-to-r from-orange-50 to-yellow-50 p-6 rounded-lg border border-orange-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Remember: Quality Over Speed</h3>
-              <p className="text-gray-700">
+            <div className="mt-6 sm:mt-8 bg-gradient-to-r from-orange-50 to-yellow-50 p-4 sm:p-6 rounded-lg border border-orange-200">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3">Remember: Quality Over Speed</h3>
+              <p className="text-gray-700 text-sm sm:text-base">
                 It's better to play slowly and cleanly than quickly and sloppy. Every professional guitarist started exactly where you are now. 
                 Focus on getting clear, ringing notes from each string, and speed will come naturally with practice.
               </p>
@@ -1967,51 +1971,53 @@ const GuitarChordReference = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="text-center mb-6 sm:mb-8">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
           Open Chord Library
         </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
           Complete visual guide to essential open guitar chords with finger positions, variations, and playing techniques.
         </p>
       </div>
       
-      {/* Navigation */}
-      <div className="flex justify-center mb-8">
-        <div className="bg-white rounded-lg shadow-md p-1 inline-flex">
-          {[
-            { id: 'major-minor', label: 'Major & Minor' },
-            { id: 'sevenths', label: '7th Chords' },
-            { id: 'sus', label: 'Sus & Add9' },
-            { id: 'slash', label: 'Slash Chords' },
-            { id: 'advanced', label: 'Advanced Chords' },
-            { id: 'progressions', label: 'Chord Progressions' },
-            { id: 'tips', label: 'Playing Tips' }
-          ].map((section) => (
-            <button
-              key={section.id}
-              onClick={() => setSelectedSection(section.id)}
-              className={`px-6 py-3 rounded-md font-medium transition-all duration-200 ${
-                selectedSection === section.id
-                  ? 'bg-orange-500 text-white shadow-md'
-                  : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-              }`}
-            >
-              <span>{section.label}</span>
-            </button>
-          ))}
+      {/* Navigation - Make scrollable on mobile */}
+      <div className="flex justify-center mb-6 sm:mb-8">
+        <div className="bg-white rounded-lg shadow-md p-1 inline-flex overflow-x-auto max-w-full">
+          <div className="flex space-x-1 min-w-max">
+            {[
+              { id: 'major-minor', label: 'Major & Minor' },
+              { id: 'sevenths', label: '7th Chords' },
+              { id: 'sus', label: 'Sus & Add9' },
+              { id: 'slash', label: 'Slash Chords' },
+              { id: 'advanced', label: 'Advanced Chords' },
+              { id: 'progressions', label: 'Chord Progressions' },
+              { id: 'tips', label: 'Playing Tips' }
+            ].map((section) => (
+              <button
+                key={section.id}
+                onClick={() => setSelectedSection(section.id)}
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-md font-medium transition-all duration-200 whitespace-nowrap text-sm sm:text-base ${
+                  selectedSection === section.id
+                    ? 'bg-orange-500 text-white shadow-md'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                }`}
+              >
+                <span>{section.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       
       {/* Content */}
-      <div className="bg-gray-50 rounded-lg p-8">
+      <div className="bg-gray-50 rounded-lg p-4 sm:p-8">
         {renderChordSection()}
       </div>
       
       {/* Footer */}
-      <div className="mt-8 text-center text-gray-600">
+      <div className="mt-6 sm:mt-8 text-center text-gray-600 px-4">
         <p>Need help with your chord technique? <a href="/contact" className="text-orange-600 hover:text-orange-700 font-medium">Book a guitar lesson</a> for personalized guidance.</p>
       </div>
     </div>
