@@ -12,6 +12,7 @@ const GuitarChordReference = () => {
   const [isBluesPlaying, setIsBluesPlaying] = useState(false);
   const [currentBluesStroke, setCurrentBluesStroke] = useState(-1); // -1 = none, 0-7 = stroke index
   const [advancedSubTab, setAdvancedSubTab] = useState('diminished7'); // subtab for advanced chords
+  const [useVOnBar12, setUseVOnBar12] = useState(false); // Optional V chord on bar 12 for blues
   
   const guitarEngineRef = useRef<GuitarStrumEngine | null>(null);
   const bluesTimeoutRefs = useRef<NodeJS.Timeout[]>([]);
@@ -1360,6 +1361,8 @@ const GuitarChordReference = () => {
                   <>
                     <strong>12-Bar Blues Structure:</strong> The classic blues follows a specific 12-bar pattern using I-IV-V chords. 
                     Each number represents bars, and the progression repeats every 12 bars.
+                    <br /><br />
+                    <strong>Roman Numerals:</strong> I = 1st chord, IV = 4th chord, V = 5th chord (from music theory - there are only 3 chords used, not 5)
                   </>
                 )}
               </p>
@@ -1469,81 +1472,84 @@ const GuitarChordReference = () => {
               </>
               ) : (
                 <div className="space-y-8">
-                  {/* Simple chords section */}
-                  <div className="bg-white rounded-lg p-6 shadow-md">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      {(chordDatabase.blues as any)[activeBluesKey].name} - Basic Chords
-                    </h3>
-                    
-                    {/* Simple progression bars */}
-                    <div className="grid grid-cols-6 gap-2 mb-6">
-                      {(chordDatabase.blues as any)[activeBluesKey].simple.map((item: any, index: number) => {
-                        const startBar = (chordDatabase.blues as any)[activeBluesKey].simple
-                          .slice(0, index)
-                          .reduce((sum: number, prev: any) => sum + prev.bars, 0) + 1;
-                        const endBar = startBar + item.bars - 1;
-                        
-                        return (
-                          <div 
-                            key={index} 
-                            className={`text-center p-2 rounded border-2`}
-                            style={{ gridColumn: item.bars > 1 ? `span ${Math.min(item.bars, 4)}` : 'span 1' }}
-                          >
-                            <div className="text-xs text-gray-500 mb-1">
-                              Bars {startBar}-{endBar}
-                            </div>
-                            <div className="text-lg font-bold text-gray-800 mb-1">{item.chord}</div>
-                            <div className="text-sm text-blue-600">{item.roman}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    
-                    {/* Chord diagrams for simple */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                      {Array.from(new Set((chordDatabase.blues as any)[activeBluesKey].simple.map((item: any) => item.chord))).map((chordName: any) => {
-                        const chordData = (chordDatabase.open.major as any)[chordName] || 
-                                         (chordDatabase.open.minor as any)[chordName] || 
-                                         (chordDatabase.open.seventh as any)[chordName];
-                        return chordData ? (
-                          <ChordDiagram
-                            key={chordName}
-                            chordName={chordName}
-                            chordData={chordData}
-                          />
-                        ) : null;
-                      })}
+                  {/* Optional V chord toggle */}
+                  <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-semibold text-gray-800 mb-1">Optional Variation</h4>
+                        <p className="text-sm text-gray-600">Use V chord on bar 12 for a stronger turnaround</p>
+                      </div>
+                      <button
+                        onClick={() => setUseVOnBar12(!useVOnBar12)}
+                        className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                          useVOnBar12 
+                            ? 'bg-orange-500 text-white' 
+                            : 'bg-white text-orange-600 border border-orange-300 hover:bg-orange-50'
+                        }`}
+                      >
+                        {useVOnBar12 ? 'V on 12' : 'Standard'}
+                      </button>
                     </div>
                   </div>
                   
                   {/* 7th chords section */}
                   <div className="bg-white rounded-lg p-6 shadow-md">
                     <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                      {(chordDatabase.blues as any)[activeBluesKey].name} - 7th Chords
+                      {(chordDatabase.blues as any)[activeBluesKey].name}
                     </h3>
                     
                     {/* 7th progression bars */}
-                    <div className="grid grid-cols-6 gap-2 mb-6">
-                      {(chordDatabase.blues as any)[activeBluesKey].seventh.map((item: any, index: number) => {
-                        const startBar = (chordDatabase.blues as any)[activeBluesKey].seventh
-                          .slice(0, index)
-                          .reduce((sum: number, prev: any) => sum + prev.bars, 0) + 1;
-                        const endBar = startBar + item.bars - 1;
+                    <div className="grid grid-cols-12 gap-1 mb-6">
+                      {(() => {
+                        const progression = (chordDatabase.blues as any)[activeBluesKey].seventh;
+                        const bars = [];
                         
-                        return (
-                          <div 
-                            key={index} 
-                            className={`text-center p-2 rounded border-2`}
-                            style={{ gridColumn: item.bars > 1 ? `span ${Math.min(item.bars, 4)}` : 'span 1' }}
-                          >
-                            <div className="text-xs text-gray-500 mb-1">
-                              Bars {startBar}-{endBar}
+                        // Create 12 individual bars
+                        for (let bar = 1; bar <= 12; bar++) {
+                          let chord = '';
+                          let roman = '';
+                          
+                          // Determine chord for each bar
+                          if (bar <= 4) {
+                            chord = progression[0].chord;
+                            roman = progression[0].roman;
+                          } else if (bar <= 6) {
+                            chord = progression[1].chord;
+                            roman = progression[1].roman;
+                          } else if (bar <= 8) {
+                            chord = progression[2].chord;
+                            roman = progression[2].roman;
+                          } else if (bar === 9) {
+                            chord = progression[3].chord;
+                            roman = progression[3].roman;
+                          } else if (bar === 10) {
+                            chord = progression[4].chord;
+                            roman = progression[4].roman;
+                          } else if (bar === 11) {
+                            chord = progression[5].chord;
+                            roman = progression[5].roman;
+                          } else if (bar === 12) {
+                            // Optional V chord on bar 12
+                            if (useVOnBar12) {
+                              chord = progression[3].chord; // V chord
+                              roman = progression[3].roman;
+                            } else {
+                              chord = progression[5].chord; // I chord
+                              roman = progression[5].roman;
+                            }
+                          }
+                          
+                          bars.push(
+                            <div key={bar} className="text-center p-1 rounded border">
+                              <div className="text-xs text-gray-500 mb-1">Bar {bar}</div>
+                              <div className="text-sm font-bold text-gray-800 mb-1">{chord}</div>
+                              <div className="text-xs text-blue-600">{roman}</div>
                             </div>
-                            <div className="text-lg font-bold text-gray-800 mb-1">{item.chord}</div>
-                            <div className="text-sm text-blue-600">{item.roman}</div>
-                          </div>
-                        );
-                      })}
+                          );
+                        }
+                        
+                        return bars;
+                      })()}
                     </div>
                     
                     {/* Chord diagrams for 7th */}
@@ -1572,7 +1578,7 @@ const GuitarChordReference = () => {
                       </li>
                       <li className="flex items-start">
                         <span className="text-green-600 mr-2">•</span>
-                        <span><strong>Practice:</strong> Master the basic version before adding 7th chords</span>
+                        <span><strong>Practice:</strong> You can play these progressions with just major chords (not 7th chords). However, for E blues, there is no B major shape available, only B7.</span>
                       </li>
                       <li className="flex items-start">
                         <span className="text-green-600 mr-2">•</span>
