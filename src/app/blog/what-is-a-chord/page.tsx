@@ -109,7 +109,7 @@ export default function WhatIsChord() {
           <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
             <p className="font-semibold mb-2 text-amber-800">Important Note:</p>
             <p className="text-amber-700">
-              While semitones always equal frets, chord notes on guitar are spread across multiple strings because you can only play one note at a time on each string. For example, the interval from C to E is 4 frets, but a C major chord's notes (C, E, G) are positioned across different strings, not necessarily 4 frets apart from each other on the neck.
+              It's important to note that chords must be played with one note per string. While this may seem obvious, it's a key concept for beginners to understand. On guitar, chord notes are spread across multiple strings rather than being played in sequence on one string.
             </p>
             <p className="text-amber-700 mt-2">
               <strong>Octaves:</strong> Guitar chords often use the same notes in different octaves (higher or lower versions of the same note). For example, a C major chord might include a low C on the 5th string and a high C on the 2nd string - both are still "C" notes, just in different octaves. The 4-semitone relationship between C and E exists regardless of which octave each note is played in.
