@@ -314,19 +314,19 @@ export class GuitarStrumEngine {
     this.createPercussionSound(false, delay);
   }
 
-  playPattern(pattern: StrumPattern, bpm: number, metronomeEnabled: boolean = false): void {
+  playPattern(pattern: StrumPattern, bpm: number, metronomeEnabled: boolean = false, offsetBeats: number = 0): void {
     const beatDuration = 60 / bpm;
     
     // Play metronome clicks if enabled
     if (metronomeEnabled) {
       for (let beat = 0; beat < pattern.beatsPerMeasure; beat++) {
-        const delay = beat * beatDuration;
+        const delay = (beat + offsetBeats) * beatDuration;
         this.playMetronomeClick(delay, beat === 0); // Accent first beat
       }
     }
     
     pattern.strokes.forEach(stroke => {
-      const delay = stroke.time * beatDuration;
+      const delay = (stroke.time + offsetBeats) * beatDuration;
       
       if (this.soundMode === 'percussion') {
         if (stroke.type === 'down') {
@@ -342,6 +342,16 @@ export class GuitarStrumEngine {
         }
       }
     });
+  }
+
+  playCountIn(bpm: number): void {
+    const beatDuration = 60 / bpm;
+    
+    // Play 4 count-in beats
+    for (let i = 0; i < 4; i++) {
+      const delay = i * beatDuration;
+      this.playMetronomeClick(delay, i === 0); // Accent first beat
+    }
   }
 
   private playMetronomeClick(delay: number, isAccent: boolean = false): void {

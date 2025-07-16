@@ -29,6 +29,9 @@ export default function SongStrummingPattern({
   const [bpm, setBpm] = useState(initialBpm);
   const [soundMode, setSoundMode] = useState<SoundMode>('guitar');
   const [metronomeEnabled, setMetronomeEnabled] = useState(false);
+  const [countInEnabled, setCountInEnabled] = useState(true);
+  const [isCountIn, setIsCountIn] = useState(false);
+  const [countInBeat, setCountInBeat] = useState(0);
   const engineRef = useRef<GuitarStrumEngine | null>(null);
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
 
@@ -47,6 +50,161 @@ export default function SongStrummingPattern({
     timeoutRefs.current = [];
   };
 
+  const playCountIn = async (): Promise<void> => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    try {
+      await engineRef.current.ensureStarted();
+      
+      setIsCountIn(true);
+      setCountInBeat(0);
+
+      const beatDuration = (60 / bpm) * 1000;
+      
+      // Play 4 count-in beats
+      for (let i = 0; i < 4; i++) {
+        const timeout = setTimeout(() => {
+          setCountInBeat(i + 1);
+          // Play count-in click (accented for beat 1)
+          if (engineRef.current) {
+            engineRef.current.playMetronomeClick(0, i === 0);
+          }
+        }, i * beatDuration);
+        
+        timeoutRefs.current.push(timeout);
+      }
+
+      // Play count-in audio
+      engineRef.current.playCountIn(bpm);
+
+      // After count-in, start the pattern
+      const patternStartTimeout = setTimeout(() => {
+        setIsCountIn(false);
+        setCountInBeat(0);
+        playPatternAfterCountIn();
+      }, 4 * beatDuration);
+      
+      timeoutRefs.current.push(patternStartTimeout);
+    } catch (error) {
+      console.error('Failed to play count-in:', error);
+      setIsCountIn(false);
+      setCountInBeat(0);
+    }
+  };
+
+  const playPatternAfterCountIn = () => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    setCurrentStrokeIndex(-1);
+    setCurrentChordIndex(0);
+
+    const beatDuration = (60 / bpm) * 1000;
+    const patternDuration = pattern.beatsPerMeasure * beatDuration;
+
+    // Schedule the audio (no offset)
+    engineRef.current.playPattern(pattern, bpm, metronomeEnabled, 0);
+
+    // Schedule visual updates for strokes (no offset)
+    pattern.strokes.forEach((stroke, index) => {
+      const delay = stroke.time * beatDuration;
+      
+      const timeout = setTimeout(() => {
+        setCurrentStrokeIndex(index);
+      }, delay);
+      
+      timeoutRefs.current.push(timeout);
+    });
+
+    // Schedule chord changes (no offset)
+    if (chords.length > 1) {
+      for (let i = 0; i < chords.length; i++) {
+        const chordChangeTime = i * patternDuration;
+        const timeout = setTimeout(() => {
+          setCurrentChordIndex(i % chords.length);
+        }, chordChangeTime);
+        timeoutRefs.current.push(timeout);
+      }
+    }
+
+    // Reset after pattern completes (no offset)
+    const resetTimeout = setTimeout(() => {
+      setCurrentStrokeIndex(-1);
+      if (isLooping) {
+        if (countInEnabled) {
+          playCountIn(); // Start count-in again for loop
+        } else {
+          playPatternDirect(); // Start pattern directly for loop
+        }
+      } else {
+        setIsPlaying(false);
+        setCurrentChordIndex(0);
+      }
+    }, patternDuration);
+    
+    timeoutRefs.current.push(resetTimeout);
+  };
+
+  const playPatternDirect = () => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    setCurrentStrokeIndex(-1);
+    setCurrentChordIndex(0);
+
+    const beatDuration = (60 / bpm) * 1000;
+    const patternDuration = pattern.beatsPerMeasure * beatDuration;
+
+    // Schedule the audio (no offset)
+    engineRef.current.playPattern(pattern, bpm, metronomeEnabled, 0);
+
+    // Schedule visual updates for strokes (no offset)
+    pattern.strokes.forEach((stroke, index) => {
+      const delay = stroke.time * beatDuration;
+      
+      const timeout = setTimeout(() => {
+        setCurrentStrokeIndex(index);
+      }, delay);
+      
+      timeoutRefs.current.push(timeout);
+    });
+
+    // Schedule chord changes (no offset)
+    if (chords.length > 1) {
+      for (let i = 0; i < chords.length; i++) {
+        const chordChangeTime = i * patternDuration;
+        const timeout = setTimeout(() => {
+          setCurrentChordIndex(i % chords.length);
+        }, chordChangeTime);
+        timeoutRefs.current.push(timeout);
+      }
+    }
+
+    // Reset after pattern completes (no offset)
+    const resetTimeout = setTimeout(() => {
+      setCurrentStrokeIndex(-1);
+      if (isLooping) {
+        if (countInEnabled) {
+          playCountIn(); // Start count-in again for loop
+        } else {
+          playPatternDirect(); // Start pattern directly for loop
+        }
+      } else {
+        setIsPlaying(false);
+        setCurrentChordIndex(0);
+      }
+    }, patternDuration);
+    
+    timeoutRefs.current.push(resetTimeout);
+  };
+
   const playPattern = async () => {
     if (!engineRef.current) {
       console.error('Audio engine not initialized');
@@ -57,54 +215,21 @@ export default function SongStrummingPattern({
       await engineRef.current.ensureStarted();
       
       setIsPlaying(true);
-      setCurrentStrokeIndex(-1);
-      setCurrentChordIndex(0);
-
-      const beatDuration = (60 / bpm) * 1000;
-      const patternDuration = pattern.beatsPerMeasure * beatDuration;
-
-      // Schedule the audio
-      engineRef.current.playPattern(pattern, bpm, metronomeEnabled);
-
-      // Schedule visual updates for strokes
-      pattern.strokes.forEach((stroke, index) => {
-        const delay = stroke.time * beatDuration;
-        
-        const timeout = setTimeout(() => {
-          setCurrentStrokeIndex(index);
-        }, delay);
-        
-        timeoutRefs.current.push(timeout);
-      });
-
-      // Schedule chord changes (assuming one chord per measure for simplicity)
-      if (chords.length > 1) {
-        for (let i = 0; i < chords.length; i++) {
-          const chordChangeTime = i * patternDuration;
-          const timeout = setTimeout(() => {
-            setCurrentChordIndex(i % chords.length);
-          }, chordChangeTime);
-          timeoutRefs.current.push(timeout);
-        }
-      }
-
-      // Reset after pattern completes
-      const resetTimeout = setTimeout(() => {
-        setCurrentStrokeIndex(-1);
-        if (isLooping) {
-          playPattern();
-        } else {
-          setIsPlaying(false);
-          setCurrentChordIndex(0);
-        }
-      }, patternDuration);
       
-      timeoutRefs.current.push(resetTimeout);
+      if (countInEnabled) {
+        // Start with count-in
+        await playCountIn();
+      } else {
+        // Start pattern directly
+        playPatternDirect();
+      }
     } catch (error) {
       console.error('Failed to play pattern:', error);
       setIsPlaying(false);
       setCurrentStrokeIndex(-1);
       setCurrentChordIndex(0);
+      setIsCountIn(false);
+      setCountInBeat(0);
     }
   };
 
@@ -114,6 +239,8 @@ export default function SongStrummingPattern({
     setIsLooping(false);
     setCurrentStrokeIndex(-1);
     setCurrentChordIndex(0);
+    setIsCountIn(false);
+    setCountInBeat(0);
   };
 
   const togglePlay = () => {
@@ -130,6 +257,10 @@ export default function SongStrummingPattern({
 
   const toggleMetronome = () => {
     setMetronomeEnabled(!metronomeEnabled);
+  };
+
+  const toggleCountIn = () => {
+    setCountInEnabled(!countInEnabled);
   };
 
   return (
@@ -150,7 +281,7 @@ export default function SongStrummingPattern({
               <div
                 key={index}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  currentChordIndex === index && isPlaying
+                  currentChordIndex === index && isPlaying && !isCountIn
                     ? 'bg-amber-600 text-white scale-105'
                     : 'bg-amber-100 text-amber-800 border border-amber-200'
                 }`}
@@ -161,6 +292,39 @@ export default function SongStrummingPattern({
           </div>
         </div>
       </div>
+
+      {/* Count-in Display */}
+      {isCountIn && (
+        <div className="mb-6">
+          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+            <div className="flex items-center justify-between mb-3">
+              <h5 className="text-sm font-medium text-amber-800">Count-in</h5>
+              <div className="text-xs text-amber-600">{bpm} BPM</div>
+            </div>
+            
+            <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+              {[1, 2, 3, 4].map((beat) => (
+                <div key={beat} className="flex flex-col items-center space-y-1">
+                  <div
+                    className={`rounded-lg font-bold transition-all duration-200 text-center flex items-center justify-center px-1 py-1 text-xs min-w-[32px] h-7 ${
+                      countInBeat === beat
+                        ? 'bg-amber-500 text-white scale-110 shadow-lg'
+                        : countInBeat > beat
+                        ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                        : 'bg-white border border-gray-200 text-gray-400'
+                    }`}
+                  >
+                    {countInBeat > beat ? '✓' : beat}
+                  </div>
+                  <div className="text-xs font-medium text-gray-600">
+                    {beat}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pattern Visualization */}
       <div className="mb-6">
@@ -186,7 +350,7 @@ export default function SongStrummingPattern({
                     Math.abs(stroke.time - position.time) < 0.001
                   );
                   const strokeIndex = strokeAtPosition ? pattern.strokes.indexOf(strokeAtPosition) : -1;
-                  const isActive = currentStrokeIndex === strokeIndex;
+                  const isActive = currentStrokeIndex === strokeIndex && !isCountIn;
                   
                   return (
                     <div key={`${position.time}-${position.label}`} className="flex flex-col items-center space-y-1">
@@ -256,11 +420,22 @@ export default function SongStrummingPattern({
         >
           Metronome
         </button>
+
+        <button
+          onClick={toggleCountIn}
+          className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+            countInEnabled
+              ? 'bg-amber-700 hover:bg-amber-800 text-white'
+              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+          }`}
+        >
+          Count-in
+        </button>
         
         {isPlaying && (
           <div className="flex items-center text-sm text-amber-600">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
-            {isLooping ? 'Looping...' : 'Playing...'}
+            {isCountIn ? 'Count-in...' : isLooping ? 'Looping...' : 'Playing...'}
           </div>
         )}
       </div>

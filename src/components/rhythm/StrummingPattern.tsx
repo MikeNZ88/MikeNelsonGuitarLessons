@@ -387,11 +387,11 @@ export default function StrummingPattern({
         <div className="flex items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm flex-wrap">
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-amber-100 border border-amber-300 rounded"></div>
-            <span className="text-gray-600">Kick Drum</span>
+            <span className="text-gray-600">Down Stroke</span>
           </div>
           <div className="flex items-center space-x-2">
             <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
-            <span className="text-gray-600">Snare Drum</span>
+            <span className="text-gray-600">Up Stroke</span>
           </div>
           {hasGhostStrums() && (
             <div className="flex items-center space-x-2">

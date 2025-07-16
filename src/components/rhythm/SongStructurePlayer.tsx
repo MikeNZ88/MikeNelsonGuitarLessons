@@ -44,6 +44,9 @@ export default function SongStructurePlayer({
   );
   const [soundMode, setSoundMode] = useState<SoundMode>('guitar');
   const [metronomeEnabled, setMetronomeEnabled] = useState(false);
+  const [countInEnabled, setCountInEnabled] = useState(true);
+  const [isCountIn, setIsCountIn] = useState(false);
+  const [countInBeat, setCountInBeat] = useState(0);
   const engineRef = useRef<GuitarStrumEngine | null>(null);
   const timeoutRefs = useRef<NodeJS.Timeout[]>([]);
 
@@ -68,6 +71,185 @@ export default function SongStructurePlayer({
     timeoutRefs.current = [];
   };
 
+  const playCountIn = async (sectionIndex: number): Promise<void> => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    try {
+      await engineRef.current.ensureStarted();
+      
+      setIsCountIn(true);
+      setCountInBeat(0);
+
+      const beatDuration = (60 / currentBpm) * 1000;
+      
+      // Play 4 count-in beats
+      for (let i = 0; i < 4; i++) {
+        const timeout = setTimeout(() => {
+          setCountInBeat(i + 1);
+          // Play count-in click (accented for beat 1)
+          if (engineRef.current) {
+            engineRef.current.playMetronomeClick(0, i === 0);
+          }
+        }, i * beatDuration);
+        
+        timeoutRefs.current.push(timeout);
+      }
+
+      // Play count-in audio
+      engineRef.current.playCountIn(currentBpm);
+
+      // After count-in, start the structure
+      const structureStartTimeout = setTimeout(() => {
+        setIsCountIn(false);
+        setCountInBeat(0);
+        playStructureAfterCountIn(sectionIndex);
+      }, 4 * beatDuration);
+      
+      timeoutRefs.current.push(structureStartTimeout);
+    } catch (error) {
+      console.error('Failed to play count-in:', error);
+      setIsCountIn(false);
+      setCountInBeat(0);
+    }
+  };
+
+  const playStructureAfterCountIn = (sectionIndex: number) => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    if (forcePercussion) {
+      setSoundMode('percussion');
+      engineRef.current.setSoundMode('percussion');
+    }
+    setCurrentSectionIndex(sectionIndex);
+    setCurrentMeasureIndex(0);
+    setCurrentStrokeIndex(-1);
+
+    const beatDuration = (60 / currentBpm) * 1000;
+    let totalTime = 0; // Start immediately, no offset needed
+
+    // Schedule all sections and measures
+    sections.forEach((section, sectionIndex) => {
+      section.measures.forEach((measure, measureIndex) => {
+        const measureDuration = measure.beats * beatDuration;
+        
+        // Schedule section/measure change
+        const sectionTimeout = setTimeout(() => {
+          setCurrentSectionIndex(sectionIndex);
+          setCurrentMeasureIndex(measureIndex);
+        }, totalTime);
+        timeoutRefs.current.push(sectionTimeout);
+
+        // Schedule pattern playback for this measure
+        const patternTimeout = setTimeout(() => {
+          engineRef.current?.playPattern(measure.pattern, currentBpm, metronomeEnabled);
+        }, totalTime);
+        timeoutRefs.current.push(patternTimeout);
+
+        // Schedule stroke highlighting for this measure
+        measure.pattern.strokes.forEach((stroke, strokeIndex) => {
+          const strokeTime = totalTime + (stroke.time * beatDuration);
+          const strokeTimeout = setTimeout(() => {
+            setCurrentStrokeIndex(strokeIndex);
+          }, strokeTime);
+          timeoutRefs.current.push(strokeTimeout);
+        });
+
+        totalTime += measureDuration;
+      });
+    });
+
+    // Reset after complete structure
+    const resetTimeout = setTimeout(() => {
+      setCurrentStrokeIndex(-1);
+      setCurrentSectionIndex(0);
+      setCurrentMeasureIndex(0);
+      if (isLooping) {
+        if (countInEnabled) {
+          playCountIn(sectionIndex); // Start count-in again for loop
+        } else {
+          playStructureDirect(sectionIndex); // Start structure directly for loop
+        }
+      } else {
+        setIsPlaying(false);
+      }
+    }, totalTime);
+    
+    timeoutRefs.current.push(resetTimeout);
+  };
+
+  const playStructureDirect = (sectionIndex: number) => {
+    if (!engineRef.current) {
+      console.error('Audio engine not initialized');
+      return;
+    }
+
+    if (forcePercussion) {
+      setSoundMode('percussion');
+      engineRef.current.setSoundMode('percussion');
+    }
+    setCurrentSectionIndex(sectionIndex);
+    setCurrentMeasureIndex(0);
+    setCurrentStrokeIndex(-1);
+
+    const beatDuration = (60 / currentBpm) * 1000;
+    let totalTime = 0;
+
+    // Schedule all sections and measures (no offset)
+    sections.forEach((section, sectionIndex) => {
+      section.measures.forEach((measure, measureIndex) => {
+        const measureDuration = measure.beats * beatDuration;
+        
+        // Schedule section/measure change
+        const sectionTimeout = setTimeout(() => {
+          setCurrentSectionIndex(sectionIndex);
+          setCurrentMeasureIndex(measureIndex);
+        }, totalTime);
+        timeoutRefs.current.push(sectionTimeout);
+
+        // Schedule pattern playback for this measure
+        const patternTimeout = setTimeout(() => {
+          engineRef.current?.playPattern(measure.pattern, currentBpm, metronomeEnabled);
+        }, totalTime);
+        timeoutRefs.current.push(patternTimeout);
+
+        // Schedule stroke highlighting for this measure
+        measure.pattern.strokes.forEach((stroke, strokeIndex) => {
+          const strokeTime = totalTime + (stroke.time * beatDuration);
+          const strokeTimeout = setTimeout(() => {
+            setCurrentStrokeIndex(strokeIndex);
+          }, strokeTime);
+          timeoutRefs.current.push(strokeTimeout);
+        });
+
+        totalTime += measureDuration;
+      });
+    });
+
+    // Reset after complete structure
+    const resetTimeout = setTimeout(() => {
+      setCurrentStrokeIndex(-1);
+      setCurrentSectionIndex(0);
+      setCurrentMeasureIndex(0);
+      if (isLooping) {
+        if (countInEnabled) {
+          playCountIn(sectionIndex); // Start count-in again for loop
+        } else {
+          playStructureDirect(sectionIndex); // Start structure directly for loop
+        }
+      } else {
+        setIsPlaying(false);
+      }
+    }, totalTime);
+    
+    timeoutRefs.current.push(resetTimeout);
+  };
+
   const playStructure = async (sectionIndex: number) => {
     if (!engineRef.current) {
       console.error('Audio engine not initialized');
@@ -76,68 +258,23 @@ export default function SongStructurePlayer({
 
     try {
       await engineRef.current.ensureStarted();
-      if (forcePercussion) {
-        setSoundMode('percussion');
-        engineRef.current.setSoundMode('percussion');
-      }
       setIsPlaying(true);
-      setCurrentSectionIndex(sectionIndex);
-      setCurrentMeasureIndex(0);
-      setCurrentStrokeIndex(-1);
-
-      const beatDuration = (60 / currentBpm) * 1000;
-      let totalTime = 0;
-
-      // Schedule all sections and measures
-      sections.forEach((section, sectionIndex) => {
-        section.measures.forEach((measure, measureIndex) => {
-          const measureDuration = measure.beats * beatDuration;
-          
-          // Schedule section/measure change
-          const sectionTimeout = setTimeout(() => {
-            setCurrentSectionIndex(sectionIndex);
-            setCurrentMeasureIndex(measureIndex);
-          }, totalTime);
-          timeoutRefs.current.push(sectionTimeout);
-
-          // Schedule pattern playback for this measure
-          const patternTimeout = setTimeout(() => {
-            engineRef.current?.playPattern(measure.pattern, currentBpm, metronomeEnabled);
-          }, totalTime);
-          timeoutRefs.current.push(patternTimeout);
-
-          // Schedule stroke highlighting for this measure
-          measure.pattern.strokes.forEach((stroke, strokeIndex) => {
-            const strokeTime = totalTime + (stroke.time * beatDuration);
-            const strokeTimeout = setTimeout(() => {
-              setCurrentStrokeIndex(strokeIndex);
-            }, strokeTime);
-            timeoutRefs.current.push(strokeTimeout);
-          });
-
-          totalTime += measureDuration;
-        });
-      });
-
-      // Reset after complete structure
-      const resetTimeout = setTimeout(() => {
-        setCurrentStrokeIndex(-1);
-        setCurrentSectionIndex(0);
-        setCurrentMeasureIndex(0);
-        if (isLooping) {
-          playStructure(sectionIndex);
-        } else {
-          setIsPlaying(false);
-        }
-      }, totalTime);
       
-      timeoutRefs.current.push(resetTimeout);
+      if (countInEnabled) {
+        // Start with count-in
+        await playCountIn(sectionIndex);
+      } else {
+        // Start structure directly
+        playStructureDirect(sectionIndex);
+      }
     } catch (error) {
       console.error('Failed to play structure:', error);
       setIsPlaying(false);
       setCurrentStrokeIndex(-1);
       setCurrentSectionIndex(0);
       setCurrentMeasureIndex(0);
+      setIsCountIn(false);
+      setCountInBeat(0);
     }
   };
 
@@ -148,6 +285,8 @@ export default function SongStructurePlayer({
     setCurrentStrokeIndex(-1);
     setCurrentSectionIndex(0);
     setCurrentMeasureIndex(0);
+    setIsCountIn(false);
+    setCountInBeat(0);
   };
 
   const togglePlay = () => {
@@ -172,6 +311,10 @@ export default function SongStructurePlayer({
 
   const toggleMetronome = () => {
     setMetronomeEnabled(!metronomeEnabled);
+  };
+
+  const toggleCountIn = () => {
+    setCountInEnabled(!countInEnabled);
   };
 
   const getCurrentMeasure = () => {
@@ -221,6 +364,39 @@ export default function SongStructurePlayer({
           </div>
         </div>
       </div>
+
+      {/* Count-in Display */}
+      {isCountIn && (
+        <div className="mb-6">
+          <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
+            <div className="flex items-center justify-between mb-3">
+              <h5 className="text-sm font-medium text-amber-800">Count-in</h5>
+              <div className="text-xs text-amber-600">{currentBpm} BPM</div>
+            </div>
+            
+            <div className="flex items-center justify-center space-x-2 sm:space-x-3">
+              {[1, 2, 3, 4].map((beat) => (
+                <div key={beat} className="flex flex-col items-center space-y-1">
+                  <div
+                    className={`rounded-lg font-bold transition-all duration-200 text-center flex items-center justify-center px-1 py-1 text-xs min-w-[32px] h-7 ${
+                      countInBeat === beat
+                        ? 'bg-amber-500 text-white scale-110 shadow-lg'
+                        : countInBeat > beat
+                        ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                        : 'bg-white border border-gray-200 text-gray-400'
+                    }`}
+                  >
+                    {countInBeat > beat ? '✓' : beat}
+                  </div>
+                  <div className="text-xs font-medium text-gray-600">
+                    {beat}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Song Structure Display */}
       <div className="mb-6">
@@ -353,11 +529,22 @@ export default function SongStructurePlayer({
         >
           Metronome
         </button>
+
+        <button
+          onClick={toggleCountIn}
+          className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 text-sm ${
+            countInEnabled
+              ? 'bg-amber-700 hover:bg-amber-800 text-white'
+              : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+          }`}
+        >
+          Count-in
+        </button>
         
         {isPlaying && (
           <div className="flex items-center text-sm text-amber-600">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
-            {isLooping ? 'Looping...' : 'Playing...'}
+            {isCountIn ? 'Count-in...' : isLooping ? 'Looping...' : 'Playing...'}
           </div>
         )}
       </div>
