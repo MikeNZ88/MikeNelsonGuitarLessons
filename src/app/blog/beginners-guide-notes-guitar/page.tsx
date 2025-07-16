@@ -518,7 +518,7 @@ export default function BeginnersGuideToNotes() {
           In music theory, octaves are written with numbers. For example, E2 and E4 are both the note E, but E4 (with the higher number) is a higher-pitched note. E3 is higher than E2, but lower than E4.
         </p>
         <p className="mb-4">
-          The guitar’s range covers about four octaves, from the lowest open E string (E2) up to the highest fret on the high E string. Not all guitars have 24 frets—some have 18, 21, or 22—so the highest note is usually somewhere between C6 and E6, depending on the instrument. The open high E string is E4, the 12th fret on that string is E5, and the highest frets (18th–24th) reach up to C6–E6.
+          The guitar's range covers about four octaves, from the lowest open E string (E2) up to the highest fret on the high E string. Not all guitars have 24 frets—some have 18, 21, or 22—so the highest note is usually somewhere between C6 and E6, depending on the instrument. The open high E string is E4, the 12th fret on that string is E5, and the highest frets (18th–24th) reach up to C6–E6.
         </p>
         <p>
           Notice that the difference between the lowest and highest E strings is two octaves (E2 to E4), and the 12th fret on any string is always one octave above the open string. Since an octave is 12 notes, two octaves is 24 notes—matching the 24 frets on some guitars. The tuning intervals between strings (E–A–D–G–B–E) add up to 24 semitones, or two octaves, from the lowest to the highest open string.
@@ -595,6 +595,20 @@ export default function BeginnersGuideToNotes() {
         </p>
         <InstrumentRangeDiagram />
       </section>
+      </section>
+      
+      {/* Next Steps */}
+      <section className="mt-16 p-6 bg-amber-50 border border-amber-200 rounded-lg">
+        <h3 className="text-2xl font-bold mb-4 text-amber-800">Ready for the Next Step?</h3>
+        <p className="text-lg mb-4 text-amber-700">
+          Now that you understand how notes work on the guitar, you're ready to learn about chords! Chords are combinations of notes played together that create harmony.
+        </p>
+        <a 
+          href="/blog/what-is-a-chord" 
+          className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors"
+        >
+          Learn What is a Chord →
+        </a>
       </section>
     </div>
   );

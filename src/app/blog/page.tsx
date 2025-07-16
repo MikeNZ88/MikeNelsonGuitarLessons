@@ -319,6 +319,19 @@ export default function Blog() {
       image: '/caged-system-thumbnail.svg',
       slug: 'caged-system-guitar-guide',
       author: 'Mike Nelson'
+    },
+    {
+      id: '26',
+      title: 'Beginner’s Guide to Notes on the Guitar',
+      excerpt: 'A super-friendly introduction to the musical alphabet, sharps and flats, octaves, and how to find every note on your guitar fretboard. Includes interactive diagrams and comparisons to other instruments.',
+      readTime: '20 min read',
+      category: 'Beginner',
+      primaryCategory: 'Theory',
+      categories: ['Theory', 'Getting Started'],
+      skillLevel: 'beginner',
+      image: '/beginners-guide-scales-thumbnail.svg',
+      slug: 'beginners-guide-notes-guitar',
+      author: 'Mike Nelson'
     }
   ];
 

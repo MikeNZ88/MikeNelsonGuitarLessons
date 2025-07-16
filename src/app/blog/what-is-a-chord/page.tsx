@@ -75,7 +75,7 @@ export default function WhatIsChord() {
           </p>
 
           <p className="mb-6">
-            But here's the key insight: chords aren't random combinations of notes. They follow specific <strong>mathematical relationships</strong> called intervals that create harmony.
+            But here's the key insight: chords aren't random combinations of notes. They follow specific <strong>mathematical relationships</strong> called intervals that create harmony. (If you're not familiar with musical notes, check out our <a href="/blog/beginners-guide-notes-guitar" className="text-amber-600 hover:text-amber-800 underline">Beginner's Guide to Notes on the Guitar</a>.)
           </p>
         </section>
 

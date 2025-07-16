@@ -383,7 +383,7 @@ const KeyChordsExplorer = () => {
           Understanding These Chords
         </h3>
         <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-          <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
           <div className="space-y-2">
             {keyType === 'major' ? (
               <>
