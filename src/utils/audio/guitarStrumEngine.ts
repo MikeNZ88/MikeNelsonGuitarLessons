@@ -515,7 +515,7 @@ export class GuitarStrumEngine {
     }
   }
 
-  private playMetronomeClick(delay: number, isAccent: boolean = false): void {
+  playMetronomeClick(delay: number, isAccent: boolean = false): void {
     if (!this.audioContext || !this.masterGain) return;
 
     const startTime = this.audioContext.currentTime + delay;
