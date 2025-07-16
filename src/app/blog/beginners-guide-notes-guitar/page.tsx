@@ -414,7 +414,7 @@ export default function BeginnersGuideToNotes() {
           </button>
         </div>
         <SingleStringNotes showSharps={showSharps} />
-        <p className="mt-4">There are 5 sharps/flats, so with the 7 natural notes, there are 12 notes in total in the chromatic scale. That's the name given to the 12 notes.</p>
+        <p className="mt-4">There are 5 sharps/flats, so with the 7 natural notes, there are 12 notes in total in the chromatic scale. That's the name given to the 12 notes. The distance between each of these notes is called a "semitone" or sometimes called a half step. For example, A to A# is a semitone, B to C is a semitone, C to C# is a semitone, etc.</p>
       </section>
 
       {/* 3. Octaves: The Pattern Repeats */}
