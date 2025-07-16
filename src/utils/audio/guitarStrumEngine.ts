@@ -157,79 +157,240 @@ export class GuitarStrumEngine {
   private createKickSound(startTime: number): void {
     if (!this.audioContext || !this.masterGain) return;
 
-    // Kick drum - low frequency with quick pitch sweep
-    const osc = this.audioContext.createOscillator();
-    const gain = this.audioContext.createGain();
-    const filter = this.audioContext.createBiquadFilter();
+    // Enhanced kick drum with multiple layers for punch and depth
     
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(60, startTime);
-    osc.frequency.exponentialRampToValueAtTime(30, startTime + 0.1);
+    // Layer 1: Sub-bass fundamental (20-40Hz)
+    const subOsc = this.audioContext.createOscillator();
+    const subGain = this.audioContext.createGain();
+    const subFilter = this.audioContext.createBiquadFilter();
     
-    filter.type = 'lowpass';
-    filter.frequency.value = 100;
-    filter.Q.value = 1;
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(40, startTime);
+    subOsc.frequency.exponentialRampToValueAtTime(20, startTime + 0.15);
     
-    gain.gain.setValueAtTime(1.0, startTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+    subFilter.type = 'lowpass';
+    subFilter.frequency.value = 80;
+    subFilter.Q.value = 2;
     
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(this.masterGain);
+    subGain.gain.setValueAtTime(0.9, startTime);
+    subGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.3);
     
-    osc.start(startTime);
-    osc.stop(startTime + 0.2);
+    subOsc.connect(subFilter);
+    subFilter.connect(subGain);
+    subGain.connect(this.masterGain);
+    
+    subOsc.start(startTime);
+    subOsc.stop(startTime + 0.3);
+
+    // Layer 2: Main thump (60-30Hz) with more aggressive envelope
+    const mainOsc = this.audioContext.createOscillator();
+    const mainGain = this.audioContext.createGain();
+    const mainFilter = this.audioContext.createBiquadFilter();
+    
+    mainOsc.type = 'sine';
+    mainOsc.frequency.setValueAtTime(65, startTime);
+    mainOsc.frequency.exponentialRampToValueAtTime(28, startTime + 0.08);
+    
+    mainFilter.type = 'lowpass';
+    mainFilter.frequency.value = 120;
+    mainFilter.Q.value = 1.5;
+    
+    // More punchy envelope
+    mainGain.gain.setValueAtTime(1.3, startTime);
+    mainGain.gain.exponentialRampToValueAtTime(0.5, startTime + 0.03);
+    mainGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+    
+    mainOsc.connect(mainFilter);
+    mainFilter.connect(mainGain);
+    mainGain.connect(this.masterGain);
+    
+    mainOsc.start(startTime);
+    mainOsc.stop(startTime + 0.2);
+
+    // Layer 3: Click/attack layer for punch (200-800Hz)
+    const clickOsc = this.audioContext.createOscillator();
+    const clickGain = this.audioContext.createGain();
+    const clickFilter = this.audioContext.createBiquadFilter();
+    
+    clickOsc.type = 'square';
+    clickOsc.frequency.setValueAtTime(400, startTime);
+    clickOsc.frequency.exponentialRampToValueAtTime(200, startTime + 0.02);
+    
+    clickFilter.type = 'bandpass';
+    clickFilter.frequency.value = 500;
+    clickFilter.Q.value = 3;
+    
+    // Very short, punchy click
+    clickGain.gain.setValueAtTime(0.4, startTime);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.03);
+    
+    clickOsc.connect(clickFilter);
+    clickFilter.connect(clickGain);
+    clickGain.connect(this.masterGain);
+    
+    clickOsc.start(startTime);
+    clickOsc.stop(startTime + 0.03);
+
+    // Layer 4: Noise burst for realistic texture
+    const noiseBuffer = this.audioContext.createBuffer(1, this.audioContext.sampleRate * 0.05, this.audioContext.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = (Math.random() * 2 - 1) * 0.1;
+    }
+    
+    const noiseSource = this.audioContext.createBufferSource();
+    const noiseGain = this.audioContext.createGain();
+    const noiseFilter = this.audioContext.createBiquadFilter();
+    
+    noiseSource.buffer = noiseBuffer;
+    
+    noiseFilter.type = 'highpass';
+    noiseFilter.frequency.value = 100;
+    noiseFilter.Q.value = 0.5;
+    
+    noiseGain.gain.setValueAtTime(0.25, startTime);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.02);
+    
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+    
+    noiseSource.start(startTime);
+    noiseSource.stop(startTime + 0.05);
   }
 
   private createSnareSound(startTime: number): void {
     if (!this.audioContext || !this.masterGain) return;
 
-    // Snare drum - noise burst with tonal component
-    const noise = this.audioContext.createBufferSource();
-    const noiseGain = this.audioContext.createGain();
-    const noiseFilter = this.audioContext.createBiquadFilter();
+    // Enhanced snare drum with multiple frequency layers for realistic sound
     
-    // Create noise buffer
-    const bufferSize = this.audioContext.sampleRate * 0.1;
-    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
-    const data = buffer.getChannelData(0);
+    // Layer 1: High-frequency crack (3-8kHz) - the "snap"
+    const crackBuffer = this.audioContext.createBuffer(1, this.audioContext.sampleRate * 0.03, this.audioContext.sampleRate);
+    const crackData = crackBuffer.getChannelData(0);
     
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * 0.3;
+    for (let i = 0; i < crackData.length; i++) {
+      crackData[i] = (Math.random() * 2 - 1) * 0.4;
     }
     
-    noise.buffer = buffer;
+    const crackSource = this.audioContext.createBufferSource();
+    const crackGain = this.audioContext.createGain();
+    const crackFilter = this.audioContext.createBiquadFilter();
     
-    // Filter for snare-like sound
-    noiseFilter.type = 'bandpass';
-    noiseFilter.frequency.value = 200;
-    noiseFilter.Q.value = 1;
+    crackSource.buffer = crackBuffer;
     
-    noiseGain.gain.setValueAtTime(0.6, startTime);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.15);
+    crackFilter.type = 'bandpass';
+    crackFilter.frequency.value = 5000;
+    crackFilter.Q.value = 2;
     
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(this.masterGain);
+    crackGain.gain.setValueAtTime(1.2, startTime);
+    crackGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.03);
     
-    noise.start(startTime);
-    noise.stop(startTime + 0.15);
+    crackSource.connect(crackFilter);
+    crackFilter.connect(crackGain);
+    crackGain.connect(this.masterGain);
     
-    // Add tonal component for more musical snare
-    const toneOsc = this.audioContext.createOscillator();
-    const toneGain = this.audioContext.createGain();
+    crackSource.start(startTime);
+    crackSource.stop(startTime + 0.03);
+
+    // Layer 2: Mid-range body (800-2500Hz) - snare wire buzz
+    const bodyBuffer = this.audioContext.createBuffer(1, this.audioContext.sampleRate * 0.1, this.audioContext.sampleRate);
+    const bodyData = bodyBuffer.getChannelData(0);
     
-    toneOsc.type = 'triangle';
-    toneOsc.frequency.value = 200;
+    for (let i = 0; i < bodyData.length; i++) {
+      bodyData[i] = (Math.random() * 2 - 1) * 0.5;
+    }
     
-    toneGain.gain.setValueAtTime(0.3, startTime);
-    toneGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08);
+    const bodySource = this.audioContext.createBufferSource();
+    const bodyGain = this.audioContext.createGain();
+    const bodyFilter = this.audioContext.createBiquadFilter();
     
-    toneOsc.connect(toneGain);
-    toneGain.connect(this.masterGain);
+    bodySource.buffer = bodyBuffer;
     
-    toneOsc.start(startTime);
-    toneOsc.stop(startTime + 0.08);
+    bodyFilter.type = 'bandpass';
+    bodyFilter.frequency.value = 1500;
+    bodyFilter.Q.value = 1.5;
+    
+    bodyGain.gain.setValueAtTime(1.0, startTime);
+    bodyGain.gain.exponentialRampToValueAtTime(0.15, startTime + 0.02);
+    bodyGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.12);
+    
+    bodySource.connect(bodyFilter);
+    bodyFilter.connect(bodyGain);
+    bodyGain.connect(this.masterGain);
+    
+    bodySource.start(startTime);
+    bodySource.stop(startTime + 0.12);
+
+    // Layer 3: Fundamental tone (150-250Hz) - drum shell resonance
+    const fundOsc = this.audioContext.createOscillator();
+    const fundGain = this.audioContext.createGain();
+    const fundFilter = this.audioContext.createBiquadFilter();
+    
+    fundOsc.type = 'triangle';
+    fundOsc.frequency.setValueAtTime(220, startTime);
+    fundOsc.frequency.exponentialRampToValueAtTime(180, startTime + 0.05);
+    
+    fundFilter.type = 'bandpass';
+    fundFilter.frequency.value = 200;
+    fundFilter.Q.value = 2;
+    
+    fundGain.gain.setValueAtTime(0.6, startTime);
+    fundGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08);
+    
+    fundOsc.connect(fundFilter);
+    fundFilter.connect(fundGain);
+    fundGain.connect(this.masterGain);
+    
+    fundOsc.start(startTime);
+    fundOsc.stop(startTime + 0.08);
+
+    // Layer 4: Attack click (1-3kHz) - stick contact
+    const attackOsc = this.audioContext.createOscillator();
+    const attackGain = this.audioContext.createGain();
+    const attackFilter = this.audioContext.createBiquadFilter();
+    
+    attackOsc.type = 'square';
+    attackOsc.frequency.setValueAtTime(2000, startTime);
+    attackOsc.frequency.exponentialRampToValueAtTime(800, startTime + 0.005);
+    
+    attackFilter.type = 'bandpass';
+    attackFilter.frequency.value = 1800;
+    attackFilter.Q.value = 4;
+    
+    // Very quick attack for stick hit
+    attackGain.gain.setValueAtTime(0.8, startTime);
+    attackGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.01);
+    
+    attackOsc.connect(attackFilter);
+    attackFilter.connect(attackGain);
+    attackGain.connect(this.masterGain);
+    
+    attackOsc.start(startTime);
+    attackOsc.stop(startTime + 0.01);
+
+    // Layer 5: Low-frequency thump (60-150Hz) - body resonance
+    const thumpOsc = this.audioContext.createOscillator();
+    const thumpGain = this.audioContext.createGain();
+    const thumpFilter = this.audioContext.createBiquadFilter();
+    
+    thumpOsc.type = 'sine';
+    thumpOsc.frequency.setValueAtTime(120, startTime);
+    thumpOsc.frequency.exponentialRampToValueAtTime(80, startTime + 0.04);
+    
+    thumpFilter.type = 'lowpass';
+    thumpFilter.frequency.value = 200;
+    thumpFilter.Q.value = 1;
+    
+    thumpGain.gain.setValueAtTime(0.5, startTime);
+    thumpGain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.06);
+    
+    thumpOsc.connect(thumpFilter);
+    thumpFilter.connect(thumpGain);
+    thumpGain.connect(this.masterGain);
+    
+    thumpOsc.start(startTime);
+    thumpOsc.stop(startTime + 0.06);
   }
 
   private createPercussionSound(isDownstroke: boolean, startTime: number): void {
