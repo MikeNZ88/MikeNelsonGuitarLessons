@@ -1,14 +1,618 @@
 'use client';
 
 import Link from 'next/link';
-import { Music, Search } from 'lucide-react';
-import { useState } from 'react';
+import { Music, Search, BookOpen, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Blog() {
   const [selectedTopicCategory, setSelectedTopicCategory] = useState('All Posts');
   const [selectedSkillLevel, setSelectedSkillLevel] = useState('All Levels');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isQuickRefOpen, setIsQuickRefOpen] = useState(false);
+  const [quickRefSearch, setQuickRefSearch] = useState('');
   
+  // Quick Reference Topic Index
+  const topicIndex = [
+    // A
+    {
+      topic: 'A Chord',
+      description: 'Open A major chord',
+      link: '/blog/your-first-guitar-chords#a-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Am Chord',
+      description: 'Open A minor chord',
+      link: '/blog/your-first-guitar-chords#am-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Alternate Picking',
+      description: 'Picking technique fundamentals',
+      link: '/blog/guitar-picking-technique-guide#alternate-picking',
+      category: 'Technique'
+    },
+    {
+      topic: 'Arpeggios',
+      description: 'Chord notes played individually',
+      link: '/blog/major-scale-guitar-guide#arpeggios',
+      category: 'Scales and Fretboard'
+    },
+    
+    // B
+    {
+      topic: 'Barre Chords',
+      description: 'Moveable chord shapes',
+      link: '/blog/moveable-guitar-chord-shapes#barre-chords',
+      category: 'Chords'
+    },
+    {
+      topic: 'Beginner Chords',
+      description: 'Your first 8 essential chords',
+      link: '/blog/your-first-guitar-chords',
+      category: 'Chords'
+    },
+    {
+      topic: 'Buying Your First Guitar',
+      description: 'Complete beginner guide to choosing a guitar',
+      link: '/blog/complete-beginners-guide-guitar#buying-your-first-guitar',
+      category: 'Getting Started'
+    },
+    {
+      topic: 'Buying Your First Electric Guitar',
+      description: 'Electric guitar guide for NZ',
+      link: '/blog/electric-guitar-beginner-guide-nz',
+      category: 'Getting Started'
+    },
+    
+    // C
+    {
+      topic: 'C Chord',
+      description: 'Open C major chord',
+      link: '/blog/your-first-guitar-chords#c-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'CAGED System',
+      description: 'Fretboard navigation method',
+      link: '/blog/caged-system-guitar-guide',
+      category: 'Chords'
+    },
+    {
+      topic: 'Chord Changes',
+      description: 'Smooth transitions between chords',
+      link: '/blog/chord-transitions-common-fingers',
+      category: 'Chords'
+    },
+    {
+      topic: 'Chord Diagrams',
+      description: 'How to read chord charts',
+      link: '/blog/how-to-read-chord-diagrams',
+      category: 'Chords'
+    },
+    {
+      topic: 'Chord Theory',
+      description: 'Understanding chord structure',
+      link: '/blog/what-is-a-chord',
+      category: 'Theory'
+    },
+    {
+      topic: 'Common Fingers',
+      description: 'Efficient chord transitions',
+      link: '/blog/chord-transitions-common-fingers',
+      category: 'Technique'
+    },
+    
+    // D
+    {
+      topic: 'D Chord',
+      description: 'Open D major chord',
+      link: '/blog/your-first-guitar-chords#d-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Dm Chord',
+      description: 'Open D minor chord',
+      link: '/blog/your-first-guitar-chords#dm-chord',
+      category: 'Chords'
+    },
+    
+    // E
+    {
+      topic: 'E Chord',
+      description: 'Open E major chord',
+      link: '/blog/your-first-guitar-chords#e-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Em Chord',
+      description: 'Open E minor chord',
+      link: '/blog/your-first-guitar-chords#em-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Electric Guitar',
+      description: 'Beginner electric guitar guide',
+      link: '/blog/electric-guitar-beginner-guide-nz',
+      category: 'Gear'
+    },
+    
+    // F
+
+    {
+      topic: 'Fretboard Navigation',
+      description: 'Finding notes across strings',
+      link: '/blog/guitar-fretboard-navigation',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'Fretboard Understanding',
+      description: 'Why strings are tuned this way',
+      link: '/blog/understanding-guitar-fretboard',
+      category: 'Theory'
+    },
+    
+    // G
+    {
+      topic: 'G Chord',
+      description: 'Open G major chord',
+      link: '/blog/your-first-guitar-chords#g-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Gear Reviews',
+      description: 'Guitar and equipment reviews',
+      link: '/blog/kiesel-a2-7-string-review',
+      category: 'Gear'
+    },
+    
+    // I
+    {
+      topic: 'Intervals',
+      description: 'Musical distance between notes',
+      link: '/blog/what-is-a-chord#intervals',
+      category: 'Theory'
+    },
+    
+    // K
+    {
+      topic: 'Key Chord Explorer',
+      description: 'Interactive chord relationships',
+      link: '/blog/key-chords-explorer',
+      category: 'Tools'
+    },
+    
+    // M
+    {
+      topic: 'Major Scale',
+      description: 'Essential scale patterns',
+      link: '/blog/major-scale-guitar-guide',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'Minor Chords',
+      description: 'Understanding minor chord structure',
+      link: '/blog/your-first-guitar-chords#minor-chords',
+      category: 'Chords'
+    },
+    {
+      topic: 'Moveable Chords',
+      description: 'Shapes that work across the fretboard',
+      link: '/blog/moveable-guitar-chord-shapes',
+      category: 'Chords'
+    },
+    {
+      topic: 'Music Stores',
+      description: 'Wellington music retail landscape',
+      link: '/blog/wellington-music-stores',
+      category: 'Gear'
+    },
+    
+    // N
+    {
+      topic: 'Notes on Guitar',
+      description: 'Finding every note on the fretboard',
+      link: '/blog/beginners-guide-notes-guitar',
+      category: 'Theory'
+    },
+    
+    // O
+    {
+      topic: 'Open Chords',
+      description: 'Essential beginner chord shapes',
+      link: '/blog/open-chord-library',
+      category: 'Chords'
+    },
+    
+    // P
+    {
+      topic: 'Picking Technique',
+      description: 'Complete progressive guide',
+      link: '/blog/guitar-picking-technique-guide',
+      category: 'Technique'
+    },
+    {
+      topic: 'Practice Tips',
+      description: 'Essential practice techniques',
+      link: '/blog/essential-practice-tips',
+      category: 'Technique'
+    },
+    {
+      topic: 'PracticeTrack',
+      description: 'Musical journey companion tool',
+      link: '/blog/introducing-practicetrack',
+      category: 'Tools'
+    },
+    
+    // R
+    {
+      topic: 'Rhythm Tool',
+      description: 'Interactive rhythm learning',
+      link: '/blog/rhythm-tool',
+      category: 'Tools'
+    },
+    
+    // S
+    {
+      topic: 'Scale Explorer',
+      description: 'Interactive scale visualization',
+      link: '/blog/scale-explorer-tool',
+      category: 'Tools'
+    },
+    {
+      topic: 'C Major Scale',
+      description: 'Learn the C major scale pattern',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=major',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Minor Scale',
+      description: 'Learn the C natural minor scale',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=aeolian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Pentatonic Major',
+      description: 'Five-note C major scale',
+      link: '/scale-explorer/index.html?scale=C&category=pentatonic&mode=major-pentatonic',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Pentatonic Minor',
+      description: 'Five-note C minor scale',
+      link: '/scale-explorer/index.html?scale=C&category=pentatonic&mode=minor-pentatonic',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Blues Scale',
+      description: 'C blues scale with blue notes',
+      link: '/scale-explorer/index.html?scale=C&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Harmonic Minor',
+      description: 'A harmonic minor scale (exotic sound)',
+      link: '/scale-explorer/index.html?scale=A&category=harmonic-minor-modes&mode=harmonic-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Harmonic Minor',
+      description: 'E harmonic minor scale (dark, dramatic)',
+      link: '/scale-explorer/index.html?scale=E&category=harmonic-minor-modes&mode=harmonic-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Melodic Minor',
+      description: 'A melodic minor scale (jazz standard)',
+      link: '/scale-explorer/index.html?scale=A&category=melodic-minor-modes&mode=melodic-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Diminished Scale (W-H)',
+      description: 'C whole-half diminished scale (tension and jazz)',
+      link: '/scale-explorer/index.html?scale=C&category=diminished-modes&mode=wh-diminished',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Diminished Scale (H-W)',
+      description: 'C half-whole diminished scale (jazz and classical)',
+      link: '/scale-explorer/index.html?scale=C&category=diminished-modes&mode=hw-diminished',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Augmented Scale',
+      description: 'C augmented scale (unstable, modern)',
+      link: '/scale-explorer/index.html?scale=C&category=whole-tone&mode=whole-tone-1',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Blues Minor',
+      description: 'G blues minor scale (blues foundation)',
+      link: '/scale-explorer/index.html?scale=G&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Blues Minor',
+      description: 'A blues minor scale (rock and blues staple)',
+      link: '/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Blues Minor',
+      description: 'E blues minor scale (classic blues)',
+      link: '/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'D Dorian Mode',
+      description: 'D Dorian mode (jazz and fusion)',
+      link: '/scale-explorer/index.html?scale=D&category=major-modes&mode=dorian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Mixolydian Mode',
+      description: 'G Mixolydian mode (blues and rock)',
+      link: '/scale-explorer/index.html?scale=G&category=major-modes&mode=mixolydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'F Lydian Mode',
+      description: 'F Lydian mode (dreamy, floating)',
+      link: '/scale-explorer/index.html?scale=F&category=major-modes&mode=lydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Phrygian Mode',
+      description: 'E Phrygian mode (Spanish, flamenco)',
+      link: '/scale-explorer/index.html?scale=E&category=major-modes&mode=phrygian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'B Locrian Mode',
+      description: 'B Locrian mode (diminished, unstable)',
+      link: '/scale-explorer/index.html?scale=B&category=major-modes&mode=locrian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Dorian Mode',
+      description: 'C Dorian mode (minor with major 6th)',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=dorian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Mixolydian Mode',
+      description: 'C Mixolydian mode (major with minor 7th)',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=mixolydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Lydian Mode',
+      description: 'C Lydian mode (major with sharp 4th)',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=lydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Phrygian Mode',
+      description: 'C Phrygian mode (minor with flat 2nd)',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=phrygian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Locrian Mode',
+      description: 'C Locrian mode (diminished with flat 5th)',
+      link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=locrian',
+      category: 'Scales and Fretboard'
+    },
+    
+    // Common scales in different keys
+    {
+      topic: 'G Major Scale',
+      description: 'G major scale (common guitar key)',
+      link: '/scale-explorer/index.html?scale=G&category=major-modes&mode=major',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'D Major Scale',
+      description: 'D major scale (bright, open sound)',
+      link: '/scale-explorer/index.html?scale=D&category=major-modes&mode=major',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Major Scale',
+      description: 'A major scale (popular guitar key)',
+      link: '/scale-explorer/index.html?scale=A&category=major-modes&mode=major',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Major Scale',
+      description: 'E major scale (powerful, bright)',
+      link: '/scale-explorer/index.html?scale=E&category=major-modes&mode=major',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Minor Scale',
+      description: 'A natural minor scale (sad, melancholic)',
+      link: '/scale-explorer/index.html?scale=A&category=major-modes&mode=aeolian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Minor Scale',
+      description: 'E natural minor scale (dark, moody)',
+      link: '/scale-explorer/index.html?scale=E&category=major-modes&mode=aeolian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Pentatonic Minor',
+      description: 'G minor pentatonic (blues foundation)',
+      link: '/scale-explorer/index.html?scale=G&category=pentatonic&mode=minor-pentatonic',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Pentatonic Minor',
+      description: 'A minor pentatonic (rock and blues)',
+      link: '/scale-explorer/index.html?scale=A&category=pentatonic&mode=minor-pentatonic',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Pentatonic Minor',
+      description: 'E minor pentatonic (classic rock)',
+      link: '/scale-explorer/index.html?scale=E&category=pentatonic&mode=minor-pentatonic',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Blues Scale',
+      description: 'G blues scale (blues and rock)',
+      link: '/scale-explorer/index.html?scale=G&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Blues Scale',
+      description: 'A blues scale (blues foundation)',
+      link: '/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Blues Scale',
+      description: 'E blues scale (classic blues)',
+      link: '/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-minor',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Mixolydian Mode',
+      description: 'G Mixolydian (dominant 7th sound)',
+      link: '/scale-explorer/index.html?scale=G&category=major-modes&mode=mixolydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'D Mixolydian Mode',
+      description: 'D Mixolydian (country and folk)',
+      link: '/scale-explorer/index.html?scale=D&category=major-modes&mode=mixolydian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Dorian Mode',
+      description: 'A Dorian (jazz and fusion)',
+      link: '/scale-explorer/index.html?scale=A&category=major-modes&mode=dorian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Dorian Mode',
+      description: 'E Dorian (rock and fusion)',
+      link: '/scale-explorer/index.html?scale=E&category=major-modes&mode=dorian',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'Scales',
+      description: 'Beginner guide to guitar scales',
+      link: '/blog/beginners-guide-guitar-scales',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'Strumming Patterns',
+      description: 'Master rhythm and timing',
+      link: '/blog/guitar-strumming-patterns',
+      category: 'Rhythm'
+    },
+    
+    // T
+    {
+      topic: 'Triads',
+      description: 'Three-note chord building blocks',
+      link: '/blog/triads-on-3-string-sets',
+      category: 'Chords'
+    },
+    
+    // W
+    {
+      topic: 'When to Start',
+      description: 'Optimal age for learning guitar',
+      link: '/blog/when-should-you-start-learning-guitar',
+      category: 'Getting Started'
+    },
+    
+    // Additional topics for better coverage
+    {
+      topic: 'Seven String Guitar',
+      description: '7 string extended range guitar review',
+      link: '/blog/kiesel-a2-7-string-review',
+      category: 'Gear'
+    },
+    {
+      topic: 'Beginner Guide',
+      description: 'Complete beginner roadmap',
+      link: '/blog/complete-beginners-guide-guitar',
+      category: 'Getting Started'
+    },
+    {
+      topic: 'Chord Library',
+      description: 'Interactive chord reference',
+      link: '/blog/open-chord-library',
+      category: 'Tools'
+    },
+
+    {
+      topic: 'Guitar Tuning',
+      description: 'Understanding string tuning',
+      link: '/blog/understanding-guitar-fretboard',
+      category: 'Theory'
+    },
+    {
+      topic: 'Music Theory',
+      description: 'Fundamental music concepts',
+      link: '/blog/what-is-a-chord',
+      category: 'Theory'
+    },
+    {
+      topic: 'Practice Routine',
+      description: 'Effective practice strategies',
+      link: '/blog/essential-practice-tips',
+      category: 'Technique'
+    },
+    {
+      topic: 'String Tuning',
+      description: 'Why E-A-D-G-B-E tuning',
+      link: '/blog/understanding-guitar-fretboard',
+      category: 'Theory'
+    }
+  ];
+
+  // Filter topics based on search
+  const filteredTopics = topicIndex.filter(topic =>
+    topic.topic.toLowerCase().includes(quickRefSearch.toLowerCase()) ||
+    topic.description.toLowerCase().includes(quickRefSearch.toLowerCase()) ||
+    topic.category.toLowerCase().includes(quickRefSearch.toLowerCase())
+  );
+
+  // Group topics by first letter
+  const groupedTopics = filteredTopics.reduce((groups, topic) => {
+    const firstLetter = topic.topic.charAt(0).toUpperCase();
+    if (!groups[firstLetter]) {
+      groups[firstLetter] = [];
+    }
+    groups[firstLetter].push(topic);
+    return groups;
+  }, {} as Record<string, typeof topicIndex>);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isQuickRefOpen) {
+        setIsQuickRefOpen(false);
+        setQuickRefSearch('');
+      }
+    };
+
+    if (isQuickRefOpen) {
+      document.addEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isQuickRefOpen]);
+
   const posts = [
     // GETTING STARTED
     {
@@ -22,7 +626,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: 'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'complete-beginners-guide-guitar',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 1
     },
     {
       id: '7',
@@ -35,7 +640,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'when-should-you-start-learning-guitar',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 2
     },
     {
       id: '9',
@@ -48,7 +654,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/yamaha-pac112j.webp',
       slug: 'electric-guitar-beginner-guide-nz',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 3
     },
 
     // CHORDS
@@ -63,7 +670,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/open-chord-library-thumbnail.svg',
       slug: 'your-first-guitar-chords',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 4
     },
     {
       id: '23',
@@ -76,7 +684,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/what-is-chord-thumbnail.svg',
       slug: 'what-is-a-chord',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 5
     },
     {
       id: '16',
@@ -89,7 +698,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/youtube-logo.svg',
       slug: 'how-to-read-chord-diagrams',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 2
     },
     {
       id: '18',
@@ -102,7 +712,8 @@ export default function Blog() {
       skillLevel: 'beginner-intermediate',
       image: '/open-chord-library-thumbnail.svg',
       slug: 'open-chord-library',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 6
     },
     {
       id: '17',
@@ -115,7 +726,8 @@ export default function Blog() {
       skillLevel: 'beginner-intermediate',
       image: '/strumming-patterns-thumbnail.svg',
       slug: 'guitar-strumming-patterns',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 7
     },
     {
       id: '20',
@@ -128,7 +740,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/rhythm-tool-thumbnail.svg',
       slug: 'rhythm-tool',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 19
     },
     {
       id: '4',
@@ -141,7 +754,8 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/chord-transitions-thumbnail.svg',
       slug: 'chord-transitions-common-fingers',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 18
     },
     {
       id: '25',
@@ -154,7 +768,8 @@ export default function Blog() {
       skillLevel: 'all',
       image: '/blog-key-chords-explorer-thumbnail.svg',
       slug: 'key-chords-explorer',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 11
     },
 
     // SCALES AND FRETBOARD
@@ -165,11 +780,12 @@ export default function Blog() {
       readTime: '15 min read',
       category: 'Beginner',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard'],
+      categories: ['Scales and Fretboard', 'Theory'],
       skillLevel: 'beginner',
       image: '/beginners-guide-scales-thumbnail.svg',
       slug: 'beginners-guide-guitar-scales',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 9
     },
     {
       id: '15',
@@ -178,11 +794,12 @@ export default function Blog() {
       readTime: 'PDF',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard'],
+      categories: ['Scales and Fretboard', 'Theory'],
       skillLevel: 'intermediate',
       image: '/major-scale-guide.png',
       slug: 'major-scale-guitar-guide',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 10
     },
     {
       id: '13',
@@ -191,11 +808,12 @@ export default function Blog() {
       readTime: '15 min read',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard'],
+      categories: ['Scales and Fretboard', 'Theory'],
       skillLevel: 'intermediate',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'guitar-fretboard-navigation',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 12
     },
     {
       id: '12',
@@ -204,11 +822,12 @@ export default function Blog() {
       readTime: '20 min read',
       category: 'Advanced',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard'],
+      categories: ['Scales and Fretboard', 'Theory'],
       skillLevel: 'advanced',
       image: '/guitar-tuning-thumbnail.svg',
       slug: 'understanding-guitar-fretboard',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 13
     },
     {
       id: '5',
@@ -217,11 +836,12 @@ export default function Blog() {
       readTime: '5 min read',
       category: 'Intermediate',
       primaryCategory: 'Scales and Fretboard',
-      categories: ['Scales and Fretboard'],
+      categories: ['Scales and Fretboard', 'Theory'],
       skillLevel: 'intermediate',
       image: '/scale-explorer-thumbnail.svg',
       slug: 'scale-explorer-tool',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 14
     },
     {
       id: '22',
@@ -230,11 +850,12 @@ export default function Blog() {
       readTime: '',
       category: 'Intermediate - Advanced',
       primaryCategory: 'Chords',
-      categories: ['Chords', 'Scales and Fretboard'],
+      categories: ['Chords', 'Scales and Fretboard', 'Theory'],
       skillLevel: 'intermediate-advanced',
       image: '/triads-thumbnail.svg',
       slug: 'triads-on-3-string-sets',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 15
     },
 
     // TECHNIQUE
@@ -249,7 +870,8 @@ export default function Blog() {
       skillLevel: 'all',
       image: '/guitar-picking-thumbnail.svg',
       slug: 'guitar-picking-technique-guide',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 8
     },
     {
       id: '1',
@@ -262,7 +884,8 @@ export default function Blog() {
       skillLevel: 'all',
       image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
       slug: 'essential-practice-tips',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 18
     },
     {
       id: '6',
@@ -275,7 +898,8 @@ export default function Blog() {
       skillLevel: 'beginner-advanced',
       image: '/practicetrack-thumbnail.svg',
       slug: 'introducing-practicetrack',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 20
     },
 
     // GEAR
@@ -291,7 +915,8 @@ export default function Blog() {
       skillLevel: 'all',
       image: '/Kiesel logo.jpg',
       slug: 'kiesel-a2-7-string-review',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 22
     },
     {
       id: '2',
@@ -305,7 +930,8 @@ export default function Blog() {
       skillLevel: 'all',
       image: 'https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       slug: 'wellington-music-stores',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 23
     },
     {
       id: '21',
@@ -314,24 +940,26 @@ export default function Blog() {
       readTime: '',
       category: 'Intermediate - Advanced',
       primaryCategory: 'Chords',
-      categories: ['Chords', 'Technique'],
+      categories: ['Chords', 'Technique', 'Theory'],
       skillLevel: 'all',
       image: '/moveable-chord-shapes-thumbnail.svg',
       slug: 'moveable-guitar-chord-shapes',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 16
     },
     {
-      id: '24', // changed from '23' to '24' to ensure uniqueness
+      id: '24',
       title: 'The CAGED System: A Guitar Fretboard Guide',
       excerpt: 'Learn how five familiar chord shapes connect across the entire fretboard. Understand transposition, note relationships, and how to use CAGED for minor and seventh chords.',
       readTime: '15 min read',
       category: 'Intermediate',
       primaryCategory: 'Chords',
-      categories: ['Chords', 'Scales and Fretboard'],
+      categories: ['Chords', 'Scales and Fretboard', 'Theory'],
       skillLevel: 'intermediate',
       image: '/caged-system-thumbnail.svg',
       slug: 'caged-system-guitar-guide',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 17
     },
     {
       id: '26',
@@ -344,14 +972,15 @@ export default function Blog() {
       skillLevel: 'beginner',
       image: '/beginners-guide-scales-thumbnail.svg',
       slug: 'beginners-guide-notes-guitar',
-      author: 'Mike Nelson'
+      author: 'Mike Nelson',
+      sortOrder: 4
     }
   ];
 
   console.log('POSTS LENGTH:', posts.length, posts.map(p => p.title));
 
   // Define new lesson topic categories
-  const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear'];
+  const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear', 'Theory', 'Tools'];
   const skillLevels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
 
   // Smart display logic for categories
@@ -385,8 +1014,16 @@ export default function Blog() {
     return matchesTopicCategory && matchesSkillLevel && matchesSearch;
   });
 
-  // Use filtered posts without sorting by date
-  const sortedPosts = filteredPosts;
+  // Sort posts by sortOrder and skill level
+  const sortedPosts = filteredPosts.sort((a, b) => {
+    // First sort by sortOrder (lower numbers first)
+    if ((a.sortOrder || 999) !== (b.sortOrder || 999)) {
+      return (a.sortOrder || 999) - (b.sortOrder || 999);
+    }
+    // Then sort by skill level (beginner first)
+    const skillOrder = { 'beginner': 1, 'beginner-intermediate': 2, 'intermediate': 3, 'intermediate-advanced': 4, 'advanced': 5, 'all': 6, 'beginner-advanced': 7 };
+    return (skillOrder[a.skillLevel as keyof typeof skillOrder] || 999) - (skillOrder[b.skillLevel as keyof typeof skillOrder] || 999);
+  });
 
 
 
@@ -419,9 +1056,21 @@ export default function Blog() {
       <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Guitar Learning Blog</h1>
-          <p className="text-xl text-amber-200 max-w-2xl mx-auto">
+          <p className="text-xl text-amber-200 max-w-2xl mx-auto mb-8">
             Comprehensive guides and interactive tools for all guitarists
           </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={() => setIsQuickRefOpen(true)}
+              className="bg-white text-amber-800 px-6 py-3 rounded-lg font-medium hover:bg-amber-50 transition-colors flex items-center gap-2"
+            >
+              <BookOpen className="h-5 w-5" />
+              Quick Reference Index
+            </button>
+            <span className="text-amber-200 text-sm">
+              Find specific topics instantly
+            </span>
+          </div>
         </div>
       </section>
 
@@ -605,6 +1254,113 @@ export default function Blog() {
           </div>
         </div>
       </section>
+
+             {/* Quick Reference Modal */}
+       {isQuickRefOpen && (
+         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+           <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+             {/* Modal Header */}
+             <div className="flex justify-between items-center p-6 border-b">
+               <div>
+                 <h3 className="text-2xl font-bold text-gray-800">Quick Reference Index</h3>
+                 <p className="text-gray-600 mt-1">Find specific topics and jump directly to relevant sections</p>
+               </div>
+               <button 
+                 onClick={() => {
+                   setIsQuickRefOpen(false);
+                   setQuickRefSearch('');
+                 }} 
+                 className="text-gray-500 hover:text-gray-700 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+               >
+                 <X className="h-6 w-6" />
+               </button>
+             </div>
+
+             {/* Search Bar */}
+             <div className="p-6 border-b bg-gray-50">
+               <div className="relative max-w-md">
+                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                   <Search className="h-5 w-5 text-gray-400" />
+                 </span>
+                 <input
+                   type="text"
+                   placeholder="Search topics, descriptions, or categories..."
+                   value={quickRefSearch}
+                   onChange={(e) => setQuickRefSearch(e.target.value)}
+                   className="block w-full h-12 pl-10 pr-4 border border-gray-300 rounded-lg bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors"
+                   autoFocus
+                 />
+               </div>
+               {quickRefSearch && (
+                 <p className="text-sm text-gray-600 mt-2">
+                   Found {filteredTopics.length} topic{filteredTopics.length !== 1 ? 's' : ''}
+                 </p>
+               )}
+             </div>
+
+             {/* Content */}
+             <div className="p-6 overflow-y-auto max-h-[60vh]">
+               {Object.keys(groupedTopics).length === 0 ? (
+                 <div className="text-center py-8">
+                   <BookOpen className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                   <p className="text-gray-500 text-lg">No topics found matching "{quickRefSearch}"</p>
+                   <p className="text-gray-400 text-sm mt-2">Try different keywords or browse all topics</p>
+                 </div>
+               ) : (
+                 <div className="grid md:grid-cols-2 gap-8">
+                   {Object.entries(groupedTopics).map(([letter, topics]) => (
+                     <div key={letter} className="space-y-3">
+                       <h4 className="text-xl font-bold text-amber-800 border-b border-amber-200 pb-2">
+                         {letter}
+                       </h4>
+                       <div className="space-y-2">
+                         {topics.map((topic) => (
+                           <div key={topic.topic} className="group">
+                             <Link
+                               href={topic.link}
+                               className="block p-3 rounded-lg border border-gray-200 hover:border-amber-300 hover:bg-amber-50 transition-all duration-200"
+                               onClick={() => {
+                                 setIsQuickRefOpen(false);
+                                 setQuickRefSearch('');
+                               }}
+                             >
+                               <div className="flex justify-between items-start">
+                                 <div className="flex-1">
+                                   <h5 className="font-semibold text-gray-800 group-hover:text-amber-700 transition-colors">
+                                     {topic.topic}
+                                   </h5>
+                                   <p className="text-sm text-gray-600 mt-1">
+                                     {topic.description}
+                                   </p>
+                                 </div>
+                                 <span className={`text-xs font-medium px-2 py-1 rounded-full ml-3 flex-shrink-0 ${getCategoryColor(topic.category)}`}>
+                                   {topic.category}
+                                 </span>
+                               </div>
+                             </Link>
+                           </div>
+                         ))}
+                       </div>
+                     </div>
+                   ))}
+                 </div>
+               )}
+             </div>
+
+             {/* Footer */}
+             <div className="p-6 border-t bg-gray-50">
+               <div className="flex justify-between items-center text-sm text-gray-600">
+                 <span>
+                   {Object.keys(groupedTopics).length > 0 && (
+                     `${Object.values(groupedTopics).flat().length} topics available`
+                   )}
+                 </span>
+                 <span>Press ESC to close</span>
+               </div>
+             </div>
+           </div>
+         </div>
+       )}
     </div>
   );
 }

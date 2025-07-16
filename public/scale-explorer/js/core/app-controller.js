@@ -510,8 +510,54 @@ function updateColorVisibility(visible) {
     }
 }
 
+// Parse URL parameters
+function parseURLParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const scale = urlParams.get('scale');
+    const mode = urlParams.get('mode');
+    const category = urlParams.get('category');
+    
+    if (scale) {
+        currentState.key = scale;
+    }
+    
+    if (category) {
+        currentState.category = category;
+    }
+    
+    if (mode) {
+        // If category is provided in URL, use it directly
+        if (category) {
+            currentState.mode = mode;
+        } else {
+            // Fallback to mode mapping for backward compatibility
+            const modeMapping = {
+                'major': { category: 'major-modes', mode: 'major' },
+                'minor': { category: 'major-modes', mode: 'aeolian' },
+                'pentatonic-major': { category: 'pentatonic', mode: 'major-pentatonic' },
+                'pentatonic-minor': { category: 'pentatonic', mode: 'minor-pentatonic' },
+                'blues': { category: 'pentatonic', mode: 'blues' },
+                'dorian': { category: 'major-modes', mode: 'dorian' },
+                'phrygian': { category: 'major-modes', mode: 'phrygian' },
+                'lydian': { category: 'major-modes', mode: 'lydian' },
+                'mixolydian': { category: 'major-modes', mode: 'mixolydian' },
+                'locrian': { category: 'major-modes', mode: 'locrian' }
+            };
+            
+            const mappedMode = modeMapping[mode];
+            if (mappedMode) {
+                currentState.category = mappedMode.category;
+                currentState.mode = mappedMode.mode;
+            }
+        }
+    }
+}
+
 // Default scale loading
 function loadDefaultScale() {
+    // Parse URL parameters first
+    parseURLParameters();
+    
     // Set default selections
     const keySelect = document.getElementById('key-select');
     const categorySelect = document.getElementById('category-select');
