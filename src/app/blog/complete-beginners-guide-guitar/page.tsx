@@ -444,15 +444,32 @@ export default function CompleteBeginnerGuide() {
                 <h3 className="text-xl font-bold text-amber-800 mb-3">Learning Tip</h3>
                 <p className="text-amber-700">
                   Start with the easiest chords first: <strong>A and E</strong>. These two chords alone will 
-                  let you play your first song! Once you're comfortable with these, gradually add the others.
+                  let you play your first song! Once you're comfortable with these, gradually add the others. 
+                  My{' '}
+                  <Link href="/blog/your-first-guitar-chords" className="text-amber-600 hover:text-amber-800 underline">
+                    Your First Guitar Chords Guide
+                  </Link>
+                  {' '}walks you through this exact progression with interactive diagrams and transition tips.
                 </p>
               </div>
 
               <div className="bg-white border border-amber-300 rounded-lg p-6">
-                <h3 className="text-xl font-bold text-amber-800 mb-4">Chord Resources</h3>
+                <h3 id="chord-resources" className="text-xl font-bold text-amber-800 mb-4">Chord Resources</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-amber-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-amber-800 mb-2">📚 How to Read Chord Diagrams</h4>
+                    <h4 className="font-semibold text-amber-800 mb-2">Your First Guitar Chords</h4>
+                    <p className="text-amber-700 text-sm mb-3">
+                      Master the essential open chords (A, E, G, D, C, Em, Am, Dm) with diagrams and transition tips.
+                    </p>
+                    <Link 
+                      href="/blog/your-first-guitar-chords" 
+                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
+                    >
+                      Learn Chords <ArrowRight className="ml-1 h-4 w-4" />
+                    </Link>
+                  </div>
+                  <div className="bg-amber-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-amber-800 mb-2">How to Read Chord Diagrams</h4>
                     <p className="text-amber-700 text-sm mb-3">
                       Learn to read chord charts with this comprehensive video tutorial.
                     </p>
@@ -463,29 +480,16 @@ export default function CompleteBeginnerGuide() {
                       Watch Tutorial <ArrowRight className="ml-1 h-4 w-4" />
                     </Link>
                   </div>
-                  <div className="bg-amber-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-amber-800 mb-2">🎸 Open Chord Library</h4>
-                    <p className="text-amber-700 text-sm mb-3">
-                      Interactive chord reference with visual diagrams and fingering patterns.
-                    </p>
-                    <Link 
-                      href="/blog/open-chord-library" 
-                      className="inline-flex items-center text-amber-600 hover:text-amber-800 font-semibold underline"
-                    >
-                      View Library <ArrowRight className="ml-1 h-4 w-4" />
-                    </Link>
-                  </div>
                 </div>
               </div>
             </section>
 
             {/* Song Recommendations / Your First 3 Songs */}
-            <section className="mb-12" id="your-first-songs" style={{ scrollMarginTop: '2rem' }}>
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">Your First 3 Songs</h2>
+            <section className="mb-12" style={{ scrollMarginTop: '6rem' }}>
+              <h2 id="your-first-songs" className="text-3xl font-bold text-amber-800 mb-6">Your First 3 Songs</h2>
               
               {/* Strumming Patterns Guide Callout */}
-              <div className="bg-amber-100 border-l-4 border-amber-400 p-4 mb-6 rounded flex items-center gap-3">
-                <span className="text-2xl">🎸</span>
+              <div className="bg-amber-100 border-l-4 border-amber-400 p-4 mb-6 rounded">
                 <div>
                   <span className="font-semibold text-amber-800">New to strumming?</span> Check out the{' '}
                   <Link href="/blog/guitar-strumming-patterns" className="text-amber-700 underline font-semibold hover:text-amber-900 transition-colors">
@@ -736,6 +740,20 @@ export default function CompleteBeginnerGuide() {
                 <div className="bg-white border border-amber-200 rounded-lg p-6">
                   <div className="flex items-center mb-4">
                     <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4">4</div>
+                    <h3 className="text-xl font-bold text-amber-800">Complete Your Foundation</h3>
+                  </div>
+                  <p className="text-amber-700 mb-3">
+                    Learn the remaining foundation chords: Am and Dm. These complete your essential chord vocabulary.
+                  </p>
+                  <p className="text-amber-600">
+                    <strong>Achievement:</strong> You can now play hundreds of popular songs!
+                  </p>
+                </div>
+
+                {/* Stage 5 */}
+                <div className="bg-white border border-amber-200 rounded-lg p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4">5</div>
                     <h3 className="text-xl font-bold text-amber-800">Single Notes and Picking</h3>
                   </div>
                   <p className="text-amber-700 mb-3">
@@ -772,19 +790,7 @@ export default function CompleteBeginnerGuide() {
                   </div>
                 </div>
 
-                {/* Stage 5 */}
-                <div className="bg-white border border-amber-200 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="bg-amber-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-4">5</div>
-                    <h3 className="text-xl font-bold text-amber-800">Complete Your Foundation</h3>
-                  </div>
-                  <p className="text-amber-700 mb-3">
-                    Learn the remaining foundation chords: Am and Dm. These complete your essential chord vocabulary.
-                  </p>
-                  <p className="text-amber-600">
-                    <strong>Achievement:</strong> You can now play hundreds of popular songs!
-                  </p>
-                </div>
+
                 </div>
               </div>
             </section>

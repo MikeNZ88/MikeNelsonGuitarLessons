@@ -53,6 +53,19 @@ export default function Blog() {
 
     // CHORDS
     {
+      id: '27',
+      title: 'Your First Guitar Chords: A Complete Beginner Guide',
+      excerpt: 'Learn your first 8 essential guitar chords with interactive diagrams and smooth transition tips. Master A, E, G, D, C, Em, Am, and Dm chords.',
+      readTime: '8 min read',
+      category: 'Beginner',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Getting Started'],
+      skillLevel: 'beginner',
+      image: '/open-chord-library-thumbnail.svg',
+      slug: 'your-first-guitar-chords',
+      author: 'Mike Nelson'
+    },
+    {
       id: '23',
       title: 'What is a Chord? Understanding Structure, Intervals, and Types',
       excerpt: 'Learn what guitar chords are, how they\'re built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.',
