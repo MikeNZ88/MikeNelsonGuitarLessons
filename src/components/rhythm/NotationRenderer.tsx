@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RhythmPattern } from '../../utils/audio/rhythmEngine';
 
 interface NotationRendererProps {
@@ -11,23 +11,49 @@ interface NotationRendererProps {
 
 export default function NotationRenderer({ pattern, width, height = 120 }: NotationRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isRendering, setIsRendering] = useState(false);
+  const [renderAttempts, setRenderAttempts] = useState(0);
 
   useEffect(() => {
-    // Add timeout to ensure DOM element is fully mounted
+    // Reset rendering state when pattern changes
+    setIsRendering(false);
+    setRenderAttempts(0);
+    
+    // Add timeout to ensure DOM element is fully mounted and hydrated
     const timeoutId = setTimeout(() => {
       const loadVexFlow = async () => {
         try {
+          setIsRendering(true);
+          
           // Ensure container is available and is a proper HTMLDivElement
           if (!containerRef.current || !(containerRef.current instanceof HTMLDivElement)) {
-            console.warn('Container not ready for VexFlow rendering');
+            console.warn('Container not ready for VexFlow rendering, retrying...');
+            if (renderAttempts < 3) {
+              setTimeout(() => {
+                setRenderAttempts(prev => prev + 1);
+              }, 200);
+            }
             return;
           }
 
           // Clear previous content
           containerRef.current.innerHTML = '';
           
-          // Dynamically import VexFlow
-          const { Renderer, Stave, StaveNote, Voice, Formatter, Beam, Tuplet, Dot } = await import('vexflow');
+          // Dynamically import VexFlow with retry logic
+          let VexFlow;
+          try {
+            VexFlow = await import('vexflow');
+          } catch (importError) {
+            console.error('Failed to import VexFlow:', importError);
+            if (renderAttempts < 3) {
+              setTimeout(() => {
+                setRenderAttempts(prev => prev + 1);
+              }, 500);
+            }
+            return;
+          }
+          
+          const { Renderer, Stave, StaveNote, Voice, Formatter, Beam, Tuplet, Dot } = VexFlow;
           
           // Calculate dimensions with extra space for complex patterns
           let adjustedWidth = width;
@@ -86,21 +112,109 @@ export default function NotationRenderer({ pattern, width, height = 120 }: Notat
             tuplets.forEach(tuplet => tuplet.setContext(context).draw());
           }
 
+          setIsRendering(false);
+
         } catch (error) {
           console.error('Error rendering notation:', error);
-          // Fallback message
-          if (containerRef.current) {
-            containerRef.current.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Musical notation temporarily unavailable</div>';
+          setIsRendering(false);
+          
+          // Retry logic for rendering errors
+          if (renderAttempts < 3) {
+            setTimeout(() => {
+              setRenderAttempts(prev => prev + 1);
+            }, 300);
+          } else {
+            // Final fallback message
+            if (containerRef.current) {
+              containerRef.current.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Musical notation temporarily unavailable</div>';
+            }
           }
         }
       };
 
       loadVexFlow();
-    }, 100); // 100ms delay to ensure DOM is ready
+    }, 150); // Increased delay to ensure DOM is ready and hydrated
 
     // Cleanup timeout on unmount
     return () => clearTimeout(timeoutId);
-  }, [pattern, width, height]);
+  }, [pattern, width, height, renderAttempts]);
+
+  // Retry effect when renderAttempts changes
+  useEffect(() => {
+    if (renderAttempts > 0 && !isRendering) {
+      const retryTimeout = setTimeout(() => {
+        const loadVexFlow = async () => {
+          try {
+            setIsRendering(true);
+            
+            if (!containerRef.current || !(containerRef.current instanceof HTMLDivElement)) {
+              console.warn('Container not ready for VexFlow rendering on retry');
+              return;
+            }
+
+            containerRef.current.innerHTML = '';
+            
+            const { Renderer, Stave, StaveNote, Voice, Formatter, Beam, Tuplet, Dot } = await import('vexflow');
+            
+            let adjustedWidth = width;
+            let adjustedHeight = height;
+            
+            if (pattern.subdivision.name === 'Sixteenth Notes' || pattern.subdivision.name === 'Mixed Notes') {
+              adjustedWidth = Math.max(500, width);
+              adjustedHeight = Math.max(140, height);
+            } else if (pattern.subdivision.name === 'Eighth Notes' || pattern.subdivision.name === 'Eighth Triplets') {
+              adjustedWidth = Math.max(480, width);
+              adjustedHeight = Math.max(140, height);
+            }
+            
+            if (!containerRef.current || !(containerRef.current instanceof HTMLDivElement)) {
+              return;
+            }
+            
+            const renderer = new Renderer(containerRef.current, Renderer.Backends.SVG);
+            renderer.resize(adjustedWidth, adjustedHeight);
+            const context = renderer.getContext();
+
+            const staveWidth = adjustedWidth - 80;
+            const stave = new Stave(20, 10, staveWidth);
+            stave.addTimeSignature(pattern.timeSignature.label);
+            stave.setContext(context).draw();
+
+            const { notes, beams, tuplets } = createNotesForMeasure(pattern, StaveNote, Beam, Tuplet, Dot);
+            
+            if (notes.length > 0) {
+              const voice = new Voice({ 
+                numBeats: pattern.timeSignature.beats, 
+                beatValue: pattern.timeSignature.beatType 
+              });
+              voice.addTickables(notes);
+
+              const formatterWidth = staveWidth - 80;
+              new Formatter().joinVoices([voice]).format([voice], formatterWidth);
+              voice.draw(context, stave);
+
+              beams.forEach(beam => beam.setContext(context).draw());
+              tuplets.forEach(tuplet => tuplet.setContext(context).draw());
+            }
+
+            setIsRendering(false);
+
+          } catch (error) {
+            console.error('Error on retry rendering notation:', error);
+            setIsRendering(false);
+            
+            if (renderAttempts >= 3 && containerRef.current) {
+              containerRef.current.innerHTML = '<div style="padding: 20px; text-align: center; color: #666;">Musical notation temporarily unavailable</div>';
+            }
+          }
+        };
+
+        loadVexFlow();
+      }, 100);
+
+      return () => clearTimeout(retryTimeout);
+    }
+  }, [renderAttempts, pattern, width, height, isRendering]);
 
   return (
     <div 
