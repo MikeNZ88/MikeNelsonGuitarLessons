@@ -478,12 +478,6 @@ export default function Blog() {
       category: 'Scales and Fretboard'
     },
     {
-      topic: 'G Mixolydian Mode',
-      description: 'G Mixolydian (dominant 7th sound)',
-      link: '/scale-explorer/index.html?scale=G&category=major-modes&mode=mixolydian',
-      category: 'Scales and Fretboard'
-    },
-    {
       topic: 'D Mixolydian Mode',
       description: 'D Mixolydian (country and folk)',
       link: '/scale-explorer/index.html?scale=D&category=major-modes&mode=mixolydian',
