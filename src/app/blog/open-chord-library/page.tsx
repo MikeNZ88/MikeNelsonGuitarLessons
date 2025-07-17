@@ -26,6 +26,26 @@ const GuitarChordReference = () => {
     };
   }, []);
 
+  // Handle URL hash navigation
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (hash === 'progressions') {
+      setSelectedSection('progressions');
+      
+      // Check if there's a blues parameter to determine progression type
+      const bluesKey = urlParams.get('blues');
+      if (bluesKey && ['E', 'A', 'G', 'D'].includes(bluesKey)) {
+        setProgressionType('blues');
+        setActiveBluesKey(bluesKey);
+      } else {
+        // Default to standard progressions if no blues key specified
+        setProgressionType('standard');
+      }
+    }
+  }, []);
+
   // Reorganized chord database with proper chord families
   const chordDatabase = {
     open: {

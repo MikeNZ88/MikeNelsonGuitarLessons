@@ -38,6 +38,7 @@ export default function Blog() {
       link: '/blog/major-scale-guitar-guide#arpeggios',
       category: 'Scales and Fretboard'
     },
+
     
     // B
     {
@@ -46,6 +47,103 @@ export default function Blog() {
       link: '/blog/moveable-guitar-chord-shapes#barre-chords',
       category: 'Chords'
     },
+    {
+      topic: 'Barre Chords - Major (E String)',
+      description: 'Major barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=Major',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Major (A String)',
+      description: 'Major barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=Major',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Minor (E String)',
+      description: 'Minor barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Minor (A String)',
+      description: 'Minor barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Dominant 7 (E String)',
+      description: 'Dominant 7 barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=Dominant%207',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Dominant 7 (A String)',
+      description: 'Dominant 7 barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=Dominant%207',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - m7 (E String)',
+      description: 'Minor 7 barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=m7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - m7 (A String)',
+      description: 'Minor 7 barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=m7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Maj7 (E String)',
+      description: 'Major 7 barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=Maj7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - Maj7 (A String)',
+      description: 'Major 7 barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=Maj7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - sus4 (E String)',
+      description: 'Sus4 barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=sus4',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - sus4 (A String)',
+      description: 'Sus4 barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=sus4',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - 7sus4 (E String)',
+      description: '7sus4 barre chords with root on low E string',
+      link: '/blog/barre-chord-library?root=e-string&type=7sus4',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chords - 7sus4 (A String)',
+      description: '7sus4 barre chords with root on A string',
+      link: '/blog/barre-chord-library?root=a-string&type=7sus4',
+      category: 'Chords'
+    },
+    {
+      topic: 'Barre Chord Library',
+      description: 'Interactive barre chord tool with E and A shapes',
+      link: '/blog/barre-chord-library',
+      category: 'Tools'
+    },
+    {
+      topic: 'Barre Chord Theory',
+      description: 'Understanding how barre chords work and relate to open chords',
+      link: '/blog/barre-chord-library#how-barre-chords-work',
+      category: 'Theory'
+    },
+
     {
       topic: 'Beginner Chords',
       description: 'Your first 8 essential chords',
@@ -97,11 +195,55 @@ export default function Blog() {
       category: 'Theory'
     },
     {
+      topic: 'Chord Construction',
+      description: 'How chords are built from intervals',
+      link: '/blog/what-is-a-chord#chord-construction',
+      category: 'Theory'
+    },
+    {
+      topic: 'Chord Progressions',
+      description: 'Interactive chord relationships and progressions',
+      link: '/blog/open-chord-library/#progressions',
+      category: 'Theory'
+    },
+    {
+      topic: 'E 12-Bar Blues',
+      description: 'Classic blues progression in E',
+      link: '/blog/open-chord-library/?blues=E#progressions',
+      category: 'Theory'
+    },
+    {
+      topic: 'A 12-Bar Blues',
+      description: 'Classic blues progression in A',
+      link: '/blog/open-chord-library/?blues=A#progressions',
+      category: 'Theory'
+    },
+    {
+      topic: 'G 12-Bar Blues',
+      description: 'Classic blues progression in G',
+      link: '/blog/open-chord-library/?blues=G#progressions',
+      category: 'Theory'
+    },
+    {
+      topic: 'D 12-Bar Blues',
+      description: 'Classic blues progression in D',
+      link: '/blog/open-chord-library/?blues=D#progressions',
+      category: 'Theory'
+    },
+
+    {
       topic: 'Common Fingers',
       description: 'Efficient chord transitions',
       link: '/blog/chord-transitions-common-fingers',
       category: 'Technique'
     },
+    {
+      topic: 'Chord Movement',
+      description: 'Understanding how barre chords move across the fretboard',
+      link: '/blog/barre-chord-library#equal-movement',
+      category: 'Theory'
+    },
+
     
     // D
     {
@@ -136,6 +278,8 @@ export default function Blog() {
       link: '/blog/electric-guitar-beginner-guide-nz',
       category: 'Gear'
     },
+
+
     
     // F
 
@@ -151,6 +295,7 @@ export default function Blog() {
       link: '/blog/understanding-guitar-fretboard',
       category: 'Theory'
     },
+
     
     // G
     {
@@ -223,8 +368,15 @@ export default function Blog() {
       link: '/blog/open-chord-library',
       category: 'Chords'
     },
+
     
     // P
+    {
+      topic: 'Pentatonic Scales',
+      description: '5 essential scale shapes for rock and blues',
+      link: '/blog/beginners-guide-pentatonic-scales',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'Picking Technique',
       description: 'Complete progressive guide',
@@ -251,6 +403,7 @@ export default function Blog() {
       link: '/blog/rhythm-tool',
       category: 'Tools'
     },
+
     
     // S
     {
@@ -668,6 +821,20 @@ export default function Blog() {
       sortOrder: 4
     },
     {
+      id: '28',
+      title: 'Barre Chord Library',
+      excerpt: 'Interactive barre chord library with E and A shape patterns. Select any chord type and fret position to see complete diagrams with finger positions.',
+      readTime: 'Interactive Tool',
+      category: 'Beginner - Intermediate',
+      primaryCategory: 'Chords',
+      categories: ['Chords', 'Tools'],
+      skillLevel: 'beginner-intermediate',
+      image: '/moveable-chord-shapes-thumbnail.svg',
+      slug: 'barre-chord-library',
+      author: 'Mike Nelson',
+      sortOrder: 5
+    },
+    {
       id: '23',
       title: 'What is a Chord? Understanding Structure, Intervals, and Types',
       excerpt: 'Learn what guitar chords are, how they\'re built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.',
@@ -679,7 +846,7 @@ export default function Blog() {
       image: '/what-is-chord-thumbnail.svg',
       slug: 'what-is-a-chord',
       author: 'Mike Nelson',
-      sortOrder: 5
+      sortOrder: 6
     },
     {
       id: '16',
@@ -736,6 +903,20 @@ export default function Blog() {
       slug: 'rhythm-tool',
       author: 'Mike Nelson',
       sortOrder: 19
+    },
+    {
+      id: '29',
+      title: 'Beginner\'s Guide to Pentatonic Scales',
+      excerpt: 'Master the 5 essential pentatonic scale shapes with interactive fretboard diagrams. Learn how shapes connect across the fretboard and practice in any key.',
+      readTime: 'Interactive Tool',
+      category: 'Beginner - Intermediate',
+      primaryCategory: 'Scales and Fretboard',
+      categories: ['Scales and Fretboard', 'Theory'],
+      skillLevel: 'beginner-intermediate',
+      image: '/major-scale-guide.png',
+      slug: 'beginners-guide-pentatonic-scales',
+      author: 'Mike Nelson',
+      sortOrder: 20
     },
     {
       id: '4',
@@ -1008,6 +1189,13 @@ export default function Blog() {
     return matchesTopicCategory && matchesSkillLevel && matchesSearch;
   });
 
+  // Filter Quick Reference topics based on search query
+  const filteredQuickRefTopics = searchQuery === '' ? [] : topicIndex.filter(topic =>
+    topic.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    topic.category.toLowerCase().includes(searchQuery.toLowerCase())
+  ).slice(0, 5); // Limit to 5 results to avoid overwhelming the search
+
   // Sort posts by sortOrder and skill level
   const sortedPosts = filteredPosts.sort((a, b) => {
     // First sort by sortOrder (lower numbers first)
@@ -1079,12 +1267,87 @@ export default function Blog() {
               </span>
               <input
                 type="text"
-                placeholder="Search blog posts..."
+                placeholder="Search blog posts and topics..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="block w-full h-12 pl-12 pr-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-base"
                 style={{ boxSizing: 'border-box' }}
               />
+              
+              {/* Search Results Dropdown */}
+              {searchQuery && (filteredQuickRefTopics.length > 0 || posts.filter(post => 
+                post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                post.category.toLowerCase().includes(searchQuery.toLowerCase())
+              ).length > 0) && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-80 overflow-y-auto">
+                  {/* Blog Post Results */}
+                  {posts.filter(post => 
+                    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                    post.category.toLowerCase().includes(searchQuery.toLowerCase())
+                  ).slice(0, 3).map((post) => (
+                    <Link
+                      key={post.id}
+                      href={`/blog/${post.slug}`}
+                      className="block p-3 hover:bg-amber-50 border-b border-gray-100 transition-colors"
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <h5 className="font-semibold text-gray-800 text-sm">
+                            {post.title}
+                          </h5>
+                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">
+                            {post.excerpt}
+                          </p>
+                        </div>
+                        <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 flex-shrink-0 ${getCategoryColor(post.primaryCategory)}`}>
+                          Blog Post
+                        </span>
+                      </div>
+                    </Link>
+                  ))}
+                  
+                  {/* Quick Reference Results */}
+                  {filteredQuickRefTopics.length > 0 && (
+                    <>
+                      {posts.filter(post => 
+                        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
+                        post.category.toLowerCase().includes(searchQuery.toLowerCase())
+                      ).length > 0 && (
+                        <div className="p-3 border-b border-gray-200 bg-gray-50">
+                          <h4 className="text-sm font-semibold text-gray-700">Quick Reference Topics</h4>
+                        </div>
+                      )}
+                      {filteredQuickRefTopics.slice(0, 5).map((topic) => (
+                        <Link
+                          key={topic.topic}
+                          href={topic.link}
+                          className="block p-3 hover:bg-amber-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <h5 className="font-semibold text-gray-800 text-sm">
+                                {topic.topic}
+                              </h5>
+                              <p className="text-xs text-gray-600 mt-1">
+                                {topic.description}
+                              </p>
+                            </div>
+                            <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 flex-shrink-0 ${getCategoryColor(topic.category)}`}>
+                              {topic.category}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Topic Category Filter */}

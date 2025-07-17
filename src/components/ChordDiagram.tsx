@@ -21,6 +21,7 @@ export interface ChordData {
   changedFrets?: number[];
   technique?: string;
   worksWith?: string;
+  customNoteColors?: string[]; // Custom colors for each string
 }
 
 export interface ChordDiagramProps {
@@ -134,7 +135,7 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
                   cy="8"
                   r="3"
                   fill="none"
-                  stroke={isHighlighted ? "#f97316" : "#16a34a"}
+                  stroke={isHighlighted ? "#f97316" : (chordData.customNoteColors?.[stringIndex] || "#16a34a")}
                   strokeWidth="2"
                 />
                 {showNotes && (
@@ -153,8 +154,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
             // Fretted note - between frets
             const displayFret = startFret > 0 ? fret - startFret + 1 : fret;
             const y = 20 + (displayFret - 0.5) * 18;
-            // Use shape color or default
-            const noteColor = shapeColor || "#1f2937";
+            // Use custom color for this string, or shape color, or default
+            const noteColor = chordData.customNoteColors?.[stringIndex] || shapeColor || "#1f2937";
             return (
               <g key={`fret-${stringIndex}`}>
                 <circle
