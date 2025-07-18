@@ -1477,7 +1477,7 @@ const GuitarChordReference = () => {
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">•</span>
-                      <span><strong>Roman numerals:</strong> Show the chord's function in the key (I = tonic, V = dominant, etc.)</span>
+                      <span><strong>Roman numerals:</strong> Show the chord's function in the key (I = 1 = first chord in the key, ii = 2 = 2nd chord in the key, V = 5 = 5th chord in the key, etc.)</span>
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 mr-2">•</span>

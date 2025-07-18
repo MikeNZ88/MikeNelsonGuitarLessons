@@ -277,7 +277,7 @@ const KeyChordsExplorer = () => {
       </div>
 
       {/* Main Chords */}
-      <div className="mb-8">
+      <div className="mb-8" id={keyType === 'major' ? 'major-key-chord-sequence' : 'minor-key-chord-sequence'}>
         <h3 className="text-xl font-semibold mb-4 text-gray-800">
           The {keyType === 'major' ? '6 Main Chords' : '6 Main Chords'}
         </h3>
@@ -417,7 +417,7 @@ const KeyChordsExplorer = () => {
       </div>
 
       {/* Understanding the Pattern */}
-      <div className="border-t border-gray-200 pt-6 mt-8">
+      <div className="border-t border-gray-200 pt-6 mt-8" id="understanding-the-pattern">
         <h3 className="text-lg font-semibold mb-3 text-gray-800">
           Understanding the Pattern
         </h3>

@@ -15,15 +15,39 @@ export default function Blog() {
   const topicIndex = [
     // A
     {
-      topic: 'A Chord',
+      topic: 'A Chord (Open)',
       description: 'Open A major chord',
       link: '/blog/your-first-guitar-chords#a-chord',
       category: 'Chords'
     },
     {
-      topic: 'Am Chord',
+      topic: 'A Chord (Barre - E String Root)',
+      description: 'A major barre chord (E string, fret 5)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=5',
+      category: 'Chords'
+    },
+    {
+      topic: 'A Chord (Barre - A String Root)',
+      description: 'A major barre chord (A string, fret 12)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=12',
+      category: 'Chords'
+    },
+    {
+      topic: 'Am Chord (Open)',
       description: 'Open A minor chord',
       link: '/blog/your-first-guitar-chords#am-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Am Chord (Barre - E String Root)',
+      description: 'A minor barre chord (E string, fret 5)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=5',
+      category: 'Chords'
+    },
+    {
+      topic: 'Am Chord (Barre - A String Root)',
+      description: 'A minor barre chord (A string, fret 12)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=12',
       category: 'Chords'
     },
     {
@@ -143,7 +167,30 @@ export default function Blog() {
       link: '/blog/barre-chord-library#how-barre-chords-work',
       category: 'Theory'
     },
-
+    {
+      topic: 'B Chord (Barre - E String Root)',
+      description: 'B major barre chord (E string, fret 7)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=7',
+      category: 'Chords'
+    },
+    {
+      topic: 'B Chord (Barre - A String Root)',
+      description: 'B major barre chord (A string, fret 2)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=2',
+      category: 'Chords'
+    },
+    {
+      topic: 'Bm Chord (Barre - E String Root)',
+      description: 'B minor barre chord (E string, fret 7)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Bm Chord (Barre - A String Root)',
+      description: 'B minor barre chord (A string, fret 2)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=2',
+      category: 'Chords'
+    },
     {
       topic: 'Beginner Chords',
       description: 'Your first 8 essential chords',
@@ -165,9 +212,33 @@ export default function Blog() {
     
     // C
     {
-      topic: 'C Chord',
+      topic: 'C Chord (Open)',
       description: 'Open C major chord',
       link: '/blog/your-first-guitar-chords#c-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'C Chord (Barre - E String Root)',
+      description: 'C major barre chord (E string, fret 8)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=8',
+      category: 'Chords'
+    },
+    {
+      topic: 'C Chord (Barre - A String Root)',
+      description: 'C major barre chord (A string, fret 3)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=3',
+      category: 'Chords'
+    },
+    {
+      topic: 'Cm Chord (Barre - E String Root)',
+      description: 'C minor barre chord (E string, fret 8)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=8',
+      category: 'Chords'
+    },
+    {
+      topic: 'Cm Chord (Barre - A String Root)',
+      description: 'C minor barre chord (A string, fret 3)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=3',
       category: 'Chords'
     },
     {
@@ -247,29 +318,77 @@ export default function Blog() {
     
     // D
     {
-      topic: 'D Chord',
+      topic: 'D Chord (Open)',
       description: 'Open D major chord',
       link: '/blog/your-first-guitar-chords#d-chord',
       category: 'Chords'
     },
     {
-      topic: 'Dm Chord',
+      topic: 'D Chord (Barre - E String Root)',
+      description: 'D major barre chord (E string, fret 10)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=10',
+      category: 'Chords'
+    },
+    {
+      topic: 'D Chord (Barre - A String Root)',
+      description: 'D major barre chord (A string, fret 5)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=5',
+      category: 'Chords'
+    },
+    {
+      topic: 'Dm Chord (Open)',
       description: 'Open D minor chord',
       link: '/blog/your-first-guitar-chords#dm-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Dm Chord (Barre - E String Root)',
+      description: 'D minor barre chord (E string, fret 10)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=10',
+      category: 'Chords'
+    },
+    {
+      topic: 'Dm Chord (Barre - A String Root)',
+      description: 'D minor barre chord (A string, fret 5)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=5',
       category: 'Chords'
     },
     
     // E
     {
-      topic: 'E Chord',
+      topic: 'E Chord (Open)',
       description: 'Open E major chord',
       link: '/blog/your-first-guitar-chords#e-chord',
       category: 'Chords'
     },
     {
-      topic: 'Em Chord',
+      topic: 'E Chord (Barre - E String Root)',
+      description: 'E major barre chord (E string, fret 12)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=12',
+      category: 'Chords'
+    },
+    {
+      topic: 'E Chord (Barre - A String Root)',
+      description: 'E major barre chord (A string, fret 7)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=7',
+      category: 'Chords'
+    },
+    {
+      topic: 'Em Chord (Open)',
       description: 'Open E minor chord',
       link: '/blog/your-first-guitar-chords#em-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'Em Chord (Barre - E String Root)',
+      description: 'E minor barre chord (E string, fret 12)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=12',
+      category: 'Chords'
+    },
+    {
+      topic: 'Em Chord (Barre - A String Root)',
+      description: 'E minor barre chord (A string, fret 7)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=7',
       category: 'Chords'
     },
     {
@@ -283,6 +402,30 @@ export default function Blog() {
     
     // F
 
+    {
+      topic: 'F Chord (Barre - E String Root)',
+      description: 'F major barre chord (E string, fret 1)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=1',
+      category: 'Chords'
+    },
+    {
+      topic: 'F Chord (Barre - A String Root)',
+      description: 'F major barre chord (A string, fret 8)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=8',
+      category: 'Chords'
+    },
+    {
+      topic: 'Fm Chord (Barre - E String Root)',
+      description: 'F minor barre chord (E string, fret 1)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=1',
+      category: 'Chords'
+    },
+    {
+      topic: 'Fm Chord (Barre - A String Root)',
+      description: 'F minor barre chord (A string, fret 8)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=8',
+      category: 'Chords'
+    },
     {
       topic: 'Fretboard Navigation',
       description: 'Finding notes across strings',
@@ -299,9 +442,33 @@ export default function Blog() {
     
     // G
     {
-      topic: 'G Chord',
+      topic: 'G Chord (Open)',
       description: 'Open G major chord',
       link: '/blog/your-first-guitar-chords#g-chord',
+      category: 'Chords'
+    },
+    {
+      topic: 'G Chord (Barre - E String Root)',
+      description: 'G major barre chord (E string, fret 3)',
+      link: '/blog/barre-chord-library?root=e-string&type=Major&fret=3',
+      category: 'Chords'
+    },
+    {
+      topic: 'G Chord (Barre - A String Root)',
+      description: 'G major barre chord (A string, fret 10)',
+      link: '/blog/barre-chord-library?root=a-string&type=Major&fret=10',
+      category: 'Chords'
+    },
+    {
+      topic: 'Gm Chord (Barre - E String Root)',
+      description: 'G minor barre chord (E string, fret 3)',
+      link: '/blog/barre-chord-library?root=e-string&type=Minor&fret=3',
+      category: 'Chords'
+    },
+    {
+      topic: 'Gm Chord (Barre - A String Root)',
+      description: 'G minor barre chord (A string, fret 10)',
+      link: '/blog/barre-chord-library?root=a-string&type=Minor&fret=10',
       category: 'Chords'
     },
     {
@@ -318,6 +485,12 @@ export default function Blog() {
       link: '/blog/what-is-a-chord#intervals',
       category: 'Theory'
     },
+    {
+      topic: 'Instrument Frequency Ranges',
+      description: 'How guitar fits in the musical spectrum with piano, bass, and extended range instruments',
+      link: '/blog/beginners-guide-notes-guitar#instrument-range',
+      category: 'Theory'
+    },
     
     // K
     {
@@ -325,6 +498,18 @@ export default function Blog() {
       description: 'Interactive chord relationships',
       link: '/blog/key-chords-explorer',
       category: 'Tools'
+    },
+    {
+      topic: 'Major Key Chord Sequence',
+      description: 'The 6 main chords in any major key (I, ii, iii, IV, V, vi)',
+      link: '/blog/key-chords-explorer#understanding-the-pattern',
+      category: 'Theory'
+    },
+    {
+      topic: 'Minor Key Chord Sequence',
+      description: 'The 6 main chords in any minor key (i, ii°, III, iv, v, VI)',
+      link: '/blog/key-chords-explorer#understanding-the-pattern',
+      category: 'Theory'
     },
     
     // M
@@ -381,6 +566,30 @@ export default function Blog() {
       topic: 'Picking Technique',
       description: 'Complete progressive guide',
       link: '/blog/guitar-picking-technique-guide',
+      category: 'Technique'
+    },
+    {
+      topic: 'How to Hold the Pick',
+      description: 'Proper pick grip and hand positioning fundamentals',
+      link: '/blog/guitar-picking-technique-guide#level-1',
+      category: 'Technique'
+    },
+    {
+      topic: 'Pick Slanting (DWPS/UWPS)',
+      description: 'Downward and upward pick slanting techniques for string crossing',
+      link: '/blog/guitar-picking-technique-guide#level-4',
+      category: 'Technique'
+    },
+    {
+      topic: 'Economy Picking',
+      description: 'Alternative to strict alternate picking for efficiency',
+      link: '/blog/guitar-picking-technique-guide#other-techniques',
+      category: 'Technique'
+    },
+    {
+      topic: 'Sweep Picking',
+      description: 'Arpeggio technique with continuous pick motion',
+      link: '/blog/guitar-picking-technique-guide#other-techniques',
       category: 'Technique'
     },
     {
@@ -704,6 +913,18 @@ export default function Blog() {
       category: 'Theory'
     },
     {
+      topic: 'Why Guitar Strings Are Tuned E-A-D-G-B-E',
+      description: 'Understanding the constraints and compromises that created the guitar tuning system',
+      link: '/blog/understanding-guitar-fretboard',
+      category: 'Theory'
+    },
+    {
+      topic: 'Why Strings Are Tuned This Way 🎸',
+      description: 'Answer for beginners: Why is the guitar tuned E-A-D-G-B-E?',
+      link: '/blog/understanding-guitar-fretboard',
+      category: 'Theory'
+    },
+    {
       topic: 'Music Theory',
       description: 'Fundamental music concepts',
       link: '/blog/what-is-a-chord',
@@ -724,11 +945,14 @@ export default function Blog() {
   ];
 
   // Filter topics based on search
-  const filteredTopics = topicIndex.filter(topic =>
-    topic.topic.toLowerCase().includes(quickRefSearch.toLowerCase()) ||
-    topic.description.toLowerCase().includes(quickRefSearch.toLowerCase()) ||
-    topic.category.toLowerCase().includes(quickRefSearch.toLowerCase())
-  );
+  const filteredTopics = quickRefSearch.trim() === '' 
+    ? topicIndex 
+    : topicIndex.filter(topic => {
+        const searchTerm = quickRefSearch.toLowerCase().trim();
+        return topic.topic.toLowerCase().includes(searchTerm) ||
+               topic.description.toLowerCase().includes(searchTerm) ||
+               topic.category.toLowerCase().includes(searchTerm);
+      });
 
   // Group topics by first letter
   const groupedTopics = filteredTopics.reduce((groups, topic) => {
@@ -1564,7 +1788,7 @@ export default function Blog() {
                    <p className="text-gray-400 text-sm mt-2">Try different keywords or browse all topics</p>
                  </div>
                ) : (
-                 <div className="grid md:grid-cols-2 gap-8">
+                 <div key={`search-${quickRefSearch}`} className="grid md:grid-cols-2 gap-8">
                    {Object.entries(groupedTopics).map(([letter, topics]) => (
                      <div key={letter} className="space-y-3">
                        <h4 className="text-xl font-bold text-amber-800 border-b border-amber-200 pb-2">

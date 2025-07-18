@@ -167,6 +167,7 @@ function BarreChordLibraryContent() {
   useEffect(() => {
     const root = searchParams.get('root');
     const type = searchParams.get('type');
+    const fret = searchParams.get('fret');
     
     if (root === 'a-string') {
       setSelectedRootString('A String Root');
@@ -176,6 +177,13 @@ function BarreChordLibraryContent() {
     
     if (type && CHORD_TYPES.includes(type as ChordType)) {
       setSelectedChordType(type as ChordType);
+    }
+    
+    if (fret) {
+      const fretNumber = parseInt(fret);
+      if (fretNumber >= 1 && fretNumber <= 12) {
+        setSelectedFret(fretNumber);
+      }
     }
   }, [searchParams]);
 
