@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ChordDiagram from '@/components/ChordDiagram';
 
@@ -155,7 +155,7 @@ const A_SHAPE_PATTERNS: Record<ChordType, ChordData> = {
   }
 };
 
-export default function BarreChordLibrary() {
+function BarreChordLibraryContent() {
   const searchParams = useSearchParams();
   
   const [selectedRootString, setSelectedRootString] = useState<RootStringType>('E String Root');
@@ -600,5 +600,13 @@ export default function BarreChordLibrary() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function BarreChordLibrary() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-8 text-center">Loading...</div>}>
+      <BarreChordLibraryContent />
+    </Suspense>
   );
 } 

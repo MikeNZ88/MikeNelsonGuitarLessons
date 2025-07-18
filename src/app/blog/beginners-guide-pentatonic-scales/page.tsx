@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 // Real Minor Pentatonic Box Patterns 
@@ -79,7 +79,7 @@ const KEY_NOTES = [
 const SCALE_SHAPES = ['shape1', 'shape2', 'shape3', 'shape4', 'shape5'] as const;
 type ScaleShape = typeof SCALE_SHAPES[number];
 
-export default function PentatonicScalesGuide() {
+function PentatonicScalesContent() {
   const searchParams = useSearchParams();
   
   const [selectedKey, setSelectedKey] = useState<string>('A');
@@ -649,5 +649,13 @@ export default function PentatonicScalesGuide() {
 
       </div>
     </div>
+  );
+}
+
+export default function PentatonicScalesGuide() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-4 py-8 text-center">Loading...</div>}>
+      <PentatonicScalesContent />
+    </Suspense>
   );
 } 
