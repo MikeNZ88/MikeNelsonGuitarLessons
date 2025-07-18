@@ -58,7 +58,7 @@ export default function IntroducingPracticeTrack() {
                 100% Free
               </span>
               <a 
-                href="https://practicetrack.netlify.app/landing.html" 
+                href="https://practicetrackapp.com/landing.html" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-orange-600 text-white px-8 py-4 rounded-lg hover:bg-orange-700 transition-colors font-semibold"
@@ -293,7 +293,7 @@ export default function IntroducingPracticeTrack() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href="https://practicetrack.netlify.app/landing.html" 
+              href="https://practicetrackapp.com/landing.html" 
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center bg-orange-600 text-white px-8 py-4 rounded-lg hover:bg-orange-700 transition-colors font-semibold"

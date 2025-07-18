@@ -270,7 +270,7 @@ export default function EssentialPracticeTips() {
                 Ready to supercharge your practice routine? Start tracking your progress today.
               </p>
               <a 
-                href="https://practicetrack.netlify.app/landing.html" 
+                href="https://practicetrackapp.com/landing.html" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors font-semibold"

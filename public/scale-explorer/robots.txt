@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /
-
-# Sitemap location
-Sitemap: https://mikenelsonguitarlessons.co.nz/sitemap.xml
-
-# Crawl-delay (optional - remove if not needed)
-Crawl-delay: 1 

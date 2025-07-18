@@ -147,7 +147,7 @@ export default function Contact() {
               </h2>
               
               <form onSubmit={handleSubmit} action="https://formspree.io/f/xzzeerqo" method="POST" className="space-y-4">
-                <input type="hidden" name="_next" value="https://mikenelsonguitar.github.io/thank-you.html" />
+                <input type="hidden" name="_next" value="https://mikenelsonguitarlessons.co.nz/thank-you.html" />
                 <input type="hidden" name="_subject" value={`New enquiry from: ${formData.name}`} />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
