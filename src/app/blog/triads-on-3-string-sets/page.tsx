@@ -1770,7 +1770,7 @@ export default function TriadsOn3StringSets() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6" id="chord-inversions-triads">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-8 px-4">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-800 mb-3 sm:mb-4">

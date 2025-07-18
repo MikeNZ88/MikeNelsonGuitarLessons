@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ChordDiagram from '@/components/ChordDiagram';
 
 const ROOT_NOTE = 'F';
@@ -17,7 +18,7 @@ const SUSPENDED_CHORD_TYPES = ['Sus2', 'Sus4', '7sus4'] as const;
 type SuspendedChordType = typeof SUSPENDED_CHORD_TYPES[number];
 
 // For extension chords, we need sub-tabs
-const EXTENSION_CHORD_TYPES = ['9th Chords', '11th Chords', '13th Chords'] as const;
+const EXTENSION_CHORD_TYPES = ['9th Chords', '11th Chords', '13th Chords', 'Altered Chords'] as const;
 type ExtensionChordType = typeof EXTENSION_CHORD_TYPES[number];
 
 interface ChordShape {
@@ -33,6 +34,11 @@ interface ChordShape {
 }
 
 interface ChordTypeData {
+  [key: string]: ChordShape[];
+}
+
+// For flattened extension chords (no string set tabs)
+interface FlattenedExtensionChords {
   [key: string]: ChordShape[];
 }
 
@@ -917,168 +923,165 @@ const SUSPENDED_CHORDS_BY_TYPE = {
 };
 
 // EXTENSION CHORDS - CORRECTED theory and voicings with proper organization
-const EXTENSION_CHORDS: Record<ExtensionChordType, ChordTypeData> = {
-  '9th Chords': {
-    'Strings 2-5': [
-      {
-        name: 'F9 A String Root (4 strings)',
-        frets: [-1, 8, 7, 8, 8, -1],
-        fingers: ['', '2', '1', '3', '4', ''],
-        startFret: 7,
-        rootString: 5,
-        description: 'F9 - F(1) A(3) E♭(♭7) G(9), 5th omitted',
-        technique: 'A string root dominant 9th',
-        difficulty: 'Practical'
-      },
-      {
-        name: 'FMaj9 A String Root (4 strings)',
-        frets: [-1, 8, 7, 9, 8, -1],
-        fingers: ['', '2', '1', '4', '3', ''],
-        startFret: 7,
-        rootString: 5,
-        description: 'FMaj9 - F(1) A(3) E(7) G(9), 5th omitted',
-        technique: 'A string root major 9th',
-        difficulty: 'Practical'
-      },
-      {
-        name: 'Fm9 A String Root (4 strings)',
-        frets: [-1, 8, 6, 8, 8, -1],
-        fingers: ['', '2', '1', '3', '4', ''],
-        startFret: 6,
-        rootString: 5,
-        description: 'Fm9 - F(1) A♭(♭3) E♭(♭7) G(9), 5th omitted',
-        technique: 'A string root minor 9th',
-        difficulty: 'Practical'
-      }
-    ],
-
-    'Altered 9th Chords': [
-      {
-        name: 'F7♭9 A String Root (4 strings)',
-        frets: [-1, 8, 7, 8, 7, -1],
-        fingers: ['', '3', '1', '4', '2', ''],
-        startFret: 7,
-        rootString: 5,
-        description: 'F7♭9 - F(1) A(3) E♭(♭7) G♭(♭9), 5th omitted',
-        technique: 'A string root dominant ♭9',
-        difficulty: 'Advanced'
-      },
-      {
-        name: 'F7#9 "Hendrix" A String Root (4 strings)',
-        frets: [-1, 8, 7, 8, 9, -1],
-        fingers: ['', '3', '1', '2', '4', ''],
-        startFret: 7,
-        rootString: 5,
-        description: 'F7#9 - F(1) A(3) E♭(♭7) G#(#9), 5th omitted',
-        technique: 'A string root dominant #9 "Hendrix chord"',
-        difficulty: 'Advanced'
-      },
-      {
-        name: 'F7#5♭9 Upper String Voicing (4 strings)',
-        frets: [-1, -1, 1, 2, 2, 2],
-        fingers: ['', '', '1', '2', '3', '4'],
-        startFret: 1,
-        rootString: 4,
-        description: 'F7#5♭9 - F(1) A(3) C#(#5) E♭(♭7) G♭(♭9)',
-        technique: 'Altered dominant with #5 and ♭9',
-        difficulty: 'Advanced'
-      }
-    ]
-  },
-  '11th Chords': {
-    'Full Barre Shapes': [
-      {
-        name: 'Fm11 Full Barre (1st fret)',
-        frets: [1, 1, 1, 1, 1, 1],
-        fingers: ['1', '1', '1', '1', '1', '1'],
-        startFret: 1,
-        rootString: 6,
-        description: 'Fm11 - Full barre F(1) A♭(♭3) E♭(♭7) G(9) B♭(11) C(5)',
-        technique: 'Complete F minor 11th barre chord',
-        difficulty: 'Practical'
-      }
-    ],
-    'Rootless 9th Chords (Same Key Relationships)': [
-      {
-        name: 'FMaj9#11 (rootless) A String Root (4 strings)',
-        frets: [-1, 12, 10, 12, 12, 12],
-        fingers: ['', '2', '1', '3', '4', '4'],
-        startFret: 10,
-        rootString: 5,
-        description: 'FMaj9#11 (rootless) - A(3) C(5) G(9) B(#11) E(7), root omitted',
-        technique: 'A string root major 9#11 - barre 4th finger on B & E strings',
-        difficulty: 'Practical'
-      },
-      {
-        name: 'Fm11 (rootless) A String Root (4 strings)',
-        frets: [-1, 11, 10, 12, 11, 11],
-        fingers: ['', '2', '1', '4', '3', '3'],
-        startFret: 10,
-        rootString: 5,
-        description: 'Fm11 (rootless) - A♭(♭3) C(5) G(9) B♭(11) E♭(♭7), root omitted',
-        technique: 'A string root minor 11th - barre 3rd finger on B & E strings',
-        difficulty: 'Practical'
-      }
-    ]
-  },
-  '13th Chords': {
-    'Strings 2-5': [
-      {
-        name: 'F13 With Root (5 strings)',
-        frets: [-1, 8, 7, 8, 10, 10],
-        fingers: ['', '2', '1', '3', '4', '4'],
-        startFret: 7,
-        rootString: 5,
-        description: 'F13 with root - F(1) A(3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
-        technique: 'A string root 13th - barred 3rd finger on G & B strings',
-        difficulty: 'Advanced'
-      },
-      {
-        name: 'Fm13 A String Root (5 strings)',
-        frets: [-1, 8, 6, 8, 10, 10],
-        fingers: ['', '2', '1', '3', '4', '4'],
-        startFret: 6,
-        rootString: 5,
-        description: 'Fm13 - F(1) A♭(♭3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
-        technique: 'A string root minor 13th - barred 3rd finger on G & B strings',
-        difficulty: 'Advanced'
-      }
-    ],
-    'Upper String Voicings (3-4 strings)': [
-      {
-        name: 'F13 Rootless Voicing (4 strings)',
-        frets: [-1, -1, 7, 8, 8, 10],
-        fingers: ['', '', '1', '2', '3', '4'],
-        startFret: 7,
-        rootString: 4,
-        description: 'F13 rootless - A(3) E♭(♭7) G(9) D(13), root, 5th, 11th omitted',
-        technique: 'Rootless 13th voicing',
-        difficulty: 'Advanced'
-      },
-      {
-        name: 'FMaj13 Upper String Voicing (4 strings)',
-        frets: [-1, -1, 7, 9, 8, 10],
-        fingers: ['', '', '1', '3', '2', '4'],
-        startFret: 7,
-        rootString: 4,
-        description: 'FMaj13 upper voicing - A(3) E(7) G(9) D(13), root, 5th, 11th omitted',
-        technique: 'Upper string major 13th',
-        difficulty: 'Advanced'
-      }
-    ],
-    'E String Root': [
-      {
-        name: 'F13 E String Root (1st position)',
-        frets: [1, -1, 1, 2, 3, 3],
-        fingers: ['1', '', '1', '2', '3', '4'],
-        startFret: 1,
-        rootString: 6,
-        description: 'F13 E string root - F(1) F(1) A(3) E♭(♭7) G(9) voicing',
-        technique: 'E string root alternative',
-        difficulty: 'Advanced'
-      }
-    ]
-  }
+const EXTENSION_CHORDS: Record<ExtensionChordType, ChordShape[]> = {
+  '9th Chords': [
+    {
+      name: 'F9 A String Root (4 strings)',
+      frets: [-1, 8, 7, 8, 8, -1],
+      fingers: ['', '2', '1', '3', '4', ''],
+      startFret: 7,
+      rootString: 5,
+      description: 'F9 - F(1) A(3) E♭(♭7) G(9), 5th omitted',
+      technique: 'A string root dominant 9th',
+      difficulty: 'Practical'
+    },
+    {
+      name: 'FMaj9 A String Root (4 strings)',
+      frets: [-1, 8, 7, 9, 8, -1],
+      fingers: ['', '2', '1', '4', '3', ''],
+      startFret: 7,
+      rootString: 5,
+      description: 'FMaj9 - F(1) A(3) E(7) G(9), 5th omitted',
+      technique: 'A string root major 9th',
+      difficulty: 'Practical'
+    },
+    {
+      name: 'Fm9 A String Root (4 strings)',
+      frets: [-1, 8, 6, 8, 8, -1],
+      fingers: ['', '2', '1', '3', '4', ''],
+      startFret: 6,
+      rootString: 5,
+      description: 'Fm9 - F(1) A♭(♭3) E♭(♭7) G(9), 5th omitted',
+      technique: 'A string root minor 9th',
+      difficulty: 'Practical'
+    }
+  ],
+  '11th Chords': [
+    {
+      name: 'Fm11 Full Barre (1st fret)',
+      frets: [1, 1, 1, 1, 1, 1],
+      fingers: ['1', '1', '1', '1', '1', '1'],
+      startFret: 1,
+      rootString: 6,
+      description: 'Fm11 - Full barre F(1) A♭(♭3) E♭(♭7) G(9) B♭(11) C(5)',
+      technique: 'Complete F minor 11th barre chord',
+      difficulty: 'Practical'
+    },
+    {
+      name: 'FMaj9#11 (rootless) A String Root (4 strings)',
+      frets: [-1, 12, 10, 12, 12, 12],
+      fingers: ['', '2', '1', '3', '4', '4'],
+      startFret: 10,
+      rootString: 5,
+      description: 'FMaj9#11 (rootless) - A(3) C(5) G(9) B(#11) E(7), root omitted',
+      technique: 'A string root major 9#11 - barre 4th finger on B & E strings',
+      difficulty: 'Practical'
+    },
+    {
+      name: 'Fm11 (rootless) A String Root (4 strings)',
+      frets: [-1, 11, 10, 12, 11, 11],
+      fingers: ['', '2', '1', '4', '3', '3'],
+      startFret: 10,
+      rootString: 5,
+      description: 'Fm11 (rootless) - A♭(♭3) C(5) G(9) B♭(11) E♭(♭7), root omitted',
+      technique: 'A string root minor 11th - barre 3rd finger on B & E strings',
+      difficulty: 'Practical'
+    }
+  ],
+  '13th Chords': [
+    {
+      name: 'F13 With Root (5 strings)',
+      frets: [-1, 8, 7, 8, 10, 10],
+      fingers: ['', '2', '1', '3', '4', '4'],
+      startFret: 7,
+      rootString: 5,
+      description: 'F13 with root - F(1) A(3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
+      technique: 'A string root 13th - barred 3rd finger on G & B strings',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'Fm13 A String Root (5 strings)',
+      frets: [-1, 8, 6, 8, 10, 10],
+      fingers: ['', '2', '1', '3', '4', '4'],
+      startFret: 6,
+      rootString: 5,
+      description: 'Fm13 - F(1) A♭(♭3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
+      technique: 'A string root minor 13th - barred 3rd finger on G & B strings',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'F13 Rootless Voicing (4 strings)',
+      frets: [-1, -1, 7, 8, 8, 10],
+      fingers: ['', '', '1', '2', '3', '4'],
+      startFret: 7,
+      rootString: 4,
+      description: 'F13 rootless - A(3) E♭(♭7) G(9) D(13), root, 5th, 11th omitted',
+      technique: 'Rootless 13th voicing',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'FMaj13 Upper String Voicing (4 strings)',
+      frets: [-1, -1, 7, 9, 8, 10],
+      fingers: ['', '', '1', '3', '2', '4'],
+      startFret: 7,
+      rootString: 4,
+      description: 'FMaj13 upper voicing - A(3) E(7) G(9) D(13), root, 5th, 11th omitted',
+      technique: 'Upper string major 13th',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'F13 E String Root (1st position)',
+      frets: [1, -1, 1, 2, 3, 3],
+      fingers: ['1', '', '1', '2', '3', '4'],
+      startFret: 1,
+      rootString: 6,
+      description: 'F13 E string root - F(1) F(1) A(3) E♭(♭7) G(9) voicing',
+      technique: 'E string root alternative',
+      difficulty: 'Advanced'
+    }
+  ],
+  'Altered Chords': [
+    {
+      name: 'F7♭9 A String Root (4 strings)',
+      frets: [-1, 8, 7, 8, 7, -1],
+      fingers: ['', '3', '1', '4', '2', ''],
+      startFret: 7,
+      rootString: 5,
+      description: 'F7♭9 - F(1) A(3) E♭(♭7) G♭(♭9), 5th omitted',
+      technique: 'A string root dominant ♭9',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'F7#9 "Hendrix" A String Root (4 strings)',
+      frets: [-1, 8, 7, 8, 9, -1],
+      fingers: ['', '3', '1', '2', '4', ''],
+      startFret: 7,
+      rootString: 5,
+      description: 'F7#9 - F(1) A(3) E♭(♭7) G#(#9), 5th omitted',
+      technique: 'A string root dominant #9 "Hendrix chord"',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'F7#5♭9 Upper String Voicing (4 strings)',
+      frets: [-1, -1, 1, 2, 2, 2],
+      fingers: ['', '', '1', '3', '3', '3'],
+      startFret: 1,
+      rootString: 4,
+      description: 'F7#5♭9 - F(1) A(3) C#(#5) E♭(♭7) G♭(♭9)',
+      technique: 'Altered dominant with #5 and ♭9',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'F9#5 Upper String Voicing (4 strings)',
+      frets: [-1, -1, 1, 2, 2, 3],
+      fingers: ['', '', '1', '2', '3', '4'],
+      startFret: 1,
+      rootString: 4,
+      description: 'F9#5 - F(1) A(3) C#(#5) E♭(♭7) G(9)',
+      technique: 'Dominant 9th with #5',
+      difficulty: 'Advanced'
+    }
+  ]
 };
 
 // Combine all chord data
@@ -1091,14 +1094,71 @@ const ALL_CHORD_DATA: Record<ChordCategory, ChordTypeData> = {
 };
 
 export default function MoveableGuitarChordShapes() {
-  const [selectedCategory, setSelectedCategory] = useState<ChordCategory>('Major');
+  const searchParams = useSearchParams();
+  
+  // Initialize state based on URL parameters
+  const getInitialCategory = (): ChordCategory => {
+    const category = searchParams.get('category');
+    if (category === '7th-chords') return '7th Chords';
+    if (category && category.toLowerCase() === 'extensions') return 'Extensions';
+    return 'Major';
+  };
+  
+  const getInitialStringSet = (): string => {
+    const stringSet = searchParams.get('stringSet');
+    return stringSet ? decodeURIComponent(stringSet) : 'Barre Chord Shapes';
+  };
+  
+  const getInitialExtensionType = (): ExtensionChordType => {
+    const stringSet = searchParams.get('stringSet');
+    if (stringSet) {
+      const decodedStringSet = decodeURIComponent(stringSet);
+      if (decodedStringSet === '9th Chords') return '9th Chords';
+      if (decodedStringSet === '11th Chords') return '11th Chords';
+      if (decodedStringSet === '13th Chords') return '13th Chords';
+      if (decodedStringSet === 'Altered Chords') return 'Altered Chords';
+    }
+    return '9th Chords';
+  };
+  
+  const [selectedCategory, setSelectedCategory] = useState<ChordCategory>(getInitialCategory());
   const [selectedSeventhType, setSelectedSeventhType] = useState<SeventhChordType>('Dominant 7th');
   const [selectedSuspendedType, setSelectedSuspendedType] = useState<SuspendedChordType>('Sus2');
-  const [selectedExtensionType, setSelectedExtensionType] = useState<ExtensionChordType>('9th Chords');
-  const [selectedStringSet, setSelectedStringSet] = useState<string>('Barre Chord Shapes');
+  const [selectedExtensionType, setSelectedExtensionType] = useState<ExtensionChordType>(getInitialExtensionType());
+  const [selectedStringSet, setSelectedStringSet] = useState<string>(getInitialStringSet());
   const [showTheoryModal, setShowTheoryModal] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
   const [expandedChords, setExpandedChords] = useState<Set<string>>(new Set());
+
+  // Handle URL parameters for automatic tab selection (for navigation changes)
+  useEffect(() => {
+    const category = searchParams.get('category');
+    const stringSet = searchParams.get('stringSet');
+    
+    if (category === '7th-chords') {
+      setSelectedCategory('7th Chords');
+      if (stringSet) {
+        setSelectedStringSet(decodeURIComponent(stringSet));
+      }
+    } else if (category && category.toLowerCase() === 'extensions') {
+      setSelectedCategory('Extensions');
+      if (stringSet) {
+        const decodedStringSet = decodeURIComponent(stringSet);
+        setSelectedStringSet(decodedStringSet);
+        
+        // Also set the extension type based on the stringSet
+        if (decodedStringSet === '9th Chords') {
+          setSelectedExtensionType('9th Chords');
+        } else if (decodedStringSet === '11th Chords') {
+          setSelectedExtensionType('11th Chords');
+        } else if (decodedStringSet === '13th Chords') {
+          setSelectedExtensionType('13th Chords');
+        } else if (decodedStringSet === 'Altered Chords') {
+          setSelectedExtensionType('Altered Chords');
+        }
+      }
+    }
+  }, [searchParams]);
 
   // Ensure valid string set is selected when category or chord type changes
   React.useEffect(() => {
@@ -1106,13 +1166,25 @@ export default function MoveableGuitarChordShapes() {
       const chordData = SEVENTH_CHORDS[selectedSeventhType];
       const availableStringSets = Object.keys(chordData);
       if (availableStringSets.length > 0 && !availableStringSets.includes(selectedStringSet)) {
-        setSelectedStringSet(availableStringSets[0]);
+        // Only set default if no URL parameter was provided
+        const urlStringSet = searchParams.get('stringSet');
+        if (!urlStringSet) {
+          setSelectedStringSet(availableStringSets[0]);
+        } else {
+          // If URL parameter exists but is invalid, use the decoded value if it's valid
+          const decodedStringSet = decodeURIComponent(urlStringSet);
+          if (availableStringSets.includes(decodedStringSet)) {
+            setSelectedStringSet(decodedStringSet);
+          } else {
+            setSelectedStringSet(availableStringSets[0]);
+          }
+        }
       }
     } else if (selectedCategory === 'Extensions') {
-      const extensionChordData = EXTENSION_CHORDS[selectedExtensionType];
-      const availableStringSets = Object.keys(extensionChordData);
-      if (availableStringSets.length > 0 && !availableStringSets.includes(selectedStringSet)) {
-        setSelectedStringSet(availableStringSets[0]);
+      // For extensions, we don't need string set validation since it's a flat array
+      // Just ensure we have a valid extension type
+      if (!EXTENSION_CHORD_TYPES.includes(selectedExtensionType)) {
+        setSelectedExtensionType('9th Chords');
       }
     } else {
       // For other categories, default to 'Barre Chord Shapes' if not already selected
@@ -1120,7 +1192,7 @@ export default function MoveableGuitarChordShapes() {
         setSelectedStringSet('Barre Chord Shapes');
       }
     }
-  }, [selectedCategory, selectedSeventhType, selectedExtensionType, selectedStringSet]);
+  }, [selectedCategory, selectedSeventhType, selectedExtensionType, selectedStringSet, searchParams]);
 
   const toggleChordExpansion = (chordId: string) => {
     const newExpanded = new Set(expandedChords);
@@ -1336,52 +1408,18 @@ export default function MoveableGuitarChordShapes() {
                   ? 'bg-amber-600 text-white shadow-md'
                   : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
               }`}
-              onClick={() => {
-                setSelectedExtensionType(type);
-                // Set default string set based on chord type
-                const chordData = EXTENSION_CHORDS[type];
-                const availableStringSets = Object.keys(chordData);
-                if (availableStringSets.length > 0) {
-                  setSelectedStringSet(availableStringSets[0]);
-                }
-              }}
+              onClick={() => setSelectedExtensionType(type)}
             >
               {type}
             </button>
           ))}
         </div>
 
-        {/* String Set tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {Object.keys(chordData).map(stringSet => (
-            <button
-              key={stringSet}
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                selectedStringSet === stringSet
-                  ? 'bg-amber-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
-              }`}
-              onClick={() => setSelectedStringSet(stringSet)}
-            >
-              {stringSet}
-            </button>
-          ))}
+        {/* Render chord grid directly since there are no string set tabs */}
+        <div className="mb-12">
+          <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedExtensionType}</h3>
+          {renderChordGrid(chordData)}
         </div>
-
-        {/* Render selected string set */}
-        {chordData[selectedStringSet] && (
-          <div className="mb-12">
-            <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedStringSet}</h3>
-            {renderChordGrid(chordData[selectedStringSet])}
-          </div>
-        )}
-
-        {/* No data message */}
-        {!chordData[selectedStringSet] && (
-          <div className="text-center text-gray-500 py-8">
-            <p>No chord shapes available for {selectedStringSet} in {selectedExtensionType}</p>
-          </div>
-        )}
       </div>
     );
   };
@@ -1435,6 +1473,7 @@ export default function MoveableGuitarChordShapes() {
     
     // Handle extension chords with more specific patterns first
     if (shape.name.includes('Maj9#11')) return ROOT_NOTE + 'Maj9#11';
+    if (shape.name.includes('9#5')) return ROOT_NOTE + '9#5';
     if (shape.name.includes('7#5♭9')) return ROOT_NOTE + '7#5♭9';
     if (shape.name.includes('7♭9')) return ROOT_NOTE + '7♭9';
     if (shape.name.includes('7#9')) return ROOT_NOTE + '7#9';
@@ -1478,7 +1517,7 @@ export default function MoveableGuitarChordShapes() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8" id="chord-inversions-7th-chords">
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">

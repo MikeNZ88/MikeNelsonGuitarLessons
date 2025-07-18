@@ -314,6 +314,42 @@ export default function Blog() {
       link: '/blog/barre-chord-library#equal-movement',
       category: 'Theory'
     },
+    {
+      topic: 'Chord Inversions (Triads)',
+      description: 'Root position, 1st inversion, and 2nd inversion on 3-string sets',
+      link: '/blog/triads-on-3-string-sets#chord-inversions-triads',
+      category: 'Theory'
+    },
+    {
+      topic: 'Chord Inversions (7th Chords)',
+      description: 'Drop 2 voicings and inversions on strings 1-4, 2-5, and 3-6',
+      link: '/blog/moveable-guitar-chord-shapes?category=7th-chords&stringSet=Inversions (Strings 1-4)#chord-inversions-7th-chords',
+      category: 'Theory'
+    },
+    {
+      topic: '9th Chords',
+      description: 'Extended chords with added 9th intervals - major, minor, and dominant',
+      link: '/blog/moveable-guitar-chord-shapes?category=extensions&stringSet=9th Chords',
+      category: 'Theory'
+    },
+    {
+      topic: '11th Chords',
+      description: 'Extended chords with added 11th intervals - major, minor, and dominant',
+      link: '/blog/moveable-guitar-chord-shapes?category=extensions&stringSet=11th Chords',
+      category: 'Theory'
+    },
+    {
+      topic: '13th Chords',
+      description: 'Extended chords with added 13th intervals - major, minor, and dominant',
+      link: '/blog/moveable-guitar-chord-shapes?category=extensions&stringSet=13th Chords',
+      category: 'Theory'
+    },
+    {
+      topic: 'Altered Chords',
+      description: 'Chords with altered 5ths and 9ths - essential for jazz and advanced harmony',
+      link: '/blog/moveable-guitar-chord-shapes?category=extensions&stringSet=Altered Chords',
+      category: 'Theory'
+    },
 
     
     // D
