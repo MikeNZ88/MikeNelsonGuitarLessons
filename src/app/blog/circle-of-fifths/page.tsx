@@ -1,0 +1,1454 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+
+
+type KeyType = string;
+type ChordType = string;
+
+const majorKeys = [
+  'C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'
+];
+
+const keySignatures: Record<string, string> = {
+  'C': '', 'G': '1♯', 'D': '2♯', 'A': '3♯', 'E': '4♯', 'B': '5♯',
+  'F♯/G♭': '6♯/6♭', 'D♭': '5♭', 'A♭': '4♭', 'E♭': '3♭', 'B♭': '2♭', 'F': '1♭'
+};
+
+const getKeyPosition = (index: number, radius: number) => {
+  const angle = (index * 30) - 90;
+  const radian = (angle * Math.PI) / 180;
+  const x = 225 + radius * Math.cos(radian);
+  const y = 225 + radius * Math.sin(radian);
+  return { x, y };
+};
+
+const SimpleCircleOfFifths = () => {
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+
+  // Define which notes are sharp/flat for each key (for highlighting)
+  const keyAccidentals: Record<string, string[]> = {
+    'C': [],
+    'G': ['F♯'],
+    'D': ['F♯', 'C♯'],
+    'A': ['F♯', 'C♯', 'G♯'],
+    'E': ['F♯', 'C♯', 'G♯', 'D♯'],
+    'B': ['F♯', 'C♯', 'G♯', 'D♯', 'A♯'],
+    'F♯/G♭': ['F♯', 'C♯', 'G♯', 'D♯', 'A♯', 'E♯'],
+    'D♭': ['B♭', 'E♭', 'A♭', 'D♭', 'G♭'],
+    'A♭': ['B♭', 'E♭', 'A♭', 'D♭'],
+    'E♭': ['B♭', 'E♭', 'A♭'],
+    'B♭': ['B♭', 'E♭'],
+    'F': ['B♭']
+  };
+
+  // Color for each key (matching the interactive version)
+  const keyColors: Record<string, string> = {
+    'C': '#EF4444',      // Red
+    'G': '#F97316',      // Orange  
+    'D': '#EAB308',      // Yellow
+    'A': '#22C55E',      // Green
+    'E': '#06B6D4',      // Cyan
+    'B': '#3B82F6',      // Blue
+    'F♯/G♭': '#8B5CF6',  // Purple
+    'D♭': '#EC4899',     // Pink
+    'A♭': '#84CC16',     // Lime
+    'E♭': '#F59E0B',     // Amber
+    'B♭': '#10B981',     // Emerald
+    'F': '#6366F1'       // Indigo
+  };
+
+  // Define the sharps and flats for each key
+  const keyNotes: Record<string, { sharps: string[], flats: string[] }> = {
+    'C': { sharps: [], flats: [] },
+    'G': { sharps: ['F♯'], flats: [] },
+    'D': { sharps: ['F♯', 'C♯'], flats: [] },
+    'A': { sharps: ['F♯', 'C♯', 'G♯'], flats: [] },
+    'E': { sharps: ['F♯', 'C♯', 'G♯', 'D♯'], flats: [] },
+    'B': { sharps: ['F♯', 'C♯', 'G♯', 'D♯', 'A♯'], flats: [] },
+    'F♯/G♭': { sharps: ['F♯', 'C♯', 'G♯', 'D♯', 'A♯', 'E♯'], flats: ['B♭', 'E♭', 'A♭', 'D♭', 'G♭', 'C♭'] },
+    'D♭': { sharps: [], flats: ['B♭', 'E♭', 'A♭', 'D♭', 'G♭'] },
+    'A♭': { sharps: [], flats: ['B♭', 'E♭', 'A♭', 'D♭'] },
+    'E♭': { sharps: [], flats: ['B♭', 'E♭', 'A♭'] },
+    'B♭': { sharps: [], flats: ['B♭', 'E♭'] },
+    'F': { sharps: [], flats: ['B♭'] }
+  };
+
+  // Full scales for each key
+  const keyScales: Record<string, string[]> = {
+    'C': ['C', 'D', 'E', 'F', 'G', 'A', 'B'],
+    'G': ['G', 'A', 'B', 'C', 'D', 'E', 'F♯'],
+    'D': ['D', 'E', 'F♯', 'G', 'A', 'B', 'C♯'],
+    'A': ['A', 'B', 'C♯', 'D', 'E', 'F♯', 'G♯'],
+    'E': ['E', 'F♯', 'G♯', 'A', 'B', 'C♯', 'D♯'],
+    'B': ['B', 'C♯', 'D♯', 'E', 'F♯', 'G♯', 'A♯'],
+    'F♯/G♭': ['F♯', 'G♯', 'A♯', 'B', 'C♯', 'D♯', 'E♯'],
+    'D♭': ['D♭', 'E♭', 'F', 'G♭', 'A♭', 'B♭', 'C'],
+    'A♭': ['A♭', 'B♭', 'C', 'D♭', 'E♭', 'F', 'G'],
+    'E♭': ['E♭', 'F', 'G', 'A♭', 'B♭', 'C', 'D'],
+    'B♭': ['B♭', 'C', 'D', 'E♭', 'F', 'G', 'A'],
+    'F': ['F', 'G', 'A', 'B♭', 'C', 'D', 'E']
+  };
+
+  // Alternative sharp spellings for flat keys
+  const alternativeSharpSpellings: Record<string, { key: string, sharps: string[], scale: string[] }> = {
+    'D♭': { 
+      key: 'C♯', 
+      sharps: ['C♯', 'D♯', 'E♯', 'F♯', 'G♯', 'A♯', 'B♯'], 
+      scale: ['C♯', 'D♯', 'E♯', 'F♯', 'G♯', 'A♯', 'B♯']
+    },
+    'A♭': { 
+      key: 'G♯', 
+      sharps: ['G♯', 'A♯', 'B♯', 'C♯', 'D♯', 'E♯', 'F♯♯'], 
+      scale: ['G♯', 'A♯', 'B♯', 'C♯', 'D♯', 'E♯', 'F♯♯']
+    },
+    'E♭': { 
+      key: 'D♯', 
+      sharps: ['D♯', 'E♯', 'F♯♯', 'G♯', 'A♯', 'B♯', 'C♯♯'], 
+      scale: ['D♯', 'E♯', 'F♯♯', 'G♯', 'A♯', 'B♯', 'C♯♯']
+    },
+    'B♭': { 
+      key: 'A♯', 
+      sharps: ['A♯', 'B♯', 'C♯♯', 'D♯', 'E♯', 'F♯♯', 'G♯♯'], 
+      scale: ['A♯', 'B♯', 'C♯♯', 'D♯', 'E♯', 'F♯♯', 'G♯♯']
+    },
+    'F': { 
+      key: 'E♯', 
+      sharps: ['E♯', 'F♯♯', 'G♯♯', 'A♯', 'B♯', 'C♯♯', 'D♯♯'], 
+      scale: ['E♯', 'F♯♯', 'G♯♯', 'A♯', 'B♯', 'C♯♯', 'D♯♯']
+    }
+  };
+
+  const handleKeyClick = (key: string) => {
+    setSelectedKey(selectedKey === key ? null : key);
+  };
+
+  const toggleSection = (section: string) => {
+    const newExpanded = new Set(expandedSections);
+    if (newExpanded.has(section)) {
+      newExpanded.delete(section);
+    } else {
+      newExpanded.add(section);
+    }
+    setExpandedSections(newExpanded);
+  };
+
+  // Function to get display text with dynamic enharmonic spelling
+  const getDisplayText = (key: string): string => {
+    return key;
+  };
+
+  // Remove accidentalToCircleKey helper and accidental highlighting logic
+
+  return (
+    <div className="flex flex-col items-center p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl">
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold text-amber-800 mb-2">Circle of Fifths</h1>
+        <p className="text-amber-700 max-w-md">
+          Click any key to see its sharps and flats. The fundamental relationship between keys in Western music theory.
+        </p>
+      </div>
+      <div className="relative mb-8">
+        <svg width="450" height="450" className="drop-shadow-lg">
+          {/* Background circle */}
+          <circle
+            cx="225"
+            cy="225"
+            r="200"
+            fill="white"
+            stroke="#E2E8F0"
+            strokeWidth="2"
+          />
+          {/* Dividing lines */}
+          {Array.from({ length: 12 }, (_, i) => {
+            const angle = (i * 30) - 90;
+            const radian = (angle * Math.PI) / 180;
+            const x1 = 225 + 60 * Math.cos(radian);
+            const y1 = 225 + 60 * Math.sin(radian);
+            const x2 = 225 + 200 * Math.cos(radian);
+            const y2 = 225 + 200 * Math.sin(radian);
+            return (
+              <line
+                key={i}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#E2E8F0"
+                strokeWidth="1"
+                opacity="0.5"
+              />
+            );
+          })}
+          {/* Major keys */}
+          {majorKeys.map((key, index) => {
+            const { x, y } = getKeyPosition(index, 160);
+            const isSelected = selectedKey === key;
+            return (
+              <g key={key}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="24"
+                  fill={keyColors[key] || '#3B82F6'}
+                  stroke={isSelected ? '#1E40AF' : '#E2E8F0'}
+                  strokeWidth={isSelected ? '3' : '2'}
+                  className="cursor-pointer transition-all hover:stroke-blue-400"
+                  onClick={() => handleKeyClick(key)}
+                />
+                <text
+                  x={x}
+                  y={y + 6}
+                  textAnchor="middle"
+                  className="text-white font-bold text-lg cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {getDisplayText(key)}
+                </text>
+                {/* Key signature */}
+                <text
+                  x={x}
+                  y={y + 35}
+                  textAnchor="middle"
+                  className="text-slate-600 font-medium text-sm cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {keySignatures[key]}
+                </text>
+              </g>
+            );
+          })}
+          {/* Center label */}
+          <text
+            x="225"
+            y="225"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Circle of
+          </text>
+          <text
+            x="225"
+            y="240"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Fifths
+          </text>
+        </svg>
+      </div>
+
+      {/* Key information panel */}
+      {selectedKey && (
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full mb-6 border border-amber-100">
+          <h3 className="text-2xl font-bold text-amber-800 mb-4">
+            {selectedKey} Major Key
+          </h3>
+          
+          <div className="space-y-4">
+            <p className="text-amber-700">
+              <span className="font-medium">Key Signature:</span> {keySignatures[selectedKey] || 'No sharps or flats'}
+            </p>
+            
+            {/* Full Scale Section */}
+            <div>
+              <button
+                onClick={() => toggleSection('scale')}
+                className="flex items-center justify-between w-full text-left font-medium text-slate-700 mb-2 hover:text-slate-900"
+              >
+                <span>Full Scale</span>
+                <span className="text-lg">
+                  {expandedSections.has('scale') ? '−' : '+'}
+                </span>
+              </button>
+              {expandedSections.has('scale') && (
+                <div className="bg-amber-50 rounded-lg p-3">
+                  <div className="flex flex-wrap gap-1">
+                    {keyScales[selectedKey].map((note, index) => (
+                      <span 
+                        key={index}
+                        className="px-2 py-1 bg-white text-amber-700 rounded text-sm font-medium border border-amber-200"
+                      >
+                        {note}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Sharps/Flats reverted to previous style */}
+            {keyNotes[selectedKey].sharps.length > 0 && (
+              <div>
+                <p className="font-medium text-slate-700 mb-2">Sharps:</p>
+                <div className="flex flex-wrap gap-2">
+                  {keyNotes[selectedKey].sharps.map((note, index) => (
+                    <span 
+                      key={index}
+                      className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium"
+                    >
+                      {note}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {keyNotes[selectedKey].flats.length > 0 && (
+              <div>
+                <p className="font-medium text-slate-700 mb-2">Flats:</p>
+                <div className="flex flex-wrap gap-2">
+                  {keyNotes[selectedKey].flats.map((note, index) => (
+                    <span 
+                      key={index}
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                    >
+                      {note}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Why Flats Instead of Sharps Section */}
+                {alternativeSharpSpellings[selectedKey] && (
+                  <div className="mt-3">
+                    <button
+                      onClick={() => toggleSection('alternative')}
+                      className="flex items-center justify-between w-full text-left font-medium text-slate-700 mb-2 hover:text-slate-900"
+                    >
+                      <span>Why Flats Instead of Sharps?</span>
+                      <span className="text-lg">
+                        {expandedSections.has('alternative') ? '−' : '+'}
+                      </span>
+                    </button>
+                    {expandedSections.has('alternative') && (
+                      <div className="bg-amber-50 rounded-lg p-3 space-y-3">
+                        <p className="text-sm text-amber-700">
+                          This key uses {keyNotes[selectedKey].flats.length} flats instead of {alternativeSharpSpellings[selectedKey].sharps.length} sharps for simplicity.
+                        </p>
+                        
+                        <div>
+                          <p className="text-sm font-medium text-amber-800 mb-2">Alternative Sharp Spelling ({alternativeSharpSpellings[selectedKey].key}):</p>
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {alternativeSharpSpellings[selectedKey].sharps.map((note, index) => (
+                              <span 
+                                key={index}
+                                className="px-2 py-1 bg-red-50 text-red-700 rounded text-xs font-medium border border-red-200"
+                              >
+                                {note}
+                              </span>
+                            ))}
+                          </div>
+                          <p className="text-xs text-amber-600">
+                            Scale: {alternativeSharpSpellings[selectedKey].scale.join(' - ')}
+                          </p>
+                        </div>
+                        
+                        <p className="text-xs text-amber-700">
+                          <strong>Why flats are preferred:</strong> Fewer accidentals, easier to read.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {keyNotes[selectedKey].sharps.length === 0 && keyNotes[selectedKey].flats.length === 0 && (
+              <p className="text-slate-600 italic">No sharps or flats in this key</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full border border-amber-100">
+        <h4 className="font-bold text-amber-800 mb-4">How to Read</h4>
+        <div className="space-y-2 text-sm text-amber-700">
+          <p>• <strong>Click any key</strong> to see its sharps and flats</p>
+          <p>• <strong>Clockwise:</strong> Each key is a perfect fifth above the previous</p>
+          <p>• <strong>Counterclockwise:</strong> Each key is a perfect fourth above the previous</p>
+          <p>• <strong>Key signatures:</strong> Show the number of sharps or flats</p>
+          <p>• <strong>Enharmonic names:</strong> Some keys have two names (e.g., F♯/G♭)</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ChromaticScaleBetweenFifths = () => {
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [showChromatic, setShowChromatic] = useState(false);
+
+  // Color for each key (matching the circle of fifths)
+  const keyColors: Record<string, string> = {
+    'C': '#EF4444',      // Red
+    'G': '#F97316',      // Orange  
+    'D': '#EAB308',      // Yellow
+    'A': '#22C55E',      // Green
+    'E': '#06B6D4',      // Cyan
+    'B': '#3B82F6',      // Blue
+    'F♯/G♭': '#8B5CF6',  // Purple
+    'D♭': '#EC4899',     // Pink
+    'A♭': '#84CC16',     // Lime
+    'E♭': '#F59E0B',     // Amber
+    'B♭': '#10B981',     // Emerald
+    'F': '#6366F1'       // Indigo
+  };
+
+  // Define the chromatic scale between each key and its fifth
+  // Using enharmonic choices that lead to 5 different letters
+  const chromaticBetweenFifths: Record<string, string[]> = {
+    'C': ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G'], // C to G
+    'G': ['G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯', 'D'], // G to D
+    'D': ['D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A'], // D to A
+    'A': ['A', 'A♯', 'B', 'C', 'C♯', 'D', 'D♯', 'E'], // A to E
+    'E': ['E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'], // E to B
+    'B': ['B', 'C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯'], // B to F♯
+    'F♯/G♭': ['F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C', 'C♯'], // F♯ to C♯
+    'D♭': ['D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭'], // D♭ to A♭
+    'A♭': ['A♭', 'A', 'B♭', 'B', 'C', 'D♭', 'D', 'E♭'], // A♭ to E♭
+    'E♭': ['E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭'], // E♭ to B♭
+    'B♭': ['B♭', 'B', 'C', 'D♭', 'D', 'E♭', 'E', 'F'], // B♭ to F
+    'F': ['F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B', 'C']  // F to C
+  };
+
+  // Define the flat version for F♯/G♭ key
+  const chromaticBetweenFifthsFlat: Record<string, string[]> = {
+    'F♯/G♭': ['G♭', 'G', 'A♭', 'A', 'B♭', 'B', 'C', 'D♭'], // G♭ to D♭
+  };
+
+  // Define which notes in the chromatic scale are diatonic (in the key)
+  const diatonicNotesInChromatic: Record<string, number[]> = {
+    'C': [0, 2, 4, 5, 7], // C, D, E, F, G (1, 2, 3, 4, 5)
+    'G': [0, 2, 4, 5, 7], // G, A, B, C, D (1, 2, 3, 4, 5)
+    'D': [0, 2, 4, 5, 7], // D, E, F♯, G, A (1, 2, 3, 4, 5)
+    'A': [0, 2, 4, 5, 7], // A, B, C♯, D, E (1, 2, 3, 4, 5)
+    'E': [0, 2, 4, 5, 7], // E, F♯, G♯, A, B (1, 2, 3, 4, 5)
+    'B': [0, 2, 4, 5, 7], // B, C♯, D♯, E, F♯ (1, 2, 3, 4, 5)
+    'F♯/G♭': [0, 2, 4, 5, 7], // F♯, G♯, A♯, B, C♯ (1, 2, 3, 4, 5)
+    'D♭': [0, 2, 4, 5, 7], // G♭, A♭, B♭, C, D♭ (1, 2, 3, 4, 5)
+    'A♭': [0, 2, 4, 5, 7], // A♭, B♭, C, D♭, E♭ (1, 2, 3, 4, 5)
+    'E♭': [0, 2, 4, 5, 7], // E♭, F, G, A♭, B♭ (1, 2, 3, 4, 5)
+    'B♭': [0, 2, 4, 5, 7], // B♭, C, D, E♭, F (1, 2, 3, 4, 5)
+    'F': [0, 2, 4, 5, 7]  // F, G, A, B♭, C (1, 2, 3, 4, 5)
+  };
+
+  // Get the fifth for each key
+  const getFifth = (key: string): string => {
+    const fifths: Record<string, string> = {
+      'C': 'G', 'G': 'D', 'D': 'A', 'A': 'E', 'E': 'B', 'B': 'F♯',
+      'F♯/G♭': 'C♯', 'D♭': 'A♭', 'A♭': 'E♭', 'E♭': 'B♭', 'B♭': 'F', 'F': 'C'
+    };
+    return fifths[key] || '';
+  };
+
+  const handleKeyClick = (key: string) => {
+    setSelectedKey(selectedKey === key ? null : key);
+  };
+
+  const getKeyPosition = (index: number, radius: number) => {
+    const angle = (index * 30) - 90;
+    const radian = (angle * Math.PI) / 180;
+    const x = 225 + radius * Math.cos(radian);
+    const y = 225 + radius * Math.sin(radian);
+    return { x, y };
+  };
+
+  return (
+    <div className="flex flex-col items-center p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl">
+      <div className="mb-8 text-center">
+        <h2 className="text-3xl font-bold text-amber-800 mb-2">Chromatic Scale Between Fifths</h2>
+        <p className="text-amber-700 max-w-md">
+          Click any key to see the chromatic scale between that note and its fifth (7 semitones higher).
+        </p>
+      </div>
+
+      <div className="relative mb-8">
+        <svg width="450" height="450" className="drop-shadow-lg">
+          {/* Background circle */}
+          <circle
+            cx="225"
+            cy="225"
+            r="200"
+            fill="white"
+            stroke="#E2E8F0"
+            strokeWidth="2"
+          />
+          {/* Dividing lines */}
+          {Array.from({ length: 12 }, (_, i) => {
+            const angle = (i * 30) - 90;
+            const radian = (angle * Math.PI) / 180;
+            const x1 = 225 + 60 * Math.cos(radian);
+            const y1 = 225 + 60 * Math.sin(radian);
+            const x2 = 225 + 200 * Math.cos(radian);
+            const y2 = 225 + 200 * Math.sin(radian);
+            return (
+              <line
+                key={i}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#E2E8F0"
+                strokeWidth="1"
+                opacity="0.5"
+              />
+            );
+          })}
+          {/* Major keys */}
+          {majorKeys.map((key, index) => {
+            const { x, y } = getKeyPosition(index, 160);
+            const isSelected = selectedKey === key;
+            return (
+              <g key={key}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="24"
+                  fill={keyColors[key] || '#3B82F6'}
+                  stroke={isSelected ? '#1E40AF' : '#E2E8F0'}
+                  strokeWidth={isSelected ? '3' : '2'}
+                  className="cursor-pointer transition-all hover:stroke-blue-400"
+                  onClick={() => handleKeyClick(key)}
+                />
+                <text
+                  x={x}
+                  y={y + 6}
+                  textAnchor="middle"
+                  className="text-white font-bold text-lg cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {key}
+                </text>
+                {/* Key signature */}
+                <text
+                  x={x}
+                  y={y + 35}
+                  textAnchor="middle"
+                  className="text-slate-600 font-medium text-sm cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {keySignatures[key]}
+                </text>
+              </g>
+            );
+          })}
+          {/* Center label */}
+          <text
+            x="225"
+            y="225"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Chromatic
+          </text>
+          <text
+            x="225"
+            y="240"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Between Fifths
+          </text>
+        </svg>
+      </div>
+
+      {/* Chromatic scale information panel */}
+      {selectedKey && (
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl w-full mb-6 border border-amber-100">
+          <h3 className="text-2xl font-bold text-amber-800 mb-4">
+            Chromatic Scale: {selectedKey} to {getFifth(selectedKey)}
+          </h3>
+          
+          <div className="space-y-4">
+            <p className="text-amber-700">
+              <span className="font-medium">A fifth is always 7 semitones higher</span> using the chromatic scale.
+            </p>
+            
+            {/* Show both sharp and flat spellings for F♯/G♭ */}
+            {selectedKey === 'F♯/G♭' ? (
+              <div className="space-y-6">
+                {/* Sharp spelling */}
+                <div>
+                  <p className="font-medium text-amber-800 mb-3">Sharp Spelling: F♯ to C♯</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {chromaticBetweenFifths[selectedKey].map((note, index) => {
+                      const isDiatonic = diatonicNotesInChromatic[selectedKey].includes(index);
+                      const isStartOrEnd = index === 0 || index === 7;
+                      
+                      return (
+                        <div 
+                          key={index}
+                          className="flex flex-col items-center"
+                        >
+                          <div 
+                            className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm border-2"
+                            style={{ 
+                              backgroundColor: isStartOrEnd 
+                                ? keyColors[selectedKey] 
+                                : isDiatonic 
+                                  ? '#10B981' // Emerald green for diatonic notes
+                                  : '#6B7280', // Gray for chromatic notes
+                              borderColor: isStartOrEnd 
+                                ? keyColors[selectedKey] 
+                                : isDiatonic 
+                                  ? '#059669' 
+                                  : '#4B5563',
+                              color: isStartOrEnd 
+                                ? 'white' 
+                                : isDiatonic 
+                                  ? 'white' 
+                                  : 'white'
+                            }}
+                          >
+                            {note}
+                          </div>
+                          <span className="text-xs text-amber-600 mt-1">
+                            {index === 0 ? 'Start' : index === 7 ? 'Fifth' : `${index} semitones`}
+                          </span>
+                          {isDiatonic && !isStartOrEnd && (
+                            <span className="text-xs text-amber-500 mt-1 font-medium">
+                              In key
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Flat spelling */}
+                <div>
+                  <p className="font-medium text-amber-800 mb-3">Flat Spelling: G♭ to D♭</p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {chromaticBetweenFifthsFlat[selectedKey].map((note, index) => {
+                      const isDiatonic = diatonicNotesInChromatic[selectedKey].includes(index);
+                      const isStartOrEnd = index === 0 || index === 7;
+                      
+                      return (
+                        <div 
+                          key={index}
+                          className="flex flex-col items-center"
+                        >
+                          <div 
+                            className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm border-2"
+                            style={{ 
+                              backgroundColor: isStartOrEnd 
+                                ? keyColors[selectedKey] 
+                                : isDiatonic 
+                                  ? '#10B981' // Emerald green for diatonic notes
+                                  : '#6B7280', // Gray for chromatic notes
+                              borderColor: isStartOrEnd 
+                                ? keyColors[selectedKey] 
+                                : isDiatonic 
+                                  ? '#059669' 
+                                  : '#4B5563',
+                              color: isStartOrEnd 
+                                ? 'white' 
+                                : isDiatonic 
+                                  ? 'white' 
+                                  : 'white'
+                            }}
+                          >
+                            {note}
+                          </div>
+                          <span className="text-xs text-amber-600 mt-1">
+                            {index === 0 ? 'Start' : index === 7 ? 'Fifth' : `${index} semitones`}
+                          </span>
+                          {isDiatonic && !isStartOrEnd && (
+                            <span className="text-xs text-amber-500 mt-1 font-medium">
+                              In key
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Regular display for other keys */
+              <div>
+                <p className="font-medium text-amber-800 mb-3">Chromatic Scale (12 notes):</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {chromaticBetweenFifths[selectedKey].map((note, index) => {
+                    const isDiatonic = diatonicNotesInChromatic[selectedKey].includes(index);
+                    const isStartOrEnd = index === 0 || index === 7;
+                    
+                    return (
+                      <div 
+                        key={index}
+                        className="flex flex-col items-center"
+                      >
+                        <div 
+                          className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-sm border-2"
+                          style={{ 
+                            backgroundColor: isStartOrEnd 
+                              ? keyColors[selectedKey] 
+                              : isDiatonic 
+                                ? '#10B981' // Emerald green for diatonic notes
+                                : '#6B7280', // Gray for chromatic notes
+                            borderColor: isStartOrEnd 
+                              ? keyColors[selectedKey] 
+                              : isDiatonic 
+                                ? '#059669' 
+                                : '#4B5563',
+                            color: isStartOrEnd 
+                              ? 'white' 
+                              : isDiatonic 
+                                ? 'white' 
+                                : 'white'
+                          }}
+                        >
+                          {note}
+                        </div>
+                        <span className="text-xs text-amber-600 mt-1">
+                          {index === 0 ? 'Start' : index === 7 ? 'Fifth' : `${index} semitones`}
+                        </span>
+                        {isDiatonic && !isStartOrEnd && (
+                          <span className="text-xs text-amber-500 mt-1 font-medium">
+                            In key
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+            
+                         <div className="bg-amber-50 rounded-lg p-4">
+               <p className="text-sm text-amber-700 mb-2">
+                                 <strong>Note:</strong> The chromatic scale between any two notes a fifth apart always contains 8 notes total (including start and end). The full chromatic scale contains all 12 notes in Western music. 
+                  <strong>Enharmonic spellings</strong> (notes that sound the same but are written differently, like F♯ and G♭) are chosen to avoid repeating the same letter name in the sequence.
+               </p>
+                               <p className="text-sm text-amber-700">
+                  <strong>Highlighting:</strong> Green circles show notes that are in the key (diatonic). Gray circles show chromatic passing tones (not in the key).
+                </p>
+             </div>
+          </div>
+        </div>
+      )}
+
+             <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full border border-amber-100">
+         <h4 className="font-bold text-amber-800 mb-4">How to Read</h4>
+         <div className="space-y-2 text-sm text-amber-700">
+           <p>• <strong>Click any key</strong> to see its chromatic scale to the fifth</p>
+           
+           <p>• <strong>Green circles:</strong> Notes that are in the key (diatonic)</p>
+           <p>• <strong>Gray circles:</strong> Chromatic passing tones (not in the key)</p>
+           <p>• <strong>7 semitones:</strong> Always the distance between a note and its fifth</p>
+           <p>• <strong>8 notes total:</strong> Including start and end notes in the chromatic sequence</p>
+         </div>
+       </div>
+    </div>
+  );
+};
+
+const CircleOfFifths = () => {
+  const [selectedKey, setSelectedKey] = useState<KeyType | null>(null);
+
+  // Major keys in clockwise order starting from C (using hybrid spelling)
+  const majorKeys: KeyType[] = [
+    'C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'
+  ];
+
+  // Minor keys (relative minors) - using hybrid spelling
+  const minorKeys: KeyType[] = [
+    'Am', 'Em', 'Bm', 'F♯m', 'C♯m', 'G♯m', 'D♯m/E♭m', 'B♭m', 'Fm', 'Cm', 'Gm', 'Dm'
+  ];
+
+  // Sharps and flats for each key
+  const keySignatures: Record<KeyType, string> = {
+    'C': '', 'G': '1♯', 'D': '2♯', 'A': '3♯', 'E': '4♯', 'B': '5♯', 'F♯/G♭': '6♯/6♭',
+    'D♭': '5♭', 'A♭': '4♭', 'E♭': '3♭', 'B♭': '2♭', 'F': '1♭'
+  };
+
+  const minorKeySignatures: Record<KeyType, string> = {
+    'Am': '', 'Em': '1♯', 'Bm': '2♯', 'F♯m': '3♯', 'C♯m': '4♯', 'G♯m': '5♯', 'D♯m/E♭m': '6♯/6♭',
+    'B♭m': '5♭', 'Fm': '4♭', 'Cm': '3♭', 'Gm': '2♭', 'Dm': '1♭'
+  };
+
+  // Color for each major-minor pair
+  const keyColors: Record<KeyType, string> = {
+    'C': '#EF4444', 'Am': '#EF4444',      // Red
+    'G': '#F97316', 'Em': '#F97316',      // Orange  
+    'D': '#EAB308', 'Bm': '#EAB308',      // Yellow
+    'A': '#22C55E', 'F♯m': '#22C55E',     // Green
+    'E': '#06B6D4', 'C♯m': '#06B6D4',     // Cyan
+    'B': '#3B82F6', 'G♯m': '#3B82F6',     // Blue
+    'F♯/G♭': '#8B5CF6', 'D♯m/E♭m': '#8B5CF6',    // Purple
+    'D♭': '#EC4899', 'B♭m': '#EC4899',    // Pink
+    'A♭': '#84CC16', 'Fm': '#84CC16',     // Lime
+    'E♭': '#F59E0B', 'Cm': '#F59E0B',     // Amber
+    'B♭': '#10B981', 'Gm': '#10B981',     // Emerald
+    'F': '#6366F1', 'Dm': '#6366F1'       // Indigo
+  };
+
+  // Get diatonic chords for a key
+  const getDiatonicChords = (key: KeyType): ChordType[] => {
+    // Define the diatonic chords for each major key with correct enharmonic spellings
+    const majorDiatonicChords: Record<KeyType, ChordType[]> = {
+      'C': ['C', 'Dm', 'Em', 'F', 'G', 'Am', 'Bdim'],
+      'G': ['G', 'Am', 'Bm', 'C', 'D', 'Em', 'F♯dim'],
+      'D': ['D', 'Em', 'F♯m', 'G', 'A', 'Bm', 'C♯dim'],
+      'A': ['A', 'Bm', 'C♯m', 'D', 'E', 'F♯m', 'G♯dim'],
+      'E': ['E', 'F♯m', 'G♯m', 'A', 'B', 'C♯m', 'D♯dim'],
+      'B': ['B', 'C♯m', 'D♯m', 'E', 'F♯', 'G♯m', 'A♯dim'],
+      'F♯/G♭': ['F♯', 'G♯m', 'A♯m', 'B', 'C♯', 'D♯m', 'E♯dim'],
+      'D♭': ['D♭', 'E♭m', 'Fm', 'G♭', 'A♭', 'B♭m', 'Cdim'],
+      'A♭': ['A♭', 'B♭m', 'Cm', 'D♭', 'E♭', 'Fm', 'Gdim'],
+      'E♭': ['E♭', 'Fm', 'Gm', 'A♭', 'B♭', 'Cm', 'Ddim'],
+      'B♭': ['B♭', 'Cm', 'Dm', 'E♭', 'F', 'Gm', 'Adim'],
+      'F': ['F', 'Gm', 'Am', 'B♭', 'C', 'Dm', 'Edim']
+    };
+
+    // Define the diatonic chords for each minor key (natural minor scale)
+    const minorDiatonicChords: Record<KeyType, ChordType[]> = {
+      'Am': ['Am', 'Bdim', 'C', 'Dm', 'Em', 'F', 'G'],
+      'Em': ['Em', 'F♯dim', 'G', 'Am', 'Bm', 'C', 'D'],
+      'Bm': ['Bm', 'C♯dim', 'D', 'Em', 'F♯m', 'G', 'A'],
+      'F♯m': ['F♯m', 'G♯dim', 'A', 'Bm', 'C♯m', 'D', 'E'],
+      'C♯m': ['C♯m', 'D♯dim', 'E', 'F♯m', 'G♯m', 'A', 'B'],
+      'G♯m': ['G♯m', 'A♯dim', 'B', 'C♯m', 'D♯m', 'E', 'F♯'],
+      'D♯m/E♭m': ['D♯m', 'E♯dim', 'F♯', 'G♯m', 'A♯m', 'B', 'C♯'],
+      'B♭m': ['B♭m', 'Cdim', 'D♭', 'E♭m', 'Fm', 'G♭', 'A♭'],
+      'Fm': ['Fm', 'Gdim', 'A♭', 'B♭m', 'Cm', 'D♭', 'E♭'],
+      'Cm': ['Cm', 'Ddim', 'E♭', 'Fm', 'Gm', 'A♭', 'B♭'],
+      'Gm': ['Gm', 'Adim', 'B♭', 'Cm', 'Dm', 'E♭', 'F'],
+      'Dm': ['Dm', 'Edim', 'F', 'Gm', 'Am', 'B♭', 'C']
+    };
+
+    // Return the appropriate diatonic chords based on whether it's a major or minor key
+    if (key.includes('m')) {
+      return minorDiatonicChords[key] || [];
+    } else {
+      return majorDiatonicChords[key] || [];
+    }
+  };
+
+  // Function to get the correct enharmonic spelling for a chord based on the selected key
+  const getCorrectChordSpelling = (chord: ChordType, selectedKey: KeyType): ChordType => {
+    if (!selectedKey) return chord;
+    
+    // Define which keys use which enharmonic spellings
+    const sharpKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭'];
+    const flatKeys = ['D♭', 'A♭', 'E♭', 'B♭', 'F'];
+    
+    // Handle the special case of F♯/G♭ - use sharp spelling for sharp keys, flat for flat keys
+    if (selectedKey === 'F♯/G♭') {
+      // For F♯/G♭ itself, we'll use sharp spelling as default
+      return chord;
+    }
+    
+    // Convert enharmonic spellings based on the selected key
+    if (sharpKeys.includes(selectedKey)) {
+      // Use sharp spellings
+      return chord
+        .replace('G♭', 'F♯')
+        .replace('E♭m', 'D♯m')
+        .replace('A♭', 'G♯')
+        .replace('D♭', 'C♯')
+        .replace('B♭', 'A♯');
+    } else if (flatKeys.includes(selectedKey)) {
+      // Use flat spellings
+      return chord
+        .replace('F♯', 'G♭')
+        .replace('D♯m', 'E♭m')
+        .replace('G♯', 'A♭')
+        .replace('C♯', 'D♭')
+        .replace('A♯', 'B♭');
+    }
+    
+    return chord;
+  };
+
+  const getKeyPosition = (index: number) => {
+    const angle = (index * 30) - 90; // 30 degrees per key, starting at top
+    const radian = (angle * Math.PI) / 180;
+    const radius = 190; // Major keys in outer ring
+    const x = 275 + radius * Math.cos(radian);
+    const y = 275 + radius * Math.sin(radian);
+    return { x, y, angle };
+  };
+
+  const getMinorKeyPosition = (index: number) => {
+    const angle = (index * 30) - 90;
+    const radian = (angle * Math.PI) / 180;
+    const radius = 120; // Balanced radius - not too close to major keys, not too far in
+    const x = 275 + radius * Math.cos(radian);
+    const y = 275 + radius * Math.sin(radian);
+    return { x, y };
+  };
+
+  const getKeyColor = (key: KeyType): string => {
+    if (!selectedKey) {
+      // Show default colors when nothing is selected
+      return keyColors[key] || '#9CA3AF';
+    }
+    
+    const diatonicChords = getDiatonicChords(selectedKey);
+    
+    if (key === selectedKey) {
+      return keyColors[selectedKey] || '#3B82F6';
+    }
+    
+    // Get the display text for this key (which will be the correct enharmonic spelling)
+    const displayText = getDisplayText(key);
+    
+    // Check if the display text matches any of the diatonic chords
+    const isDiatonic = diatonicChords.includes(displayText);
+    
+    if (isDiatonic) {
+      return keyColors[selectedKey] || '#3B82F6';
+    }
+    
+    return '#9CA3AF'; // Gray for non-diatonic chords
+  };
+
+  // Function to get the correct display text for each circle based on the selected key
+  const getDisplayText = (key: KeyType): string => {
+    if (!selectedKey) {
+      return key;
+    }
+    
+    // For enharmonic keys, show the appropriate spelling based on the selected key
+    if (key === 'F♯/G♭') {
+      const sharpKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭'];
+      return sharpKeys.includes(selectedKey) ? 'F♯' : 'G♭';
+    }
+    
+    if (key === 'D♯m/E♭m') {
+      const sharpKeys = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭'];
+      return sharpKeys.includes(selectedKey) ? 'D♯m' : 'E♭m';
+    }
+    
+    // Handle D♭/C♯ and B♭m/A♯m when F♯/G♭ is selected
+    if (selectedKey === 'F♯/G♭') {
+      if (key === 'D♭') return 'C♯';
+      if (key === 'B♭m') return 'A♯m';
+    }
+    
+    return key;
+  };
+
+  const handleKeyClick = (key: KeyType) => {
+    setSelectedKey(selectedKey === key ? null : key);
+  };
+
+  const getChordRomanNumeral = (key: KeyType, selectedKey: KeyType): string => {
+    if (!selectedKey) return '';
+    
+    // Define Roman numerals for major keys
+    const majorRomanNumerals: Record<KeyType, Record<ChordType, string>> = {
+      'C': { 'C': 'I', 'Dm': 'ii', 'Em': 'iii', 'F': 'IV', 'G': 'V', 'Am': 'vi', 'Bdim': 'vii°' },
+      'G': { 'G': 'I', 'Am': 'ii', 'Bm': 'iii', 'C': 'IV', 'D': 'V', 'Em': 'vi', 'F♯dim': 'vii°' },
+      'D': { 'D': 'I', 'Em': 'ii', 'F♯m': 'iii', 'G': 'IV', 'A': 'V', 'Bm': 'vi', 'C♯dim': 'vii°' },
+      'A': { 'A': 'I', 'Bm': 'ii', 'C♯m': 'iii', 'D': 'IV', 'E': 'V', 'F♯m': 'vi', 'G♯dim': 'vii°' },
+      'E': { 'E': 'I', 'F♯m': 'ii', 'G♯m': 'iii', 'A': 'IV', 'B': 'V', 'C♯m': 'vi', 'D♯dim': 'vii°' },
+      'B': { 'B': 'I', 'C♯m': 'ii', 'D♯m': 'iii', 'E': 'IV', 'F♯': 'V', 'G♯m': 'vi', 'A♯dim': 'vii°' },
+      'F♯/G♭': { 'F♯': 'I', 'G♯m': 'ii', 'A♯m': 'iii', 'B': 'IV', 'C♯': 'V', 'D♯m': 'vi', 'E♯dim': 'vii°' },
+      'D♭': { 'D♭': 'I', 'E♭m': 'ii', 'Fm': 'iii', 'G♭': 'IV', 'A♭': 'V', 'B♭m': 'vi', 'Cdim': 'vii°' },
+      'A♭': { 'A♭': 'I', 'B♭m': 'ii', 'Cm': 'iii', 'D♭': 'IV', 'E♭': 'V', 'Fm': 'vi', 'Gdim': 'vii°' },
+      'E♭': { 'E♭': 'I', 'Fm': 'ii', 'Gm': 'iii', 'A♭': 'IV', 'B♭': 'V', 'Cm': 'vi', 'Ddim': 'vii°' },
+      'B♭': { 'B♭': 'I', 'Cm': 'ii', 'Dm': 'iii', 'E♭': 'IV', 'F': 'V', 'Gm': 'vi', 'Adim': 'vii°' },
+      'F': { 'F': 'I', 'Gm': 'ii', 'Am': 'iii', 'B♭': 'IV', 'C': 'V', 'Dm': 'vi', 'Edim': 'vii°' }
+    };
+
+    // Define Roman numerals for minor keys (natural minor scale)
+    const minorRomanNumerals: Record<KeyType, Record<ChordType, string>> = {
+      'Am': { 'Am': 'i', 'Bdim': 'ii°', 'C': '♭III', 'Dm': 'iv', 'Em': 'v', 'F': '♭VI', 'G': '♭VII' },
+      'Em': { 'Em': 'i', 'F♯dim': 'ii°', 'G': '♭III', 'Am': 'iv', 'Bm': 'v', 'C': '♭VI', 'D': '♭VII' },
+      'Bm': { 'Bm': 'i', 'C♯dim': 'ii°', 'D': '♭III', 'Em': 'iv', 'F♯m': 'v', 'G': '♭VI', 'A': '♭VII' },
+      'F♯m': { 'F♯m': 'i', 'G♯dim': 'ii°', 'A': '♭III', 'Bm': 'iv', 'C♯m': 'v', 'D': '♭VI', 'E': '♭VII' },
+      'C♯m': { 'C♯m': 'i', 'D♯dim': 'ii°', 'E': '♭III', 'F♯m': 'iv', 'G♯m': 'v', 'A': '♭VI', 'B': '♭VII' },
+      'G♯m': { 'G♯m': 'i', 'A♯dim': 'ii°', 'B': '♭III', 'C♯m': 'iv', 'D♯m': 'v', 'E': '♭VI', 'F♯': '♭VII' },
+      'D♯m/E♭m': { 'D♯m': 'i', 'E♯dim': 'ii°', 'F♯': '♭III', 'G♯m': 'iv', 'A♯m': 'v', 'B': '♭VI', 'C♯': '♭VII' },
+      'B♭m': { 'B♭m': 'i', 'Cdim': 'ii°', 'D♭': '♭III', 'E♭m': 'iv', 'Fm': 'v', 'G♭': '♭VI', 'A♭': '♭VII' },
+      'Fm': { 'Fm': 'i', 'Gdim': 'ii°', 'A♭': '♭III', 'B♭m': 'iv', 'Cm': 'v', 'D♭': '♭VI', 'E♭': '♭VII' },
+      'Cm': { 'Cm': 'i', 'Ddim': 'ii°', 'E♭': '♭III', 'Fm': 'iv', 'Gm': 'v', 'A♭': '♭VI', 'B♭': '♭VII' },
+      'Gm': { 'Gm': 'i', 'Adim': 'ii°', 'B♭': '♭III', 'Cm': 'iv', 'Dm': 'v', 'E♭': '♭VI', 'F': '♭VII' },
+      'Dm': { 'Dm': 'i', 'Edim': 'ii°', 'F': '♭III', 'Gm': 'iv', 'Am': 'v', 'B♭': '♭VI', 'C': '♭VII' }
+    };
+
+    // Return the appropriate Roman numeral based on whether it's a major or minor key
+    if (selectedKey.includes('m')) {
+      return minorRomanNumerals[selectedKey]?.[key] || '';
+    } else {
+      return majorRomanNumerals[selectedKey]?.[key] || '';
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl">
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold text-amber-800 mb-2">Circle of Fifths</h1>
+        <p className="text-amber-700 max-w-md">
+          Click any key to highlight its diatonic chords. Major keys (outer circle) and relative minor keys (inner circle) are shown together.
+        </p>
+      </div>
+
+      <div className="relative mb-8">
+        <svg width="550" height="550" className="drop-shadow-lg">
+          {/* Background circle */}
+          <circle
+            cx="275"
+            cy="275"
+            r="240"
+            fill="white"
+            stroke="#E2E8F0"
+            strokeWidth="2"
+          />
+          
+          {/* Inner circle for minor keys */}
+          <circle
+            cx="275"
+            cy="275"
+            r="140"
+            fill="#F8FAFC"
+            stroke="#E2E8F0"
+            strokeWidth="1"
+          />
+
+          {/* Dividing lines */}
+          {Array.from({ length: 12 }, (_, i) => {
+            const angle = (i * 30) - 90;
+            const radian = (angle * Math.PI) / 180;
+            const x1 = 275 + 70 * Math.cos(radian);
+            const y1 = 275 + 70 * Math.sin(radian);
+            const x2 = 275 + 240 * Math.cos(radian);
+            const y2 = 275 + 240 * Math.sin(radian);
+            
+            return (
+              <line
+                key={i}
+                x1={x1}
+                y1={y1}
+                x2={x2}
+                y2={y2}
+                stroke="#E2E8F0"
+                strokeWidth="1"
+                opacity="0.5"
+              />
+            );
+          })}
+
+          {/* Major keys */}
+          {majorKeys.map((key, index) => {
+            const { x, y } = getKeyPosition(index);
+            const keyColor = getKeyColor(key);
+            const isSelected = selectedKey === key;
+            const displayText = getDisplayText(key);
+            const isDiatonic = selectedKey && getDiatonicChords(selectedKey).includes(displayText);
+            
+            return (
+              <g key={key}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="36"
+                  fill={keyColor}
+                  stroke={isSelected ? '#1E40AF' : isDiatonic ? '#374151' : '#E2E8F0'}
+                  strokeWidth={isSelected ? '3' : isDiatonic ? '2' : '2'}
+                  className="cursor-pointer transition-all hover:stroke-blue-400"
+                  onClick={() => handleKeyClick(key)}
+                />
+                <text
+                  x={x}
+                  y={y + 6}
+                  textAnchor="middle"
+                  fill="white"
+                  fontSize="18"
+                  fontWeight="bold"
+                  className="cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {getDisplayText(key)}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Minor keys */}
+          {minorKeys.map((key, index) => {
+            const { x, y } = getMinorKeyPosition(index);
+            const keyColor = getKeyColor(key);
+            const isSelected = selectedKey === key;
+            const displayText = getDisplayText(key);
+            const isDiatonic = selectedKey && getDiatonicChords(selectedKey).includes(displayText);
+            
+            return (
+              <g key={key}>
+                <circle
+                  cx={x}
+                  cy={y}
+                  r="32"
+                  fill={keyColor}
+                  stroke={isSelected ? '#1E40AF' : isDiatonic ? '#374151' : '#E2E8F0'}
+                  strokeWidth={isSelected ? '3' : isDiatonic ? '2' : '2'}
+                  className="cursor-pointer transition-all hover:stroke-blue-400"
+                  onClick={() => handleKeyClick(key)}
+                />
+                <text
+                  x={x}
+                  y={y + 4}
+                  textAnchor="middle"
+                  fill="white"
+                  fontSize="14"
+                  fontWeight="500"
+                  className="cursor-pointer select-none"
+                  onClick={() => handleKeyClick(key)}
+                >
+                  {getDisplayText(key)}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Center label */}
+          <text
+            x="275"
+            y="275"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Circle of
+          </text>
+          <text
+            x="275"
+            y="290"
+            textAnchor="middle"
+            className="text-slate-600 font-medium text-sm"
+          >
+            Fifths
+          </text>
+        </svg>
+      </div>
+
+      {/* Key information panel */}
+      {selectedKey && (
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+          <h3 className="text-2xl font-bold text-slate-800 mb-4">
+            {selectedKey} {selectedKey.includes('m') ? 'Minor' : 'Major'} Key
+          </h3>
+          
+          <div className="space-y-3">
+            <p className="text-slate-600">
+              <span className="font-medium">Key Signature:</span> {
+                selectedKey.includes('m') 
+                  ? minorKeySignatures[selectedKey] 
+                  : keySignatures[selectedKey]
+              }
+            </p>
+            
+            <div>
+              <p className="font-medium text-slate-700 mb-2">Diatonic Chords:</p>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                {getDiatonicChords(selectedKey).map((chord) => {
+                  const correctSpelling = getCorrectChordSpelling(chord, selectedKey);
+                  return (
+                    <div 
+                      key={chord}
+                      className="flex items-center gap-2"
+                    >
+                      <div 
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: keyColors[selectedKey] }}
+                      ></div>
+                      <span>{correctSpelling}</span>
+                      <span className="text-slate-500">
+                        ({getChordRomanNumeral(chord, selectedKey)})
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-slate-500 mt-2 italic">
+                Note: Minor keys also follow the circle of fifths pattern, with their relative major keys determining the chord structure.
+              </p>
+              
+              {/* Diminished Chord Explanation */}
+              <div className="mt-4 p-3 bg-amber-50 rounded border border-amber-200">
+                <p className="text-sm font-medium text-amber-800 mb-2">Why Only 6 Chords?</p>
+                <p className="text-xs text-amber-700 mb-2">
+                  The circle of fifths omits one chord from each key because it has a diminished 5th interval (flat 5th).
+                </p>
+                <p className="text-xs text-amber-700">
+                  <strong>Omitted chord for {selectedKey}:</strong> {
+                    // Major keys
+                    selectedKey === 'C' ? 'B diminished (Bdim)' :
+                    selectedKey === 'G' ? 'F♯ diminished (F♯dim)' :
+                    selectedKey === 'D' ? 'C♯ diminished (C♯dim)' :
+                    selectedKey === 'A' ? 'G♯ diminished (G♯dim)' :
+                    selectedKey === 'E' ? 'D♯ diminished (D♯dim)' :
+                    selectedKey === 'B' ? 'A♯ diminished (A♯dim)' :
+                    selectedKey === 'F♯/G♭' ? 'E♯ diminished (E♯dim)' :
+                    selectedKey === 'D♭' ? 'C♭ diminished (C♭dim)' :
+                    selectedKey === 'A♭' ? 'G♭ diminished (G♭dim)' :
+                    selectedKey === 'E♭' ? 'D♭ diminished (D♭dim)' :
+                    selectedKey === 'B♭' ? 'A♭ diminished (A♭dim)' :
+                    selectedKey === 'F' ? 'E diminished (Edim)' :
+                    // Minor keys - the diminished chord (2nd chord) is omitted
+                    selectedKey === 'Am' ? 'B diminished (Bdim)' :
+                    selectedKey === 'Em' ? 'F♯ diminished (F♯dim)' :
+                    selectedKey === 'Bm' ? 'C♯ diminished (C♯dim)' :
+                    selectedKey === 'F♯m' ? 'G♯ diminished (G♯dim)' :
+                    selectedKey === 'C♯m' ? 'D♯ diminished (D♯dim)' :
+                    selectedKey === 'G♯m' ? 'A♯ diminished (A♯dim)' :
+                    selectedKey === 'D♯m/E♭m' ? 'E♯ diminished (E♯dim)' :
+                    selectedKey === 'B♭m' ? 'C diminished (Cdim)' :
+                    selectedKey === 'Fm' ? 'G diminished (Gdim)' :
+                    selectedKey === 'Cm' ? 'D diminished (Ddim)' :
+                    selectedKey === 'Gm' ? 'A diminished (Adim)' :
+                    selectedKey === 'Dm' ? 'E diminished (Edim)' :
+                    'Unknown'
+                  }
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Instructions */}
+      {!selectedKey && (
+        <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+          <h4 className="font-bold text-slate-800 mb-4">How to Use</h4>
+          <div className="space-y-2 text-sm text-slate-600">
+            <p>• <strong>Click any key</strong> to see its diatonic chords highlighted</p>
+            <p>• <strong>Outer circle:</strong> Major keys</p>
+            <p>• <strong>Inner circle:</strong> Relative minor keys</p>
+            <p>• <strong>Each key pair</strong> has its own unique color</p>
+            <p>• <strong>Major keys</strong> show I, IV, V (major) and ii, iii, vi (minor)</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default function CircleOfFifthsPage() {
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50">
+      <div className="container-max section-padding">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold font-playfair text-amber-800 mb-6">
+              The Circle of Fifths: A Complete Guide
+            </h1>
+            <p className="text-xl text-amber-700 max-w-3xl mx-auto leading-relaxed">
+              Master the fundamental relationship between keys in Western music theory. 
+              Learn how sharps and flats accumulate, understand key signatures, and discover 
+              the patterns that connect all major and minor keys.
+            </p>
+          </div>
+
+          {/* Introduction */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">What is the Circle of Fifths?</h2>
+            <div className="prose prose-amber max-w-none">
+              <p className="text-lg text-amber-700 mb-4">
+                The Circle of Fifths is one of the most important concepts in music theory. It's a visual representation 
+                of the relationships between the 12 tones of the chromatic scale, their corresponding key signatures, 
+                and the associated major and minor keys.
+              </p>
+              <p className="text-lg text-amber-700 mb-4">
+                Moving clockwise around the circle, each key is a perfect fifth (7 semitones) above the previous key. 
+                This creates a pattern where sharps are added one by one. Moving counterclockwise, each key is a perfect 
+                fourth (5 semitones) above the previous key, adding flats one by one.
+              </p>
+            </div>
+          </div>
+
+          {/* Simple Circle of Fifths */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">The Circle of Fifths</h2>
+            <p className="text-lg text-amber-700 mb-8">
+              Each note is a perfect fifth (7 semitones) above the previous one. Click any key to see its sharps and flats.
+            </p>
+            <SimpleCircleOfFifths />
+            
+            {/* Order of Sharps and Flats Explanation */}
+            <div className="mt-8 p-6 bg-amber-50 rounded-lg border border-amber-200">
+              <h3 className="text-xl font-bold text-amber-800 mb-4">How Sharps and Flats Work on the Circle</h3>
+              <div className="space-y-4 text-amber-700">
+                <div>
+                  <h4 className="font-bold text-amber-800 mb-2">Sharps (Clockwise from F):</h4>
+                  <p className="mb-2">Sharps start from F and move clockwise around the circle, adding the sharp symbol (♯):</p>
+                  <div className="bg-white p-3 rounded border border-amber-200">
+                    <span className="font-mono text-lg">F♯ → C♯ → G♯ → D♯ → A♯ → E♯</span>
+                  </div>
+                  <p className="text-sm mt-2">Each key adds one more sharp in this order.</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-bold text-amber-800 mb-2">Flats (Counterclockwise from B):</h4>
+                  <p className="mb-2">Flats start from B and move counterclockwise around the circle, adding the flat symbol (♭):</p>
+                  <div className="bg-white p-3 rounded border border-amber-200">
+                    <span className="font-mono text-lg">B♭ → E♭ → A♭ → D♭ → G♭ → C♭</span>
+                  </div>
+                  <p className="text-sm mt-2">Each key adds one more flat in this order.</p>
+                </div>
+                
+                <div className="bg-amber-100 p-4 rounded border border-amber-300">
+                  <h4 className="font-bold text-amber-800 mb-2">Important Note About Enharmonic Spellings:</h4>
+                  <p className="text-sm">
+                    The keys F♯ and G♭ contain the notes E♯ and C♭ respectively. These are actually F and B, 
+                    but because scale spelling requires each letter to be used only once, they get spelled this way. 
+                    For example, if F♯ major wasn't spelled with E♯, it would be F♯ G♯ A♯ B C♯ D♯ F, which repeats F.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Chromatic Scale Between Fifths */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Chromatic Scale Between Fifths</h2>
+            <p className="text-lg text-amber-700 mb-8">
+              Explore the chromatic scale between any note and its fifth. A fifth is always 7 semitones higher using the chromatic scale.
+            </p>
+            <ChromaticScaleBetweenFifths />
+          </div>
+
+          {/* Interactive Circle of Fifths */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Interactive Circle with Major and Minor Keys</h2>
+            <p className="text-lg text-amber-700 mb-8">
+              Explore the complete circle showing both major and minor keys. Click any key to see its diatonic chords, 
+              Roman numerals, and more detailed information.
+            </p>
+            <CircleOfFifths />
+          </div>
+
+          {/* Key Signatures Section */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Understanding Key Signatures</h2>
+            <div className="prose prose-amber max-w-none">
+              <p className="text-lg text-amber-700 mb-4">
+                Key signatures tell us which notes are sharp or flat throughout a piece of music. They appear at the 
+                beginning of each staff and apply to every octave of the specified notes.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-amber-800 mt-8 mb-4">Sharp Keys</h3>
+              <p className="text-lg text-amber-700 mb-4">
+                Sharp keys are found on the right side of the circle. The order of sharps is: F♯, C♯, G♯, D♯, A♯, E♯, B♯. 
+                You can remember this with the mnemonic: <strong>Father Charles Goes Down And Ends Battle</strong>.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-amber-800 mt-8 mb-4">Flat Keys</h3>
+              <p className="text-lg text-amber-700 mb-4">
+                Flat keys are found on the left side of the circle. The order of flats is: B♭, E♭, A♭, D♭, G♭, C♭, F♭. 
+                You can remember this with the mnemonic: <strong>Battle Ends And Down Goes Charles' Father</strong>.
+              </p>
+              
+              <h3 className="text-2xl font-bold text-amber-800 mt-8 mb-4">Enharmonic Keys</h3>
+              <p className="text-lg text-amber-700 mb-4">
+                Some keys have two names because they sound the same but are written differently. For example, F♯ major 
+                and G♭ major are enharmonic equivalents. The choice between them often depends on the musical context 
+                and which spelling makes the music easier to read.
+              </p>
+            </div>
+          </div>
+
+
+
+          {/* Practical Applications */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Practical Applications</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Songwriting</h3>
+                <p className="text-amber-700">
+                  Use the circle to find closely related keys for modulation, create chord progressions, 
+                  and understand which keys work well together.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Transposition</h3>
+                <p className="text-amber-700">
+                  Quickly transpose music by moving around the circle. Each step clockwise raises the key 
+                  by a perfect fifth, each step counterclockwise lowers it by a perfect fourth.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Key Signatures</h3>
+                <p className="text-amber-700">
+                  Memorize key signatures by understanding the pattern. The number of sharps or flats 
+                  increases as you move around the circle.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Chord Progressions</h3>
+                <p className="text-amber-700">
+                  The circle shows the most common chord progressions. Keys next to each other 
+                  are closely related and work well together. For example, C major shares 4 chords 
+                  with its neighbors F and G: F major shares F, C, Am, and Dm with C major, while 
+                  G major shares C, G, Am, and Em with C major. This pattern works for every key 
+                  on the circle.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Reference */}
+          <div className="card mb-12">
+            <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Quick Reference</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Sharp Keys (Clockwise)</h3>
+                <ul className="space-y-2 text-amber-700">
+                  <li><strong>C:</strong> No sharps or flats</li>
+                  <li><strong>G:</strong> 1 sharp (F♯)</li>
+                  <li><strong>D:</strong> 2 sharps (F♯, C♯)</li>
+                  <li><strong>A:</strong> 3 sharps (F♯, C♯, G♯)</li>
+                  <li><strong>E:</strong> 4 sharps (F♯, C♯, G♯, D♯)</li>
+                  <li><strong>B:</strong> 5 sharps (F♯, C♯, G♯, D♯, A♯)</li>
+                  <li><strong>F♯:</strong> 6 sharps (F♯, C♯, G♯, D♯, A♯, E♯)</li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">Flat Keys (Counterclockwise)</h3>
+                <ul className="space-y-2 text-amber-700">
+                  <li><strong>F:</strong> 1 flat (B♭)</li>
+                  <li><strong>B♭:</strong> 2 flats (B♭, E♭)</li>
+                  <li><strong>E♭:</strong> 3 flats (B♭, E♭, A♭)</li>
+                  <li><strong>A♭:</strong> 4 flats (B♭, E♭, A♭, D♭)</li>
+                  <li><strong>D♭:</strong> 5 flats (B♭, E♭, A♭, D♭, G♭)</li>
+                  <li><strong>G♭:</strong> 6 flats (B♭, E♭, A♭, D♭, G♭, C♭)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <div className="card bg-gradient-to-br from-amber-600 to-amber-700 text-white">
+              <h2 className="text-3xl font-bold mb-4 font-playfair">Ready to Master Music Theory?</h2>
+              <p className="text-xl mb-6 text-amber-100">
+                Take your guitar playing to the next level with personalized lessons from Mike Nelson.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                  href="/contact" 
+                  className="btn-primary bg-white text-amber-800 hover:bg-amber-50"
+                >
+                  Book Your First Lesson
+                </a>
+                <a 
+                  href="/lessons" 
+                  className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800"
+                >
+                  View Lesson Options
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

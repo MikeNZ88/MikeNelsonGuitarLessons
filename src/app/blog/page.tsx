@@ -248,6 +248,24 @@ export default function Blog() {
       category: 'Chords'
     },
     {
+      topic: 'Circle of Fifths',
+      description: 'Interactive tool for understanding key relationships and diatonic chords',
+      link: '/blog/circle-of-fifths',
+      category: 'Theory'
+    },
+    {
+      topic: 'Circle of Fifths - Key Signatures',
+      description: 'Understanding sharps and flats in each key',
+      link: '/blog/circle-of-fifths#how-to-read-the-circle-of-fifths',
+      category: 'Theory'
+    },
+    {
+      topic: 'Circle of Fifths - Diatonic Chords',
+      description: 'The chords that naturally occur in each key',
+      link: '/blog/circle-of-fifths#diatonic-chords-in-each-key',
+      category: 'Theory'
+    },
+    {
       topic: 'Chord Changes',
       description: 'Smooth transitions between chords',
       link: '/blog/chord-transitions-common-fingers',
@@ -1409,6 +1427,20 @@ export default function Blog() {
       slug: 'beginners-guide-notes-guitar',
       author: 'Mike Nelson',
       sortOrder: 4
+    },
+    {
+      id: '30',
+      title: 'The Circle of Fifths: A Complete Guide',
+      excerpt: 'Master the fundamental relationship between keys, understand key signatures, and discover the diatonic chords that make up every major and minor key with our interactive tool.',
+      readTime: 'Interactive Tool',
+      category: 'Intermediate',
+      primaryCategory: 'Theory',
+      categories: ['Theory', 'Tools'],
+      skillLevel: 'intermediate',
+      image: '/circle-of-fifths-thumbnail.svg',
+      slug: 'circle-of-fifths',
+      author: 'Mike Nelson',
+      sortOrder: 21
     }
   ];
 

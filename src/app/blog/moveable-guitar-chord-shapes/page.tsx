@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ChordDiagram from '@/components/ChordDiagram';
 
@@ -1093,7 +1093,7 @@ const ALL_CHORD_DATA: Record<ChordCategory, ChordTypeData> = {
   'Extensions': {} // Will be handled separately with sub-tabs
 };
 
-export default function MoveableGuitarChordShapes() {
+function MoveableGuitarChordShapes() {
   const searchParams = useSearchParams();
   
   // Initialize state based on URL parameters
@@ -1704,4 +1704,17 @@ export default function MoveableGuitarChordShapes() {
       )}
     </div>
   );
-} 
+}
+
+// Wrapper component to handle Suspense boundary for useSearchParams
+function MoveableGuitarChordShapesContent() {
+  return <MoveableGuitarChordShapes />;
+}
+
+export default function MoveableGuitarChordShapesPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+      <MoveableGuitarChordShapesContent />
+    </Suspense>
+  );
+}
