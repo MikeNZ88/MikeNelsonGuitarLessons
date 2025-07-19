@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import KeySignatureBuilder from '@/components/KeySignatureBuilder';
 
 
 type KeyType = string;
@@ -158,7 +157,7 @@ const SimpleCircleOfFifths = () => {
             cx="225"
             cy="225"
             r="200"
-            fill="white"
+            fill="black"
             stroke="#E2E8F0"
             strokeWidth="2"
           />
@@ -203,7 +202,10 @@ const SimpleCircleOfFifths = () => {
                   x={x}
                   y={y + 6}
                   textAnchor="middle"
-                  className="text-white font-bold text-lg cursor-pointer select-none"
+                  fill="white"
+                  fontSize="18"
+                  fontWeight="bold"
+                  className="cursor-pointer select-none"
                   onClick={() => handleKeyClick(key)}
                 >
                   {getDisplayText(key)}
@@ -226,7 +228,9 @@ const SimpleCircleOfFifths = () => {
             x="225"
             y="225"
             textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
+            fill="white"
+            fontSize="14"
+            fontWeight="500"
           >
             Circle of
           </text>
@@ -234,7 +238,9 @@ const SimpleCircleOfFifths = () => {
             x="225"
             y="240"
             textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
+            fill="white"
+            fontSize="14"
+            fontWeight="500"
           >
             Fifths
           </text>
@@ -439,7 +445,7 @@ const ChromaticScaleBetweenFifths = () => {
   const getFifth = (key: string): string => {
     const fifths: Record<string, string> = {
       'C': 'G', 'G': 'D', 'D': 'A', 'A': 'E', 'E': 'B', 'B': 'F♯',
-      'F♯/G♭': 'C♯', 'D♭': 'A♭', 'A♭': 'E♭', 'E♭': 'B♭', 'B♭': 'F', 'F': 'C'
+      'F♯/G♭': 'C♯/D♭', 'D♭': 'A♭', 'A♭': 'E♭', 'E♭': 'B♭', 'B♭': 'F', 'F': 'C'
     };
     return fifths[key] || '';
   };
@@ -472,7 +478,7 @@ const ChromaticScaleBetweenFifths = () => {
             cx="225"
             cy="225"
             r="200"
-            fill="white"
+            fill="black"
             stroke="#E2E8F0"
             strokeWidth="2"
           />
@@ -517,7 +523,10 @@ const ChromaticScaleBetweenFifths = () => {
                   x={x}
                   y={y + 6}
                   textAnchor="middle"
-                  className="text-white font-bold text-lg cursor-pointer select-none"
+                  fill="white"
+                  fontSize="18"
+                  fontWeight="bold"
+                  className="cursor-pointer select-none"
                   onClick={() => handleKeyClick(key)}
                 >
                   {key}
@@ -540,17 +549,21 @@ const ChromaticScaleBetweenFifths = () => {
             x="225"
             y="225"
             textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
+            fill="white"
+            fontSize="14"
+            fontWeight="500"
           >
-            Chromatic
+            Circle of
           </text>
           <text
             x="225"
             y="240"
             textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
+            fill="white"
+            fontSize="14"
+            fontWeight="500"
           >
-            Between Fifths
+            Fifths
           </text>
         </svg>
       </div>
@@ -1194,23 +1207,7 @@ const CircleOfFifths = () => {
             );
           })}
 
-          {/* Center label */}
-          <text
-            x="275"
-            y="275"
-            textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
-          >
-            Circle of
-          </text>
-          <text
-            x="275"
-            y="290"
-            textAnchor="middle"
-            className="text-slate-600 font-medium text-sm"
-          >
-            Fifths
-          </text>
+
         </svg>
       </div>
 
@@ -1414,6 +1411,25 @@ export default function CircleOfFifthsPage() {
             </nav>
           </div>
 
+          {/* Notes Reference */}
+          <div className="card mb-8">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-amber-800 mb-3">
+                New to Musical Notes?
+              </h3>
+              <p className="text-amber-700 mb-4">
+                If you're not familiar with musical notes, sharps (♯), flats (♭), or basic music theory concepts, 
+                I recommend starting with my comprehensive guide to notes on the guitar.
+              </p>
+              <a 
+                href="/blog/beginners-guide-notes-guitar" 
+                className="inline-flex items-center px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-medium"
+              >
+                Read: Beginner's Guide to Notes on the Guitar →
+              </a>
+            </div>
+          </div>
+
           {/* Introduction */}
           <div className="card mb-12">
             <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">What is the Circle of Fifths?</h2>
@@ -1509,8 +1525,9 @@ export default function CircleOfFifthsPage() {
               <p className="text-lg text-amber-700 mb-4">
                 In this guide, we choose the spelling that uses the least accidentals (sharps/flats). For example, 
                 D♭ major (5 flats) is preferred over C♯ major (7 sharps) because it avoids the confusing B♯ (actually C) 
-                and E♯ (actually F). However, F♯/G♭ and D♯/E♭ are shown as enharmonic pairs because they have equal 
-                amounts of accidentals (6 sharps vs 6 flats), making both theoretically just as difficult to remember and apply.
+                and E♯ (actually F). However, I show F♯/G♭ and D♯/E♭ as enharmonic pairs because they have equal 
+                amounts of accidentals (6 sharps vs 6 flats), making both theoretically just as difficult to remember and apply. 
+                The choice is yours.
               </p>
             </div>
           </div>
@@ -1558,30 +1575,250 @@ export default function CircleOfFifthsPage() {
           {/* Quick Reference */}
           <div id="quick-reference" className="card mb-12">
             <h2 className="text-3xl font-bold text-amber-800 mb-6 font-playfair">Quick Reference</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <p className="text-amber-700 mb-6 text-lg">
+              <strong>Color coding:</strong> Keys with the same color have the same notes but different spellings (sharps vs flats).
+            </p>
+            
+            <div className="bg-amber-100 border border-amber-300 rounded-lg p-4 mb-6">
+              <p className="text-amber-800 font-semibold text-lg mb-3">
+                <strong>Important Rules:</strong>
+              </p>
+              <ul className="text-amber-800 space-y-2">
+                <li><strong>1.</strong> All keys must use either sharps or flats consistently - never both.</li>
+                <li><strong>2.</strong> Each letter must only be used once. For example, if you use F♯, then the note F would have to be written as E♯. If you use C, then C♯ can't be used and should be spelled as D♭ instead.</li>
+                <li><strong>3.</strong> Choose the spelling that uses the fewest number of accidentals. For example, prefer B♭ major (2 flats) over A♯ major (10 sharps).</li>
+              </ul>
+            </div>
+            
+            {/* Complete Mnemonics */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+              <h3 className="text-lg font-bold text-amber-800 mb-4">Complete Mnemonics</h3>
+              <div className="text-base text-amber-600 mb-4 space-y-2">
+                <p className="italic">
+                  <strong>Traditional Teaching Method:</strong> These mnemonics represent the complete theoretical order of sharps and flats. 
+                  They're valuable for understanding the full circle of fifths and music theory principles.
+                </p>
+                <p className="italic">
+                  <strong>Practical Considerations:</strong> In real music, composers and arrangers often choose keys that minimize accidentals. 
+                  For example, why write in F♯ major (6 sharps) when G major (1 sharp) is much easier to read and play? F♯ major and G major are only 1 semitone apart, so our ear will hear them as being close to each other.
+                </p>
+                <p className="italic">
+                  <strong>Important Note:</strong> Not all music is written with theoretical considerations in mind. 
+                  Key choices may be based on vocal range, instrument tuning, historical conventions, or simply personal preference.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-amber-700 mb-2">Sharps: "Father Charles Goes Down And Ends Battle"</h4>
+                  <p className="text-sm text-amber-600 mb-3">F♯, C♯, G♯, D♯, A♯, E♯, B♯</p>
+                  <p className="text-base text-amber-600 italic">Note: B♯ (enharmonic to C) is used in <span className="text-pink-600">C♯ major</span> (7 sharps) but is theoretical and rarely used in practice. Instead, we use <span className="text-pink-600">D♭ major</span> (5 flats).</p>
+
+                </div>
+                <div>
+                  <h4 className="font-semibold text-amber-700 mb-2">Flats: "Battle Ends And Down Goes Charles' Father"</h4>
+                  <p className="text-sm text-amber-600 mb-3">B♭, E♭, A♭, D♭, G♭, C♭, F♭</p>
+                  <p className="text-base text-amber-500 italic">Note: F♭ (enharmonic to E) is used in <span className="text-blue-600">C♭ major</span> (7 flats) but is theoretical and rarely used in practice. Instead, we use <span className="text-blue-600">B major</span> (5 sharps).</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              {/* No Sharps or Flats */}
               <div>
-                <h3 className="text-xl font-bold text-amber-800 mb-4">Sharp Keys (Clockwise)</h3>
+                <h3 className="text-xl font-bold text-amber-800 mb-4">No Sharps or Flats</h3>
                 <ul className="space-y-2 text-amber-700">
                   <li><strong>C:</strong> No sharps or flats</li>
-                  <li><strong>G:</strong> 1 sharp (F♯)</li>
-                  <li><strong>D:</strong> 2 sharps (F♯, C♯)</li>
-                  <li><strong>A:</strong> 3 sharps (F♯, C♯, G♯)</li>
-                  <li><strong>E:</strong> 4 sharps (F♯, C♯, G♯, D♯)</li>
-                  <li><strong>B:</strong> 5 sharps (F♯, C♯, G♯, D♯, A♯)</li>
-                  <li><strong>F♯:</strong> 6 sharps (F♯, C♯, G♯, D♯, A♯, E♯)</li>
                 </ul>
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-amber-800 mb-4">Flat Keys (Counterclockwise)</h3>
-                <ul className="space-y-2 text-amber-700">
-                  <li><strong>F:</strong> 1 flat (B♭)</li>
-                  <li><strong>B♭:</strong> 2 flats (B♭, E♭)</li>
-                  <li><strong>E♭:</strong> 3 flats (B♭, E♭, A♭)</li>
-                  <li><strong>A♭:</strong> 4 flats (B♭, E♭, A♭, D♭)</li>
-                  <li><strong>D♭:</strong> 5 flats (B♭, E♭, A♭, D♭, G♭)</li>
-                  <li><strong>G♭:</strong> 6 flats (B♭, E♭, A♭, D♭, G♭, C♭)</li>
-                </ul>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-xl font-bold text-amber-800 mb-4">Sharp Keys</h3>
+                  <ul className="space-y-2 text-amber-700">
+                    <li><strong>G major:</strong> 1 sharp (<strong>F♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) G, (2) A, (3) B, (4) C, (5) D, (6) E, (7) <strong>F♯</strong></span></li>
+                    <li><strong>D major:</strong> 2 sharps (<strong>F♯</strong>, <strong>C♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) D, (2) E, (3) <strong>F♯</strong>, (4) G, (5) A, (6) B, (7) <strong>C♯</strong></span></li>
+                    <li><strong>A major:</strong> 3 sharps (<strong>F♯</strong>, <strong>C♯</strong>, <strong>G♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) A, (2) B, (3) <strong>C♯</strong>, (4) D, (5) E, (6) <strong>F♯</strong>, (7) <strong>G♯</strong></span></li>
+                    <li><strong>E major:</strong> 4 sharps (<strong>F♯</strong>, <strong>C♯</strong>, <strong>G♯</strong>, <strong>D♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) E, (2) <strong>F♯</strong>, (3) <strong>G♯</strong>, (4) A, (5) B, (6) <strong>C♯</strong>, (7) <strong>D♯</strong></span></li>
+                    <li><strong><span className="text-blue-600">B major</span>:</strong> 5 sharps (<strong>F♯</strong>, <strong>C♯</strong>, <strong>G♯</strong>, <strong>D♯</strong>, <strong>A♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) B, (2) <strong>C♯</strong>, (3) <strong>D♯</strong>, (4) E, (5) <strong>F♯</strong>, (6) <strong>G♯</strong>, (7) <strong>A♯</strong></span></li>
+                    <li><strong><span className="text-purple-600">F♯ major</span>:</strong> 6 sharps (<strong>F♯</strong>, <strong>C♯</strong>, <strong>G♯</strong>, <strong>D♯</strong>, <strong>A♯</strong>, <strong>E♯</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>F♯</strong>, (2) <strong>G♯</strong>, (3) <strong>A♯</strong>, (4) B, (5) <strong>C♯</strong>, (6) <strong>D♯</strong>, (7) <strong>E♯</strong></span></li>
+                    <li><strong><span className="text-pink-600">C♯ major</span>:</strong> 7 sharps (<strong>F♯</strong>, <strong>C♯</strong>, <strong>G♯</strong>, <strong>D♯</strong>, <strong>A♯</strong>, <strong>E♯</strong>, <strong>B♯</strong>) <span className="text-amber-500 italic text-sm">D♭ major has 5 flats so we use it instead</span><br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>C♯</strong>, (2) <strong>D♯</strong>, (3) <strong>E♯</strong>, (4) <strong>F♯</strong>, (5) <strong>G♯</strong>, (6) <strong>A♯</strong>, (7) <strong>B♯</strong></span></li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-amber-800 mb-4">Flat Keys</h3>
+                  <ul className="space-y-2 text-amber-700">
+                    <li><strong>F major:</strong> 1 flat (<strong>B♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) F, (2) G, (3) A, (4) <strong>B♭</strong>, (5) C, (6) D, (7) E</span></li>
+                    <li><strong>B♭ major:</strong> 2 flats (<strong>B♭</strong>, <strong>E♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>B♭</strong>, (2) C, (3) D, (4) <strong>E♭</strong>, (5) F, (6) G, (7) A</span></li>
+                    <li><strong>E♭ major:</strong> 3 flats (<strong>B♭</strong>, <strong>E♭</strong>, <strong>A♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>E♭</strong>, (2) F, (3) G, (4) <strong>A♭</strong>, (5) <strong>B♭</strong>, (6) C, (7) D</span></li>
+                    <li><strong>A♭ major:</strong> 4 flats (<strong>B♭</strong>, <strong>E♭</strong>, <strong>A♭</strong>, <strong>D♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>A♭</strong>, (2) <strong>B♭</strong>, (3) C, (4) <strong>D♭</strong>, (5) <strong>E♭</strong>, (6) F, (7) G</span></li>
+                    <li><strong><span className="text-pink-600">D♭ major</span>:</strong> 5 flats (<strong>B♭</strong>, <strong>E♭</strong>, <strong>A♭</strong>, <strong>D♭</strong>, <strong>G♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>D♭</strong>, (2) <strong>E♭</strong>, (3) F, (4) <strong>G♭</strong>, (5) <strong>A♭</strong>, (6) <strong>B♭</strong>, (7) C</span></li>
+                    <li><strong><span className="text-purple-600">G♭ major</span>:</strong> 6 flats (<strong>B♭</strong>, <strong>E♭</strong>, <strong>A♭</strong>, <strong>D♭</strong>, <strong>G♭</strong>, <strong>C♭</strong>)<br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>G♭</strong>, (2) <strong>A♭</strong>, (3) <strong>B♭</strong>, (4) <strong>C♭</strong>, (5) <strong>D♭</strong>, (6) <strong>E♭</strong>, (7) F</span></li>
+                    <li><strong><span className="text-blue-600">C♭ major</span>:</strong> 7 flats (<strong>B♭</strong>, <strong>E♭</strong>, <strong>A♭</strong>, <strong>D♭</strong>, <strong>G♭</strong>, <strong>C♭</strong>, <strong>F♭</strong>) <span className="text-amber-500 italic text-sm">B major has 5 sharps so we use it instead</span><br />
+                      <span className="text-sm text-amber-600">Scale: (1) <strong>C♭</strong>, (2) <strong>D♭</strong>, (3) <strong>E♭</strong>, (4) <strong>F♭</strong>, (5) <strong>G♭</strong>, (6) <strong>A♭</strong>, (7) <strong>B♭</strong></span></li>
+                  </ul>
+                </div>
               </div>
+            </div>
+            
+            {/* Why We Don't Use A♯, D♯, G♯ Major */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mt-8">
+              <h3 className="text-lg font-bold text-amber-800 mb-4">Why Don't We Use A♯, D♯, G♯, C♯, or C♭ Major?</h3>
+              <p className="text-amber-700 mb-4">
+                These keys exist but are rarely used because they have too many sharps, making them impractical:
+              </p>
+              <ul className="space-y-2 text-amber-700">
+                <li><strong>A♯ major:</strong> 10 sharps (F##, C##, G##, D♯, A♯, E♯, B♯) - enharmonic to B♭ major (2 flats)</li>
+                <li><strong>D♯ major:</strong> 9 sharps (F##, C##, G♯, D♯, A♯, E♯, B♯) - enharmonic to E♭ major (3 flats)</li>
+                <li><strong>G♯ major:</strong> 8 sharps (F##, C♯, G♯, D♯, A♯, E♯, B♯) - enharmonic to A♭ major (4 flats)</li>
+                <li><strong>C♯ major:</strong> 7 sharps (F♯, C♯, G♯, D♯, A♯, E♯, B♯) - enharmonic to D♭ major (5 flats)</li>
+                <li><strong>C♭ major:</strong> 7 flats (B♭, E♭, A♭, D♭, G♭, C♭, F♭) - enharmonic to B major (5 sharps)</li>
+              </ul>
+              <p className="text-amber-700 mb-4">
+                <strong>Why this is so impractical:</strong>
+              </p>
+              <ul className="space-y-2 text-amber-700 mb-4">
+                <li>
+                  <strong>Double sharps (##):</strong>
+                  <div className="ml-4 mt-2 space-y-2">
+                    <p>These are the same notes as natural notes:</p>
+                    <ul className="ml-4 space-y-1">
+                      <li>• F## is actually G</li>
+                      <li>• C## is actually D</li>
+                      <li>• G## is actually A</li>
+                    </ul>
+                    <p>So why write F## when you could just write G?</p>
+                    <p>This creates absurd situations like G♯ major having 8 sharps (6 single sharps + 1 double sharp F## = 6 + 2 = 8 total) for a 7-note scale!</p>
+                    <p>That's why we use A♭ major (4 flats) instead.</p>
+                  </div>
+                </li>
+                <li><strong>Confusing notation:</strong> Reading F## when you could just write G is unnecessarily complex</li>
+                <li><strong>Performance difficulty:</strong> Musicians have to mentally translate double sharps while reading</li>
+                <li><strong>Error-prone:</strong> More accidentals = more chances for mistakes in reading and writing</li>
+              </ul>
+              <p className="text-amber-600 text-sm mt-3 italic">
+                Instead, we use their enharmonic equivalents with fewer accidentals, making the music much easier to read and play.
+              </p>
+              
+              <div className="mt-6 p-4 bg-white rounded border border-amber-200">
+                <h4 className="font-semibold text-amber-800 mb-3">What About Minor Keys?</h4>
+                <p className="text-amber-700 mb-3">
+                  Minor keys follow the same spelling rules as their relative major keys. For example, G♯ minor is not written as A♭ minor because its relative major is B major, and B major uses a sharp spelling.
+                </p>
+                <p className="text-amber-700 mb-3">
+                  <strong>Important rule:</strong> All keys must use either sharps or flats consistently - never both. The choice depends on the relative major key's spelling.
+                </p>
+                <div className="text-sm text-amber-600 italic">
+                  <p><strong>Example:</strong> G♯ minor uses sharps because its relative major (B major) uses sharps. A♭ minor uses flats because its relative major (C♭ major) uses flats.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Enharmonic Equivalents Diagram */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mt-8">
+              <h3 className="text-lg font-bold text-amber-800 mb-4">Enharmonic Equivalents</h3>
+              <p className="text-amber-700 mb-4">
+                These notes sound the same but are written differently depending on whether we're using sharp or flat spellings:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-amber-700 mb-3">Sharp Spellings</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">C♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">D♭</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">D♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">E♭</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">E♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">F</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">F♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">G♭</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">G♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">A♭</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">A♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">B♭</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">B♯</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">C</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-amber-700 mb-3">Flat Spellings</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">D♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">C♯</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">E♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">D♯</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">F♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">E</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">G♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">F♯</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">A♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">G♯</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">B♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">A♯</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded border">
+                      <span className="font-medium">C♭</span>
+                      <span className="text-amber-600">=</span>
+                      <span className="font-medium">B</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p className="text-amber-600 text-sm mt-4 italic">
+                <strong>Note:</strong> The choice between sharp and flat spellings depends on the key signature and musical context. 
+                We generally choose the spelling that uses fewer accidentals and follows the key signature pattern.
+              </p>
             </div>
           </div>
 
