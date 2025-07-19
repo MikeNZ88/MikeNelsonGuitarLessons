@@ -1591,9 +1591,9 @@ export default function CircleOfFifthsPage() {
               </ul>
             </div>
             
-            {/* Complete Mnemonics */}
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-              <h3 className="text-lg font-bold text-amber-800 mb-4">Complete Mnemonics</h3>
+            {/* Sharps and Flats in Every Key */}
+            <div id="sharps-and-flats-in-every-key" className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
+              <h3 className="text-lg font-bold text-amber-800 mb-4">Sharps and Flats in Every Key</h3>
               <div className="text-base text-amber-600 mb-4 space-y-2">
                 <p className="italic">
                   <strong>Traditional Teaching Method:</strong> These mnemonics represent the complete theoretical order of sharps and flats. 
@@ -1628,7 +1628,8 @@ export default function CircleOfFifthsPage() {
               <div>
                 <h3 className="text-xl font-bold text-amber-800 mb-4">No Sharps or Flats</h3>
                 <ul className="space-y-2 text-amber-700">
-                  <li><strong>C:</strong> No sharps or flats</li>
+                  <li><strong>C major:</strong> No sharps or flats<br />
+                    <span className="text-sm text-amber-600">Scale: (1) C, (2) D, (3) E, (4) F, (5) G, (6) A, (7) B</span></li>
                 </ul>
               </div>
               

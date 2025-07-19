@@ -256,13 +256,19 @@ export default function Blog() {
     {
       topic: 'Circle of Fifths - Key Signatures',
       description: 'Understanding sharps and flats in each key',
-      link: '/blog/circle-of-fifths#how-to-read-the-circle-of-fifths',
+      link: '/blog/circle-of-fifths#key-signatures',
       category: 'Theory'
     },
     {
       topic: 'Circle of Fifths - Diatonic Chords',
       description: 'The chords that naturally occur in each key',
-      link: '/blog/circle-of-fifths#diatonic-chords-in-each-key',
+      link: '/blog/circle-of-fifths#circle-with-chords',
+      category: 'Theory'
+    },
+    {
+      topic: 'Sharps and Flats in Every Key',
+      description: 'Complete reference guide with mnemonics for all key signatures',
+      link: '/blog/circle-of-fifths#quick-reference',
       category: 'Theory'
     },
     {
