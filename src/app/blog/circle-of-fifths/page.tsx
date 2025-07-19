@@ -272,16 +272,50 @@ const SimpleCircleOfFifths = () => {
               </button>
               {expandedSections.has('scale') && (
                 <div className="bg-amber-50 rounded-lg p-3">
-                  <div className="flex flex-wrap gap-1">
-                    {keyScales[selectedKey].map((note, index) => (
-                      <span 
-                        key={index}
-                        className="px-2 py-1 bg-white text-amber-700 rounded text-sm font-medium border border-amber-200"
-                      >
-                        {note}
-                      </span>
-                    ))}
-                  </div>
+                  {selectedKey === 'F♯/G♭' ? (
+                    <div className="space-y-3">
+                      {/* Sharp spelling */}
+                      <div>
+                        <p className="text-sm font-medium text-amber-800 mb-2">Sharp Spelling (F♯ Major):</p>
+                        <div className="flex flex-wrap gap-1">
+                          {keyScales[selectedKey].map((note, index) => (
+                            <span 
+                              key={index}
+                              className="px-2 py-1 bg-white text-amber-700 rounded text-sm font-medium border border-amber-200"
+                            >
+                              {note}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Flat spelling */}
+                      <div>
+                        <p className="text-sm font-medium text-amber-800 mb-2">Flat Spelling (G♭ Major):</p>
+                        <div className="flex flex-wrap gap-1">
+                          {['G♭', 'A♭', 'B♭', 'C♭', 'D♭', 'E♭', 'F'].map((note, index) => (
+                            <span 
+                              key={index}
+                              className="px-2 py-1 bg-white text-amber-700 rounded text-sm font-medium border border-amber-200"
+                            >
+                              {note}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-1">
+                      {keyScales[selectedKey].map((note, index) => (
+                        <span 
+                          key={index}
+                          className="px-2 py-1 bg-white text-amber-700 rounded text-sm font-medium border border-amber-200"
+                        >
+                          {note}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

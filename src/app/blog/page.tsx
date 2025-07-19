@@ -598,6 +598,12 @@ export default function Blog() {
       category: 'Chords'
     },
     {
+      topic: 'Musical Terms',
+      description: 'Complete A-Z guide to musical terminology for guitarists',
+      link: '/blog/musical-terms-guitarists-guide',
+      category: 'Theory'
+    },
+    {
       topic: 'Music Stores',
       description: 'Wellington music retail landscape',
       link: '/blog/wellington-music-stores',
@@ -712,9 +718,9 @@ export default function Blog() {
       category: 'Scales and Fretboard'
     },
     {
-      topic: 'C Blues Scale',
-      description: 'C blues scale with blue notes',
-      link: '/scale-explorer/index.html?scale=C&category=blues-scales&mode=blues-minor',
+      topic: 'C Major Blues Scale',
+      description: 'C major blues scale with blue notes',
+      link: '/scale-explorer/index.html?scale=C&category=blues-scales&mode=blues-major',
       category: 'Scales and Fretboard'
     },
     {
@@ -888,21 +894,21 @@ export default function Blog() {
       category: 'Scales and Fretboard'
     },
     {
-      topic: 'G Blues Scale',
-      description: 'G blues scale (blues and rock)',
-      link: '/scale-explorer/index.html?scale=G&category=blues-scales&mode=blues-minor',
+      topic: 'G Major Blues Scale',
+      description: 'G major blues scale (blues and rock)',
+      link: '/scale-explorer/index.html?scale=G&category=blues-scales&mode=blues-major',
       category: 'Scales and Fretboard'
     },
     {
-      topic: 'A Blues Scale',
-      description: 'A blues scale (blues foundation)',
-      link: '/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor',
+      topic: 'A Major Blues Scale',
+      description: 'A major blues scale (blues foundation)',
+      link: '/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major',
       category: 'Scales and Fretboard'
     },
     {
-      topic: 'E Blues Scale',
-      description: 'E blues scale (classic blues)',
-      link: '/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-minor',
+      topic: 'E Major Blues Scale',
+      description: 'E major blues scale (classic blues)',
+      link: '/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-major',
       category: 'Scales and Fretboard'
     },
     {
