@@ -69,22 +69,24 @@ export default function FretDisplay() {
         <h4 className="text-sm font-semibold text-amber-800 mb-3 text-center">
           First 12 frets of the {guitarStrings.find(s => s.name === selectedString)?.label} string:
         </h4>
-        <div className="space-y-2">
-          {/* Fret number labels row */}
-          <div className="grid gap-1 text-center" style={{ gridTemplateColumns: 'repeat(13, 1fr)' }}>
-            {getFretNotes().map((fretNote) => (
-              <div key={fretNote.fret + '-label'} className="text-xs font-medium text-gray-600">
-                {fretNote.fret === 0 ? 'Open' : fretNote.fret}
-              </div>
-            ))}
-          </div>
-          {/* Note squares row */}
-          <div className="grid gap-1 text-center" style={{ gridTemplateColumns: 'repeat(13, 1fr)' }}>
-            {getFretNotes().map((fretNote) => (
-              <div key={fretNote.fret} className="w-8 h-8 bg-amber-200 border border-amber-300 rounded flex items-center justify-center text-xs font-medium text-amber-800 mx-auto">
-                {getNoteName(fretNote.note)}
-              </div>
-            ))}
+        <div className="overflow-x-auto">
+          <div className="space-y-2 min-w-max">
+            {/* Fret number labels row */}
+            <div className="grid gap-1 text-center" style={{ gridTemplateColumns: 'repeat(13, 1fr)' }}>
+              {getFretNotes().map((fretNote) => (
+                <div key={fretNote.fret + '-label'} className="text-xs font-medium text-gray-600 w-8">
+                  {fretNote.fret === 0 ? 'Open' : fretNote.fret}
+                </div>
+              ))}
+            </div>
+            {/* Note squares row */}
+            <div className="grid gap-1 text-center" style={{ gridTemplateColumns: 'repeat(13, 1fr)' }}>
+              {getFretNotes().map((fretNote) => (
+                <div key={fretNote.fret} className="w-8 h-8 bg-amber-200 border border-amber-300 rounded flex items-center justify-center text-xs font-medium text-amber-800 mx-auto">
+                  {getNoteName(fretNote.note)}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

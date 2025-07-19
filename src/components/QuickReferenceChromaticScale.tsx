@@ -17,19 +17,21 @@ export default function QuickReferenceChromaticScale() {
           {showFlats ? 'Show Sharps' : 'Show Flats'}
         </button>
       </div>
-      <div className="flex min-w-max justify-center">
-        {scale.map((note, idx) => {
-          // Only highlight B, C, E, F
-          const isHighlight = ['B', 'C', 'E', 'F'].includes(note);
-          return (
-            <div
-              key={idx}
-              className={`w-12 h-12 sm:w-16 sm:h-16 border border-amber-300 flex items-center justify-center text-xs sm:text-sm font-medium transition-colors mx-0.5 ${isHighlight ? 'bg-amber-300 text-amber-900 font-bold' : 'bg-amber-50'}`}
-            >
-              {note}
-            </div>
-          );
-        })}
+      <div className="overflow-x-auto">
+        <div className="flex min-w-max justify-center">
+          {scale.map((note, idx) => {
+            // Only highlight B, C, E, F
+            const isHighlight = ['B', 'C', 'E', 'F'].includes(note);
+            return (
+              <div
+                key={idx}
+                className={`w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 border border-amber-300 flex items-center justify-center text-xs sm:text-sm font-medium transition-colors mx-0.5 flex-shrink-0 ${isHighlight ? 'bg-amber-300 text-amber-900 font-bold' : 'bg-amber-50'}`}
+              >
+                {note}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

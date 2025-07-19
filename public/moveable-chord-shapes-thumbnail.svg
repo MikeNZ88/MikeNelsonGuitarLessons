@@ -2,8 +2,7 @@
   <!-- Background -->
   <rect width="400" height="300" fill="#f8fafc"/>
   
-  <!-- Title -->
-  <text x="200" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="bold" fill="#92400e">Moveable Chord Shapes</text>
+
   
 
   

@@ -1453,6 +1453,20 @@ export default function Blog() {
       slug: 'circle-of-fifths',
       author: 'Mike Nelson',
       sortOrder: 21
+    },
+    {
+      id: '31',
+      title: 'Musical Terms for Guitarists: Complete A-Z Guide',
+      excerpt: 'Master essential musical terminology with our comprehensive A-Z guide for guitarists. Learn key terms, definitions, and concepts to enhance your musical understanding.',
+      readTime: '15 min read',
+      category: 'All',
+      primaryCategory: 'Theory',
+      categories: ['Theory', 'Getting Started'],
+      skillLevel: 'all',
+      image: '/musical-terms-thumbnail.svg',
+      slug: 'musical-terms-guitarists-guide',
+      author: 'Mike Nelson',
+      sortOrder: 22
     }
   ];
 
@@ -1669,6 +1683,8 @@ export default function Blog() {
                       <div className={`aspect-video relative overflow-hidden ${
                         post.image === '/major-scale-guide.png' 
                           ? 'bg-amber-800' 
+                          : post.image.endsWith('.svg')
+                          ? 'bg-amber-50'
                           : 'bg-gray-200'
                       }`}>
                         <img
@@ -1677,6 +1693,8 @@ export default function Blog() {
                           className={`w-full h-full transition-transform duration-300 ${
                             post.image === '/major-scale-guide.png' 
                               ? 'object-contain scale-110 group-hover:scale-115' 
+                              : post.image.endsWith('.svg')
+                              ? 'object-contain group-hover:scale-105'
                               : 'object-cover group-hover:scale-105'
                           }`}
                         />

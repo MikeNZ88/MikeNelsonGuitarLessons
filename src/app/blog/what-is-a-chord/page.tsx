@@ -51,7 +51,6 @@ export default function WhatIsChord() {
           <a href="#chord-formulas" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Chord Formulas</a>
           <a href="#common-chord-types" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Common Chord Types</a>
           <a href="#types-by-technique" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Chord Shapes: Open and Moveable</a>
-          <a href="#why-structure-matters" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Why Structure Matters</a>
           <a href="#building-understanding" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Building Understanding</a>
           <a href="#open-chord-library" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Open Chord Library</a>
           <a href="#what-is-a-key" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">What is a Key?</a>
@@ -579,27 +578,7 @@ export default function WhatIsChord() {
           </div>
         </section>
 
-        {/* Section 7: Why Understanding Structure Matters */}
-        <section id="why-structure-matters" className="mb-12 scroll-mt-24">
-          <h2 className="text-3xl font-bold mb-6 text-amber-600">Why Understanding Structure Matters</h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-amber-50 p-6 rounded-lg border-l-4 border-amber-500 shadow-sm">
-              <h3 className="text-lg font-semibold mb-3 text-amber-800">For Learning Efficiency</h3>
-              <p className="text-sm text-amber-700">Once you understand that all major chords share the same interval formula, you're not memorizing random finger positions - you're learning patterns that apply everywhere.</p>
-            </div>
-
-            <div className="bg-amber-50 p-6 rounded-lg border-l-4 border-amber-500 shadow-sm">
-              <h3 className="text-lg font-semibold mb-3 text-amber-800">For Musical Communication</h3>
-              <p className="text-sm text-amber-700">When musicians say "play a C major," they're referring to a specific set of intervals starting from C. This universal language works regardless of instrument.</p>
-            </div>
-
-            <div className="bg-amber-50 p-6 rounded-lg border-l-4 border-amber-500 shadow-sm">
-              <h3 className="text-lg font-semibold mb-3 text-amber-800">For Song Analysis</h3>
-              <p className="text-sm text-amber-700">Understanding chord structure helps you recognize progressions, transpose songs to different keys, and predict which chords work well together.</p>
-            </div>
-          </div>
-        </section>
 
         {/* Section 8: Building Your Understanding */}
         <section id="building-understanding" className="mb-12 scroll-mt-24">
