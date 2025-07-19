@@ -1463,7 +1463,7 @@ export default function Blog() {
     {
       id: '31',
       title: 'Musical Terms for Guitarists: Complete A-Z Guide',
-      excerpt: 'Master essential musical terminology with our comprehensive A-Z guide for guitarists. Learn key terms, definitions, and concepts to enhance your musical understanding.',
+              excerpt: 'Master essential musical terminology with this comprehensive A-Z guide for guitarists. Learn key terms, definitions, and concepts to enhance your musical understanding.',
       readTime: '15 min read',
       category: 'All',
       primaryCategory: 'Theory',
