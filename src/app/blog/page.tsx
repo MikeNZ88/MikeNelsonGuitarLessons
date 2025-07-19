@@ -1493,12 +1493,7 @@ export default function Blog() {
     return matchesTopicCategory && matchesSkillLevel && matchesSearch;
   });
 
-  // Filter Quick Reference topics based on search query
-  const filteredQuickRefTopics = searchQuery === '' ? [] : topicIndex.filter(topic =>
-    topic.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    topic.category.toLowerCase().includes(searchQuery.toLowerCase())
-  ).slice(0, 5); // Limit to 5 results to avoid overwhelming the search
+
 
   // Sort posts by sortOrder and skill level
   const sortedPosts = filteredPosts.sort((a, b) => {
@@ -1571,87 +1566,14 @@ export default function Blog() {
               </span>
               <input
                 type="text"
-                placeholder="Search blog posts and topics..."
+                placeholder="Search blog posts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="block w-full h-12 pl-12 pr-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-base"
                 style={{ boxSizing: 'border-box' }}
               />
               
-              {/* Search Results Dropdown */}
-              {searchQuery && (filteredQuickRefTopics.length > 0 || posts.filter(post => 
-                post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                post.category.toLowerCase().includes(searchQuery.toLowerCase())
-              ).length > 0) && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10 max-h-80 overflow-y-auto">
-                  {/* Blog Post Results */}
-                  {posts.filter(post => 
-                    post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                    post.category.toLowerCase().includes(searchQuery.toLowerCase())
-                  ).slice(0, 3).map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug}`}
-                      className="block p-3 hover:bg-amber-50 border-b border-gray-100 transition-colors"
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <h5 className="font-semibold text-gray-800 text-sm">
-                            {post.title}
-                          </h5>
-                          <p className="text-xs text-gray-600 mt-1 line-clamp-2">
-                            {post.excerpt}
-                          </p>
-                        </div>
-                        <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 flex-shrink-0 ${getCategoryColor(post.primaryCategory)}`}>
-                          Blog Post
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                  
-                  {/* Quick Reference Results */}
-                  {filteredQuickRefTopics.length > 0 && (
-                    <>
-                      {posts.filter(post => 
-                        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                        post.category.toLowerCase().includes(searchQuery.toLowerCase())
-                      ).length > 0 && (
-                        <div className="p-3 border-b border-gray-200 bg-gray-50">
-                          <h4 className="text-sm font-semibold text-gray-700">Quick Reference Topics</h4>
-                        </div>
-                      )}
-                      {filteredQuickRefTopics.slice(0, 5).map((topic) => (
-                        <Link
-                          key={topic.topic}
-                          href={topic.link}
-                          className="block p-3 hover:bg-amber-50 border-b border-gray-100 last:border-b-0 transition-colors"
-                        >
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <h5 className="font-semibold text-gray-800 text-sm">
-                                {topic.topic}
-                              </h5>
-                              <p className="text-xs text-gray-600 mt-1">
-                                {topic.description}
-                              </p>
-                            </div>
-                            <span className={`text-xs font-medium px-2 py-1 rounded-full ml-2 flex-shrink-0 ${getCategoryColor(topic.category)}`}>
-                              {topic.category}
-                            </span>
-                          </div>
-                        </Link>
-                      ))}
-                    </>
-                  )}
-                </div>
-              )}
+
             </div>
 
             {/* Topic Category Filter */}
