@@ -647,6 +647,23 @@ function PentatonicScalesContent() {
           </div>
         </div>
 
+        {/* Scale Explorer Link */}
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg shadow-sm border border-amber-200 p-6">
+          <h2 className="text-2xl font-bold text-amber-800 mb-4">Explore More Scales</h2>
+          <p className="text-gray-600 mb-4 text-lg">
+            For full fretboard diagrams of pentatonic scales and many more types of scales, check out our interactive Scale Explorer tool.
+          </p>
+          <a 
+            href="/blog/scale-explorer-tool" 
+            className="inline-flex items-center px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors duration-200 shadow-md hover:shadow-lg"
+          >
+            Explore Scale Explorer Tool
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </a>
+        </div>
+
       </div>
     </div>
   );
