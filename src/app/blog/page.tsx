@@ -457,6 +457,12 @@ export default function Blog() {
       link: '/blog/electric-guitar-beginner-guide-nz',
       category: 'Gear'
     },
+    {
+      topic: 'Enharmonic Equivalents',
+      description: 'Notes that sound the same but are written differently (like F♯ and G♭)',
+      link: '/blog/circle-of-fifths#enharmonic-equivalents',
+      category: 'Theory'
+    },
 
 
     
@@ -1439,10 +1445,10 @@ export default function Blog() {
       title: 'The Circle of Fifths: A Complete Guide',
       excerpt: 'Master the fundamental relationship between keys, understand key signatures, and discover the diatonic chords that make up every major and minor key with our interactive tool.',
       readTime: 'Interactive Tool',
-      category: 'Intermediate',
+      category: 'Intermediate - Advanced',
       primaryCategory: 'Theory',
       categories: ['Theory', 'Tools'],
-      skillLevel: 'intermediate',
+      skillLevel: 'intermediate-advanced',
       image: '/circle-of-fifths-thumbnail.svg',
       slug: 'circle-of-fifths',
       author: 'Mike Nelson',

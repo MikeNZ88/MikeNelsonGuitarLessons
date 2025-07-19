@@ -1402,6 +1402,9 @@ export default function CircleOfFifthsPage() {
               <a href="#key-signatures" className="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors font-medium">
                 Key Signatures
               </a>
+              <a href="#enharmonic-equivalents" className="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors font-medium">
+                Enharmonic Equivalents
+              </a>
               <a href="#practical-applications" className="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors font-medium">
                 Practical Applications
               </a>
@@ -1723,7 +1726,7 @@ export default function CircleOfFifthsPage() {
                   <strong>Important rule:</strong> All keys must use either sharps or flats consistently - never both. The choice depends on the relative major key's spelling.
                 </p>
                 <div className="text-sm text-amber-600 italic">
-                  <p><strong>Example:</strong> G♯ minor uses sharps because its relative major (B major) uses sharps. A♭ minor uses flats because its relative major (C♭ major) uses flats.</p>
+                  <p><strong>Example:</strong> G♯ minor uses sharps because its relative major (B major) uses sharps. If we called it A♭ minor instead, we'd have to call B as C♭, and we want to avoid that.</p>
                 </div>
               </div>
             </div>
@@ -1738,80 +1741,164 @@ export default function CircleOfFifthsPage() {
                 <div>
                   <h4 className="font-semibold text-amber-700 mb-3">Sharp Spellings</h4>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">C♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">D♭</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">C♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">D♭</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">D♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">E♭</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">D♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">E♭</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">E♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">F</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-red-100 p-2 rounded-l border-r border-red-300">
+                        <span className="font-medium text-red-600">E♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">F</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">F♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">G♭</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">F♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">G♭</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">G♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">A♭</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">G♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">A♭</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">A♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">B♭</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">A♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">B♭</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">B♯</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">C</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-red-100 p-2 rounded-l border-r border-red-300">
+                        <span className="font-medium text-red-600">B♯</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">C</span>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div>
                   <h4 className="font-semibold text-amber-700 mb-3">Flat Spellings</h4>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">D♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">C♯</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">D♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">C♯</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">E♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">D♯</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">E♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">D♯</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">F♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">E</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-red-100 p-2 rounded-l border-r border-red-300">
+                        <span className="font-medium text-red-600">F♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">E</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">G♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">F♯</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">G♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">F♯</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">A♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">G♯</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">A♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">G♯</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">B♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">A♯</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-green-100 p-2 rounded-l border-r border-green-300">
+                        <span className="font-medium text-green-600">B♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">A♯</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center p-2 bg-white rounded border">
-                      <span className="font-medium">C♭</span>
-                      <span className="text-amber-600">=</span>
-                      <span className="font-medium">B</span>
+                    <div className="flex justify-between items-center p-2 rounded border">
+                      <div className="flex-1 bg-red-100 p-2 rounded-l border-r border-red-300">
+                        <span className="font-medium text-red-600">C♭</span>
+                      </div>
+                      <div className="px-3 py-2 bg-gray-50">
+                        <span className="text-amber-600">=</span>
+                      </div>
+                      <div className="flex-1 bg-green-100 p-2 rounded-r border-l border-green-300">
+                        <span className="font-medium text-green-600">B</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1819,6 +1906,9 @@ export default function CircleOfFifthsPage() {
               <p className="text-amber-600 text-sm mt-4 italic">
                 <strong>Note:</strong> The choice between sharp and flat spellings depends on the key signature and musical context. 
                 We generally choose the spelling that uses fewer accidentals and follows the key signature pattern.
+              </p>
+              <p className="text-red-600 text-sm mt-2 italic">
+                <strong>Note:</strong> <span className="text-red-600">Red background</span> indicates spellings that are generally avoided as they create confusing notation (like E♯ instead of F, or C♭ instead of B). However, these problematic spellings still exist in music theory because they cannot always be avoided - for example, the key of F♯ major needs an E♯, or we would have to use the letter F twice (not allowed).
               </p>
             </div>
           </div>
