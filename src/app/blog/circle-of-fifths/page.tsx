@@ -7,7 +7,7 @@ import Link from 'next/link';
 type KeyType = string;
 type ChordType = string;
 
-const majorKeys = [
+  const majorKeys = [
   'C', 'G', 'D', 'A', 'E', 'B', 'F♯/G♭', 'D♭', 'A♭', 'E♭', 'B♭', 'F'
 ];
 
@@ -1131,14 +1131,14 @@ const CircleOfFifths = () => {
           />
           
           {/* Inner circle for minor keys */}
-          <circle
+            <circle
             cx="275"
             cy="275"
             r="140"
-            fill="#F8FAFC"
-            stroke="#E2E8F0"
-            strokeWidth="1"
-          />
+              fill="#F8FAFC"
+              stroke="#E2E8F0"
+              strokeWidth="1"
+            />
 
           {/* Dividing lines */}
           {Array.from({ length: 12 }, (_, i) => {
@@ -1274,7 +1274,7 @@ const CircleOfFifths = () => {
                     <p className="text-sm font-medium text-slate-600 mb-2">
                       {selectedKey === 'F♯/G♭' ? 'G♭ Major Key:' : 'E♭m Minor Key:'}
                     </p>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
+              <div className="grid grid-cols-2 gap-2 text-sm">
                       {getDiatonicChords(selectedKey).map((chord) => {
                         const displayText = getDisplayText(chord);
                         return (
@@ -1322,19 +1322,19 @@ const CircleOfFifths = () => {
                     const correctSpelling = getCorrectChordSpelling(chord, selectedKey);
                     const displayText = getDisplayText(chord);
                     return (
-                      <div 
-                        key={chord}
-                        className="flex items-center gap-2"
-                      >
-                        <div 
-                          className="w-4 h-4 rounded-full"
-                          style={{ backgroundColor: keyColors[selectedKey] }}
-                        ></div>
+                  <div 
+                    key={chord}
+                    className="flex items-center gap-2"
+                  >
+                    <div 
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: keyColors[selectedKey] }}
+                    ></div>
                         <span>{displayText}</span>
-                        <span className="text-slate-500">
-                          ({getChordRomanNumeral(chord, selectedKey)})
-                        </span>
-                      </div>
+                    <span className="text-slate-500">
+                      ({getChordRomanNumeral(chord, selectedKey)})
+                    </span>
+                  </div>
                     );
                   })}
                 </div>

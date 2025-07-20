@@ -104,30 +104,24 @@ function PentatonicScalesContent() {
   // Get dynamic shape name based on selected key
   const getShapeName = (shape: ScaleShape, key: string) => {
     // Calculate the relative major key (3 semitones up from minor)
-              // Convert flat keys to their sharp equivalents for consistent mapping
-     const flatToSharpMap: { [key: string]: string } = {
-       'D♭': 'C#', 'E♭': 'D#', 'G♭': 'F#', 'A♭': 'G#', 'B♭': 'A#'
-     };
+    // Use consistent flat spelling for relative major keys to avoid enharmonic confusion
+    const minorToMajorMap: { [key: string]: string } = {
+      // Natural notes
+      'C': 'E♭', 'D': 'F', 'E': 'G', 'F': 'A♭', 'G': 'B♭', 'A': 'C', 'B': 'D',
+      // Sharp keys
+      'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#',
+      // Flat keys (use flat spelling for consistency)
+      'D♭': 'F♭', 'E♭': 'G♭', 'G♭': 'B♭♭', 'A♭': 'C♭', 'B♭': 'D♭'
+    };
      
-     // Convert the key to sharp notation for calculation
-     const keyForCalculation = flatToSharpMap[key] || key;
-     
-     // Map of minor keys to their relative majors (using sharp-based calculations)
-     const minorToMajorMap: { [key: string]: string } = {
-       // Natural notes
-       'C': 'E♭', 'D': 'F', 'E': 'G', 'F': 'A♭', 'G': 'B♭', 'A': 'C', 'B': 'D',
-       // Sharp keys
-       'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#'
-     };
-     
-     // Get the relative major using the converted key
-     let relativeMajor = minorToMajorMap[keyForCalculation];
+     // Get the relative major using the key directly
+     let relativeMajor = minorToMajorMap[key];
     
-         if (!relativeMajor) {
+     if (!relativeMajor) {
        // Fallback calculation using conventional note order
        const noteOrder = ['C', 'C#', 'D', 'E♭', 'E', 'F', 'F#', 'G', 'G#', 'A', 'B♭', 'B'];
        
-       let keyIndex = noteOrder.findIndex(note => note === keyForCalculation);
+       let keyIndex = noteOrder.findIndex(note => note === key);
        if (keyIndex === -1) keyIndex = 0; // Fallback to C
        
        const relativeMajorIndex = (keyIndex + 3) % 12;
@@ -187,9 +181,20 @@ function PentatonicScalesContent() {
     else if (maxFret > 24) {
       octaveShift = -12;
     }
-    // If pattern is uncomfortably high (above fret 20), prefer lower octave
-    else if (minFret > 20) {
+    // For Shape 5, be more careful about octave shifting
+    // Only shift down if it would still be playable (not below fret 1)
+    else if (minFret > 20 && shape !== 'shape5') {
+      // For shapes other than Shape 5, prefer lower octave if uncomfortably high
       octaveShift = -12;
+    }
+    // For Shape 5 specifically, handle differently
+    else if (shape === 'shape5') {
+      // If Shape 5 is in the very high range (above 22), allow it to stay there
+      // The manual octave controls will let users move it down if needed
+      if (minFret > 22) {
+        octaveShift = -12;
+      }
+      // Otherwise, keep it in the current position
     }
     
          // Apply automatic octave shift if needed
@@ -274,19 +279,30 @@ function PentatonicScalesContent() {
     
     // Get finger number based on proper pentatonic fingering patterns
     const getFingerNumber = (stringIndex: number, fret: number) => {
-      // Shape 3 specific fingering patterns
+      // Shape 3 specific fingering patterns - dynamic based on actual fret positions
       if (shape === 'shape3') {
-        // String-specific fingering for Shape 3
-        const shape3Fingering: { [key: number]: { [key: number]: string } } = {
-          1: { 10: '1', 12: '3' }, // High E string: 1, 3
-          2: { 10: '1', 13: '4' }, // B string: 1, 4  
-          3: { 9: '1', 12: '4' },  // G string
-          4: { 10: '1', 12: '3' }, // D string
-          5: { 10: '1', 12: '3' }, // A string
-          6: { 10: '1', 12: '3' }  // Low E string
-        };
+        // Get the actual frets for this string in Shape 3
+        const stringData = actualFrets.find(s => s.string === stringIndex);
+        if (stringData && stringData.frets.length >= 2) {
+          const [firstFret, secondFret] = stringData.frets;
+          
+          // Determine finger based on relative position
+          if (fret === firstFret) {
+            return '1'; // Index finger for first note
+          } else if (fret === secondFret) {
+            // For the second note, use different fingers based on string
+            if (stringIndex === 2) { // B string - wider stretch
+              return '4'; // Pinky
+            } else if (stringIndex === 3) { // G string - wider stretch
+              return '4'; // Pinky
+            } else {
+              return '3'; // Ring finger for other strings
+            }
+          }
+        }
         
-        return shape3Fingering[stringIndex]?.[fret] || '1';
+        // Fallback to default fingering
+        return '1';
       }
       
       // Default fingering for other shapes (relative to starting fret)
@@ -375,14 +391,17 @@ function PentatonicScalesContent() {
           <div className="flex mt-2">
             <div className="w-6"></div>
             <div className="flex-1 flex">
-              {Array.from({ length: fretSpan + 1 }, (_, i) => i).map((fret) => (
-                <div
-                  key={fret}
-                  className="flex-1 text-center text-xs text-gray-500 font-medium"
-                >
-                  {startingFret + fret}
-                </div>
-              ))}
+              {Array.from({ length: fretSpan + 1 }, (_, i) => i).map((fret) => {
+                const fretNumber = startingFret + fret;
+                return (
+                  <div
+                    key={fret}
+                    className="flex-1 text-center text-xs text-gray-500 font-medium"
+                  >
+                    {fretNumber === 25 ? '' : fretNumber}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -394,15 +413,12 @@ function PentatonicScalesContent() {
               <span className="font-semibold text-amber-600">{selectedKey} Minor Pentatonic</span>
             ) : shape === 'shape2' ? (
               <span className="font-semibold text-amber-600">{(() => {
-                const flatToSharpMap: { [key: string]: string } = {
-                  'D♭': 'C#', 'E♭': 'D#', 'G♭': 'F#', 'A♭': 'G#', 'B♭': 'A#'
-                };
-                const keyForCalculation = flatToSharpMap[selectedKey] || selectedKey;
                 const minorToMajorMap: { [key: string]: string } = {
                   'C': 'E♭', 'D': 'F', 'E': 'G', 'F': 'A♭', 'G': 'B♭', 'A': 'C', 'B': 'D',
-                  'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#'
+                  'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#',
+                  'D♭': 'F♭', 'E♭': 'G♭', 'G♭': 'B♭♭', 'A♭': 'C♭', 'B♭': 'D♭'
                 };
-                return minorToMajorMap[keyForCalculation] || 'C';
+                return minorToMajorMap[selectedKey] || 'C';
               })()} Major Pentatonic</span>
             ) : null}
           </p>
@@ -530,15 +546,12 @@ function PentatonicScalesContent() {
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-amber-800 mb-6 text-center">
           All 5 shapes for {selectedKey} Minor/{(() => {
-            const flatToSharpMap: { [key: string]: string } = {
-              'D♭': 'C#', 'E♭': 'D#', 'G♭': 'F#', 'A♭': 'G#', 'B♭': 'A#'
-            };
-            const keyForCalculation = flatToSharpMap[selectedKey] || selectedKey;
             const minorToMajorMap: { [key: string]: string } = {
               'C': 'E♭', 'D': 'F', 'E': 'G', 'F': 'A♭', 'G': 'B♭', 'A': 'C', 'B': 'D',
-              'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#'
+              'C#': 'E', 'D#': 'F#', 'F#': 'A', 'G#': 'B', 'A#': 'C#',
+              'D♭': 'F♭', 'E♭': 'G♭', 'G♭': 'B♭♭', 'A♭': 'C♭', 'B♭': 'D♭'
             };
-            return minorToMajorMap[keyForCalculation] || 'C';
+            return minorToMajorMap[selectedKey] || 'C';
           })()} Major Pentatonic
         </h2>
         <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
