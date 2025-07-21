@@ -17,6 +17,20 @@
     </url>
     
     <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/tools</loc>
+        <lastmod>2025-07-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/rhythm-tool</loc>
+        <lastmod>2025-07-18</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <url>
         <loc>https://mikenelsonguitarlessons.co.nz/scale-explorer</loc>
         <lastmod>2025-07-08</lastmod>
         <changefreq>weekly</changefreq>
@@ -91,6 +105,21 @@
     <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/your-first-guitar-chords</loc>
         <lastmod>2025-06-08</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- MISSING CRITICAL PAGES -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/guitar-picking-exercises</loc>
+        <lastmod>2025-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-pentatonic-scales</loc>
+        <lastmod>2025-07-18</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -173,13 +202,6 @@
         <lastmod>2025-05-05</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.7</priority>
-    </url>
-    
-    <url>
-        <loc>https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-pentatonic-scales</loc>
-        <lastmod>2025-07-18</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.8</priority>
     </url>
     
     <url>
@@ -269,5 +291,27 @@
         <lastmod>2025-03-15</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.4</priority>
+    </url>
+    
+    <!-- ADDITIONAL STATIC PAGES -->
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/policy.html</loc>
+        <lastmod>2025-07-21</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/thank-you.html</loc>
+        <lastmod>2025-07-21</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/scale-explorer/index.html</loc>
+        <lastmod>2025-07-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
     </url>
 </urlset>

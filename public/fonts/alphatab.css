@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'alphaTab';
+    src: url('./Bravura.woff2') format('woff2'),
+         url('./Bravura.woff') format('woff'),
+         url('./Bravura.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Ensure the font is properly loaded */
+.alphatab {
+    font-family: 'alphaTab', 'Arial', sans-serif;
+} 

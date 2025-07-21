@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coderline/alphatab": "^1.6.0",
     "@headlessui/react": "^2.2.4",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",

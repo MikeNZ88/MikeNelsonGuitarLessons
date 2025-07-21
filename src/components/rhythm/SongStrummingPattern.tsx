@@ -192,7 +192,7 @@ export default function SongStrummingPattern({
       setCurrentStrokeIndex(-1);
       if (isLooping) {
         if (countInEnabled) {
-          playCountIn(); // Start count-in again for loop
+        playCountIn(); // Start count-in again for loop
         } else {
           playPatternDirect(); // Start pattern directly for loop
         }
@@ -217,8 +217,8 @@ export default function SongStrummingPattern({
       setIsPlaying(true);
       
       if (countInEnabled) {
-        // Start with count-in
-        await playCountIn();
+      // Start with count-in
+      await playCountIn();
       } else {
         // Start pattern directly
         playPatternDirect();

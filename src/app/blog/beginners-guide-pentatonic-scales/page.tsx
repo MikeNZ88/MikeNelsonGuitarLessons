@@ -237,9 +237,9 @@ function PentatonicScalesContent() {
     
     // Check if shape is available (no negative frets)
     if (!actualFrets) {
-      return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <h3 className="text-lg font-semibold text-gray-800 mb-2 text-center">{title}</h3>
+          return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 fretboard-diagram">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2 text-center">{title}</h3>
           <p className="text-xs text-gray-600 mb-4 text-center">{description}</p>
           
           <div className="bg-gray-50 rounded-lg p-6 text-center">
@@ -477,7 +477,7 @@ function PentatonicScalesContent() {
       </div>
 
       {/* Key Selection */}
-      <div className="mb-8">
+      <div className="mb-8 key-selector">
         <h3 className="text-lg font-semibold text-center mb-4 text-gray-700">
           Select Minor Pentatonic Key
         </h3>
@@ -519,7 +519,7 @@ function PentatonicScalesContent() {
       </div>
 
       {/* Octave Position Controls */}
-      <div className="flex justify-center items-center gap-4 mb-8">
+      <div className="flex justify-center items-center gap-4 mb-8 octave-position-controls">
         <span className="text-sm text-gray-600">Fretboard Position:</span>
         <button
           className="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium"
@@ -543,7 +543,7 @@ function PentatonicScalesContent() {
       </div>
 
       {/* All 5 Shapes */}
-      <div className="mb-12">
+      <div className="mb-12 page-title-section">
         <h2 className="text-2xl font-bold text-amber-800 mb-6 text-center">
           All 5 shapes for {selectedKey} Minor/{(() => {
             const minorToMajorMap: { [key: string]: string } = {
@@ -559,9 +559,9 @@ function PentatonicScalesContent() {
           Notice how each shape connects to the ones next to it - they share notes at the boundaries.
         </p>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6 shape-section">
           {SCALE_SHAPES.map((shape, index) => (
-            <div key={shape}>
+            <div key={shape} className="shape-section">
               <FretboardDiagram
                 shape={shape}
                 title={`Shape ${index + 1}`}
@@ -573,8 +573,8 @@ function PentatonicScalesContent() {
       </div>
 
       {/* Educational Content */}
-      <div className="space-y-8 max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="space-y-8 max-w-4xl mx-auto blog-content">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 major-section">
           <h2 className="text-2xl font-bold text-amber-800 mb-4">How to Use These Shapes</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
@@ -636,7 +636,7 @@ function PentatonicScalesContent() {
         </div>
 
         {/* Shape Connection and Repetition */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 major-section">
           <h2 className="text-2xl font-bold text-amber-800 mb-4">How the Shapes Connect</h2>
           
           <div className="space-y-4 text-gray-600">
@@ -661,7 +661,7 @@ function PentatonicScalesContent() {
         </div>
 
         {/* Scale Explorer Link */}
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg shadow-sm border border-amber-200 p-6">
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg shadow-sm border border-amber-200 p-6 major-section">
           <h2 className="text-2xl font-bold text-amber-800 mb-4">Explore More Scales</h2>
           <p className="text-gray-600 mb-4 text-lg">
             For full fretboard diagrams of pentatonic scales and many more types of scales, check out our interactive Scale Explorer tool.

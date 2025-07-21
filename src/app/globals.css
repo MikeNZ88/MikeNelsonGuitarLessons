@@ -4,6 +4,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
+/* AlphaTab Font Loading */
+@font-face {
+  font-family: 'Bravura';
+  src: url('/fonts/Bravura.woff2') format('woff2'),
+       url('/fonts/Bravura.woff') format('woff'),
+       url('/fonts/Bravura.otf') format('opentype'),
+       url('/fonts/Bravura.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --font-inter: 'Inter', sans-serif;
@@ -290,5 +302,178 @@ img {
   /* Improve scroll hint visibility for nested scroll containers */
   .mobile-scroll-hint .overflow-x-auto {
     padding-bottom: 1rem;
+  }
+}
+
+/* Print Styles for Better Page Layout */
+@media print {
+  /* Reset margins and set reasonable print margins */
+  @page {
+    margin: 0.75in 0.5in;
+    size: A4;
+  }
+  
+  /* Hide non-essential elements during print */
+  nav, 
+  footer, 
+  .btn-primary, 
+  .btn-secondary,
+  button,
+  .mobile-scroll-hint,
+  .octave-controls,
+  header,
+  .key-selector,
+  .octave-position-controls {
+    display: none !important;
+  }
+  
+  /* Ensure content flows properly */
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+    color: black;
+    background: white;
+  }
+  
+  /* Improve heading spacing and page breaks */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+  }
+  
+  /* Prevent awkward breaks in content sections */
+  .blog-content {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  /* Keep fretboard diagrams together */
+  .fretboard-diagram,
+  .scale-pattern,
+  .chord-diagram {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 0.5em 0;
+  }
+  
+  /* Optimize shape grid for print - fit all 5 shapes on one page */
+  .shape-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 0.5em;
+  }
+  
+  /* Force shapes to display in a single row for print */
+  .shape-section .grid {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 0.25rem !important;
+    margin-bottom: 0.5em;
+  }
+  
+  /* Compact fretboard display for print */
+  .fretboard-diagram .grid {
+    gap: 0.125rem !important;
+  }
+  
+  /* Smaller fretboard cells for print */
+  .fretboard-diagram .w-12.h-12 {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    font-size: 0.625rem !important;
+  }
+  
+  /* Compact fret numbers */
+  .fretboard-diagram .text-xs {
+    font-size: 0.625rem !important;
+  }
+  
+  /* Reduce padding and margins for compact print layout */
+  .fretboard-diagram {
+    padding: 0.5rem !important;
+    margin: 0 !important;
+  }
+  
+  /* Smaller text for print */
+  .fretboard-diagram h3 {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  .fretboard-diagram p {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  
+  /* Ensure shape sections stay together */
+  .shape-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 1.5em;
+  }
+  
+  /* Keep related content together */
+  .shape-description {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  /* Improve spacing for print */
+  p {
+    margin-bottom: 0.75em;
+  }
+  
+  /* Ensure diagrams don't get cut off */
+  .min-w-max {
+    min-width: auto !important;
+    max-width: 100% !important;
+  }
+  
+  /* Remove horizontal scrolling in print */
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+  
+  /* Ensure text is readable */
+  .text-amber-600,
+  .text-amber-700,
+  .text-amber-800 {
+    color: black !important;
+  }
+  
+  /* Keep interactive elements but make them static */
+  .interactive-element {
+    pointer-events: none;
+  }
+  
+  /* Ensure proper spacing between major sections */
+  .major-section {
+    page-break-before: auto;
+    break-before: auto;
+    margin-top: 2em;
+  }
+  
+  /* Keep title and description together */
+  .page-title-section {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  
+  /* Optimize table printing */
+  table {
+    font-size: 10pt;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  /* Ensure proper spacing in lists */
+  ul, ol {
+    margin-bottom: 1em;
+  }
+  
+  li {
+    margin-bottom: 0.25em;
   }
 }

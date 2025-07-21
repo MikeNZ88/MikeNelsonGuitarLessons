@@ -1345,6 +1345,20 @@ export default function Blog() {
       sortOrder: 8
     },
     {
+      id: '32',
+      title: 'Essential Guitar Picking Exercises',
+      excerpt: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
+      readTime: 'Interactive',
+      category: 'Beginner - Advanced',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Tools'],
+      skillLevel: 'all',
+      image: '/guitar-picking-exercises-thumbnail.svg',
+      slug: 'guitar-picking-exercises',
+      author: 'Mike Nelson',
+      sortOrder: 9
+    },
+    {
       id: '1',
       title: '6 Essential Practice Tips for Guitar Students',
       excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',

@@ -3,18 +3,41 @@ Allow: /
 
 # Specific allows for important pages
 Allow: /scale-explorer
+Allow: /scale-explorer/index.html
 Allow: /lessons
 Allow: /about
 Allow: /contact
 Allow: /approach
 Allow: /resources
 Allow: /blog
+Allow: /tools
+Allow: /rhythm-tool
+Allow: /policy.html
+Allow: /thank-you.html
+
+# Allow all blog content (including query parameters)
+Allow: /blog/*
+
+# Allow query parameters for interactive tools
+Allow: /blog/barre-chord-library?*
+Allow: /blog/moveable-guitar-chord-shapes?*
+Allow: /scale-explorer/index.html?*
 
 # Disallow build and system files
 Disallow: /_next/
 Disallow: /out/
+Disallow: /out-backup/
 Disallow: /.git/
 Disallow: /node_modules/
+Disallow: /.DS_Store
+
+# Block old/broken pages that might cause 404s
+Disallow: /blog/reading-guitar-tab
+Disallow: /blog/practicetrack-effective-practice
+
+# Block backup and development directories
+Disallow: /TabPlayer*backup*
+Disallow: /public/TabPlayer*
 
 # Sitemap location
 Sitemap: https://mikenelsonguitarlessons.co.nz/sitemap.xml
