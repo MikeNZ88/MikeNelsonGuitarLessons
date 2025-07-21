@@ -14,6 +14,21 @@ interface Exercise {
 // Grouped exercise arrays for dropdown
 const sixteenthNotes = [
   {
+    id: 'am-pentatonic-asc-desc-16ths',
+    name: 'Ascending & Descending Pattern (16th Notes)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic Ascending:Descending 16th notes.gp'
+  },
+  {
+    id: 'am-pentatonic-asc-desc-legato',
+    name: 'Ascending & Descending Pattern (Partial Legato)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Ascending & Descending partial legato.gp'
+  },
+  {
+    id: 'am-pentatonic-asc-desc-pure-legato',
+    name: 'Ascending & Descending Pattern (Pure Legato)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Ascending & Descending legato.gp'
+  },
+  {
     id: 'am-pentatonic-ascending',
     name: 'Ascending Pattern (Alternate Picking)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonicascending 16th notes Alternate  copy.gp'
@@ -32,7 +47,7 @@ const sixteenthNotes = [
 const sixteenthTriplets = [
   {
     id: 'am-pentatonic-triplets-variation',
-    name: 'Ascending Pattern',
+    name: 'Ascending Pattern (Alternate Picking)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am pent triplet 16ths 3.gp'
   },
   {
@@ -44,9 +59,7 @@ const sixteenthTriplets = [
     id: 'am-pentatonic-triplets-legato',
     name: 'Descending Pattern (Partial Legato)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic 16th note triplets partial legato.gp'
-  }
-];
-const eighthTriplets = [
+  },
   {
     id: 'am-pentatonic-triplets',
     name: 'Descending Pattern (Partial Legato)',
@@ -55,7 +68,7 @@ const eighthTriplets = [
 ];
 
 // Flat array for lookup and selection logic
-const exercises: Exercise[] = [...sixteenthNotes, ...sixteenthTriplets, ...eighthTriplets];
+const exercises: Exercise[] = [...sixteenthNotes, ...sixteenthTriplets];
 
 declare global {
   interface Window {
@@ -127,6 +140,63 @@ export default function AlphaTabPlayerCDN() {
         font-weight: bold !important;
         fill: #333 !important;
       }
+
+      /* Enhanced AlphaTab cursor styling for better visibility */
+      .at .at-cursor-beat {
+        fill: none !important;
+        stroke: red !important;
+        stroke-width: 2.5px !important;
+        stroke-dasharray: 4,2 !important;
+        pointer-events: none !important;
+      }
+      
+      .at .at-cursor-bar {
+        fill: none !important;
+        stroke: orange !important;
+        stroke-width: 2px !important;
+        stroke-dasharray: 6,3 !important;
+        pointer-events: none !important;
+      }
+      
+      .at .at-highlight {
+        fill: rgba(255, 255, 0, 0.4) !important;
+        stroke: orange !important;
+        stroke-width: 1px !important;
+      }
+      
+      /* Ensure cursor elements are above other content */
+      .at .at-cursor,
+      .at .at-cursor-beat,
+      .at .at-cursor-bar {
+        z-index: 1000 !important;
+        pointer-events: none !important;
+      }
+      
+      /* Make sure SVG allows cursor overlay */
+      .at svg {
+        overflow: visible !important;
+      }
+
+      /* Strongest override for all cursor elements */
+      .at .at-cursor *,
+      .at .at-cursor-beat *,
+      .at .at-cursor-bar *,
+      .at .at-cursor,
+      .at .at-cursor-beat,
+      .at .at-cursor-bar {
+        fill: none !important;
+        stroke: red !important;
+        stroke-width: 2.5px !important;
+        stroke-dasharray: 4,2 !important;
+        pointer-events: none !important;
+      }
+
+      .at .at-cursor-bar,
+      .at .at-cursor-bar * {
+        stroke: orange !important;
+        stroke-width: 2px !important;
+        stroke-dasharray: 6,3 !important;
+      }
     `;
     document.head.appendChild(style);
     
@@ -136,6 +206,32 @@ export default function AlphaTabPlayerCDN() {
       }
     };
   }, []);
+
+  // Remove fill from all cursor elements using MutationObserver
+  useEffect(() => {
+    function removeCursorFill() {
+      const svg = containerRef.current?.querySelector('svg');
+      if (!svg) return;
+      svg.querySelectorAll('.at-cursor, .at-cursor-beat, .at-cursor-bar').forEach(cursorGroup => {
+        cursorGroup.querySelectorAll('rect, path, polygon, ellipse, circle').forEach(el => {
+          el.setAttribute('fill', 'none');
+          (el as SVGElement).style.fill = 'none';
+        });
+      });
+    }
+    // Observe changes to the SVG and apply the fix
+    const svg = containerRef.current?.querySelector('svg');
+    let observer: MutationObserver | null = null;
+    if (svg) {
+      observer = new MutationObserver(removeCursorFill);
+      observer.observe(svg, { childList: true, subtree: true, attributes: true });
+    }
+    // Also run once on mount and on every playback event
+    removeCursorFill();
+    return () => {
+      if (observer) observer.disconnect();
+    };
+  }, [containerRef, version]);
 
   useEffect(() => {
     const loadAlphaTabCDN = () => {
@@ -196,7 +292,7 @@ export default function AlphaTabPlayerCDN() {
             cursorFollowMode: 'beat' // Follow cursor by beat for better visibility
           },
           display: {
-            scale: 1.0,
+            scale: zoom, // Use the responsive zoom value
             layoutMode: 'page',
             showTempo: false,
             showTitle: false,
@@ -387,10 +483,10 @@ export default function AlphaTabPlayerCDN() {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
       } else {
-        console.log('No tempo found in score, using default 40 BPM for all exercises');
-        setTempo(40);
+        console.log('No tempo found in score, using default 20 BPM for all exercises');
+        setTempo(20);
         
-        // All exercises are set to 40 BPM
+        // All exercises are set to 20 BPM
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
@@ -433,14 +529,33 @@ export default function AlphaTabPlayerCDN() {
       }
     });
 
-    api.playerPositionChanged.on((e: any) => {
-      // Log position for debugging
-      console.log('Player position changed:', e);
-      
-      // Auto-scroll to cursor during playback
+    // Enhanced cursor tracking events
+    api.playedBeatChanged.on((e: any) => {
+      console.log('Beat changed:', e);
+      // This fires when each beat is played - provides more granular tracking
       if (api.scrollToCursor) {
         api.scrollToCursor();
       }
+    });
+
+    api.playerPositionChanged.on((e: any) => {
+      // Enhanced position tracking with debugging
+      console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      
+      // Ensure cursor follows playback smoothly
+      if (api.scrollToCursor) {
+        try {
+          api.scrollToCursor();
+        } catch (scrollError) {
+          console.warn('Scroll to cursor failed:', scrollError);
+        }
+      }
+    });
+
+    // Add activeBeatsChanged for real-time beat highlighting
+    api.activeBeatsChanged.on((e: any) => {
+      console.log('Active beats changed:', e);
+      // This provides information about which beats are currently being played
     });
 
     api.error.on((error: any) => {
@@ -454,15 +569,22 @@ export default function AlphaTabPlayerCDN() {
         try {
           // Reinitialize without soundfont
           const fallbackApi = new window.alphaTab.AlphaTabApi(containerRef.current, {
+            core: {
+              enableLazyLoading: false,
+              useWorkers: false
+            },
             player: {
               enablePlayer: true,
               enableCursor: true,
               enableUserInteraction: true,
+              enableElementHighlighting: true,
               // No soundFont specified - use default synthesis
-              scrollElement: containerRef.current
+              scrollElement: containerRef.current,
+              enableMetronome: true,
+              cursorFollowMode: 'beat'
             },
             display: {
-              scale: 1.0,
+              scale: zoom, // Use the responsive zoom value
               layoutMode: 'page',
               showMusic: true, // Enable music notation for cursor visibility
               showBarNumbers: true, // Enable bar numbers for better navigation
@@ -682,11 +804,6 @@ export default function AlphaTabPlayerCDN() {
               <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
             ))}
           </optgroup>
-          <optgroup label="Eighth Note Triplets">
-            {eighthTriplets.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
-            ))}
-          </optgroup>
         </select>
       </div>
 
@@ -706,7 +823,7 @@ export default function AlphaTabPlayerCDN() {
           <input
             type="range"
             id="tempo-control"
-            min="20"
+            min="10"
             max="200"
             value={tempo || ''}
             onChange={(e) => handleTempoChange(Number(e.target.value))}

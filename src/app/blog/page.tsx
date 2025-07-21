@@ -1347,7 +1347,7 @@ export default function Blog() {
     {
       id: '32',
       title: 'Pentatonic Scale Exercises',
-      excerpt: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
+      excerpt: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs and audio playback.',
       readTime: 'Interactive',
       category: 'Beginner - Advanced',
       primaryCategory: 'Technique',

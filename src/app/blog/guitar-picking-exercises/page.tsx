@@ -10,18 +10,17 @@ export default function GuitarPickingExercisesPage() {
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
           {/* Header */}
           <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">
-              Master Guitar Picking with Pentatonic Scale Exercises
+            <h1 className="text-4xl font-bold text-amber-900 mb-4">
+              Pentatonic Scale Exercises
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Develop precision, speed, and musical expression through focused pentatonic scale exercises. 
-              These progressive exercises will transform your picking technique and fretboard knowledge.
+              Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.
             </p>
           </header>
 
           {/* Introduction */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-amber-900 mb-4">
               Why Pentatonic Scales Are Good for Picking Practice
             </h2>
             <div className="prose prose-lg text-gray-700 space-y-4">
@@ -46,14 +45,14 @@ export default function GuitarPickingExercisesPage() {
             </div>
           </section>
 
-          {/* Interactive Exercise Player */}
+          {/* Tab Player */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-              Interactive Exercise Player
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">
+              Tab Player
             </h2>
             <p className="text-gray-600 mb-6">
-              Use the dropdown below to select and practice different pentatonic exercises. Each exercise includes 
-              professional tablature, audio playback, and detailed practice guidance.
+              Use the dropdown below to select and practice different pentatonic exercises.<br/>
+              <span className="text-amber-700">Partial legato exercises involve hammer-ons and pull-offs with picked notes, as opposed to pure legato which only picks the first note on every string.</span>
             </p>
             
             <AlphaTabPlayerCDN key={Date.now()} />
@@ -61,15 +60,50 @@ export default function GuitarPickingExercisesPage() {
 
           {/* How to Practice */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-amber-800 mb-6">How to Practice</h2>
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">How to Practice</h2>
             <p className="mb-4 text-gray-700">
-              The examples start at <strong>40 BPM</strong>. You can slow them down if you need to. Start at a speed that you can play the exercise comfortably and cleanly. Increase the tempo by 5–10 BPM at a time and stay at that speed until you can play it comfortably and cleanly. The 40 BPM point is suggested for beginners, but experienced players may wish to start at a higher tempo.
+              The examples start at <strong>20 BPM</strong>. This is a beginner speed—since these are 16th notes and 16th note triplets, we're slowing down significantly to ensure clean execution. Players with a bit more experience may prefer to start at 40 BPM. Start at a speed that you can play the exercise comfortably and cleanly. Increase the tempo by 5–10 BPM at a time and stay at that speed until you can play it comfortably and cleanly. 
+              <br/>
+              It's also beneficial to occasionally push above your comfortable speed in short bursts—this can help break through plateaus and build confidence. For more on this approach, see <a href="/blog/essential-practice-tips" className="underline text-amber-700 hover:text-amber-900">6 Essential Practice Tips for Guitar Students</a>.
             </p>
+            <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-4">
+              <h3 className="text-lg font-semibold text-amber-900 mb-2">Tempo Reference Guide</h3>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <h4 className="font-semibold text-amber-900 mb-1">16th Notes:</h4>
+                  <ul className="space-y-1 text-amber-800">
+                    <li><strong>Medium/Intermediate:</strong> 100-130 BPM</li>
+                    <li><strong>Fast/Advanced:</strong> 130-160 BPM</li>
+                    <li><strong>Very Fast/Professional:</strong> 160-180+ BPM</li>
+                    <li><strong>Elite/Virtuoso:</strong> 200+ BPM</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-amber-900 mb-1">16th Note Triplets:</h4>
+                  <ul className="space-y-1 text-amber-800">
+                    <li><strong>Medium:</strong> 70-100 BPM</li>
+                    <li><strong>Fast:</strong> 100-130 BPM</li>
+                    <li><strong>Very Fast:</strong> 130-160+ BPM</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-3 pt-3 border-t border-amber-200">
+                <p className="text-amber-700 text-sm">
+                  <strong>Note:</strong> Average rock/pop songs are typically 80-140 BPM. At 120 BPM, 16th notes become quite challenging for most players, which is why we start much slower for practice.
+                </p>
+                <p className="text-amber-700 text-sm mt-2">
+                  <strong>Important:</strong> 16th note triplets are faster than 16th notes at the same tempo (6 notes per beat vs 4 notes per beat), making them significantly harder to play cleanly at the same BPM.
+                </p>
+                <p className="text-amber-700 text-sm mt-2">
+                  <strong>Practice Wisdom:</strong> Most players are tempted to practice faster than they can play cleanly. Remember: fast players get that way by practicing slowly and with intention. If you stick to the method above, you will see results!
+                </p>
+              </div>
+            </div>
           </section>
 
           {/* Next Steps */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-amber-800 mb-6">Next Steps in Your Picking Journey</h2>
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">Next Steps in Your Picking Journey</h2>
             <ul className="list-disc pl-6 space-y-2 text-amber-800 mb-4">
               <li><a href="/blog/scale-explorer-tool" className="underline text-amber-600 hover:text-amber-800">Exploring other scale patterns</a> (major scales, modes, exotic scales)</li>
               <li>Developing sweep picking and economy picking techniques</li>
@@ -89,12 +123,12 @@ export default function GuitarPickingExercisesPage() {
 } 
 
 export const metadata: Metadata = {
-  title: 'Essential Guitar Picking Exercises | Mike Nelson Guitar Lessons',
-  description: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
-  keywords: 'guitar picking exercises, picking technique, pentatonic scale, guitar practice, alternate picking, legato, guitar lessons',
+  title: 'Pentatonic Scale Exercises | Mike Nelson Guitar Lessons',
+  description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
+  keywords: 'pentatonic scale exercises, guitar picking, picking technique, alternate picking, triplets, legato, guitar practice, guitar lessons',
   openGraph: {
-    title: 'Essential Guitar Picking Exercises',
-    description: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
+    title: 'Pentatonic Scale Exercises',
+    description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
     images: [
       {
         url: '/guitar-picking-exercises-thumbnail.png',

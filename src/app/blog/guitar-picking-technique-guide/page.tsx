@@ -714,10 +714,7 @@ export default function GuitarPickingTechniquePage() {
       {/* CTA Section */}
       <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-16">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to perfect your picking technique?</h2>
-          <p className="text-xl text-amber-200 mb-8 max-w-2xl mx-auto">
-            Get personalized guidance and structured practice plans to master these advanced techniques.
-          </p>
+          <h2 className="text-3xl font-bold mb-8">Ready to practice picking?</h2>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/lessons" 
@@ -730,6 +727,12 @@ export default function GuitarPickingTechniquePage() {
               className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-amber-800 transition-colors"
             >
               More Guides
+            </Link>
+            <Link
+              href="/blog/guitar-picking-exercises"
+              className="bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors"
+            >
+              Pentatonic Scale Exercises
             </Link>
           </div>
         </div>
