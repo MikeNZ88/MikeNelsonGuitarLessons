@@ -1346,8 +1346,8 @@ export default function Blog() {
     },
     {
       id: '32',
-      title: 'Essential Guitar Picking Exercises',
-      excerpt: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
+      title: 'Pentatonic Scale Exercises',
+      excerpt: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
       readTime: 'Interactive',
       category: 'Beginner - Advanced',
       primaryCategory: 'Technique',
@@ -1448,7 +1448,7 @@ export default function Blog() {
     },
     {
       id: '26',
-      title: 'Beginner’s Guide to Notes on the Guitar',
+      title: "Beginner's Guide to Notes on the Guitar",
       excerpt: 'A super-friendly introduction to the musical alphabet, sharps and flats, octaves, and how to find every note on your guitar fretboard. Includes interactive diagrams and comparisons to other instruments.',
       readTime: '20 min read',
       category: 'Beginner',
