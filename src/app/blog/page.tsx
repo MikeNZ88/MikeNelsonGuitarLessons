@@ -1339,7 +1339,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique'],
       skillLevel: 'all',
-      image: '/guitar-picking-thumbnail.svg',
+      image: '/artist-guitars.png',
       slug: 'guitar-picking-technique-guide',
       author: 'Mike Nelson',
       sortOrder: 8
@@ -1353,7 +1353,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique', 'Tools'],
       skillLevel: 'all',
-      image: '/guitar-picking-exercises-thumbnail.svg',
+      image: '/guitar-picking-exercises-thumbnail.png',
       slug: 'guitar-picking-exercises',
       author: 'Mike Nelson',
       sortOrder: 9

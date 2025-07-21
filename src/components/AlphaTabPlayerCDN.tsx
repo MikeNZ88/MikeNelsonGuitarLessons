@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { MdLoop } from 'react-icons/md';
+import { GiMetronome } from 'react-icons/gi';
+import { MdPlayArrow, MdPause, MdStop } from 'react-icons/md';
 
 interface Exercise {
   id: string;
@@ -8,43 +11,51 @@ interface Exercise {
   file: string;
 }
 
-const exercises: Exercise[] = [
+// Grouped exercise arrays for dropdown
+const sixteenthNotes = [
   {
     id: 'am-pentatonic-ascending',
-    name: 'A Minor Pentatonic - Ascending Pattern 16th Notes (Alternate Picking)',
+    name: 'Ascending Pattern (Alternate Picking)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonicascending 16th notes Alternate  copy.gp'
   },
   {
     id: 'am-pentatonic-descending',
-    name: 'A Minor Pentatonic - Descending Pattern 16th Notes (Alternate Picking)',
+    name: 'Descending Pattern (Alternate Picking)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic descending 16th notes Alternate .gp'
   },
   {
-    id: 'am-pentatonic-triplets',
-    name: 'A Minor Pentatonic - Descending Pattern Eighth Note Triplets (Partial Legato)',
-    file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic descending eighth note triplets.gp'
-  },
-  {
     id: 'am-pentatonic-legato',
-    name: 'A Minor Pentatonic - Descending Pattern 16th Notes (Hammer-ons & Pull-offs)',
+    name: 'Descending Pattern (Partial Legato)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic descending 16th notes Hammers ons Pulls offs.gp'
-  },
+  }
+];
+const sixteenthTriplets = [
   {
-    id: 'am-pentatonic-triplets-legato',
-    name: 'A Minor Pentatonic - Descending Pattern 16th Note Triplets (Partial Legato)',
-    file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic 16th note triplets partial legato.gp'
+    id: 'am-pentatonic-triplets-variation',
+    name: 'Ascending Pattern',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Am pent triplet 16ths 3.gp'
   },
   {
     id: 'am-pentatonic-triplets-16ths',
-    name: 'A Minor Pentatonic - Descending Pattern 16th Note Triplets (Alternate Picking)',
+    name: 'Descending Pattern (Alternate Picking)',
     file: '/GP Files/Scale Exercises/BLOG TABS/Am POent triplets 16ths.gp'
   },
   {
-    id: 'am-pentatonic-triplets-variation',
-    name: 'A Minor Pentatonic - Ascending Pattern 16th Note Triplets',
-    file: '/GP Files/Scale Exercises/BLOG TABS/Am pent triplet 16ths 3.gp'
+    id: 'am-pentatonic-triplets-legato',
+    name: 'Descending Pattern (Partial Legato)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic 16th note triplets partial legato.gp'
   }
 ];
+const eighthTriplets = [
+  {
+    id: 'am-pentatonic-triplets',
+    name: 'Descending Pattern (Partial Legato)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic descending eighth note triplets.gp'
+  }
+];
+
+// Flat array for lookup and selection logic
+const exercises: Exercise[] = [...sixteenthNotes, ...sixteenthTriplets, ...eighthTriplets];
 
 declare global {
   interface Window {
@@ -66,6 +77,23 @@ export default function AlphaTabPlayerCDN() {
   const [isLooping, setIsLooping] = useState(false); // Loop playback state
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
   const isLoopingRef = useRef(false); // Ref to track loop state for event listeners
+  const [minWidth, setMinWidth] = useState(800);
+  const [zoom, setZoom] = useState(1.2);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      if (window.innerWidth < 768) {
+        setMinWidth(600);
+        setZoom(1.05);
+      } else {
+        setMinWidth(800);
+        setZoom(1.2);
+      }
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
 
   // Inject CSS for H/P markers
   useEffect(() => {
@@ -644,11 +672,21 @@ export default function AlphaTabPlayerCDN() {
           onChange={(e) => handleExerciseChange(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
-          {exercises.map((exercise) => (
-            <option key={exercise.id} value={exercise.id}>
-              {exercise.name}
-            </option>
-          ))}
+          <optgroup label="16th Notes">
+            {sixteenthNotes.map((exercise) => (
+              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="16th Note Triplets">
+            {sixteenthTriplets.map((exercise) => (
+              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Eighth Note Triplets">
+            {eighthTriplets.map((exercise) => (
+              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+            ))}
+          </optgroup>
         </select>
       </div>
 
@@ -685,6 +723,8 @@ export default function AlphaTabPlayerCDN() {
       </div>
 
       {/* Status and Controls */}
+      {/* Remove the status and playback info section */}
+      {/* Find and remove the following block:
       <div className="mb-4 space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-gray-600">Status:</span>
@@ -702,62 +742,63 @@ export default function AlphaTabPlayerCDN() {
           <span className="text-sm text-gray-800">{playerState}</span>
         </div>
 
-      </div>
+      </div> */}
 
       {/* Playback Controls */}
-      <div className="mb-4 flex items-center space-x-2">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <button
           onClick={handlePlay}
           disabled={!isReady}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            isReady
+          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
+            ${isReady
               ? isPlaying
-                ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                ? 'bg-amber-500 hover:bg-amber-600 text-white'
                 : 'bg-green-600 hover:bg-green-700 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+          `}
         >
-          {isPlaying ? '⏸ Pause' : '▶ Play'}
+          {isPlaying ? (
+            <><MdPause size={26} className="mr-2" /><span className="sr-only">Pause</span></>
+          ) : (
+            <><MdPlayArrow size={26} className="mr-2" /><span className="sr-only">Play</span></>
+          )}
         </button>
-        
         <button
           onClick={handleStop}
           disabled={!isReady}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            isReady
+          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
+            ${isReady
               ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+          `}
         >
-          Stop
+          <MdStop size={26} className="mr-2" /><span className="sr-only">Stop</span>
         </button>
-
         <button
           onClick={handleLoopToggle}
           disabled={!isReady}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            isReady
+          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
+            ${isReady
               ? isLooping
-                ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+                ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+          `}
         >
-          🔄 {isLooping ? 'Loop On' : 'Loop Off'}
+          <MdLoop className="mr-2" size={22} />Loop
         </button>
-
         <button
           onClick={handleMetronomeToggle}
           disabled={!isReady}
-          className={`px-4 py-2 rounded-md font-medium transition-colors ${
-            isReady
+          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
+            ${isReady
               ? isMetronomeOn
-                ? 'bg-purple-600 hover:bg-purple-700 text-white'
-                : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
+                ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+          `}
         >
-          🥁 {isMetronomeOn ? 'Metronome On' : 'Metronome Off'}
+          <GiMetronome className="mr-2" size={22} />Metronome
         </button>
       </div>
 
@@ -767,12 +808,21 @@ export default function AlphaTabPlayerCDN() {
         </div>
       )}
 
-      {/* AlphaTab Container */}
-      <div 
-        ref={containerRef} 
-        className="w-full min-h-[400px] border border-gray-200 rounded bg-white"
-        style={{ minHeight: '400px' }}
-      />
+      {/* AlphaTab Rendering Container */}
+      <div className="w-full overflow-x-auto mb-4">
+        <div ref={containerRef} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
+      </div>
+      {/* How to Read the Tab Section */}
+      <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
+        <h3 className="text-lg font-semibold text-amber-800 mb-2">How to Read This Tab</h3>
+        <ul className="list-disc pl-5 text-amber-900 space-y-1">
+          <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
+          <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
+          <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
+          <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
+          <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
+        </ul>
+      </div>
     </div>
   );
 }

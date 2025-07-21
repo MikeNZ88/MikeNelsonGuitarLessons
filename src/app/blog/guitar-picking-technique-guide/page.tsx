@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Guitar Picking Technique: Complete Progressive Guide',
     description: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
-    images: [{ url: '/guitar-picking-thumbnail.svg' }],
+    images: [{ url: '/artist-guitars.png' }],
   },
 };
 

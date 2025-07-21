@@ -11,6 +11,7 @@ interface AlphaTabPlayerProps {
   showControls?: boolean;
   autoLoad?: boolean;
   className?: string;
+  zoom?: number;
 }
 
 export default function AlphaTabPlayer({
@@ -19,13 +20,16 @@ export default function AlphaTabPlayer({
   title,
   showControls = true,
   autoLoad = true,
-  className = ''
+  className = '',
+  zoom: zoomProp,
 }: AlphaTabPlayerProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [songInfo, setSongInfo] = useState<{ title: string; artist: string } | null>(null);
   const [alphaTabReady, setAlphaTabReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [minWidth, setMinWidth] = useState(800);
+  const [zoom, setZoom] = useState(zoomProp ?? 1.2);
   
   const alphaTabRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<AlphaTabApi | null>(null);
@@ -116,6 +120,21 @@ export default function AlphaTabPlayer({
       }
     }
   }, [alphaTabReady, autoLoad, filePath, alphaTex]);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      if (window.innerWidth < 768) {
+        setMinWidth(600);
+        setZoom(zoomProp ?? 1.05);
+      } else {
+        setMinWidth(800);
+        setZoom(zoomProp ?? 1.2);
+      }
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, [zoomProp]);
 
   const loadFile = async (path: string) => {
     if (!apiRef.current) return;
@@ -220,7 +239,7 @@ export default function AlphaTabPlayer({
         </div>
       )}
 
-      <div className="alphatab-container relative">
+      <div className="alphatab-container relative w-full overflow-x-auto">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
             <div className="flex items-center gap-2">
@@ -229,7 +248,7 @@ export default function AlphaTabPlayer({
             </div>
           </div>
         )}
-        <div ref={alphaTabRef} className="alphatab border rounded min-h-[200px]"></div>
+        <div ref={alphaTabRef} className="alphatab border rounded min-h-[200px]" style={{ minWidth }}></div>
       </div>
     </div>
   );

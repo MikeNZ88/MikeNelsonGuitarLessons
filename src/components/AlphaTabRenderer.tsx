@@ -38,7 +38,7 @@ export default function AlphaTabRenderer({
   trackIndex = 0,
   className = '',
   showTrackSelector = false,
-  zoom = 1.0,
+  zoom: zoomProp,
 }: AlphaTabRendererProps) {
   const alphaTabRef = useRef<HTMLDivElement>(null);
   const [api, setApi] = useState<any>(null);
@@ -47,6 +47,49 @@ export default function AlphaTabRenderer({
   const [error, setError] = useState<string | null>(null);
   const [currentTrack, setCurrentTrack] = useState(trackIndex);
   const [tracks, setTracks] = useState<any[]>([]);
+  // Responsive minWidth and zoom
+  const [minWidth, setMinWidth] = useState(800);
+  const [zoom, setZoom] = useState(zoomProp ?? 1.2);
+
+  useEffect(() => {
+    // Responsive logic
+    const checkScreen = () => {
+      if (window.innerWidth < 768) {
+        setMinWidth(600);
+        setZoom(zoomProp ?? 1.05);
+      } else {
+        setMinWidth(800);
+        setZoom(zoomProp ?? 1.2);
+      }
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+    return () => window.removeEventListener('resize', checkScreen);
+  }, [zoomProp]);
+
+  // Hide 'barred' text on mobile
+  useEffect(() => {
+    function hideBarredText() {
+      if (!alphaTabRef.current) return;
+      const texts = alphaTabRef.current.querySelectorAll('text');
+      if (window.innerWidth < 768) {
+        texts.forEach(el => {
+          if (el.textContent && el.textContent.toLowerCase().includes('barred')) {
+            el.style.display = 'none';
+          }
+        });
+      } else {
+        texts.forEach(el => {
+          if (el.textContent && el.textContent.toLowerCase().includes('barred')) {
+            el.style.display = '';
+          }
+        });
+      }
+    }
+    hideBarredText();
+    window.addEventListener('resize', hideBarredText);
+    return () => window.removeEventListener('resize', hideBarredText);
+  }, [isLoading, tex, filePath, zoom, currentTrack]);
 
   useEffect(() => {
     if (!alphaTabRef.current) return;
@@ -239,15 +282,18 @@ export default function AlphaTabRenderer({
       )}
 
       {/* AlphaTab Rendering Container */}
-      <div
-        ref={alphaTabRef}
-        style={{ 
-          width, 
-          height: height === 'auto' ? undefined : height,
-          minHeight: isLoading ? '200px' : undefined 
-        }}
-        className="alphatab-surface border border-gray-200 rounded-lg"
-      />
+      <div className="w-full overflow-x-auto">
+        <div
+          ref={alphaTabRef}
+          style={{ 
+            width, 
+            height: height === 'auto' ? undefined : height,
+            minWidth, // Responsive minWidth
+            minHeight: isLoading ? '200px' : undefined 
+          }}
+          className="alphatab-surface border border-gray-200 rounded-lg"
+        />
+      </div>
 
       {/* Instructions */}
       {showControls && !isLoading && !error && (
