@@ -55,7 +55,7 @@ export default function GuitarPickingExercisesPage() {
               <span className="text-amber-700">Partial legato exercises involve hammer-ons and pull-offs with picked notes, as opposed to pure legato which only picks the first note on every string.</span>
             </p>
             
-            <AlphaTabPlayerCDN key={Date.now()} />
+            <AlphaTabPlayerCDN key={Date.now()} containerId="pentatonic-alphatab-container" />
           </section>
 
           {/* How to Practice */}

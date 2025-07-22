@@ -4,11 +4,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MdLoop } from 'react-icons/md';
 import { GiMetronome } from 'react-icons/gi';
 import { MdPlayArrow, MdPause, MdStop } from 'react-icons/md';
+import { usePathname } from 'next/navigation';
 
 interface Exercise {
   id: string;
   name: string;
   file: string;
+}
+
+interface AlphaTabPlayerCDNProps {
+  containerId?: string;
 }
 
 // Grouped exercise arrays for dropdown
@@ -70,16 +75,61 @@ const sixteenthTriplets = [
 // Flat array for lookup and selection logic
 const exercises: Exercise[] = [...sixteenthNotes, ...sixteenthTriplets];
 
+// Arpeggio exercises for the arpeggios blog post
+const arpeggioExercises = [
+  {
+    group: 'Three Octave Arpeggios',
+    items: [
+      { id: 'c-maj7', name: 'C Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C maj7 Arpeggio.gp' },
+      { id: 'c-7', name: 'C7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C 7 Arpeggio.gp' },
+      { id: 'c-m7', name: 'C Minor 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7 Arpeggio.gp' },
+      { id: 'c-m7b5', name: 'C Minor 7b5 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7b5 Arpeggio.gp' },
+      { id: 'c-dimmaj7', name: 'C Diminished Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cdimj7 Arpeggio.gp' },
+      { id: 'cm-maj7', name: 'C Minor Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/CmMaj7 Arpeggio.gp' }
+    ]
+  },
+  {
+    group: 'Two Octave Arpeggios',
+    items: [
+      { id: 'c-maj7-sweep', name: 'C Major 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cmaj7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'c-7-sweep', name: 'C7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'c-m7-sweep', name: 'C Minor 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'c-m7b5-sweep', name: 'C Minor 7b5 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7b5 Arpeggio Sweep with Legato and Tap.gp' }
+    ]
+  },
+  {
+    group: 'C Major Scale Arpeggio Sequence',
+    items: [
+      { id: 'c-major-scale-arp-asc', name: 'C Major Scale Arpeggios Ascending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Ascending.gp' },
+      { id: 'c-major-scale-arp-desc', name: 'C Major Scale Arpeggios Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Descending.gp' }
+    ]
+  }
+];
+
 declare global {
   interface Window {
     alphaTab: any;
   }
 }
 
-export default function AlphaTabPlayerCDN() {
+export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }: AlphaTabPlayerCDNProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const alphaTabRef = useRef<any>(null);
-  const [selectedExercise, setSelectedExercise] = useState(exercises[0].id);
+  const pathname = usePathname();
+  
+  // Determine which exercises to use based on the page
+  const isArpeggioPage = pathname.includes('guitar-arpeggios-exercises');
+  const currentExercises = isArpeggioPage ? arpeggioExercises : [
+    { group: '16th Notes', items: sixteenthNotes },
+    { group: '16th Note Triplets', items: sixteenthTriplets }
+  ];
+  
+  // Set initial exercise based on page type
+  const initialExercise = isArpeggioPage 
+    ? arpeggioExercises[0].items[0].id 
+    : sixteenthNotes[0].id;
+  
+  const [selectedExercise, setSelectedExercise] = useState(initialExercise);
   const [status, setStatus] = useState('Loading AlphaTab...');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -378,15 +428,32 @@ export default function AlphaTabPlayerCDN() {
     initializeAlphaTab();
   }, []);
 
+  // Helper function to get current exercise data
+  const getCurrentExerciseData = () => {
+    if (isArpeggioPage) {
+      // Find in arpeggio exercises
+      for (const group of arpeggioExercises) {
+        const found = group.items.find(item => item.id === selectedExercise);
+        if (found) return found;
+      }
+    } else {
+      // Find in pentatonic exercises
+      const found = sixteenthNotes.find(ex => ex.id === selectedExercise) ||
+                   sixteenthTriplets.find(ex => ex.id === selectedExercise);
+      if (found) return found;
+    }
+    return null;
+  };
+
   // Reload exercise when selection changes
   useEffect(() => {
     if (alphaTabRef.current && isReady) {
-      const selectedExerciseData = exercises.find(ex => ex.id === selectedExercise);
+      const selectedExerciseData = getCurrentExerciseData();
       if (selectedExerciseData) {
         loadExercise(selectedExerciseData.file);
       }
     }
-  }, [selectedExercise, isReady]);
+  }, [selectedExercise, isReady, isArpeggioPage]);
 
   const setupEventListeners = (api: any) => {
     api.renderStarted.on(() => {
@@ -477,16 +544,16 @@ export default function AlphaTabPlayerCDN() {
       if (initialTempo) {
         console.log('Setting initial tempo from score:', initialTempo);
         setTempo(initialTempo);
-        
         // Set playback speed to 1.0 (normal speed) since the file already has the correct tempo
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
       } else {
-        console.log('No tempo found in score, using default 20 BPM for all exercises');
-        setTempo(20);
-        
-        // All exercises are set to 20 BPM
+        // Set default tempo: 40 BPM for arpeggio page, 20 BPM otherwise
+        const isArpeggioPage = pathname.includes('guitar-arpeggios-exercises');
+        const defaultTempo = isArpeggioPage ? 40 : 20;
+        console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
+        setTempo(defaultTempo);
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
@@ -691,7 +758,24 @@ export default function AlphaTabPlayerCDN() {
 
   const handleExerciseChange = (exerciseId: string) => {
     setSelectedExercise(exerciseId);
-    const exercise = exercises.find(ex => ex.id === exerciseId);
+    
+    // Find exercise data for the new exerciseId
+    let exercise = null;
+    if (isArpeggioPage) {
+      // Find in arpeggio exercises
+      for (const group of arpeggioExercises) {
+        const found = group.items.find(item => item.id === exerciseId);
+        if (found) {
+          exercise = found;
+          break;
+        }
+      }
+    } else {
+      // Find in pentatonic exercises
+      exercise = sixteenthNotes.find(ex => ex.id === exerciseId) ||
+                 sixteenthTriplets.find(ex => ex.id === exerciseId);
+    }
+    
     if (exercise) {
       loadExercise(exercise.file);
     }
@@ -783,29 +867,54 @@ export default function AlphaTabPlayerCDN() {
 
   return (
     <div className="w-full">
-      {/* Exercise Selection */}
-      <div className="mb-4">
-        <label htmlFor="exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
-          Select Exercise:
-        </label>
-        <select
-          id="exercise-select"
-          value={selectedExercise}
-          onChange={(e) => handleExerciseChange(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        >
-          <optgroup label="16th Notes">
-            {sixteenthNotes.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+      {/* Arpeggio Dropdown */}
+      {pathname.includes('guitar-arpeggios-exercises') ? (
+        <div className="mb-4">
+          <label htmlFor="arpeggio-exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
+            Select Arpeggio Exercise
+          </label>
+          <select
+            id="arpeggio-exercise-select"
+            value={selectedExercise}
+            onChange={e => setSelectedExercise(e.target.value)}
+            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          >
+            {arpeggioExercises.map(group => (
+              <optgroup key={group.group} label={group.group}>
+                {group.items.map(ex => (
+                  <option key={ex.id} value={ex.id}>{ex.name}</option>
+                ))}
+              </optgroup>
             ))}
-          </optgroup>
-          <optgroup label="16th Note Triplets">
-            {sixteenthTriplets.map((exercise) => (
-              <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
-            ))}
-          </optgroup>
-        </select>
-      </div>
+          </select>
+        </div>
+      ) : (
+        <>
+          {/* Exercise Selection */}
+          <div className="mb-4">
+            <label htmlFor="exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
+              Select Exercise:
+            </label>
+            <select
+              id="exercise-select"
+              value={selectedExercise}
+              onChange={(e) => handleExerciseChange(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <optgroup label="16th Notes">
+                {sixteenthNotes.map((exercise) => (
+                  <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+                ))}
+              </optgroup>
+              <optgroup label="16th Note Triplets">
+                {sixteenthTriplets.map((exercise) => (
+                  <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+                ))}
+              </optgroup>
+            </select>
+          </div>
+        </>
+      )}
 
       {/* Tempo Control */}
       <div className="mb-4">
@@ -870,7 +979,7 @@ export default function AlphaTabPlayerCDN() {
             ${isReady
               ? isPlaying
                 ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                : 'bg-green-600 hover:bg-green-700 text-white'
+                : 'bg-amber-800 hover:bg-amber-900 text-white'
               : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
           `}
         >
@@ -927,7 +1036,7 @@ export default function AlphaTabPlayerCDN() {
 
       {/* AlphaTab Rendering Container */}
       <div className="w-full overflow-x-auto mb-4">
-        <div ref={containerRef} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
+        <div ref={containerRef} id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
       {/* How to Read the Tab Section */}
       <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
@@ -937,8 +1046,12 @@ export default function AlphaTabPlayerCDN() {
           <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
           <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
           <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
+          <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
           <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
         </ul>
+        <div className="mt-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
+          <strong>Note on Picking & Fingering:</strong> The picking symbols shown are one possible approach. For the three-octave arpeggios, some sweep picking (continuous raking across strings) and hammer-ons are used for efficiency. You may choose to use strict alternate picking, different left-hand fingerings, or other techniques—experiment to find what works best for you!
+        </div>
       </div>
     </div>
   );

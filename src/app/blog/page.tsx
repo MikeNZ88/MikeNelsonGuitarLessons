@@ -62,6 +62,30 @@ export default function Blog() {
       link: '/blog/major-scale-guitar-guide#arpeggios',
       category: 'Scales and Fretboard'
     },
+    {
+      topic: 'Arpeggio Exercises',
+      description: 'Interactive tab player with three and two octave arpeggios',
+      link: '/blog/guitar-arpeggios-exercises',
+      category: 'Technique'
+    },
+    {
+      topic: 'Three Octave Arpeggios',
+      description: 'Major 7, Dominant 7, Minor 7, and extended arpeggios',
+      link: '/blog/guitar-arpeggios-exercises',
+      category: 'Technique'
+    },
+    {
+      topic: 'Two Octave Arpeggios',
+      description: 'Advanced arpeggios with sweep picking and tapping',
+      link: '/blog/guitar-arpeggios-exercises',
+      category: 'Technique'
+    },
+    {
+      topic: 'C Major Scale Arpeggios',
+      description: 'Complete arpeggio sequence in C major',
+      link: '/blog/guitar-arpeggios-exercises',
+      category: 'Scales and Fretboard'
+    },
 
     
     // B
@@ -635,6 +659,24 @@ export default function Blog() {
       category: 'Scales and Fretboard'
     },
     {
+      topic: 'Pentatonic Scale Exercises',
+      description: 'Interactive tab player with 16th notes and triplets',
+      link: '/blog/guitar-picking-exercises',
+      category: 'Technique'
+    },
+    {
+      topic: '16th Note Exercises',
+      description: 'Pentatonic scale patterns with alternate picking',
+      link: '/blog/guitar-picking-exercises',
+      category: 'Technique'
+    },
+    {
+      topic: '16th Note Triplets',
+      description: 'Advanced pentatonic patterns with triplets',
+      link: '/blog/guitar-picking-exercises',
+      category: 'Technique'
+    },
+    {
       topic: 'Picking Technique',
       description: 'Complete progressive guide',
       link: '/blog/guitar-picking-technique-guide',
@@ -1021,14 +1063,14 @@ export default function Blog() {
     ? topicIndex 
     : topicIndex.filter(topic => {
         const searchTerm = quickRefSearch.toLowerCase().trim();
-        return topic.topic.toLowerCase().includes(searchTerm) ||
-               topic.description.toLowerCase().includes(searchTerm) ||
-               topic.category.toLowerCase().includes(searchTerm);
+        return topic.topic?.toLowerCase().includes(searchTerm) ||
+               topic.description?.toLowerCase().includes(searchTerm) ||
+               topic.category?.toLowerCase().includes(searchTerm);
       });
 
   // Group topics by first letter
   const groupedTopics = filteredTopics.reduce((groups, topic) => {
-    const firstLetter = topic.topic.charAt(0).toUpperCase();
+    const firstLetter = topic.topic?.charAt(0).toUpperCase() || '';
     if (!groups[firstLetter]) {
       groups[firstLetter] = [];
     }
@@ -1487,6 +1529,20 @@ export default function Blog() {
       slug: 'musical-terms-guitarists-guide',
       author: 'Mike Nelson',
       sortOrder: 22
+    },
+    {
+      id: '33',
+      title: 'Guitar Arpeggio Exercises',
+      excerpt: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
+      readTime: 'Interactive',
+      category: 'Intermediate - Advanced',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Tools'],
+      skillLevel: 'intermediate-advanced',
+      image: '/guitar-arpeggios-thumbnail.png',
+      slug: 'guitar-arpeggios-exercises',
+      author: 'Mike Nelson',
+      sortOrder: 18
     }
   ];
 
@@ -1838,7 +1894,7 @@ export default function Blog() {
                          {topics.map((topic) => (
                            <div key={topic.topic} className="group">
                              <Link
-                               href={topic.link}
+                               href={topic.link || '#'}
                                className="block p-3 rounded-lg border border-gray-200 hover:border-amber-300 hover:bg-amber-50 transition-all duration-200"
                                onClick={() => {
                                  setIsQuickRefOpen(false);
