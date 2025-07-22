@@ -1,6 +1,6 @@
 <svg width="1000" height="700" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="1000" height="700" fill="#000000"/>
+  <!-- Background - Clean white -->
+  <rect width="1000" height="700" fill="white"/>
   
   <!-- Main container -->
   <rect x="50" y="50" width="900" height="600" fill="#F3F4F6" rx="16" stroke="#D1D5DB" stroke-width="2"/>
