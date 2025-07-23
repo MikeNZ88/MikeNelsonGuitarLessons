@@ -114,28 +114,28 @@ const bluesLicksExercises = [
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
   },
   {
-    id: 'b3-3-1-lick-major-am',
-    name: 'b3 - 3 - 1 lick, Am Pentatonic & Em Pentatonic',
+    id: 'b3-3-1-lick-major-am', // This is V2
+    name: 'Am Pentatonic', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
   },
   {
-    id: 'b3-3-1-lick-am-em',
-    name: 'b3 - 3 - 1 lick, A Major Pentatonic & Am Pentatonic',
+    id: 'b3-3-1-lick-am-em', // This is V3
+    name: 'A Major Pentatonic over A7, Am Pentatonic over D7, A Major Pentatonic over E7', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
   },
   {
-    id: 'b3-3-1-lick-e-major-em',
-    name: 'b3 - 3 - 1 lick, E Major Pentatonic & Em Pentatonic',
+    id: 'b3-3-1-lick-e-major-em', // This is V4
+    name: 'E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
   },
   {
-    id: 'b3-3-1-lick-major-am-blues-d-major',
-    name: 'b3 - 3 - 1 lick, A Major Pentatonic, Am Pentatonic, A Major Blues, & D Major Pentatonic',
+    id: 'b3-3-1-lick-major-am-blues-d-major', // This is V5
+    name: 'A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
   },
   {
-    id: 'b3-3-1-lick-hybrid-bbking-v6',
-    name: 'b3 - 3 - 1 Lick, Hybrid Blues Scales and A and E BB King Box',
+    id: 'b3-3-1-lick-hybrid-bbking-v6', // This is V6
+    name: 'A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
   },
 ];
@@ -176,32 +176,32 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           items: [
             {
               id: 'b3-3-1-lick-3-chords',
-              name: 'b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
+              name: '1. b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
             },
             {
-              id: 'b3-3-1-lick-major-am',
-              name: 'b3 - 3 - 1 lick, Am Pentatonic & Em Pentatonic',
+              id: 'b3-3-1-lick-major-am', // This is V2
+              name: '2. Am Pentatonic', // Corrected label
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
             },
             {
-              id: 'b3-3-1-lick-am-em',
-              name: 'b3 - 3 - 1 lick, A Major Pentatonic & Am Pentatonic',
+              id: 'b3-3-1-lick-am-em', // This is V3
+              name: '3. A Major Pentatonic over A7, Am Pentatonic over D7, A Major Pentatonic over E7', // Corrected label
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
             },
             {
               id: 'b3-3-1-lick-multi',
-              name: 'b3 - 3 - 1 lick, A Major Pentatonic, Am Pentatonic, A Major Blues, & D Major Pentatonic',
+              name: '4. E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
             },
             {
               id: 'b3-3-1-lick-em-em',
-              name: 'b3 - 3 - 1 lick, E Major Pentatonic & Em Pentatonic',
+              name: '5A. A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
             },
             {
               id: 'b3-3-1-lick-hybrid-bbking-v6',
-              name: 'b3 - 3 - 1 Lick, Hybrid Blues Scales and A and E BB King Box',
+              name: '5B. A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
             },
           ]
@@ -262,10 +262,16 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
   const [error, setError] = useState<string | null>(null);
   const [playerState, setPlayerState] = useState('Stopped');
   const [tempo, setTempo] = useState<number | null>(null); // Will be set from loaded score
+  const [originalTempo, setOriginalTempo] = useState<number | null>(null); // Store the original tempo from the file
   const [version, setVersion] = useState(Date.now()); // Force reload
   const [isLooping, setIsLooping] = useState(false); // Loop playback state
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
   const isLoopingRef = useRef(false); // Ref to track loop state for event listeners
+ 
+  // Ensure loop state is properly initialized
+  useEffect(() => {
+    isLoopingRef.current = isLooping;
+  }, [isLooping]);
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
@@ -611,7 +617,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
               soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
               scrollElement: containerRef.current,
               enableMetronome: true,
-              cursorFollowMode: 'beat'
+              scrollMode: 'continuous',
+              scrollSpeed: 300,
+              scrollOffsetY: 100
             },
             tracks: [trackIndex], // Use the selected track
             display: {
@@ -789,16 +797,18 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       if (initialTempo) {
         console.log('Setting initial tempo from score:', initialTempo);
         setTempo(initialTempo);
+        setOriginalTempo(initialTempo); // Store the original tempo
         // Set playback speed to 1.0 (normal speed) since the file already has the correct tempo
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
       } else {
-        // Set default tempo: 40 BPM for arpeggio page, 20 BPM otherwise
+        // Set default tempo: 40 BPM for arpeggio page, 80 BPM otherwise
         const isArpeggioPage = pathname?.includes('/arpeggio-exercises/');
         const defaultTempo = isArpeggioPage ? 40 : 80;
         console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
         setTempo(defaultTempo);
+        setOriginalTempo(defaultTempo); // Store the default as original tempo
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
@@ -828,36 +838,60 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       }
     });
 
-    // Add a more reliable loop event listener
-    api.playerFinished.on(() => {
-      console.log('Player finished event triggered, loop state:', isLoopingRef.current);
-      if (isLoopingRef.current && alphaTabRef.current) {
-        console.log('Looping enabled, restarting playback...');
-        setTimeout(() => {
-          if (alphaTabRef.current && isLoopingRef.current) {
-            alphaTabRef.current.play();
-          }
-        }, 200);
-      }
-    });
-
     // Enhanced cursor tracking events
     api.playedBeatChanged.on((e: any) => {
-      console.log('Beat changed:', e);
+      // console.log('Beat changed:', e);
       // This fires when each beat is played - provides more granular tracking
-      if (api.scrollToCursor) {
-        api.scrollToCursor();
+      if (api.scrollToCursor && isPlaying) {
+        try {
+          api.scrollToCursor();
+          
+          // Ensure the tablature container scrolls to keep the cursor visible
+          const tabContainer = containerRef.current?.querySelector('.at');
+          if (tabContainer) {
+            const cursor = tabContainer.querySelector('.at-cursor, .at-cursor-beat');
+            if (cursor) {
+              cursor.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center',
+                inline: 'nearest'
+              });
+            }
+          }
+        } catch (error) {
+          console.warn('Beat scrolling failed:', error);
+        }
       }
     });
 
     api.playerPositionChanged.on((e: any) => {
       // Enhanced position tracking with debugging
-      console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      // console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
       
       // Ensure cursor follows playback smoothly
-      if (api.scrollToCursor) {
+      if (api.scrollToCursor && isPlaying) {
         try {
           api.scrollToCursor();
+         
+          // Additional smooth scrolling for better UX
+          const cursorElement = containerRef.current?.querySelector('.at-cursor');
+          if (cursorElement) {
+            const containerRect = containerRef.current?.getBoundingClientRect();
+            const cursorRect = cursorElement.getBoundingClientRect();
+            
+            if (containerRect && cursorRect) {
+              const isVisible = cursorRect.top >= containerRect.top && 
+                               cursorRect.bottom <= containerRect.bottom;
+              
+              if (!isVisible) {
+                cursorElement.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'center',
+                  inline: 'nearest'
+                });
+              }
+            }
+          }
         } catch (scrollError) {
           console.warn('Scroll to cursor failed:', scrollError);
         }
@@ -893,7 +927,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
               // No soundFont specified - use default synthesis
               scrollElement: containerRef.current,
               enableMetronome: true,
-              cursorFollowMode: 'beat'
+              scrollMode: 'continuous',
+              scrollSpeed: 300,
+              scrollOffsetY: 100
             },
             display: {
               scale: zoom, // Use the responsive zoom value
@@ -1083,9 +1119,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
 
   const handleTempoChange = (newTempo: number) => {
     setTempo(newTempo);
-    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
+    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined && originalTempo) {
       // Calculate playback speed relative to the original file tempo
-      const originalTempo = 40; // Your file is 40 BPM
       alphaTabRef.current.playbackSpeed = newTempo / originalTempo;
     }
   };
@@ -1094,9 +1129,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     if (tempo === null) return; // Don't adjust if tempo hasn't loaded yet
     const newTempo = Math.max(20, Math.min(200, tempo + change));
     setTempo(newTempo);
-    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
+    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined && originalTempo) {
       // Calculate playback speed relative to the original file tempo
-      const originalTempo = 40; // Your files are 40 BPM
       alphaTabRef.current.playbackSpeed = newTempo / originalTempo;
     }
   };

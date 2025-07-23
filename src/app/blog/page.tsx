@@ -1403,7 +1403,7 @@ export default function Blog() {
     {
       id: '33',
       title: 'Blues Licks Exercises',
-      excerpt: 'Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques with professional notation and audio playback.',
+              excerpt: 'Master essential blues licks with my interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques with professional notation and audio playback.',
       readTime: 'Interactive Tool',
       category: 'Beginner - Intermediate',
       primaryCategory: 'Technique',

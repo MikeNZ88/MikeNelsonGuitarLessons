@@ -1,49 +1,122 @@
-import type { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
 import AlphaTabPlayerCDN from '@/components/AlphaTabPlayerCDN';
+import { useState } from 'react';
 
-export const metadata: Metadata = {
-  title: 'Blues Licks Exercises | Interactive Tab Player | Mike Nelson Guitar Lessons',
-  description: 'Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques with professional notation and audio playback.',
-  keywords: 'blues licks, guitar licks, blues guitar, interactive tab, guitar exercises, blues phrases, guitar bends, slides, vibrato, guitar practice',
-  openGraph: {
-    title: 'Blues Licks Exercises | Interactive Tab Player',
-    description: 'Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.',
-    type: 'article',
-    url: 'https://mikenelsonguitarlessons.co.nz/blog/blues-licks-exercises',
-    images: [
-      {
-        url: '/GP Files/Scale Exercises/BLOG TABS/Screenshot 2025-07-23 at 2.54.14 PM.png',
-        width: 1200,
-        height: 630,
-        alt: 'Blues Licks Exercises - Interactive Tab Player'
-      }
-    ]
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Blues Licks Exercises | Interactive Tab Player',
-    description: 'Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.',
-    images: ['/GP Files/Scale Exercises/BLOG TABS/Screenshot 2025-07-23 at 2.54.14 PM.png']
-  }
-};
+// Collapsible component
+function CollapsibleSection({ title, children, isOpen, onToggle }: { 
+  title: string; 
+  children: React.ReactNode; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+}) {
+  return (
+    <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
+      <button
+        onClick={onToggle}
+        className="w-full text-left flex items-center justify-between text-xl font-bold text-amber-900 mb-2 hover:text-amber-800 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <span>{title}</span>
+          <span className="text-sm font-normal text-amber-700">(Click to expand)</span>
+        </div>
+        <svg
+          className={`w-6 h-6 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="mt-4">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function BluesLicksExercises() {
+  const [isBbKingDetailsOpen, setIsBbKingDetailsOpen] = useState(false);
+  const [isChordTheoryOpen, setIsChordTheoryOpen] = useState(false);
+
+  const [isScaleRulesOpen, setIsScaleRulesOpen] = useState(false);
+  const [isProgressiveLevelsOpen, setIsProgressiveLevelsOpen] = useState(false);
+  const [isLevels3To5Open, setIsLevels3To5Open] = useState(false);
+
+  const handleMenuClick = (sectionId: string, setOpenState?: (open: boolean) => void) => {
+    // Open the section if it has a state setter
+    if (setOpenState) {
+      setOpenState(true);
+    }
+    
+    // Scroll to the section
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-amber-900 mb-4">Major 12 Bar Blues Scales and Licks</h1>
         <p className="text-lg text-gray-700 mb-4">
-          Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.
+          Master essential blues licks with my interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.
         </p>
         <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
           Skill Level: Beginner – Intermediate
         </div>
       </div>
 
+      {/* Table of Contents */}
+      <div className="mb-8 bg-amber-50 border border-amber-200 rounded-lg p-6">
+        <h2 className="text-xl font-bold text-amber-900 mb-4">Table of Contents</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-3">
+            <div>
+              <h3 className="font-semibold text-amber-800 mb-2">Theory & Foundation</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#blues-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('blues-theory'); }}>What is a 12-Bar Blues?</a></li>
+                <li><a href="#foundation-lick" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('foundation-lick'); }}>Foundation: The ♭3 - 3 - 1 Lick</a></li>
+                <li><a href="#fretboard-diagrams" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('fretboard-diagrams'); }}>Fretboard Diagrams: ♭3, 3, and 1 Notes</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-amber-800 mb-2">Practice Exercises</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#progressive-levels" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('progressive-levels', setIsProgressiveLevelsOpen); }}>Progressive Practice Levels</a></li>
+                <li><a href="#interactive-tabs" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('interactive-tabs'); }}>Interactive Blues Licks Tab Player</a></li>
+                <li><a href="#practice-guide" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('practice-guide'); }}>How to Practice</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div>
+              <h3 className="font-semibold text-amber-800 mb-2">Advanced Concepts</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#scale-rules" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('scale-rules', setIsScaleRulesOpen); }}>Scale Rules for Major 12 Bar Blues</a></li>
+                <li><a href="#bb-king-box" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('bb-king-box'); }}>What is the BB King Box?</a></li>
+                <li><a href="#chord-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('chord-theory', setIsChordTheoryOpen); }}>Chord Note Theory</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-amber-800 mb-2">Resources & Next Steps</h3>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#next-steps" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('next-steps'); }}>Next Steps in Your Blues Journey</a></li>
+                <li><a href="#book-lesson" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('book-lesson'); }}>Book a Lesson</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Blues Theory Intro */}
-      <div className="mb-8 bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+      <div id="blues-theory" className="mb-8 bg-amber-50 border-l-4 border-amber-400 rounded p-4">
         <h2 className="text-xl font-bold text-amber-900 mb-2">What is a 12-Bar Blues?</h2>
         <p className="text-amber-900 text-sm mb-2">
           The 12-bar blues is the most common form in blues music. It uses three chords: the I, IV, and V. In the key of A, these are <span className="font-bold text-amber-800">A7</span> (I), <span className="font-bold text-amber-800">D7</span> (IV), and <span className="font-bold text-amber-800">E7</span> (V).
@@ -66,183 +139,376 @@ export default function BluesLicksExercises() {
           </span>
           <span><span className="font-bold">Note:</span> Not all blues is based on dominant 7th ("major blues") progressions. <span className="font-bold text-amber-800">Minor blues</span> progressions use minor chords (e.g., Am, Dm, Em) and the minor pentatonic/blues scale throughout. The concepts on this page focus on the classic major/dominant 7th blues, but the minor blues sound is just as important!</span>
         </p>
+        <p className="text-amber-900 text-base flex items-start gap-2 mt-2">
+          <span aria-label="info" className="mt-0.5">{/* Lightbulb SVG */}
+            <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#F59E42" opacity="0.15"/><path d="M8 2.5a4.5 4.5 0 0 0-2.5 8.25V12a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-1.25A4.5 4.5 0 0 0 8 2.5Zm-1.5 9.5v-1.05a.5.5 0 0 0-.25-.43A3.5 3.5 0 1 1 12 8.52a.5.5 0 0 0-.25.43V12h-4Z" fill="#D97706"/></svg>
+          </span>
+          <span><span className="font-bold">Most importantly:</span> Study great blues players, their approach and their licks. The theory provides the foundation, but the real learning comes from listening to and transcribing the masters like B.B. King, Albert King, Freddie King, Eric Clapton, Stevie Ray Vaughan, and many others.</span>
+        </p>
       </div>
 
       {/* Blues Essentials */}
       <div className="mb-8">
         {/* b3 - 3 - 1 Lick (Foundation) */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
+        <div id="foundation-lick" className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
           <h2 className="text-xl font-bold text-amber-900 mb-2">Foundation: The <span className="font-mono">♭3</span> - 3 - 1 Lick</h2>
           <p className="text-amber-900 text-sm mb-1">This classic blues lick is the backbone of countless solos:</p>
-          <div className="bg-white border border-amber-200 rounded p-3 mb-2 flex items-center gap-2">
-            <span aria-label="star" className="mt-0.5">{/* Star SVG */}
-              <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M8 2.5l1.76 3.57 3.94.57-2.85 2.78.67 3.93L8 11.27l-3.52 1.85.67-3.93-2.85-2.78 3.94-.57L8 2.5z" fill="#F59E42"/></svg>
-            </span>
-            <span className="font-mono text-amber-800">♭3 (C) → 3 (C#) → 1 (A)</span>
-          </div>
-          <div className="text-amber-700 text-xs mb-4">The 3 and 1 are chord tones, while the <span className="font-mono">♭3</span> is the added “blues spice” note.</div>
+
+                      <div className="text-amber-900 text-sm mb-4">The 3 and 1 are chord tones (notes that make up the chord), while the <span className="font-mono">♭3</span> is the added "blues spice" note.</div>
 
           {/* Table: Where to Find ♭3, 3, and 1 */}
-          <div className="mb-8 flex flex-col items-center">
-            <div className="w-full max-w-md bg-amber-50 border border-amber-300 rounded-xl shadow-md p-5">
-              <div className="flex items-center mb-3">
-                <span className="mr-2">{/* Note SVG */}
-                  <svg width="22" height="22" fill="none" viewBox="0 0 22 22"><circle cx="11" cy="11" r="11" fill="#F59E42" opacity="0.18"/><path d="M15.5 6.5v7.25a2.25 2.25 0 1 1-1-1.85V8.5h-5v3.25a2.25 2.25 0 1 1-1-1.85V6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5Z" fill="#D97706"/></svg>
-                </span>
-                <h3 className="text-lg font-bold text-amber-900">Where to Find <span className="font-mono">♭3</span>, 3, and 1 in These Licks</h3>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full border-separate border-spacing-y-1 text-sm">
-                  <thead>
-                    <tr className="bg-amber-100 text-amber-800">
-                      <th className="px-4 py-2 border-b-2 border-amber-300 text-left font-bold">Chord</th>
-                      <th className="px-4 py-2 border-b-2 border-amber-300 text-left font-bold"><span className='font-mono'>♭3</span></th>
-                      <th className="px-4 py-2 border-b-2 border-amber-300 text-left font-bold">3</th>
-                      <th className="px-4 py-2 border-b-2 border-amber-300 text-left font-bold">1</th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-amber-900">
-                    <tr className="even:bg-amber-100 hover:bg-amber-200 transition-colors">
-                      <td className="px-4 py-3 font-bold text-lg">A</td>
-                      <td className="px-4 py-3"><span className="font-mono">5<sup>th</sup> fret, <b>G string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">6<sup>th</sup> fret, <b>G string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">7<sup>th</sup> fret, <b>D string</b></span></td>
-                    </tr>
-                    <tr className="even:bg-amber-100 hover:bg-amber-200 transition-colors">
-                      <td className="px-4 py-3 font-bold text-lg">D</td>
-                      <td className="px-4 py-3"><span className="font-mono">6<sup>th</sup> fret, <b>B string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">7<sup>th</sup> fret, <b>B string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">7<sup>th</sup> fret, <b>G string</b></span></td>
-                    </tr>
-                    <tr className="even:bg-amber-100 hover:bg-amber-200 transition-colors">
-                      <td className="px-4 py-3 font-bold text-lg">E</td>
-                      <td className="px-4 py-3"><span className="font-mono">8<sup>th</sup> fret, <b>B string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">9<sup>th</sup> fret, <b>B string</b></span></td>
-                      <td className="px-4 py-3"><span className="font-mono">9<sup>th</sup> fret, <b>G string</b></span></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div className="text-amber-700 text-xs mt-3 text-center">
-                These notes are available in multiple places across the neck, but these are some starting positions that are mostly within the Am pentatonic “shape 1”.
-                <div className="mt-2">
-                  <span className="block">The 3 is always 1 fret above the <span className="font-mono">♭3</span>.</span>
-                  <span className="block">The 1 is either on the string above and 1 fret higher, or directly above (if moving from the B string to the G string).</span>
+
+            <div className="mb-8 flex flex-col items-center">
+              <div className="w-full max-w-md bg-amber-50 border border-amber-300 rounded-xl shadow-md p-5">
+                <div className="text-amber-700 text-xs text-center">
+                  <span className="font-bold">Tip:</span> Notice how the <span className="font-mono">♭3</span>, 3, and 1 are always 2 frets apart on the same string. This relationship holds true across all keys!
                 </div>
               </div>
+
+              {/* Fretboard Diagrams */}
+              <div className="w-full max-w-4xl space-y-6 mt-6">
+                <h4 id="fretboard-diagrams" className="text-lg font-bold text-amber-900 text-center mb-4">Fretboard Diagrams: ♭3, 3, and 1 Notes</h4>
+                
+                {/* A7 Fretboard */}
+                <div className="bg-white border border-amber-300 rounded-lg p-4">
+                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A</h5>
+                  <div className="flex justify-center">
+                    <div className="fretboard-diagram">
+                      {/* Fret numbers */}
+                      <div className="flex text-xs text-gray-600 mb-1">
+                        <div className="w-12"></div>
+                        <div className="w-8 text-center">5</div>
+                        <div className="w-8 text-center">6</div>
+                        <div className="w-8 text-center">7</div>
+                        <div className="w-8 text-center">8</div>
+                        <div className="w-8 text-center">9</div>
+                      </div>
+                      {/* Strings */}
+                      <div className="space-y-1">
+                        {/* G string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">C</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">C♯</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        </div>
+                        {/* D string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">A</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center mt-2 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                          <span>♭3 (C)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                          <span>3 (C♯)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                          <span>1 (A)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* D7 Fretboard */}
+                <div className="bg-white border border-amber-300 rounded-lg p-4">
+                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D</h5>
+                  <div className="flex justify-center">
+                    <div className="fretboard-diagram">
+                      {/* Fret numbers */}
+                      <div className="flex text-xs text-gray-600 mb-1">
+                        <div className="w-12"></div>
+                        <div className="w-8 text-center">5</div>
+                        <div className="w-8 text-center">6</div>
+                        <div className="w-8 text-center">7</div>
+                        <div className="w-8 text-center">8</div>
+                        <div className="w-8 text-center">9</div>
+                      </div>
+                      {/* Strings */}
+                      <div className="space-y-1">
+                        {/* B string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">F</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">F♯</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        </div>
+                        {/* G string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">D</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center mt-2 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                          <span>♭3 (F)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                          <span>3 (F♯)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                          <span>1 (D)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* E7 Fretboard */}
+                <div className="bg-white border border-amber-300 rounded-lg p-4">
+                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E</h5>
+                  <div className="flex justify-center">
+                    <div className="fretboard-diagram">
+                      {/* Fret numbers */}
+                      <div className="flex text-xs text-gray-600 mb-1">
+                        <div className="w-12"></div>
+                        <div className="w-8 text-center">5</div>
+                        <div className="w-8 text-center">6</div>
+                        <div className="w-8 text-center">7</div>
+                        <div className="w-8 text-center">8</div>
+                        <div className="w-8 text-center">9</div>
+                      </div>
+                      {/* Strings */}
+                      <div className="space-y-1">
+                        {/* B string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">G</div>
+                          <div className="w-8 h-6 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">G♯</div>
+                        </div>
+                        {/* G string */}
+                        <div className="flex">
+                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                          <div className="w-8 h-6 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">E</div>
+                        </div>
+                      </div>
+                      <div className="flex justify-center mt-2 text-xs text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                          <span>♭3 (G)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                          <span>3 (G♯)</span>
+                        </div>
+                        <div className="flex items-center gap-2 ml-4">
+                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                          <span>1 (E)</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="text-amber-700 text-sm mt-4 text-center italic">
+                These are just examples but these notes are available on many different places on the fretboard. These positions have been chosen because, with the exception of the 9th fret, they are all located inside the A Minor Pentatonic Shape 1 (where beginners start).
+              </div>
             </div>
-          </div>
+
+        </div>
 
         {/* Blues Scale Rules */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
-          <h2 className="text-xl font-bold text-amber-900 mb-2">Scale Rules for Major 12 Bar Blues</h2>
+        <div id="scale-rules">
+          <CollapsibleSection 
+            title="Scale Rules for Major 12 Bar Blues" 
+            isOpen={isScaleRulesOpen} 
+            onToggle={() => setIsScaleRulesOpen(!isScaleRulesOpen)} 
+          >
           <ul className="list-none pl-0 text-amber-900 space-y-2 text-sm">
-            <li className="flex items-start gap-2"><span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span><span className="font-bold">Rule 1:</span> <span className="text-amber-800">A minor pentatonic (or A minor blues scale) works over the entire progression.</span></span></li>
-            <li className="flex items-start gap-2"><span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span><span className="font-bold">Rule 2:</span> <span className="text-amber-800">Each chord works with its own major pentatonic or major blues scale:<br/>A7 → A major pentatonic/blues<br/>D7 → D major pentatonic/blues<br/>E7 → E major pentatonic/blues</span></span></li>
-            <li className="flex items-start gap-2"><span aria-label="cross"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M6 6l6 6M12 6l-6 6" stroke="#D97706" strokeWidth="2" strokeLinecap="round"/></svg></span><span><span className="font-bold">Rule 3:</span> <span className="text-amber-800">Avoid the minor pentatonic/blues scale of the IV chord (D7), but you can use the minor pentatonic or minor blues scale of the I and V chords:<br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg>A7 → A minor pentatonic/blues</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round'/></svg>D7 → D minor pentatonic/blues</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg>E7 → E minor pentatonic/blues</span></span></span></li>
-            <li className="flex items-start gap-2"><span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span><span className="font-bold">Rule 4:</span> <span className="text-amber-800">The major pentatonic/blues scale of the I chord (A) works well over the I and V chords, but not the IV chord:<br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg>A7, E7</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round'/></svg>D7</span></span></span></li>
-            <li className="flex items-start gap-2"><span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span><span className="font-bold">Rule 5:</span> <span className="text-amber-800">The major pentatonic/blues scale of the IV chord (D) works well over the IV and V chords, but not the I chord:<br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg>D7, E7</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round'/></svg>A7</span></span></span></li>
-            <li className="flex items-start gap-2"><span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span><span className="font-bold">Rule 6:</span> <span className="text-amber-800">The Mixolydian mode of each chord outlines its sound fully and works naturally. <span className='block'>You can also use the <strong>hybrid blues scale</strong> (major + minor blues) for extra color.</span><br/>A7 → A Mixolydian<br/>D7 → D Mixolydian<br/>E7 → E Mixolydian</span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 1:</span> <span className="text-amber-800"><span className="text-blue-600 font-semibold">I</span> chord (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span> <span className="text-purple-600 font-semibold">minor pentatonic</span> or <span className="text-blue-600 font-semibold">A</span> <span className="text-purple-600 font-semibold">minor blues*</span> scale) works over the entire progression.</span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 2:</span> <span className="text-amber-800">Each chord can be approached with its own <span className="text-green-600 font-semibold">major pentatonic</span> or <span className="text-green-600 font-semibold">major blues*</span> scale:<br/><span className="text-blue-600 font-semibold">I</span> (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span><br/><span className="text-orange-600 font-semibold">IV</span> (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span><br/><span className="text-pink-600 font-semibold">V</span> (<span className="text-pink-600 font-semibold">E</span><span className="text-pink-600 font-semibold">7</span>) → <span className="text-pink-600 font-semibold">E</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span></span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 3:</span> <span className="text-amber-800">You can use the <span className="text-purple-600 font-semibold">minor pentatonic</span> or <span className="text-purple-600 font-semibold">minor blues*</span> scale of the <span className="text-blue-600 font-semibold">I</span> and <span className="text-pink-600 font-semibold">V</span> chords, but avoid the <span className="text-purple-600 font-semibold">minor pentatonic</span>/<span className="text-purple-600 font-semibold">blues</span> scale of the <span className="text-orange-600 font-semibold">IV</span> chord (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>):<br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-blue-600 font-semibold">I</span> (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> <span className="text-purple-600 font-semibold">minor pentatonic</span>/<span className="text-purple-600 font-semibold">minor blues*</span></span><br/><span className='inline-flex items-center gap-1 text-red-600 line-through'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#DC2626' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#DC2626' strokeWidth='1.5' strokeLinecap='round'/></svg><span className="text-orange-600 font-semibold">IV</span> (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> <span className="text-purple-600 font-semibold">minor pentatonic</span>/<span className="text-purple-600 font-semibold">minor blues*</span> (avoid)</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-pink-600 font-semibold">V</span> (<span className="text-pink-600 font-semibold">E</span><span className="text-pink-600 font-semibold">7</span>) → <span className="text-pink-600 font-semibold">E</span> <span className="text-purple-600 font-semibold">minor pentatonic</span>/<span className="text-purple-600 font-semibold">minor blues*</span></span></span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 4:</span> <span className="text-amber-800">The <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span> scale of the <span className="text-blue-600 font-semibold">I</span> chord (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) works well over the <span className="text-blue-600 font-semibold">I</span> and <span className="text-pink-600 font-semibold">V</span> chords, but not the <span className="text-orange-600 font-semibold">IV</span> chord:<br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-blue-600 font-semibold">I</span> (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span></span><br/><span className='inline-flex items-center gap-1 text-red-600 line-through'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#DC2626' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#DC2626' strokeWidth='1.5' strokeLinecap='round'/></svg><span className="text-orange-600 font-semibold">IV</span> (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span> (avoid)</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-pink-600 font-semibold">V</span> (<span className="text-pink-600 font-semibold">E</span><span className="text-pink-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span></span></span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 5:</span> <span className="text-amber-800">The <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span> scale of the <span className="text-orange-600 font-semibold">IV</span> chord (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) works well over the <span className="text-orange-600 font-semibold">IV</span> and <span className="text-pink-600 font-semibold">V</span> chords, but not the <span className="text-blue-600 font-semibold">I</span> chord:<br/><span className='inline-flex items-center gap-1 text-red-600 line-through'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#DC2626' opacity='0.15'/><path d='M4 4l6 6M10 4l-6 6' stroke='#DC2626' strokeWidth='1.5' strokeLinecap='round'/></svg><span className="text-blue-600 font-semibold">I</span> (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span> (avoid)</span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-orange-600 font-semibold">IV</span> (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span></span><br/><span className='inline-flex items-center gap-1'><svg width='14' height='14' fill='none' viewBox='0 0 14 14'><circle cx='7' cy='7' r='7' fill='#F59E42' opacity='0.15'/><path d='M4 7l2 2 4-4' stroke='#D97706' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round'/></svg><span className="text-pink-600 font-semibold">V</span> (<span className="text-pink-600 font-semibold">E</span><span className="text-pink-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> <span className="text-green-600 font-semibold">major pentatonic</span>/<span className="text-green-600 font-semibold">major blues*</span></span></span></span></li>
+            <li className="mb-3"><span className="text-amber-900"><span className="font-bold text-amber-800">Rule 6:</span> <span className="text-amber-800">The <span className="text-green-600 font-semibold">major pentatonic</span> scales from Rule 2 can be transformed into the Mixolydian mode or hybrid blues scale by adding a few notes. This is really an alteration of Rule 2:<br/><span className="text-blue-600 font-semibold">I</span> (<span className="text-blue-600 font-semibold">A</span><span className="text-blue-600 font-semibold">7</span>) → <span className="text-blue-600 font-semibold">A</span> Mixolydian, <span className="text-blue-600 font-semibold">A</span> hybrid blues<br/><span className="text-orange-600 font-semibold">IV</span> (<span className="text-orange-600 font-semibold">D</span><span className="text-orange-600 font-semibold">7</span>) → <span className="text-orange-600 font-semibold">D</span> Mixolydian, <span className="text-orange-600 font-semibold">D</span> hybrid blues<br/><span className="text-pink-600 font-semibold">V</span> (<span className="text-pink-600 font-semibold">E</span><span className="text-pink-600 font-semibold">7</span>) → <span className="text-pink-600 font-semibold">E</span> Mixolydian, <span className="text-pink-600 font-semibold">E</span> hybrid blues</span></span></li>
           </ul>
+          <p className="text-amber-900 text-sm mt-4 italic">
+            <span className="font-bold">Important:</span> These "rules" aren't meant to be strictly followed. Use your ear as the source of truth. These scales just give you options and help to visualize the notes on the fretboard.
+          </p>
+          <p className="text-amber-900 text-sm mt-2">
+            <span className="font-bold">Note*:</span> The minor pentatonic is transformed into the minor blues scale by adding the ♭5 (blue note), and the major pentatonic is transformed into the major blues scale by adding the ♭3 (blue note).
+          </p>
+        </CollapsibleSection>
         </div>
 
         {/* BB King Box Explanation */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
+        <div id="bb-king-box" className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
           <h2 className="text-xl font-bold text-amber-900 mb-2">What is the BB King Box?</h2>
           <p className="text-amber-900 text-sm mb-3">
             The BB King Box is a specific pentatonic scale pattern that BB King used as his signature soloing position. It's a hybrid approach that blends major and minor pentatonic scales, giving you access to both the "sweet" major 3rd and the "bluesy" minor 3rd.
           </p>
           
-          <h3 className="text-lg font-semibold text-amber-900 mb-2">A BB King Box Positions:</h3>
-          <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-            <div className="text-amber-900 text-sm space-y-1">
-              <div><span className="font-bold">1:</span> 10th fret B string</div>
-              <div><span className="font-bold">2:</span> 12th fret B string</div>
-              <div><span className="font-bold">4:</span> 10th fret high E string</div>
-              <div><span className="font-bold">5:</span> 12th fret high E string</div>
-              <div><span className="font-bold">6:</span> 11th fret G string</div>
+          <CollapsibleSection 
+            title="BB King Box Details" 
+            isOpen={isBbKingDetailsOpen} 
+            onToggle={() => setIsBbKingDetailsOpen(!isBbKingDetailsOpen)} 
+          >
+            <h3 className="text-lg font-semibold text-amber-900 mb-2">A BB King Box Positions:</h3>
+            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
+              <div className="text-amber-900 text-sm space-y-1">
+                <div><span className="font-bold">1:</span> 10th fret B string</div>
+                <div><span className="font-bold">2:</span> 12th fret B string</div>
+                <div><span className="font-bold">4:</span> 10th fret high E string</div>
+                <div><span className="font-bold">5:</span> 12th fret high E string</div>
+                <div><span className="font-bold">6:</span> 11th fret G string</div>
+              </div>
             </div>
-          </div>
-          
-          <h3 className="text-lg font-semibold text-amber-900 mb-2">When to Use Each BB King Box:</h3>
-          <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-            <div className="text-amber-900 text-sm space-y-2">
-              <div><span className="font-bold">A BB King Box:</span> Use over A7 (I chord)</div>
-              <div><span className="font-bold">D BB King Box:</span> Use over D7 (IV chord)</div>
-              <div><span className="font-bold">E BB King Box:</span> Use over E7 (V chord)</div>
+            
+            <h3 className="text-lg font-semibold text-amber-900 mb-2">When to Use Each BB King Box:</h3>
+            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
+              <div className="text-amber-900 text-sm space-y-2">
+                <div><span className="font-bold">A BB King Box:</span> Use over A7 (I chord)</div>
+                <div><span className="font-bold">D BB King Box:</span> Use over D7 (IV chord)</div>
+                <div><span className="font-bold">E BB King Box:</span> Use over E7 (V chord)</div>
+              </div>
             </div>
-          </div>
-          
-          <h3 className="text-lg font-semibold text-amber-900 mb-2">Other BB King Box Starting Positions:</h3>
-          <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-            <div className="text-amber-900 text-sm space-y-1">
-              <div><span className="font-bold">D BB King Box:</span> Starts on D (3rd fret B string, or 15th fret B string)</div>
-              <div><span className="font-bold">E BB King Box:</span> Starts on E (5th fret B string, or 17th fret B string)</div>
+            
+            <h3 className="text-lg font-semibold text-amber-900 mb-2">Other BB King Box Starting Positions:</h3>
+            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
+              <div className="text-amber-900 text-sm space-y-1">
+                <div><span className="font-bold">D BB King Box:</span> Starts on D (3rd fret B string, or 15th fret B string)</div>
+                <div><span className="font-bold">E BB King Box:</span> Starts on E (5th fret B string, or 17th fret B string)</div>
+              </div>
+              <div className="text-amber-700 text-xs mt-2">
+                <span className="font-bold">Remember:</span> The first note of each BB King Box is the root note of the chord.
+              </div>
             </div>
-            <div className="text-amber-700 text-xs mt-2">
-              <span className="font-bold">Remember:</span> The first note of each BB King Box is the root note of the chord.
-            </div>
-          </div>
-          
-          <h3 className="text-lg font-semibold text-amber-900 mb-2">Key Features:</h3>
-          <ul className="list-none pl-0 text-amber-900 space-y-2 text-sm">
-            <li className="flex items-start gap-2">
-              <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              <span><span className="font-bold">Bend from 2 to ♭3</span> (half-step bend) - creates the classic blues tension</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              <span><span className="font-bold">Bend from 2 to 3</span> (whole-step bend) - adds the major pentatonic sweetness</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              <span><span className="font-bold">Bend from 5 to ♭7</span> (1½-step bend) - creates the dominant 7th blues sound</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              <span><span className="font-bold">Bend from 5 to 6</span> (whole-step bend) - adds major scale color</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-              <span><span className="font-bold">♭5 (blue note)</span> - available between the 2 frets used on high E string</span>
-            </li>
-          </ul>
-          
-          <p className="text-amber-900 text-sm mt-3">
-            This pattern gives you the complete blues vocabulary in one position - you can play pure minor pentatonic, pure major pentatonic, or blend them together for that signature BB King sound.
-          </p>
+            
+            <h3 className="text-lg font-semibold text-amber-900 mb-2">Key Features:</h3>
+            <ul className="list-none pl-0 text-amber-900 space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                <span><span className="font-bold">Bend from 2 to ♭3</span> (half-step bend) - creates the classic blues tension</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                <span><span className="font-bold">Bend from 2 to 3</span> (whole-step bend) - adds the major pentatonic sweetness</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                <span><span className="font-bold">Bend from 5 to ♭7</span> (1½-step bend) - creates the dominant 7th blues sound</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                <span><span className="font-bold">Bend from 5 to 6</span> (whole-step bend) - adds major scale color</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                <span><span className="font-bold">♭5 (blue note)</span> - available between the 2 frets used on high E string</span>
+              </li>
+            </ul>
+            
+            <p className="text-amber-900 text-sm mt-3">
+              This pattern gives you the complete blues vocabulary in one position - you can play pure minor pentatonic, pure major pentatonic, or blend them together for that signature BB King sound.
+            </p>
+          </CollapsibleSection>
         </div>
 
-        {/* Level System */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
-          <h2 className="text-xl font-bold text-amber-900 mb-2">Progressive Blues Levels</h2>
-          <div className="space-y-3 text-sm">
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs font-bold mr-2">Level 1: Foundation</span>
-              <span className="text-amber-900">A minor pentatonic and <span className="font-mono">♭3</span> - 3 - 1 lick over all chords.</span>
+        {/* Progressive Application Levels */}
+        <div id="progressive-levels" className="mb-8">
+          <h2 className="text-2xl font-bold text-amber-900 mb-4">Progressive Application Levels</h2>
+          <p className="text-amber-900 text-sm mb-4 italic">
+            <span className="font-bold">Note:</span> These levels represent a logical learning progression rather than strict difficulty ordering. Each level builds upon the previous concepts to develop a complete understanding of blues soloing.
+          </p>
+          
+          <CollapsibleSection 
+            title="Level 1 & 2: Foundation Exercises" 
+            isOpen={isProgressiveLevelsOpen} 
+            onToggle={() => setIsProgressiveLevelsOpen(!isProgressiveLevelsOpen)} 
+          >
+            <div className="space-y-4">
+              <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 1: b3 - 3 - 1 Lick (Exercise 1)</h3>
+                <p className="text-amber-900 text-sm mb-2">Master the fundamental blues lick using the b3 - 3 - 1 pattern over all chords.</p>
+                <div className="flex items-center gap-2">
+                  <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                  <span className="text-amber-900 text-sm">Foundation of blues soloing</span>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 2: Am Pentatonic Focus (Exercise 2)</h3>
+                <p className="text-amber-900 text-sm mb-2">Apply the b3 - 3 - 1 lick using the <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic scale</Link> over all chords.</p>
+                <div className="flex items-center gap-2">
+                  <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                  <span className="text-amber-900 text-sm">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic</Link> over A7, D7, and E7</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs font-bold mr-2">Level 2</span>
-              <span className="text-amber-900">Add A major pentatonic (over A7 and E7), use A minor pentatonic on D7.</span>
+          </CollapsibleSection>
+
+          <CollapsibleSection 
+            title="Levels 3 - 5: Advanced Scale Applications" 
+            isOpen={isLevels3To5Open} 
+            onToggle={() => setIsLevels3To5Open(!isLevels3To5Open)} 
+          >
+            <div className="space-y-4">
+              <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 3: A Major Pentatonic & Am Pentatonic (Exercise 3)</h3>
+                <p className="text-amber-900 text-sm mb-2">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic</Link> over D7, and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over E7.</p>
+                <div className="flex items-center gap-2">
+                  <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                  <span className="text-amber-900 text-sm">Mix major and minor sounds for authentic blues</span>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 4: E Major Pentatonic & Em Pentatonic (Exercise 4)</h3>
+                <p className="text-amber-900 text-sm mb-2">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=C%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">E Major pentatonic</Link> over E7 (first bar) and <Link href="/blog/beginners-guide-pentatonic-scales/?key=E&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Em pentatonic</Link> over E7 (last bar).</p>
+                <div className="flex items-center gap-2">
+                  <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                  <span className="text-amber-900 text-sm">Mix major and minor sounds over the V chord</span>
+                </div>
+              </div>
+
+              <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 5: Multiple Scales (Exercise 5A & 5B)</h3>
+                <p className="text-amber-900 text-sm mb-2"><strong>5A:</strong> Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Major blues</Link> over E7.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and A & E BB King Box over A7 & E7.</p>
+                <div className="flex items-center gap-2">
+                  <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+                  <span className="text-amber-900 text-sm">Master the complete blues vocabulary</span>
+                </div>
+              </div>
             </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs font-bold mr-2">Level 3</span>
-              <span className="text-amber-900">Add D major pentatonic over D7, and E major & E minor pentatonic over E7.</span>
-            </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs font-bold mr-2">Level 4</span>
-              <span className="text-amber-900">Use the blues scale, Mixolydian, and hybrid blues scales (major + minor blues).</span>
-            </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded text-xs font-bold mr-2">Level 5</span>
-              <span className="text-amber-900">Combine scales, arpeggios, and licks that suit each chord.</span>
-            </div>
-          </div>
+          </CollapsibleSection>
         </div>
 
         {/* Chord Note Theory */}
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
-          <h2 className="text-xl font-bold text-amber-900 mb-2">Chord Note Theory</h2>
+        <div id="chord-theory">
+          <CollapsibleSection 
+            title="Chord Note Theory" 
+            isOpen={isChordTheoryOpen} 
+            onToggle={() => setIsChordTheoryOpen(!isChordTheoryOpen)} 
+          >
           <p className="text-amber-900 text-sm mb-2">Understanding the notes in each chord helps you target the best scale and licks:</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="bg-white border border-amber-200 rounded p-3">
@@ -264,32 +530,26 @@ export default function BluesLicksExercises() {
           <div className="mt-3 text-amber-900 text-xs">
             <span className="font-bold">Tip:</span> The 3rd and 7th of each chord are the most important for targeting with your licks and scale choices.
           </div>
+        </CollapsibleSection>
         </div>
-      </div>
       </div>
 
       {/* Tab Player */}
-      <div className="mb-8">
+      <div id="interactive-tabs" className="mb-8">
         <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Blues Licks Tab Player</h2>
+        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
+          <p className="text-amber-900 text-sm mb-3">
+            Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. The first exercise uses the b3 - 3 - 1 lick almost exclusively. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
+          </p>
+          <p className="text-amber-900 text-sm mb-4">The final exercise uses the BB King box for E7. It also uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
+        </div>
         <AlphaTabPlayerCDN key={Date.now()} containerId="blues-licks-alphatab-container" />
       </div>
 
-      {/* How to Read the Tab */}
-      <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
-        <h3 className="text-lg font-semibold text-amber-800 mb-2">How to Read This Tab</h3>
-        <ul className="list-disc pl-5 text-amber-900 space-y-1">
-          <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
-          <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
-          <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
-          <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
-          <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
-          <li><span className="font-bold text-amber-700">Vibrato:</span> Squiggly lines (~~~~) indicate vibrato—rapidly bend and release the string.</li>
-          <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
-        </ul>
-      </div>
+
 
       {/* How to Practice */}
-      <div className="mb-8">
+      <div id="practice-guide" className="mb-8">
         <h2 className="text-2xl font-bold text-amber-900 mb-4">How to Practice</h2>
         <p className="text-gray-700 mb-4">
           Start slow and focus on clean execution. These blues licks build essential techniques for blues guitar playing.
@@ -316,58 +576,10 @@ export default function BluesLicksExercises() {
         </div>
       </div>
 
-      {/* Blues Techniques */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-amber-900 mb-4">Essential Blues Techniques</h2>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Bending</h3>
-        <p className="text-gray-700 mb-4">
-          String bends are fundamental to blues guitar. Practice bending to pitch and controlling the bend release.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Slides</h3>
-        <p className="text-gray-700 mb-4">
-          Slides add smoothness and character to blues licks. Focus on clean slide execution.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Vibrato</h3>
-        <p className="text-gray-700 mb-4">
-          Vibrato adds expression and life to sustained notes. Practice consistent vibrato width and speed.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Hammer-ons and Pull-offs</h3>
-        <p className="text-gray-700 mb-4">
-          These legato techniques create smooth, flowing phrases essential for blues playing.
-        </p>
-      </div>
 
-      {/* Practice Tips */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-amber-900 mb-4">Practice Tips</h2>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Start Slow</h3>
-        <p className="text-gray-700 mb-4">
-          Begin at a comfortable tempo and gradually increase speed as you master each lick.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Use a Metronome</h3>
-        <p className="text-gray-700 mb-4">
-          Practice with the metronome to develop solid timing and rhythm.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Record Yourself</h3>
-        <p className="text-gray-700 mb-4">
-          Recording your practice helps identify areas for improvement.
-        </p>
-        
-        <h3 className="text-xl font-bold text-amber-900 mb-3">Transpose to Different Keys</h3>
-        <p className="text-gray-700 mb-4">
-          Practice these licks in different keys to develop fretboard knowledge.
-        </p>
-      </div>
 
       {/* Next Steps */}
-      <div className="mb-8">
+      <div id="next-steps" className="mb-8">
         <h2 className="text-2xl font-bold text-amber-900 mb-4">Next Steps in Your Blues Journey</h2>
         
         <h3 className="text-xl font-bold text-amber-900 mb-3">Explore More Blues Resources</h3>
@@ -388,7 +600,7 @@ export default function BluesLicksExercises() {
       </div>
 
       {/* Call to Action */}
-      <div className="text-center bg-amber-50 p-6 rounded-lg">
+      <div id="book-lesson" className="text-center bg-amber-50 p-6 rounded-lg">
         <h2 className="text-2xl font-bold text-amber-900 mb-4">Ready to Master Blues Guitar?</h2>
         <p className="text-gray-700 mb-4">
           Take your blues playing to the next level with personalized guitar lessons.

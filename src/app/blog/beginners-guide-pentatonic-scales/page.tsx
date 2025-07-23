@@ -88,10 +88,24 @@ function PentatonicScalesContent() {
   // Update state based on URL parameters
   useEffect(() => {
     const key = searchParams.get('key');
+    const scroll = searchParams.get('scroll');
     
     if (key && KEY_NOTES.some(n => n.note === key)) {
       setSelectedKey(key);
       setManualOctaveShift(0); // Reset octave shift when key changes
+    }
+
+    // Scroll to shapes section if requested
+    if (scroll === 'shapes') {
+      setTimeout(() => {
+        const shapesSection = document.querySelector('.shape-section');
+        if (shapesSection) {
+          shapesSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }
+      }, 100); // Small delay to ensure the page has loaded
     }
   }, [searchParams]);
 
