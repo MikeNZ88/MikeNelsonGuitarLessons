@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { MdLoop } from 'react-icons/md';
 import { GiMetronome } from 'react-icons/gi';
 import { MdPlayArrow, MdPause, MdStop } from 'react-icons/md';
@@ -106,6 +106,40 @@ const arpeggioExercises = [
   }
 ];
 
+// Blues Licks exercises for the blues licks blog post
+const bluesLicksExercises = [
+  {
+    id: 'b3-3-1-lick-3-chords',
+    name: 'b3 - 3 - 1 lick, 3 chords',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
+  },
+  {
+    id: 'b3-3-1-lick-major-am',
+    name: 'b3 - 3 - 1 lick, Am Pentatonic & Em Pentatonic',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
+  },
+  {
+    id: 'b3-3-1-lick-am-em',
+    name: 'b3 - 3 - 1 lick, A Major Pentatonic & Am Pentatonic',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
+  },
+  {
+    id: 'b3-3-1-lick-e-major-em',
+    name: 'b3 - 3 - 1 lick, E Major Pentatonic & Em Pentatonic',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
+  },
+  {
+    id: 'b3-3-1-lick-major-am-blues-d-major',
+    name: 'b3 - 3 - 1 lick, A Major Pentatonic, Am Pentatonic, A Major Blues, & D Major Pentatonic',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
+  },
+  {
+    id: 'b3-3-1-lick-hybrid-bbking-v6',
+    name: 'b3 - 3 - 1 Lick, Hybrid Blues Scales and A and E BB King Box',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
+  },
+];
+
 declare global {
   interface Window {
     alphaTab: any;
@@ -117,19 +151,111 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
   const alphaTabRef = useRef<any>(null);
   const pathname = usePathname();
   
-  // Determine which exercises to use based on the page
-  const isArpeggioPage = pathname.includes('guitar-arpeggios-exercises');
-  const currentExercises = isArpeggioPage ? arpeggioExercises : [
-    { group: '16th Notes', items: sixteenthNotes },
-    { group: '16th Note Triplets', items: sixteenthTriplets }
-  ];
+  // Memoize currentExercises to prevent unnecessary re-renders
+  const currentExercises = useMemo(() => {
+    const pageDetection = {
+      pathname: pathname || '',
+      isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
+      isArpeggioPage: pathname?.includes('/arpeggio-exercises/') || false
+    };
+    
+    console.log('🔍 Page Detection:', pageDetection);
+    
+    const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
+                         pageDetection.pathname.includes('/arpeggio-exercises/');
+    console.log('🔍 Pathname check:', pathnameCheck);
+
+    if (!pathnameCheck) {
+      return [];
+    }
+
+    if (pageDetection.isBluesLicksPage) {
+      return [
+        {
+          group: 'Blues Licks',
+          items: [
+            {
+              id: 'b3-3-1-lick-3-chords',
+              name: 'b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
+            },
+            {
+              id: 'b3-3-1-lick-major-am',
+              name: 'b3 - 3 - 1 lick, Am Pentatonic & Em Pentatonic',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
+            },
+            {
+              id: 'b3-3-1-lick-am-em',
+              name: 'b3 - 3 - 1 lick, A Major Pentatonic & Am Pentatonic',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
+            },
+            {
+              id: 'b3-3-1-lick-multi',
+              name: 'b3 - 3 - 1 lick, A Major Pentatonic, Am Pentatonic, A Major Blues, & D Major Pentatonic',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
+            },
+            {
+              id: 'b3-3-1-lick-em-em',
+              name: 'b3 - 3 - 1 lick, E Major Pentatonic & Em Pentatonic',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
+            },
+            {
+              id: 'b3-3-1-lick-hybrid-bbking-v6',
+              name: 'b3 - 3 - 1 Lick, Hybrid Blues Scales and A and E BB King Box',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
+            },
+          ]
+        }
+      ];
+    }
+
+    if (pageDetection.isArpeggioPage) {
+      return [
+        {
+          group: 'Basic Arpeggios',
+          items: [
+            { id: 'c-major-arpeggio', name: 'C Major Arpeggio', file: '/GP Files/Arpeggios/C Major Arpeggio.gp' },
+            { id: 'a-minor-arpeggio', name: 'A Minor Arpeggio', file: '/GP Files/Arpeggios/A Minor Arpeggio.gp' },
+            { id: 'g-major-arpeggio', name: 'G Major Arpeggio', file: '/GP Files/Arpeggios/G Major Arpeggio.gp' },
+            { id: 'e-minor-arpeggio', name: 'E Minor Arpeggio', file: '/GP Files/Arpeggios/E Minor Arpeggio.gp' },
+            { id: 'd-major-arpeggio', name: 'D Major Arpeggio', file: '/GP Files/Arpeggios/D Major Arpeggio.gp' }
+          ]
+        },
+        {
+          group: '7th Arpeggios',
+          items: [
+            { id: 'cmaj7-arpeggio', name: 'Cmaj7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
+            { id: 'am7-arpeggio', name: 'Am7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
+            { id: 'g7-arpeggio', name: 'G7 Arpeggio', file: '/GP Files/Arpeggios/C 7 Arpeggio.gp' },
+            { id: 'dm7-arpeggio', name: 'Dm7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
+            { id: 'em7-arpeggio', name: 'Em7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' }
+          ]
+        }
+      ];
+    }
+
+    return [];
+  }, [pathname]);
+
+  // Use a stable reference for the initial exercise
+  const getInitialExercise = useCallback(() => {
+    if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
+      return currentExercises[0].items[0].id;
+    }
+    return '';
+  }, [currentExercises]);
+
+  const [selectedExercise, setSelectedExercise] = useState('');
+
+  // Initialize selectedExercise only once when currentExercises changes
+  useEffect(() => {
+    const initialExercise = getInitialExercise();
+    if (initialExercise && !selectedExercise) {
+      console.log('🎯 Initial Exercise:', initialExercise);
+      setSelectedExercise(initialExercise);
+    }
+  }, [getInitialExercise]);
   
-  // Set initial exercise based on page type
-  const initialExercise = isArpeggioPage 
-    ? arpeggioExercises[0].items[0].id 
-    : sixteenthNotes[0].id;
-  
-  const [selectedExercise, setSelectedExercise] = useState(initialExercise);
   const [status, setStatus] = useState('Loading AlphaTab...');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -142,6 +268,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
   const isLoopingRef = useRef(false); // Ref to track loop state for event listeners
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
+  const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
+  const [availableTracks, setAvailableTracks] = useState<number>(1);
 
   useEffect(() => {
     const checkScreen = () => {
@@ -341,6 +469,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
             enableMetronome: true, // Enable metronome support
             cursorFollowMode: 'beat' // Follow cursor by beat for better visibility
           },
+          // For blues licks, always use track 0 (lead guitar)
+          tracks: pathname?.includes('/blues-licks-exercises/') ? [0] : undefined,
           display: {
             scale: zoom, // Use the responsive zoom value
             layoutMode: 'page',
@@ -413,8 +543,15 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         // Set up event listeners
         setupEventListeners(alphaTabRef.current);
 
-        // Load the first exercise
-        await loadExercise(exercises[0].file);
+        // Load the first exercise based on page type
+        let initialExerciseFile = '';
+        if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
+          initialExerciseFile = currentExercises[0].items[0].file;
+        } else {
+          initialExerciseFile = exercises[0].file;
+        }
+        console.log('🎯 Loading initial exercise file:', initialExerciseFile);
+        await loadExercise(initialExerciseFile);
 
         console.log('AlphaTab initialized successfully with audio support!');
         
@@ -430,19 +567,85 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
 
   // Helper function to get current exercise data
   const getCurrentExerciseData = () => {
-    if (isArpeggioPage) {
-      // Find in arpeggio exercises
-      for (const group of arpeggioExercises) {
-        const found = group.items.find(item => item.id === selectedExercise);
-        if (found) return found;
-      }
-    } else {
-      // Find in pentatonic exercises
-      const found = sixteenthNotes.find(ex => ex.id === selectedExercise) ||
-                   sixteenthTriplets.find(ex => ex.id === selectedExercise);
+    if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
+      const group = currentExercises[0];
+      const found = group.items.find(item => item.id === selectedExercise);
       if (found) return found;
     }
     return null;
+  };
+
+  const handleTrackChange = async (trackIndex: number) => {
+    console.log('🎵 Changing track to:', trackIndex);
+    setSelectedTrack(trackIndex);
+    
+    // Immediately destroy and reinitialize AlphaTab with new track
+    if (alphaTabRef.current && containerRef.current) {
+      try {
+        console.log('🎵 Destroying current AlphaTab instance...');
+        alphaTabRef.current.destroy();
+        alphaTabRef.current = null;
+      } catch (error) {
+        console.log('🎵 Destroy failed:', error);
+      }
+      
+      // Clear the container
+      containerRef.current.innerHTML = '';
+      
+      // Wait a moment then reinitialize
+      setTimeout(async () => {
+        if (containerRef.current && window.alphaTab) {
+          console.log('🎵 Reinitializing AlphaTab with track:', trackIndex);
+          
+          // Create new AlphaTab instance with the selected track
+          alphaTabRef.current = new window.alphaTab.AlphaTabApi(containerRef.current, {
+            core: {
+              enableLazyLoading: false,
+              useWorkers: false
+            },
+            player: {
+              enablePlayer: true,
+              enableCursor: true,
+              enableUserInteraction: true,
+              enableElementHighlighting: true,
+              soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
+              scrollElement: containerRef.current,
+              enableMetronome: true,
+              cursorFollowMode: 'beat'
+            },
+            tracks: [trackIndex], // Use the selected track
+            display: {
+              scale: zoom,
+              layoutMode: 'page',
+              showTempo: false,
+              showTitle: false,
+              showSubtitle: false,
+              showArtist: false,
+              showAlbum: false,
+              showWords: false,
+              showMusic: true,
+              showCopyright: false,
+              showNotices: false,
+              showInstructions: false,
+              showAutomation: false,
+              showTempoChanges: false,
+              showMetronome: false,
+              showBarNumbers: true
+            }
+          });
+          
+          // Set up event listeners
+          setupEventListeners(alphaTabRef.current);
+          
+          // Load the current exercise
+          const currentExercise = getCurrentExerciseData();
+          if (currentExercise) {
+            console.log('🎵 Loading exercise for new track:', currentExercise.file);
+            await loadExercise(currentExercise.file);
+          }
+        }
+      }, 200);
+    }
   };
 
   // Reload exercise when selection changes
@@ -453,7 +656,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         loadExercise(selectedExerciseData.file);
       }
     }
-  }, [selectedExercise, isReady, isArpeggioPage]);
+  }, [selectedExercise, isReady, currentExercises]);
+
+
 
   const setupEventListeners = (api: any) => {
     api.renderStarted.on(() => {
@@ -465,15 +670,55 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       console.log('Render finished');
       setStatus('Ready to play!');
       setIsReady(true);
+      
+      // Enable all tracks for blues licks after render is complete
+      if (currentExercises.length > 0 && currentExercises[0].items.length > 1) {
+        console.log('🎵 Enabling all tracks after render for blues licks');
+        console.log('🎵 Number of tracks:', currentExercises[0].items.length);
+        
+        // Try to use AlphaTab's settings to show all tracks
+        try {
+          if (api.settings) {
+            console.log('🎵 Using AlphaTab settings to show all tracks');
+            api.settings.tracks.showAllTracks = true;
+            api.settings.tracks.showTracks = [0, 1];
+          }
+        } catch (error) {
+          console.log('🎵 Settings approach failed:', error);
+        }
+        
+        // Also try direct track manipulation
+        api.tracks.forEach((track: any, index: number) => {
+          console.log(`🎵 Setting track ${index} visible after render`);
+          track.isVisible = true;
+          track.isMuted = false;
+          track.isSolo = false;
+        });
+        
+        // Force a re-render to show all tracks
+        setTimeout(() => {
+          try {
+            api.render();
+            console.log('🎵 Re-render after render finished completed');
+          } catch (error) {
+            console.log('🎵 Re-render after render finished failed:', error);
+          }
+        }, 100);
+      }
     });
 
     api.scoreLoaded.on((score: any) => {
       console.log('Score loaded successfully');
       console.log('Score keys:', Object.keys(score));
       
-      // Log details about tracks and their notation
+            // Log details about tracks and their notation
       if (score.tracks && score.tracks.length > 0) {
         console.log('Found', score.tracks.length, 'tracks');
+        
+        // Update available tracks count
+        setAvailableTracks(score.tracks.length);
+        console.log('🎵 Setting available tracks:', score.tracks.length);
+        
         score.tracks.forEach((track: any, i: number) => {
           console.log(`Track ${i}:`, {
             name: track.name,
@@ -550,8 +795,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         }
       } else {
         // Set default tempo: 40 BPM for arpeggio page, 20 BPM otherwise
-        const isArpeggioPage = pathname.includes('guitar-arpeggios-exercises');
-        const defaultTempo = isArpeggioPage ? 40 : 20;
+        const isArpeggioPage = pathname?.includes('/arpeggio-exercises/');
+        const defaultTempo = isArpeggioPage ? 40 : 80;
         console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
         setTempo(defaultTempo);
         if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
@@ -757,19 +1002,17 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
   };
 
   const handleExerciseChange = (exerciseId: string) => {
+    console.log('🔄 handleExerciseChange called with exerciseId:', exerciseId);
+    console.log('🔄 isBluesLicksPage:', currentExercises.length > 0 && currentExercises[0].items.length > 0, 'isArpeggioPage:', pathname?.includes('/arpeggio-exercises/'));
+    
     setSelectedExercise(exerciseId);
     
     // Find exercise data for the new exerciseId
     let exercise = null;
-    if (isArpeggioPage) {
-      // Find in arpeggio exercises
-      for (const group of arpeggioExercises) {
-        const found = group.items.find(item => item.id === exerciseId);
-        if (found) {
-          exercise = found;
-          break;
-        }
-      }
+    if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
+      const group = currentExercises[0];
+      exercise = group.items.find(item => item.id === exerciseId);
+      console.log('🔄 Found blues exercise:', exercise);
     } else {
       // Find in pentatonic exercises
       exercise = sixteenthNotes.find(ex => ex.id === exerciseId) ||
@@ -777,7 +1020,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     }
     
     if (exercise) {
+      console.log('🔄 Loading exercise file:', exercise.file);
       loadExercise(exercise.file);
+    } else {
+      console.log('❌ No exercise found for ID:', exerciseId);
     }
   };
 
@@ -855,7 +1101,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     }
   };
 
-  const selectedExerciseName = exercises.find(ex => ex.id === selectedExercise)?.name || 'Unknown Exercise';
+  const selectedExerciseName = currentExercises.length > 0 && currentExercises[0].items.length > 0 
+    ? currentExercises[0].items.find(ex => ex.id === selectedExercise)?.name || 'Unknown Exercise'
+    : exercises.find(ex => ex.id === selectedExercise)?.name || 'Unknown Exercise';
 
   if (error) {
     return (
@@ -867,26 +1115,28 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
 
   return (
     <div className="w-full">
-      {/* Arpeggio Dropdown */}
-      {pathname.includes('guitar-arpeggios-exercises') ? (
+            {/* Exercise Dropdown */}
+      {(() => {
+        console.log('🎯 Dropdown rendering - isBluesLicksPage:', currentExercises.length > 0 && currentExercises[0].items.length > 0, 'isArpeggioPage:', pathname?.includes('/arpeggio-exercises/'));
+        return null;
+      })()}
+      {currentExercises.length > 0 && currentExercises[0].items.length > 0 ? (
         <div className="mb-4">
-          <label htmlFor="arpeggio-exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
-            Select Arpeggio Exercise
+          <label htmlFor="blues-licks-exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
+            Select Blues Lick Exercise
           </label>
           <select
-            id="arpeggio-exercise-select"
+            id="blues-licks-exercise-select"
             value={selectedExercise}
-            onChange={e => setSelectedExercise(e.target.value)}
+            onChange={(e) => handleExerciseChange(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
-            {arpeggioExercises.map(group => (
-              <optgroup key={group.group} label={group.group}>
-                {group.items.map(ex => (
-                  <option key={ex.id} value={ex.id}>{ex.name}</option>
-                ))}
-              </optgroup>
+            {currentExercises[0].items.map(ex => (
+              <option key={ex.id} value={ex.id}>{ex.name}</option>
             ))}
           </select>
+          
+
         </div>
       ) : (
         <>

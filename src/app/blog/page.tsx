@@ -1401,6 +1401,20 @@ export default function Blog() {
       sortOrder: 9
     },
     {
+      id: '33',
+      title: 'Blues Licks Exercises',
+      excerpt: 'Master essential blues licks with our interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques with professional notation and audio playback.',
+      readTime: 'Interactive Tool',
+      category: 'Beginner - Intermediate',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Scales and Fretboard', 'Tools'],
+      skillLevel: 'beginner-intermediate',
+      image: '/GP Files/Scale Exercises/BLOG TABS/Screenshot 2025-07-23 at 2.54.14 PM.png',
+      slug: 'blues-licks-exercises',
+      author: 'Mike Nelson',
+      sortOrder: 10
+    },
+    {
       id: '1',
       title: '6 Essential Practice Tips for Guitar Students',
       excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',
@@ -1531,7 +1545,7 @@ export default function Blog() {
       sortOrder: 22
     },
     {
-      id: '33',
+      id: '34',
       title: 'Guitar Arpeggio Exercises',
       excerpt: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
       readTime: 'Interactive',
