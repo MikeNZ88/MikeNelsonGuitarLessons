@@ -82,7 +82,7 @@ export default function BluesLicksExercises() {
               <h3 className="font-semibold text-amber-800 mb-2">Theory & Foundation</h3>
               <ul className="space-y-2 text-sm">
                 <li><a href="#blues-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('blues-theory'); }}>What is a 12-Bar Blues?</a></li>
-                <li><a href="#foundation-lick" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('foundation-lick'); }}>Foundation: The ♭3 - 3 - 1 Lick</a></li>
+                <li><a href="#foundation-lick" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('foundation-lick'); }}>Foundation: The ♭3 - 3 - 1 and ♭3 - 3 - ♭7 Licks</a></li>
                 <li><a href="#fretboard-diagrams" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('fretboard-diagrams'); }}>Fretboard Diagrams: ♭3, 3, and 1 Notes</a></li>
               </ul>
             </div>
@@ -104,13 +104,7 @@ export default function BluesLicksExercises() {
                 <li><a href="#chord-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('chord-theory', setIsChordTheoryOpen); }}>Chord Note Theory</a></li>
               </ul>
             </div>
-            <div>
-              <h3 className="font-semibold text-amber-800 mb-2">Resources & Next Steps</h3>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#next-steps" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('next-steps'); }}>Next Steps in Your Blues Journey</a></li>
-                <li><a href="#book-lesson" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('book-lesson'); }}>Book a Lesson</a></li>
-              </ul>
-            </div>
+
           </div>
         </div>
       </div>
@@ -151,8 +145,8 @@ export default function BluesLicksExercises() {
       <div className="mb-8">
         {/* b3 - 3 - 1 Lick (Foundation) */}
         <div id="foundation-lick" className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
-          <h2 className="text-xl font-bold text-amber-900 mb-2">Foundation: The <span className="font-mono">♭3</span> - 3 - 1 Lick</h2>
-          <p className="text-amber-900 text-sm mb-1">This classic blues lick is the backbone of countless solos:</p>
+          <h2 className="text-xl font-bold text-amber-900 mb-2">Foundation: The <span className="font-mono">♭3</span> - 3 - 1 and <span className="font-mono">♭3</span> - 3 - <span className="font-mono">♭7</span> Licks</h2>
+          <p className="text-amber-900 text-sm mb-1">These classic blues licks are the backbone of countless solos:</p>
 
                       <div className="text-amber-900 text-sm mb-4">The 3 and 1 are chord tones (notes that make up the chord), while the <span className="font-mono">♭3</span> is the added "blues spice" note.</div>
 
@@ -166,162 +160,448 @@ export default function BluesLicksExercises() {
               </div>
 
               {/* Fretboard Diagrams */}
-              <div className="w-full max-w-4xl space-y-6 mt-6">
-                <h4 id="fretboard-diagrams" className="text-lg font-bold text-amber-900 text-center mb-4">Fretboard Diagrams: ♭3, 3, and 1 Notes</h4>
+              <div className="w-full max-w-6xl space-y-6 mt-6">
+                <h4 id="fretboard-diagrams" className="text-lg font-bold text-amber-900 text-center mb-4">Fretboard Diagrams: ♭3 - 3 - 1 and ♭3 - 3 - ♭7 Licks</h4>
                 
-                {/* A7 Fretboard */}
-                <div className="bg-white border border-amber-300 rounded-lg p-4">
-                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A</h5>
-                  <div className="flex justify-center">
-                    <div className="fretboard-diagram">
-                      {/* Fret numbers */}
-                      <div className="flex text-xs text-gray-600 mb-1">
-                        <div className="w-12"></div>
-                        <div className="w-8 text-center">5</div>
-                        <div className="w-8 text-center">6</div>
-                        <div className="w-8 text-center">7</div>
-                        <div className="w-8 text-center">8</div>
-                        <div className="w-8 text-center">9</div>
+                {/* A7 Fretboard - Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* A7 - b3 - 3 - 1 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A7 - ♭3 - 3 - 1</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
+                        </div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">C</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">C♯</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">A</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                        </div>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (C)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (C♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                            <span>1 (A)</span>
+                          </div>
+                        </div>
                       </div>
-                      {/* Strings */}
-                      <div className="space-y-1">
-                        {/* G string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">C</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">C♯</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                    </div>
+                  </div>
+
+                  {/* A7 - b3 - 3 - b7 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A7 - ♭3 - 3 - ♭7</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
                         </div>
-                        {/* D string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">A</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-purple-100 rounded-full text-xs font-bold text-purple-800">G</div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">C</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">C♯</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-center mt-2 text-xs text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
-                          <span>♭3 (C)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
-                          <span>3 (C♯)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
-                          <span>1 (A)</span>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (C)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (C♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-purple-100 rounded-full border border-purple-300"></div>
+                            <span>♭7 (G)</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* D7 Fretboard */}
-                <div className="bg-white border border-amber-300 rounded-lg p-4">
-                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D</h5>
-                  <div className="flex justify-center">
-                    <div className="fretboard-diagram">
-                      {/* Fret numbers */}
-                      <div className="flex text-xs text-gray-600 mb-1">
-                        <div className="w-12"></div>
-                        <div className="w-8 text-center">5</div>
-                        <div className="w-8 text-center">6</div>
-                        <div className="w-8 text-center">7</div>
-                        <div className="w-8 text-center">8</div>
-                        <div className="w-8 text-center">9</div>
+                {/* D7 Fretboard - Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* D7 - b3 - 3 - 1 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D7 - ♭3 - 3 - 1</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
+                        </div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">F</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">F♯</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">D</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                        </div>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (F)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (F♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                            <span>1 (D)</span>
+                          </div>
+                        </div>
                       </div>
-                      {/* Strings */}
-                      <div className="space-y-1">
-                        {/* B string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">F</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">F♯</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                    </div>
+                  </div>
+
+                  {/* D7 - b3 - 3 - b7 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D7 - ♭3 - 3 - ♭7</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
+                          <div className="w-8 text-center">10</div>
                         </div>
-                        {/* G string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">D</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 flex items-center justify-center"></div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-purple-100 rounded-full text-xs font-bold text-purple-800">C</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">F</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">F♯</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-center mt-2 text-xs text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
-                          <span>♭3 (F)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
-                          <span>3 (F♯)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
-                          <span>1 (D)</span>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (F)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (F♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-purple-100 rounded-full border border-purple-300"></div>
+                            <span>♭7 (C)</span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* E7 Fretboard */}
-                <div className="bg-white border border-amber-300 rounded-lg p-4">
-                  <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E</h5>
-                  <div className="flex justify-center">
-                    <div className="fretboard-diagram">
-                      {/* Fret numbers */}
-                      <div className="flex text-xs text-gray-600 mb-1">
-                        <div className="w-12"></div>
-                        <div className="w-8 text-center">5</div>
-                        <div className="w-8 text-center">6</div>
-                        <div className="w-8 text-center">7</div>
-                        <div className="w-8 text-center">8</div>
-                        <div className="w-8 text-center">9</div>
+                {/* E7 Fretboard - Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* E7 - b3 - 3 - 1 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E7 - ♭3 - 3 - 1</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
+                        </div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">G</div>
+                            <div className="w-8 h-6 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">G♯</div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">E</div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                        </div>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (G)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (G♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
+                            <span>1 (E)</span>
+                          </div>
+                        </div>
                       </div>
-                      {/* Strings */}
-                      <div className="space-y-1">
-                        {/* B string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">G</div>
-                          <div className="w-8 h-6 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">G♯</div>
+                    </div>
+                  </div>
+
+                  {/* E7 - b3 - 3 - b7 */}
+                  <div className="bg-white border border-amber-300 rounded-lg p-4">
+                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E7 - ♭3 - 3 - ♭7</h5>
+                    <div className="flex justify-center">
+                      <div className="fretboard-diagram">
+                        {/* Fret numbers */}
+                        <div className="flex text-xs text-gray-600 mb-1">
+                          <div className="w-12"></div>
+                          <div className="w-8 text-center">5</div>
+                          <div className="w-8 text-center">6</div>
+                          <div className="w-8 text-center">7</div>
+                          <div className="w-8 text-center">8</div>
+                          <div className="w-8 text-center">9</div>
+                          <div className="w-8 text-center">10</div>
                         </div>
-                        {/* G string */}
-                        <div className="flex">
-                          <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
-                          <div className="w-8 h-6 flex items-center justify-center bg-blue-100 rounded-full text-xs font-bold text-blue-800">E</div>
+                        {/* Strings */}
+                        <div className="space-y-1">
+                          {/* High E string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">E string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center bg-purple-100 rounded-full text-xs font-bold text-purple-800">D</div>
+                          </div>
+                          {/* B string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">B string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-red-100 rounded-full text-xs font-bold text-red-800">G</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center bg-green-100 rounded-full text-xs font-bold text-green-800">G♯</div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* G string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">G string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
+                          {/* D string */}
+                          <div className="flex">
+                            <div className="w-12 h-6 border-r border-gray-300 flex items-center justify-center text-xs text-gray-500">D string</div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 border-r border-gray-300 flex items-center justify-center"></div>
+                            <div className="w-8 h-6 flex items-center justify-center"></div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="flex justify-center mt-2 text-xs text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
-                          <span>♭3 (G)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
-                          <span>3 (G♯)</span>
-                        </div>
-                        <div className="flex items-center gap-2 ml-4">
-                          <div className="w-3 h-3 bg-blue-100 rounded-full border border-blue-300"></div>
-                          <span>1 (E)</span>
+                        <div className="flex justify-center mt-2 text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 bg-red-100 rounded-full border border-red-300"></div>
+                            <span>♭3 (G)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-green-100 rounded-full border border-green-300"></div>
+                            <span>3 (G♯)</span>
+                          </div>
+                          <div className="flex items-center gap-2 ml-4">
+                            <div className="w-3 h-3 bg-purple-100 rounded-full border border-purple-300"></div>
+                            <span>♭7 (D)</span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -446,8 +726,9 @@ export default function BluesLicksExercises() {
           >
             <div className="space-y-4">
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
-                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 1: b3 - 3 - 1 Lick (Exercise 1)</h3>
-                <p className="text-amber-900 text-sm mb-2">Master the fundamental blues lick using the b3 - 3 - 1 pattern over all chords.</p>
+                <h3 className="text-lg font-bold text-amber-900 mb-2">Level 1: Foundation Licks (Exercise 1A & 1B)</h3>
+                <p className="text-amber-900 text-sm mb-2"><strong>1A:</strong> Master the fundamental blues lick using the b3 - 3 - 1 pattern over all chords.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>1B:</strong> Master the fundamental blues lick using the b3 - 3 - b7 pattern over all chords.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Foundation of blues soloing</span>
@@ -456,7 +737,7 @@ export default function BluesLicksExercises() {
 
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 2: Am Pentatonic Focus (Exercise 2)</h3>
-                <p className="text-amber-900 text-sm mb-2">Apply the b3 - 3 - 1 lick using the <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic scale</Link> over all chords.</p>
+                <p className="text-amber-900 text-sm mb-2">Apply the b3 - 3 - 1 lick and the <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic scale</Link> over all chords.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic</Link> over A7, D7, and E7</span>
@@ -466,14 +747,14 @@ export default function BluesLicksExercises() {
           </CollapsibleSection>
 
           <CollapsibleSection 
-            title="Levels 3 - 5: Advanced Scale Applications" 
+            title="Levels 3 - 5: Using Multiple Scales" 
             isOpen={isLevels3To5Open} 
             onToggle={() => setIsLevels3To5Open(!isLevels3To5Open)} 
           >
             <div className="space-y-4">
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 3: A Major Pentatonic & Am Pentatonic (Exercise 3)</h3>
-                <p className="text-amber-900 text-sm mb-2">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic</Link> over D7, and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over E7.</p>
+                <p className="text-amber-900 text-sm mb-2">Use the b3 - 3 - 1 lick and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Am pentatonic</Link> over D7, and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over E7.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Mix major and minor sounds for authentic blues</span>
@@ -482,7 +763,7 @@ export default function BluesLicksExercises() {
 
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 4: E Major Pentatonic & Em Pentatonic (Exercise 4)</h3>
-                <p className="text-amber-900 text-sm mb-2">Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=C%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">E Major pentatonic</Link> over E7 (first bar) and <Link href="/blog/beginners-guide-pentatonic-scales/?key=E&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Em pentatonic</Link> over E7 (last bar).</p>
+                <p className="text-amber-900 text-sm mb-2">Use the b3 - 3 - 1 lick and <Link href="/blog/beginners-guide-pentatonic-scales/?key=C%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">E Major pentatonic</Link> over E7 (first bar) and <Link href="/blog/beginners-guide-pentatonic-scales/?key=E&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">Em pentatonic</Link> over E7 (last bar).</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Mix major and minor sounds over the V chord</span>
@@ -491,8 +772,8 @@ export default function BluesLicksExercises() {
 
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 5: Multiple Scales (Exercise 5A & 5B)</h3>
-                <p className="text-amber-900 text-sm mb-2"><strong>5A:</strong> Use <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Major blues</Link> over E7.</p>
-                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and A & E BB King Box over A7 & E7.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>5A:</strong> Use the b3 - 3 - 1 lick and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Major blues</Link> over E7.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use the b3 - 3 - 1 lick and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and A & E BB King Box over A7 & E7.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Master the complete blues vocabulary</span>
@@ -539,7 +820,7 @@ export default function BluesLicksExercises() {
         <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Blues Licks Tab Player</h2>
         <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
           <p className="text-amber-900 text-sm mb-3">
-            Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. The first exercise uses the b3 - 3 - 1 lick almost exclusively. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
+            Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. Exercise 1A uses the b3 - 3 - 1 lick almost exclusively, while Exercise 1B uses the b3 - 3 - b7 lick. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
           </p>
           <p className="text-amber-900 text-sm mb-4">The final exercise uses the BB King box for E7. It also uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
         </div>

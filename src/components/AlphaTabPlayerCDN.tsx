@@ -114,6 +114,11 @@ const bluesLicksExercises = [
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
   },
   {
+    id: 'b3-3-b7-lick-3-chords',
+    name: 'b3 - 3 - b7 lick, 3 chords',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp'
+  },
+  {
     id: 'b3-3-1-lick-major-am', // This is V2
     name: 'Am Pentatonic', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
@@ -176,8 +181,13 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           items: [
             {
               id: 'b3-3-1-lick-3-chords',
-              name: '1. b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
+              name: '1A. b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
+            },
+            {
+              id: 'b3-3-b7-lick-3-chords',
+              name: '1B. b3 - 3 - b7 lick over each of the 3 Chords: A7, D7, & E7',
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp'
             },
             {
               id: 'b3-3-1-lick-major-am', // This is V2
