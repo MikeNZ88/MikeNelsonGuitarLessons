@@ -754,6 +754,12 @@ export default function Blog() {
       category: 'Technique'
     },
     {
+      topic: 'Picking and Finger Exercises',
+      description: '8 chromatic exercises for finger independence and string navigation',
+      link: '/blog/picking-finger-exercises',
+      category: 'Technique'
+    },
+    {
       topic: '16th Note Exercises',
       description: 'Pentatonic scale patterns with alternate picking',
       link: '/blog/guitar-picking-exercises',
@@ -1454,12 +1460,26 @@ export default function Blog() {
       readTime: 'Interactive',
       category: 'Beginner - Advanced',
       primaryCategory: 'Technique',
-      categories: ['Technique', 'Tools'],
+      categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'all',
       image: '/guitar-picking-exercises-thumbnail.png',
       slug: 'guitar-picking-exercises',
       author: 'Mike Nelson',
       sortOrder: 9
+    },
+    {
+      id: '35',
+      title: 'Picking and Finger Exercises',
+      excerpt: 'Master finger independence, string navigation, and alternate picking with 8 focused chromatic exercises. Develop advanced guitar technique through non-sequential finger patterns and precise string work.',
+      readTime: 'Interactive',
+      category: 'Beginner - Advanced',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Tools', 'Tabs'],
+      skillLevel: 'all',
+      image: '/picking-finger-exercises-thumbnail.png',
+      slug: 'picking-finger-exercises',
+      author: 'Mike Nelson',
+      sortOrder: 10
     },
     {
       id: '33',
@@ -1468,7 +1488,7 @@ export default function Blog() {
       readTime: 'Interactive Tool',
       category: 'Beginner - Intermediate',
       primaryCategory: 'Technique',
-      categories: ['Technique', 'Scales and Fretboard', 'Tools'],
+      categories: ['Technique', 'Scales and Fretboard', 'Tools', 'Tabs'],
       skillLevel: 'beginner-intermediate',
       image: '/GP Files/Scale Exercises/BLOG TABS/Screenshot 2025-07-23 at 2.54.14 PM.png',
       slug: 'blues-licks-exercises',
@@ -1612,7 +1632,7 @@ export default function Blog() {
       readTime: 'Interactive',
       category: 'Intermediate - Advanced',
       primaryCategory: 'Technique',
-      categories: ['Technique', 'Tools'],
+      categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'intermediate-advanced',
       image: '/guitar-arpeggios-thumbnail.png',
       slug: 'guitar-arpeggios-exercises',
@@ -1624,7 +1644,7 @@ export default function Blog() {
   console.log('POSTS LENGTH:', posts.length, posts.map(p => p.title));
 
   // Define new lesson topic categories
-  const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear', 'Theory', 'Tools'];
+  const topicCategories = ['All Posts', 'Getting Started', 'Chords', 'Scales and Fretboard', 'Technique', 'Rhythm', 'Gear', 'Theory', 'Tools', 'Tabs'];
   const skillLevels = ['All Levels', 'Beginner', 'Intermediate', 'Advanced'];
 
   // Smart display logic for categories

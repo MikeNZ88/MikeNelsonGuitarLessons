@@ -161,13 +161,15 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     const pageDetection = {
       pathname: pathname || '',
       isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
-      isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false
+      isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false,
+      isFingerExercisesPage: pathname?.includes('/picking-finger-exercises/') || false
     };
     
     console.log('🔍 Page Detection:', pageDetection);
     
     const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
-                         pageDetection.pathname.includes('/guitar-arpeggios-exercises/');
+                         pageDetection.pathname.includes('/guitar-arpeggios-exercises/') ||
+                         pageDetection.pathname.includes('/picking-finger-exercises/');
     console.log('🔍 Pathname check:', pathnameCheck);
 
     if (!pathnameCheck) {
@@ -246,6 +248,24 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           items: [
             { id: 'c-major-scale-arp-asc', name: 'C Major Scale Arpeggios Ascending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Ascending.gp' },
             { id: 'c-major-scale-arp-desc', name: 'C Major Scale Arpeggios Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Descending.gp' }
+          ]
+        }
+      ];
+    }
+
+    if (pageDetection.isFingerExercisesPage) {
+      return [
+        {
+          group: 'Picking and Finger Exercises',
+          items: [
+            { id: 'chromatic-1', name: 'Exercise 1: Foundation Pattern A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 1.gp' },
+            { id: 'chromatic-2', name: 'Exercise 2: Foundation Pattern B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 2.gp' },
+            { id: 'chromatic-3', name: 'Exercise 3: String Skipping A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 3.gp' },
+            { id: 'chromatic-4', name: 'Exercise 4: String Skipping B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 4.gp' },
+            { id: 'chromatic-5', name: 'Exercise 5: Complex Combinations A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 5.gp' },
+            { id: 'chromatic-6', name: 'Exercise 6: Complex Combinations B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 6.gp' },
+            { id: 'chromatic-7', name: 'Exercise 7: Master Level A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 7.gp' },
+            { id: 'chromatic-8', name: 'Exercise 8: Master Level B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 8.gp' }
           ]
         }
       ];
@@ -822,9 +842,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
       } else {
-        // Set default tempo: 40 BPM for arpeggio page, 20 BPM for pentatonic exercises
+        // Set default tempo: 40 BPM for arpeggio page, 60 BPM for finger exercises, 20 BPM for pentatonic exercises
         const isArpeggioPage = pathname?.includes('/guitar-arpeggios-exercises/');
-        const defaultTempo = isArpeggioPage ? 40 : 20;
+        const isFingerExercisesPage = pathname?.includes('/picking-finger-exercises/');
+        const defaultTempo = isArpeggioPage ? 40 : isFingerExercisesPage ? 60 : 20;
         console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
         setTempo(defaultTempo);
         setOriginalTempo(defaultTempo); // Store the default as original tempo
@@ -1147,7 +1168,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       {currentExercises.length > 0 && currentExercises[0].items.length > 0 ? (
         <div className="mb-4">
           <label htmlFor="exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
-            {pathname?.includes('/blues-licks-exercises/') ? 'Select Blues Lick Exercise' : 'Select Arpeggio Exercise'}
+            {pathname?.includes('/blues-licks-exercises/') ? 'Select Blues Lick Exercise' : 
+             pathname?.includes('/guitar-arpeggios-exercises/') ? 'Select Arpeggio Exercise' :
+             pathname?.includes('/picking-finger-exercises/') ? 'Select Finger Exercise' :
+             'Select Exercise'}
           </label>
           <select
             id="exercise-select"
@@ -1331,9 +1355,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
           <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
         </ul>
-        <div className="mt-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
-          <strong>Note on Picking & Fingering:</strong> The picking symbols shown are one possible approach. For the three-octave arpeggios, some sweep picking (continuous raking across strings) and hammer-ons are used for efficiency. You may choose to use strict alternate picking, different left-hand fingerings, or other techniques—experiment to find what works best for you!
-        </div>
+
       </div>
     </div>
   );
