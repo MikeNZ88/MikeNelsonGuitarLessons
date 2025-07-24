@@ -69,7 +69,7 @@ export default function BluesLicksExercises() {
           Master essential blues licks with my interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.
         </p>
         <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
-          Skill Level: Beginner – Intermediate
+          Skill Level: Beginner – Advanced
         </div>
       </div>
 
@@ -83,7 +83,7 @@ export default function BluesLicksExercises() {
               <ul className="space-y-2 text-sm">
                 <li><a href="#blues-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('blues-theory'); }}>What is a 12-Bar Blues?</a></li>
                 <li><a href="#foundation-lick" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('foundation-lick'); }}>Foundation: The ♭3 - 3 - 1 and ♭3 - 3 - ♭7 Licks</a></li>
-                <li><a href="#fretboard-diagrams" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('fretboard-diagrams'); }}>Fretboard Diagrams: ♭3, 3, and 1 Notes</a></li>
+                <li><a href="#fretboard-diagrams" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('fretboard-diagrams'); }}>Fretboard Diagrams: ♭3 - 3 - 1 and ♭3 - 3 - ♭7 Licks</a></li>
               </ul>
             </div>
             <div>
@@ -116,10 +116,10 @@ export default function BluesLicksExercises() {
           The 12-bar blues is the most common form in blues music. It uses three chords: the I, IV, and V. In the key of A, these are <span className="font-bold text-amber-800">A7</span> (I), <span className="font-bold text-amber-800">D7</span> (IV), and <span className="font-bold text-amber-800">E7</span> (V).
         </p>
         <p className="text-amber-900 text-sm mb-2">
-          Unlike a typical major key, where only the V chord is a dominant 7th, the blues uses dominant 7th chords for all three. In a standard major key, the I and IV would be major 7 chords (Amaj7, Dmaj7), but in blues, they are all dominant 7ths. This gives the blues its unique, “in-between” sound.
+          Unlike a typical major key, where only the V chord is a dominant 7th, the blues uses dominant 7th chords for all three. In a standard major key, the I and IV would be major 7 chords (Amaj7, Dmaj7), but in blues, they are all dominant 7ths. This gives the blues its unique, "in-between" sound.
         </p>
         <p className="text-amber-900 text-sm mb-2">
-          This is why the blues doesn’t fit neatly into a traditional major or minor key. It also explains why we can play the <span className="font-bold text-amber-800">minor pentatonic</span> scale over these “major” chords: blues melodies often use both the <span className="font-bold text-amber-800">minor 3rd (b3)</span> and the <span className="font-bold text-amber-800">major 3rd (3)</span> together, creating the classic blues tension and release.
+          This is why the blues doesn't fit neatly into a traditional major or minor key. It also explains why we can play the <span className="font-bold text-amber-800">minor pentatonic</span> scale over these "major" chords: blues melodies often use both the <span className="font-bold text-amber-800">minor 3rd (b3)</span> and the <span className="font-bold text-amber-800">major 3rd (3)</span> together, creating the classic blues tension and release.
         </p>
         <p className="text-amber-900 text-base flex items-start gap-2 mt-4">
           <span aria-label="info" className="mt-0.5">{/* Lightbulb SVG */}
@@ -167,7 +167,14 @@ export default function BluesLicksExercises() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* A7 - b3 - 3 - 1 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A7 - ♭3 - 3 - 1</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">A7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-blue-800">1</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -238,7 +245,14 @@ export default function BluesLicksExercises() {
 
                   {/* A7 - b3 - 3 - b7 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">A7 - ♭3 - 3 - ♭7</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">A7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-purple-800">♭7</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -312,7 +326,14 @@ export default function BluesLicksExercises() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* D7 - b3 - 3 - 1 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D7 - ♭3 - 3 - 1</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">D7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-blue-800">1</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -383,7 +404,14 @@ export default function BluesLicksExercises() {
 
                   {/* D7 - b3 - 3 - b7 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">D7 - ♭3 - 3 - ♭7</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">D7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-purple-800">♭7</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -462,7 +490,14 @@ export default function BluesLicksExercises() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* E7 - b3 - 3 - 1 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E7 - ♭3 - 3 - 1</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">E7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-blue-800">1</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -533,7 +568,14 @@ export default function BluesLicksExercises() {
 
                   {/* E7 - b3 - 3 - b7 */}
                   <div className="bg-white border border-amber-300 rounded-lg p-4">
-                    <h5 className="text-md font-bold text-amber-800 mb-3 text-center">E7 - ♭3 - 3 - ♭7</h5>
+                    <h5 className="text-md font-bold mb-3 text-center">
+                      <span className="text-amber-800">E7 - </span>
+                      <span className="text-red-600 font-bold">♭3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-green-800">3</span>
+                      <span className="text-amber-800"> - </span>
+                      <span className="text-purple-800">♭7</span>
+                    </h5>
                     <div className="flex justify-center">
                       <div className="fretboard-diagram">
                         {/* Fret numbers */}
@@ -613,6 +655,37 @@ export default function BluesLicksExercises() {
               </div>
             </div>
 
+        </div>
+
+        {/* Chord Note Theory */}
+        <div id="chord-theory">
+          <CollapsibleSection 
+            title="Chord Note Theory" 
+            isOpen={isChordTheoryOpen} 
+            onToggle={() => setIsChordTheoryOpen(!isChordTheoryOpen)} 
+          >
+          <p className="text-amber-900 text-sm mb-2">Understanding the notes in each chord helps you target the best scale and licks:</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div className="bg-white border border-amber-200 rounded p-3">
+              <span className="font-bold text-amber-800">A7:</span>
+              <div className="text-amber-900">A, C#, E, G</div>
+              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
+            </div>
+            <div className="bg-white border border-amber-200 rounded p-3">
+              <span className="font-bold text-amber-800">D7:</span>
+              <div className="text-amber-900">D, F#, A, C</div>
+              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
+            </div>
+            <div className="bg-white border border-amber-200 rounded p-3">
+              <span className="font-bold text-amber-800">E7:</span>
+              <div className="text-amber-900">E, G#, B, D</div>
+              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
+            </div>
+          </div>
+          <div className="mt-3 text-amber-900 text-xs">
+            <span className="font-bold">Tip:</span> The 3rd and 7th of each chord are the most important for targeting with your licks and scale choices.
+          </div>
+        </CollapsibleSection>
         </div>
 
         {/* Blues Scale Rules */}
@@ -783,36 +856,7 @@ export default function BluesLicksExercises() {
           </CollapsibleSection>
         </div>
 
-        {/* Chord Note Theory */}
-        <div id="chord-theory">
-          <CollapsibleSection 
-            title="Chord Note Theory" 
-            isOpen={isChordTheoryOpen} 
-            onToggle={() => setIsChordTheoryOpen(!isChordTheoryOpen)} 
-          >
-          <p className="text-amber-900 text-sm mb-2">Understanding the notes in each chord helps you target the best scale and licks:</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="font-bold text-amber-800">A7:</span>
-              <div className="text-amber-900">A, C#, E, G</div>
-              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
-            </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="font-bold text-amber-800">D7:</span>
-              <div className="text-amber-900">D, F#, A, C</div>
-              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
-            </div>
-            <div className="bg-white border border-amber-200 rounded p-3">
-              <span className="font-bold text-amber-800">E7:</span>
-              <div className="text-amber-900">E, G#, B, D</div>
-              <div className="text-xs text-amber-700 mt-1">Root, major 3rd, 5th, flat 7th</div>
-            </div>
-          </div>
-          <div className="mt-3 text-amber-900 text-xs">
-            <span className="font-bold">Tip:</span> The 3rd and 7th of each chord are the most important for targeting with your licks and scale choices.
-          </div>
-        </CollapsibleSection>
-        </div>
+
       </div>
 
       {/* Tab Player */}

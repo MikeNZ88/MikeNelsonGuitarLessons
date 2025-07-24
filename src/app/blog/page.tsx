@@ -55,6 +55,18 @@ export default function Blog() {
       description: 'Picking technique fundamentals',
       link: '/blog/guitar-picking-technique-guide#alternate-picking',
       category: 'Technique'
+        },
+    {
+      topic: 'A Major Pentatonic',
+      description: 'A major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'A Minor Pentatonic',
+      description: 'A minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes',
+      category: 'Scales and Fretboard'
     },
     {
       topic: 'Arpeggios',
@@ -89,6 +101,18 @@ export default function Blog() {
 
     
     // B
+    {
+      topic: 'B Major Pentatonic',
+      description: 'B major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=G%23&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'B Minor Pentatonic',
+      description: 'B minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'Barre Chords',
       description: 'Moveable chord shapes',
@@ -235,6 +259,18 @@ export default function Blog() {
     },
     
     // C
+    {
+      topic: 'C Major Pentatonic',
+      description: 'C major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=A&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'C Minor Pentatonic',
+      description: 'C minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=C&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'C Chord (Open)',
       description: 'Open C major chord',
@@ -400,7 +436,19 @@ export default function Blog() {
     },
 
     
-    // D
+        // D
+    {
+      topic: 'D Major Pentatonic',
+      description: 'D major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'D Minor Pentatonic',
+      description: 'D minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=D&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'D Chord (Open)',
       description: 'Open D major chord',
@@ -438,7 +486,19 @@ export default function Blog() {
       category: 'Chords'
     },
     
-    // E
+        // E
+    {
+      topic: 'E Major Pentatonic',
+      description: 'E major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=C%23&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'E Minor Pentatonic',
+      description: 'E minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=E&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'E Chord (Open)',
       description: 'Open E major chord',
@@ -491,7 +551,18 @@ export default function Blog() {
 
     
     // F
-
+    {
+      topic: 'F Major Pentatonic',
+      description: 'F major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=D&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'F Minor Pentatonic',
+      description: 'F minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=F&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'F Chord (Barre - E String Root)',
       description: 'F major barre chord (E string, fret 1)',
@@ -531,6 +602,18 @@ export default function Blog() {
 
     
     // G
+    {
+      topic: 'G Major Pentatonic',
+      description: 'G major pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=E&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'G Minor Pentatonic',
+      description: 'G minor pentatonic scale (5 shapes)',
+      link: '/blog/beginners-guide-pentatonic-scales/?key=G&scroll=shapes',
+      category: 'Scales and Fretboard'
+    },
     {
       topic: 'G Chord (Open)',
       description: 'Open G major chord',
@@ -653,10 +736,16 @@ export default function Blog() {
     
     // P
     {
-      topic: 'Pentatonic Scales',
-      description: '5 essential scale shapes for rock and blues',
+      topic: 'Pentatonic Scales (Guide)',
+      description: 'Complete guide to 5 essential scale shapes for rock and blues',
       link: '/blog/beginners-guide-pentatonic-scales',
       category: 'Scales and Fretboard'
+    },
+    {
+      topic: 'Pentatonic Scales (Scale Explorer)',
+      description: 'Interactive pentatonic scale visualization and practice tool',
+      link: '/scale-explorer/index.html?scale=A&category=pentatonic&mode=minor-pentatonic',
+      category: 'Tools'
     },
     {
       topic: 'Pentatonic Scale Exercises',
@@ -747,18 +836,7 @@ export default function Blog() {
       link: '/scale-explorer/index.html?scale=C&category=major-modes&mode=aeolian',
       category: 'Scales and Fretboard'
     },
-    {
-      topic: 'C Pentatonic Major',
-      description: 'Five-note C major scale',
-      link: '/scale-explorer/index.html?scale=C&category=pentatonic&mode=major-pentatonic',
-      category: 'Scales and Fretboard'
-    },
-    {
-      topic: 'C Pentatonic Minor',
-      description: 'Five-note C minor scale',
-      link: '/scale-explorer/index.html?scale=C&category=pentatonic&mode=minor-pentatonic',
-      category: 'Scales and Fretboard'
-    },
+
     {
       topic: 'C Major Blues Scale',
       description: 'C major blues scale with blue notes',
@@ -917,24 +995,7 @@ export default function Blog() {
       link: '/scale-explorer/index.html?scale=E&category=major-modes&mode=aeolian',
       category: 'Scales and Fretboard'
     },
-    {
-      topic: 'G Pentatonic Minor',
-      description: 'G minor pentatonic (blues foundation)',
-      link: '/scale-explorer/index.html?scale=G&category=pentatonic&mode=minor-pentatonic',
-      category: 'Scales and Fretboard'
-    },
-    {
-      topic: 'A Pentatonic Minor',
-      description: 'A minor pentatonic (rock and blues)',
-      link: '/scale-explorer/index.html?scale=A&category=pentatonic&mode=minor-pentatonic',
-      category: 'Scales and Fretboard'
-    },
-    {
-      topic: 'E Pentatonic Minor',
-      description: 'E minor pentatonic (classic rock)',
-      link: '/scale-explorer/index.html?scale=E&category=pentatonic&mode=minor-pentatonic',
-      category: 'Scales and Fretboard'
-    },
+
     {
       topic: 'G Major Blues Scale',
       description: 'G major blues scale (blues and rock)',

@@ -161,13 +161,13 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     const pageDetection = {
       pathname: pathname || '',
       isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
-      isArpeggioPage: pathname?.includes('/arpeggio-exercises/') || false
+      isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false
     };
     
     console.log('🔍 Page Detection:', pageDetection);
     
     const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
-                         pageDetection.pathname.includes('/arpeggio-exercises/');
+                         pageDetection.pathname.includes('/guitar-arpeggios-exercises/');
     console.log('🔍 Pathname check:', pathnameCheck);
 
     if (!pathnameCheck) {
@@ -222,23 +222,30 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
     if (pageDetection.isArpeggioPage) {
       return [
         {
-          group: 'Basic Arpeggios',
+          group: 'Three Octave Arpeggios',
           items: [
-            { id: 'c-major-arpeggio', name: 'C Major Arpeggio', file: '/GP Files/Arpeggios/C Major Arpeggio.gp' },
-            { id: 'a-minor-arpeggio', name: 'A Minor Arpeggio', file: '/GP Files/Arpeggios/A Minor Arpeggio.gp' },
-            { id: 'g-major-arpeggio', name: 'G Major Arpeggio', file: '/GP Files/Arpeggios/G Major Arpeggio.gp' },
-            { id: 'e-minor-arpeggio', name: 'E Minor Arpeggio', file: '/GP Files/Arpeggios/E Minor Arpeggio.gp' },
-            { id: 'd-major-arpeggio', name: 'D Major Arpeggio', file: '/GP Files/Arpeggios/D Major Arpeggio.gp' }
+            { id: 'c-maj7', name: 'C Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C maj7 Arpeggio.gp' },
+            { id: 'c-7', name: 'C7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C 7 Arpeggio.gp' },
+            { id: 'c-m7', name: 'C Minor 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7 Arpeggio.gp' },
+            { id: 'c-m7b5', name: 'C Minor 7♭5 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7b5 Arpeggio.gp' },
+            { id: 'c-dimmaj7', name: 'C Diminished Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cdimj7 Arpeggio.gp' },
+            { id: 'cm-maj7', name: 'C Minor Major 7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/CmMaj7 Arpeggio.gp' }
           ]
         },
         {
-          group: '7th Arpeggios',
+          group: 'Two Octave Arpeggios (Sweep)',
           items: [
-            { id: 'cmaj7-arpeggio', name: 'Cmaj7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
-            { id: 'am7-arpeggio', name: 'Am7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
-            { id: 'g7-arpeggio', name: 'G7 Arpeggio', file: '/GP Files/Arpeggios/C 7 Arpeggio.gp' },
-            { id: 'dm7-arpeggio', name: 'Dm7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' },
-            { id: 'em7-arpeggio', name: 'Em7 Arpeggio', file: '/GP Files/Arpeggios/C m7 Arpeggio.gp' }
+            { id: 'c-maj7-sweep', name: 'C Major 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cmaj7 Arpeggio Sweep with Legato and Tap.gp' },
+            { id: 'c-7-sweep', name: 'C7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C7 Arpeggio Sweep with Legato and Tap.gp' },
+            { id: 'c-m7-sweep', name: 'C Minor 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7 Arpeggio Sweep with Legato and Tap.gp' },
+            { id: 'c-m7b5-sweep', name: 'C Minor 7♭5 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7b5 Arpeggio Sweep with Legato and Tap.gp' }
+          ]
+        },
+        {
+          group: 'C Major Scale Arpeggio Sequence',
+          items: [
+            { id: 'c-major-scale-arp-asc', name: 'C Major Scale Arpeggios Ascending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Ascending.gp' },
+            { id: 'c-major-scale-arp-desc', name: 'C Major Scale Arpeggios Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Descending.gp' }
           ]
         }
       ];
@@ -815,9 +822,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
           alphaTabRef.current.playbackSpeed = 1.0; // Play at normal speed
         }
       } else {
-        // Set default tempo: 40 BPM for arpeggio page, 80 BPM otherwise
-        const isArpeggioPage = pathname?.includes('/arpeggio-exercises/');
-        const defaultTempo = isArpeggioPage ? 40 : 80;
+        // Set default tempo: 40 BPM for arpeggio page, 20 BPM for pentatonic exercises
+        const isArpeggioPage = pathname?.includes('/guitar-arpeggios-exercises/');
+        const defaultTempo = isArpeggioPage ? 40 : 20;
         console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
         setTempo(defaultTempo);
         setOriginalTempo(defaultTempo); // Store the default as original tempo
@@ -1139,17 +1146,21 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       })()}
       {currentExercises.length > 0 && currentExercises[0].items.length > 0 ? (
         <div className="mb-4">
-          <label htmlFor="blues-licks-exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
-            Select Blues Lick Exercise
+          <label htmlFor="exercise-select" className="block text-sm font-medium text-gray-700 mb-2">
+            {pathname?.includes('/blues-licks-exercises/') ? 'Select Blues Lick Exercise' : 'Select Arpeggio Exercise'}
           </label>
           <select
-            id="blues-licks-exercise-select"
+            id="exercise-select"
             value={selectedExercise}
             onChange={(e) => handleExerciseChange(e.target.value)}
             className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
           >
-            {currentExercises[0].items.map(ex => (
-              <option key={ex.id} value={ex.id}>{ex.name}</option>
+            {currentExercises.map(group => (
+              <optgroup key={group.group} label={group.group}>
+                {group.items.map(ex => (
+                  <option key={ex.id} value={ex.id}>{ex.name}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
           

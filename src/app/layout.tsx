@@ -16,6 +16,9 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mikenelsonguitarlessons.co.nz'),
+  alternates: {
+    canonical: '/',
+  },
   title: "Guitar Lessons Near Me Wellington | Mike Nelson Guitar Teacher Pukerua Bay",
   description: "Guitar lessons near me in Wellington North. Professional guitar teacher in Pukerua Bay offering home studio and mobile guitar lessons. Serving Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
   keywords: "guitar lessons near me, guitar teacher near me, Wellington guitar lessons, Pukerua Bay guitar lessons, Plimmerton guitar lessons, Cambourne guitar lessons, Mana guitar lessons, Paremata guitar lessons, Papakowhai guitar lessons, Whitby guitar lessons, guitar teacher Wellington, music lessons near me, guitar tuition near me, mobile guitar lessons, home guitar lessons, guitar teacher, music lessons, guitar tuition, guitar scales, guitar modes, fretboard diagram, music theory, guitar chords, guitar learning, scale practice, guitar intervals, major scale, pentatonic scale, guitar education, music interval colours, music interval colors, chord theory, music theory for beginners, guitar theory confusion, music theory simplified, guitar scales explained, chord theory basics, fretboard memorization, guitar intervals explained, music theory made easy, guitar theory lessons, visual music theory, interactive guitar learning, guitar scale patterns, chord progression theory, guitar fretboard theory, guitar fretboard visualization, chord diagram generator, scale pattern tool, interval color coding, guitar mode explorer, enharmonic equivalents, diatonic chord theory, guitar interval training, modal interchange, guitar theory for dummies, understanding guitar modes, guitar chord construction, online guitar lessons",
