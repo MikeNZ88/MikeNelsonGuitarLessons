@@ -473,7 +473,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
             soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
             scrollElement: containerRef.current,
             enableMetronome: true, // Enable metronome support
-            cursorFollowMode: 'beat' // Follow cursor by beat for better visibility
+            cursorFollowMode: 'beat', // Follow cursor by beat for better visibility
+            scrollMode: 'offscreen', // Enable offscreen scrolling
+            scrollSpeed: 300 // Scroll speed in pixels per second
           },
           // For blues licks, always use track 0 (lead guitar)
           tracks: pathname?.includes('/blues-licks-exercises/') ? [0] : undefined,
@@ -617,9 +619,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
               soundFont: 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/soundfont/sonivox.sf2',
               scrollElement: containerRef.current,
               enableMetronome: true,
-              scrollMode: 'continuous',
-              scrollSpeed: 300,
-              scrollOffsetY: 100
+              cursorFollowMode: 'beat',
+              scrollMode: 'offscreen',
+              scrollSpeed: 300
             },
             tracks: [trackIndex], // Use the selected track
             display: {
@@ -840,24 +842,13 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
 
     // Enhanced cursor tracking events
     api.playedBeatChanged.on((e: any) => {
-      // console.log('Beat changed:', e);
+      console.log('Beat changed:', e);
       // This fires when each beat is played - provides more granular tracking
-      if (api.scrollToCursor && isPlaying) {
+      if (isPlaying && api.scrollToCursor) {
         try {
+          console.log('Calling scrollToCursor...');
           api.scrollToCursor();
-          
-          // Ensure the tablature container scrolls to keep the cursor visible
-          const tabContainer = containerRef.current?.querySelector('.at');
-          if (tabContainer) {
-            const cursor = tabContainer.querySelector('.at-cursor, .at-cursor-beat');
-            if (cursor) {
-              cursor.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center',
-                inline: 'nearest'
-              });
-            }
-          }
+          console.log('scrollToCursor called successfully');
         } catch (error) {
           console.warn('Beat scrolling failed:', error);
         }
@@ -866,32 +857,14 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
 
     api.playerPositionChanged.on((e: any) => {
       // Enhanced position tracking with debugging
-      // console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
       
       // Ensure cursor follows playback smoothly
-      if (api.scrollToCursor && isPlaying) {
+      if (isPlaying && api.scrollToCursor) {
         try {
+          console.log('Calling scrollToCursor from position changed...');
           api.scrollToCursor();
-         
-          // Additional smooth scrolling for better UX
-          const cursorElement = containerRef.current?.querySelector('.at-cursor');
-          if (cursorElement) {
-            const containerRect = containerRef.current?.getBoundingClientRect();
-            const cursorRect = cursorElement.getBoundingClientRect();
-            
-            if (containerRect && cursorRect) {
-              const isVisible = cursorRect.top >= containerRect.top && 
-                               cursorRect.bottom <= containerRect.bottom;
-              
-              if (!isVisible) {
-                cursorElement.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'center',
-                  inline: 'nearest'
-                });
-              }
-            }
-          }
+          console.log('scrollToCursor from position changed called successfully');
         } catch (scrollError) {
           console.warn('Scroll to cursor failed:', scrollError);
         }
@@ -927,7 +900,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
               // No soundFont specified - use default synthesis
               scrollElement: containerRef.current,
               enableMetronome: true,
-              scrollMode: 'continuous',
+              scrollMode: 'offscreen',
               scrollSpeed: 300,
               scrollOffsetY: 100
             },
@@ -1310,6 +1283,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         >
           <GiMetronome className="mr-2" size={22} />Metronome
         </button>
+
       </div>
 
       {error && (
@@ -1319,8 +1293,11 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
       )}
 
       {/* AlphaTab Rendering Container */}
-      <div className="w-full overflow-x-auto mb-4">
-        <div ref={containerRef} id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
+      <div ref={containerRef} className="w-full overflow-x-auto mb-4" style={{ 
+        maxHeight: isPlaying ? '600px' : 'none', 
+        overflowY: isPlaying ? 'auto' : 'visible' 
+      }}>
+        <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
       {/* How to Read the Tab Section */}
       <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
