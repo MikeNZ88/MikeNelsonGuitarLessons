@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
     images: ['/Mike Photo.jpg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/approach',
+  },
 };
 
 export default function Approach() {

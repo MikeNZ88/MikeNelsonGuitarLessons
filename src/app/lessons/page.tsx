@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
-  description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options. Serving Wellington North suburbs.',
+  description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
   keywords: 'guitar lessons Wellington, guitar curriculum, beginner guitar lessons, advanced guitar lessons, guitar teacher Pukerua Bay, mobile guitar lessons',
   openGraph: {
     title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
     description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
     images: ['/Mike Photo.jpg'],
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/lessons',
   },
 };
 

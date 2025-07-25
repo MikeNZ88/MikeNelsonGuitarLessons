@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     title: "What is a Chord? Understanding Guitar Chord Structure and Types",
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.",
     images: ['/what-is-a-chord-thumbnail.svg']
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord',
   }
 };
 

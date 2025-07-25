@@ -18,6 +18,9 @@ export const metadata: Metadata = {
         alt: 'Guitar Fretboard Navigation Guide'
       }
     ]
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-fretboard-navigation',
   }
 };
 

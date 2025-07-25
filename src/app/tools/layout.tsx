@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',
     images: ['/Mike Photo.jpg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/tools',
+  },
 };
 
 export default function ToolsLayout({

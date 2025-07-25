@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
-  description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, and chord progressions with visual fretboard diagrams.',
+  description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, and chord progressions.',
   keywords: 'guitar lessons Wellington, guitar teacher Pukerua Bay, guitar lessons near me, learn guitar Wellington, guitar tuition, music lessons',
   openGraph: {
     title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
     description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
     images: ['/Mike Photo.jpg'],
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz',
   },
 };
 
@@ -211,9 +214,9 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-t from-amber-900/20 to-transparent pointer-events-none"></div>
             </div>
             <div className="text-center mt-8">
-              <Link href="/resources" className="inline-flex items-center text-amber-700 hover:text-amber-800 font-semibold group">
+              <Link href="/blog" className="inline-flex items-center text-amber-700 hover:text-amber-800 font-semibold group">
                 <Play className="mr-2 h-5 w-5" />
-                Watch More Tutorials
+                Explore More Tutorials
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>

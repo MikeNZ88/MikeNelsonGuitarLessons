@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players.',
     images: ['/Mike Photo.jpg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/about',
+  },
 };
 
 export default function About() {

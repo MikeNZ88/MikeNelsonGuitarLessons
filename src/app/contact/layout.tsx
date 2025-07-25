@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
     images: ['/Mike Photo.jpg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/contact',
+  },
 };
 
 export default function ContactLayout({
