@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master the circle of fifths with complete instructions and practical applications.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/circle-of-fifths',
+  },
 };
 
 export default function CircleOfFifthsLayout({

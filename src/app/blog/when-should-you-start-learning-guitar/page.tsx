@@ -24,6 +24,9 @@ export const metadata: Metadata = {
     description: 'Discover the optimal age to start learning guitar based on research and expert advice.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/when-should-you-start-learning-guitar',
+  },
 };
 
 export default function WhenShouldYouStartLearningGuitar() {

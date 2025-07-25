@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Learn why guitar strings are tuned the way they are with comprehensive explanations.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/understanding-guitar-fretboard',
+  },
 };
 
 export default function UnderstandingGuitarFretboardLayout({

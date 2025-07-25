@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     follow: true,
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz',
+    // Individual pages will define their own canonical URLs
   },
   manifest: '/manifest.json',
   other: {

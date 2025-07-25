@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Everything you need to know to start learning guitar in New Zealand with interactive practice tools.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/complete-beginners-guide-guitar',
+  },
 };
 
 export default function CompleteBeginnerGuideLayout({

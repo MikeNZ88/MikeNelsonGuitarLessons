@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Learn pentatonic scales with step-by-step instructions and interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-pentatonic-scales',
+  },
 };
 
 export default function BeginnersGuidePentatonicScalesLayout({

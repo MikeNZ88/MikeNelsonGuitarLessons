@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',
     images: ['/Mike Photo.jpg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/rhythm-tool',
+  },
 };
 
 export default function RhythmToolLayout({
