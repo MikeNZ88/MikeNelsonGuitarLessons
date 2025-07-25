@@ -1,27 +1,27 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Picking and Finger Exercises | Mike Nelson Guitar Lessons',
-  description: 'Master guitar picking and finger exercises with my comprehensive guide. Improve your technique with progressive exercises for speed, accuracy, and control.',
-  keywords: 'guitar picking exercises, finger exercises, guitar technique, picking technique, guitar practice, guitar lessons, guitar exercises',
+  title: 'Finger Picking Exercises | Mike Nelson Guitar',
+  description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns with interactive tabs and audio.',
+  keywords: 'finger picking exercises, fingerstyle guitar, thumb independence, arpeggio patterns, guitar technique, finger coordination',
   openGraph: {
-    title: 'Picking and Finger Exercises',
-    description: 'Master guitar picking and finger exercises with progressive technique building.',
+    title: 'Finger Picking Exercises | Mike Nelson Guitar',
+    description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns.',
+    type: 'article',
     images: [
       {
-        url: '/blog-thumbnail.svg',
+        url: '/guitar-picking-exercises-thumbnail.svg',
         width: 1200,
         height: 630,
-        alt: 'Picking and Finger Exercises',
+        alt: 'Finger Picking Exercises',
       },
     ],
-    type: 'article',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Picking and Finger Exercises',
-    description: 'Master guitar picking and finger exercises with progressive technique building.',
-    images: ['/blog-thumbnail.svg'],
+    title: 'Finger Picking Exercises | Mike Nelson Guitar',
+    description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns.',
+    images: ['/guitar-picking-exercises-thumbnail.svg'],
   },
 };
 
