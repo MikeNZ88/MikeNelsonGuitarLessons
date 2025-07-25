@@ -457,6 +457,33 @@ const RHYTHM_EXAMPLES: RhythmExample[] = [
   }
 ];
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Interactive Rhythm Tool | Mike Nelson Guitar',
+  description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',
+  keywords: 'rhythm tool, interactive rhythm, time signatures, note values, guitar rhythm, music timing, rhythm practice',
+  openGraph: {
+    title: 'Interactive Rhythm Tool | Mike Nelson Guitar',
+    description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Interactive Rhythm Tool',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Interactive Rhythm Tool | Mike Nelson Guitar',
+    description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
+
 export default function RhythmTool() {
   const [selectedExample, setSelectedExample] = useState<RhythmExample>(RHYTHM_EXAMPLES[0]);
   const [isPlaying, setIsPlaying] = useState(false);

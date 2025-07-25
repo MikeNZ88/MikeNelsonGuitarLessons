@@ -1,6 +1,33 @@
 import Link from 'next/link';
 import { Music, Clock, MapPin, Monitor, BookOpen, Target } from 'lucide-react';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'About Mike Nelson | Guitar Teacher Wellington',
+  description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+  keywords: 'Mike Nelson guitar teacher, Wellington guitar teacher, guitar lessons Pukerua Bay, guitar teacher experience, learn guitar Wellington',
+  openGraph: {
+    title: 'About Mike Nelson | Guitar Teacher Wellington',
+    description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Guitar Teacher',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Mike Nelson | Guitar Teacher Wellington',
+    description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
+
 export default function About() {
   return (
     <div className="min-h-screen bg-amber-50">

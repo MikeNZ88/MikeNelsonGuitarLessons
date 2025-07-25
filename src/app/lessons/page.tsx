@@ -1,6 +1,33 @@
 import Link from 'next/link';
 import { Clock, MapPin, Monitor, Guitar, CheckCircle } from 'lucide-react';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
+  description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options. Serving Wellington North suburbs.',
+  keywords: 'guitar lessons Wellington, guitar curriculum, beginner guitar lessons, advanced guitar lessons, guitar teacher Pukerua Bay, mobile guitar lessons',
+  openGraph: {
+    title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
+    description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Guitar Lessons',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
+    description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
+
 export default function Lessons() {
   const curriculumLevels = [
     {

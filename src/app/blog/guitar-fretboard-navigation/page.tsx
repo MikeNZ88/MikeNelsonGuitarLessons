@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas | Mike Nelson Guitar Lessons',
-  description: 'Master practical techniques for finding notes and intervals across guitar strings. Learn the mathematical relationships that make fretboard navigation easy with step-by-step formulas.',
+  description: 'Master practical techniques for finding notes and intervals across guitar strings. Learn mathematical relationships that make fretboard navigation easy.',
   keywords: 'guitar fretboard navigation, cross-string movement, guitar intervals, fretboard formulas, guitar theory, learn guitar fretboard',
   openGraph: {
     title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas',

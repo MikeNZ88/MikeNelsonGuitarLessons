@@ -4,7 +4,7 @@ import { ArrowLeft, Guitar, Music } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: "Scale Explorer - Interactive Guitar Learning Tool | Mike Nelson Guitar Lessons",
-  description: "Learn guitar scales the right way with our free interactive Scale Explorer. Start with the major scale and understand how all other scales relate to it.",
+  description: "Learn guitar scales with our free interactive Scale Explorer. Start with the major scale and understand how all other scales relate to it.",
   keywords: "guitar scales, scale explorer, fretboard visualization, music theory, guitar learning, interactive scales, major scale",
 };
 

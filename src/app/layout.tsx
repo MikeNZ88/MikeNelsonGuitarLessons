@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL('https://mikenelsonguitarlessons.co.nz'),
   title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-  description: "Mike Nelson Guitar Lessons - Guitar teacher in Wellington offering home studio and mobile lessons. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
+  description: "Mike Nelson Guitar Lessons - Guitar teacher with 25+ years of playing experience in Wellington offering home studio and mobile lessons. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
   keywords: "guitar lessons near me, guitar teacher near me, Wellington guitar lessons, Pukerua Bay guitar lessons, Plimmerton guitar lessons, Cambourne guitar lessons, Mana guitar lessons, Paremata guitar lessons, Papakowhai guitar lessons, Whitby guitar lessons, guitar teacher Wellington, music lessons near me, guitar tuition near me, mobile guitar lessons, home guitar lessons, guitar teacher, music lessons, guitar tuition, guitar scales, guitar modes, fretboard diagram, music theory, guitar chords, guitar learning, scale practice, guitar intervals, major scale, pentatonic scale, guitar education, music interval colours, music interval colors, chord theory, music theory for beginners, guitar theory confusion, music theory simplified, guitar scales explained, chord theory basics, fretboard memorization, guitar intervals explained, music theory made easy, guitar theory lessons, visual music theory, interactive guitar learning, guitar scale patterns, chord progression theory, guitar fretboard theory, guitar fretboard visualization, chord diagram generator, scale pattern tool, interval color coding, guitar mode explorer, enharmonic equivalents, diatonic chord theory, guitar interval training, modal interchange, guitar theory for dummies, understanding guitar modes, guitar chord construction, online guitar lessons",
   authors: [{ name: "Mike Nelson" }],
   icons: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-    description: "Guitar lessons near me in Wellington North. Guitar teacher in Pukerua Bay offering home studio and mobile guitar lessons. Serving Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
+    description: "Guitar lessons near me in Wellington North. Guitar teacher with 25+ years of playing experience in Pukerua Bay offering home studio and mobile guitar lessons. Serving Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
     type: "website",
     locale: "en_NZ",
     url: "https://mikenelsonguitarlessons.co.nz",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-    description: "Guitar lessons near me in Wellington North. Guitar teacher in Pukerua Bay offering home studio and mobile guitar lessons. Serving Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
+    description: "Guitar lessons near me in Wellington North. Guitar teacher with 25+ years of playing experience in Pukerua Bay offering home studio and mobile guitar lessons. Serving Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, modes, and chord progressions with visual fretboard diagrams.",
     images: ['https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg'],
   },
   robots: {
@@ -71,7 +71,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "MusicGroup",
     "name": "Mike Nelson Guitar Lessons",
-    "description": "Guitar lessons in Pukerua Bay, Wellington. Learn guitar theory, scales, modes, and chord progressions with experienced instructor Mike Nelson.",
+    "description": "Guitar lessons in Pukerua Bay, Wellington. Learn guitar theory, scales, modes, and chord progressions with Mike Nelson, a guitar teacher with 25+ years of playing experience.",
     "url": "https://mikenelsonguitarlessons.co.nz",
     "telephone": "022-127-2154",
     "address": {

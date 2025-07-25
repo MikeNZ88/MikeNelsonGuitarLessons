@@ -1,6 +1,33 @@
 import Link from 'next/link';
 import { Music, Target, Heart, Trophy } from 'lucide-react';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Teaching Approach | Mike Nelson Guitar',
+  description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
+  keywords: 'guitar teaching approach, personalized guitar lessons, learn songs you love, practical music theory, guitar lessons Wellington',
+  openGraph: {
+    title: 'My Teaching Approach | Mike Nelson Guitar',
+    description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Teaching Approach',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'My Teaching Approach | Mike Nelson Guitar',
+    description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
+
 export default function Approach() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">

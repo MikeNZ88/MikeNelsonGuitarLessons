@@ -3,6 +3,33 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact Mike Nelson | Guitar Lessons Wellington',
+  description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Get in touch today.',
+  keywords: 'contact guitar teacher, book guitar lessons Wellington, guitar lessons Pukerua Bay, guitar teacher contact, learn guitar Wellington',
+  openGraph: {
+    title: 'Contact Mike Nelson | Guitar Lessons Wellington',
+    description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Guitar Teacher',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Mike Nelson | Guitar Lessons Wellington',
+    description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
+
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',

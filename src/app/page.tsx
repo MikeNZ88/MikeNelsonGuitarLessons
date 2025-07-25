@@ -1,6 +1,32 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star, Guitar, Users, Clock, Award, Music, Play, ArrowRight, MapPin } from 'lucide-react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
+  description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, and chord progressions with visual fretboard diagrams.',
+  keywords: 'guitar lessons Wellington, guitar teacher Pukerua Bay, guitar lessons near me, learn guitar Wellington, guitar tuition, music lessons',
+  openGraph: {
+    title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
+    description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+    type: 'website',
+    images: [
+      {
+        url: '/Mike Photo.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Mike Nelson Guitar Teacher',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Mike Nelson Guitar Lessons | Guitar Teacher Wellington',
+    description: 'Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Serving Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+    images: ['/Mike Photo.jpg'],
+  },
+};
 
 export default function Home() {
   const testimonials = [

@@ -4,11 +4,11 @@ import { ArrowLeft, Clock, Target, Music, BookOpen, Users, CheckCircle } from 'l
 
 export const metadata: Metadata = {
   title: "6 Essential Practice Tips for Guitar Students | Mike Nelson Guitar Lessons",
-  description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
+  description: "Master fundamental practice techniques to accelerate your guitar learning. Expert advice from a Wellington guitar teacher.",
   keywords: "guitar practice tips, learn guitar wellington, guitar teacher advice, effective practice, guitar lessons",
   openGraph: {
     title: "6 Essential Practice Tips for Guitar Students",
-    description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
+    description: "Master fundamental practice techniques to accelerate your guitar learning. Expert advice from a Wellington guitar teacher.",
     images: [
       {
         url: '/blog-thumbnail.svg',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "6 Essential Practice Tips for Guitar Students",
-    description: "Master these fundamental practice techniques to accelerate your guitar learning journey. Expert advice from a Wellington guitar teacher with years of experience.",
+    description: "Master fundamental practice techniques to accelerate your guitar learning. Expert advice from a Wellington guitar teacher.",
     images: ['/blog-thumbnail.svg'],
   },
 };
