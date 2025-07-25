@@ -1,4 +1,30 @@
+import { Metadata } from 'next';
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'When Should You Start Learning Guitar? What the Research Actually Says | Mike Nelson Guitar Lessons',
+  description: 'Discover the optimal age to start learning guitar based on research. Learn about neuroplasticity, adult learning advantages, and how to determine the right time for you or your child.',
+  keywords: 'when to start guitar, best age to learn guitar, guitar lessons for children, adult guitar lessons, guitar learning age, guitar teacher advice',
+  openGraph: {
+    title: 'When Should You Start Learning Guitar? What the Research Actually Says',
+    description: 'Discover the optimal age to start learning guitar based on research and expert advice.',
+    images: [
+      {
+        url: '/blog-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: 'When Should You Start Learning Guitar',
+      },
+    ],
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'When Should You Start Learning Guitar? What the Research Actually Says',
+    description: 'Discover the optimal age to start learning guitar based on research and expert advice.',
+    images: ['/blog-thumbnail.svg'],
+  },
+};
 
 export default function WhenShouldYouStartLearningGuitar() {
   return (

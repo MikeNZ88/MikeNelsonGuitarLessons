@@ -1,5 +1,4 @@
 'use client';
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { Guitar, Clock, CheckCircle, Star, ArrowRight, Music, Users, BookOpen, Target } from 'lucide-react'
 import SongStrummingPattern from '@/components/rhythm/SongStrummingPattern'

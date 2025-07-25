@@ -1,5 +1,31 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { Download, BookOpen, Music, Target, ExternalLink } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Major Scale Guitar Guide | Mike Nelson Guitar Lessons',
+  description: 'Master essential guitar shapes and patterns with my comprehensive major scale guide. Learn one-octave shapes, modes, arpeggios, and fretboard mastery techniques.',
+  keywords: 'major scale guitar, guitar scales, scale patterns, guitar modes, arpeggios, guitar theory, guitar lessons, fretboard mastery',
+  openGraph: {
+    title: 'Major Scale Guitar Guide',
+    description: 'Master essential guitar shapes and patterns with comprehensive major scale guide.',
+    images: [
+      {
+        url: '/blog-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Major Scale Guitar Guide',
+      },
+    ],
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Major Scale Guitar Guide',
+    description: 'Master essential guitar shapes and patterns with comprehensive major scale guide.',
+    images: ['/blog-thumbnail.svg'],
+  },
+};
 
 export default function MajorScaleGuitarGuide() {
   return (

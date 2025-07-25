@@ -1,19 +1,31 @@
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Major 12 Bar Blues Scales and Licks | Blues Guitar Exercises",
-  description: "Master essential blues licks with interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques over a 12-bar blues progression.",
-  alternates: {
-    canonical: '/blog/blues-licks-exercises/',
-  },
+  title: 'Blues Licks Exercises | Mike Nelson Guitar Lessons',
+  description: 'Master blues guitar licks with my comprehensive exercise collection. Learn essential blues phrases, techniques, and improvisation skills with interactive tabs.',
+  keywords: 'blues licks, blues guitar, guitar licks, blues exercises, blues improvisation, guitar lessons, blues guitar lessons',
   openGraph: {
-    title: "Major 12 Bar Blues Scales and Licks | Blues Guitar Exercises",
-    description: "Master essential blues licks with interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques over a 12-bar blues progression.",
-    url: "https://mikenelsonguitarlessons.co.nz/blog/blues-licks-exercises/",
+    title: 'Blues Licks Exercises',
+    description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
+    images: [
+      {
+        url: '/blog-thumbnail.svg',
+        width: 1200,
+        height: 630,
+        alt: 'Blues Licks Exercises',
+      },
+    ],
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blues Licks Exercises',
+    description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
+    images: ['/blog-thumbnail.svg'],
   },
 };
 
-export default function BluesLicksLayout({
+export default function BluesLicksExercisesLayout({
   children,
 }: {
   children: React.ReactNode;
