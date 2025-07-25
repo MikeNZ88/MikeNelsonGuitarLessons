@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { ArrowLeft, Music } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: "Smoother Chord Changes: Common Fingers Between Guitar Chords | Mike Nelson Guitar Lessons",
+  title: "Smoother Chord Changes Guide | Mike Nelson Guitar",
   description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with these essential fingering tips and visual chord diagrams.",
   keywords: "guitar chord transitions, common fingers, chord changes, guitar fingering, open chords, guitar lessons",
   openGraph: {

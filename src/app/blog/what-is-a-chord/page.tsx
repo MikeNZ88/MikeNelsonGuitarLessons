@@ -6,7 +6,7 @@ import FretDisplay from '@/components/FretDisplay';
 import QuickReferenceChromaticScale from '@/components/QuickReferenceChromaticScale';
 
 export const metadata: Metadata = {
-  title: "What is a Chord? Understanding Guitar Chord Structure and Types | Mike Nelson Guitar Lessons",
+  title: "What is a Chord? Guitar Chord Guide | Mike Nelson",
   description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.",
   keywords: "what is a chord, guitar chords, chord structure, intervals, major chords, minor chords, barre chords, guitar theory",
   openGraph: {

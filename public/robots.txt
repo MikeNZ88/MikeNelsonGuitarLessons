@@ -37,7 +37,6 @@ Disallow: /blog/practicetrack-effective-practice
 
 # Block backup and development directories
 Disallow: /TabPlayer*backup*
-Disallow: /public/TabPlayer*
 
 # Sitemap location
 Sitemap: https://mikenelsonguitarlessons.co.nz/sitemap.xml

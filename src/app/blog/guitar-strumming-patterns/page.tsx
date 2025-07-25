@@ -3,7 +3,7 @@ import StrummingPattern from '@/components/rhythm/StrummingPattern';
 import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine';
 
 export const metadata: Metadata = {
-  title: 'Master Guitar Strumming Patterns: 10 Essential Patterns Every Guitarist Needs | Mike Nelson Guitar Lessons',
+  title: 'Guitar Strumming Patterns Guide | Mike Nelson Guitar',
   description: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 10 progressive patterns from beginner to advanced.',
   keywords: 'guitar strumming patterns, guitar rhythm, learn guitar strumming, guitar timing, guitar lessons Wellington, guitar chords strumming',
       openGraph: {
