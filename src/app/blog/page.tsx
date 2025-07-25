@@ -1462,7 +1462,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'all',
-      image: '/guitar-picking-exercises-thumbnail.png',
+      image: '/Pentatonic Exercise Blog Post.png',
       slug: 'guitar-picking-exercises',
       author: 'Mike Nelson',
       sortOrder: 9
@@ -1476,7 +1476,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'all',
-      image: '/picking-finger-exercises-thumbnail.png',
+      image: '/Finger Exercise Blog Post.png',
       slug: 'picking-finger-exercises',
       author: 'Mike Nelson',
       sortOrder: 10
@@ -1490,7 +1490,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique', 'Scales and Fretboard', 'Tools', 'Tabs'],
       skillLevel: 'beginner-intermediate',
-      image: '/GP Files/Scale Exercises/BLOG TABS/Screenshot 2025-07-23 at 2.54.14 PM.png',
+      image: '/Blues Blog Post.png',
       slug: 'blues-licks-exercises',
       author: 'Mike Nelson',
       sortOrder: 10
@@ -1634,7 +1634,7 @@ export default function Blog() {
       primaryCategory: 'Technique',
       categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'intermediate-advanced',
-      image: '/guitar-arpeggios-thumbnail.png',
+      image: '/Arpeggio Blog Post.png',
       slug: 'guitar-arpeggios-exercises',
       author: 'Mike Nelson',
       sortOrder: 18

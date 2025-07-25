@@ -258,14 +258,16 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         {
           group: 'Picking and Finger Exercises',
           items: [
-            { id: 'chromatic-1', name: 'Exercise 1: Foundation Pattern A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 1.gp' },
-            { id: 'chromatic-2', name: 'Exercise 2: Foundation Pattern B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 2.gp' },
-            { id: 'chromatic-3', name: 'Exercise 3: String Skipping A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 3.gp' },
-            { id: 'chromatic-4', name: 'Exercise 4: String Skipping B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 4.gp' },
-            { id: 'chromatic-5', name: 'Exercise 5: Complex Combinations A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 5.gp' },
-            { id: 'chromatic-6', name: 'Exercise 6: Complex Combinations B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 6.gp' },
-            { id: 'chromatic-7', name: 'Exercise 7: Master Level A', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 7.gp' },
-            { id: 'chromatic-8', name: 'Exercise 8: Master Level B', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 8.gp' }
+            { id: 'chromatic-1', name: 'Exercise 1: Simple Pattern Ascending & Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 1.gp' },
+            { id: 'chromatic-2', name: 'Exercise 2: 1 4 3 2 Finger Pattern', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 2.gp' },
+            { id: 'chromatic-3', name: 'Exercise 3: 1 2 1 2 4 3 4 3 Up & 1 2 4 3 1 2 4 3 Back', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 10.gp' },
+            { id: 'chromatic-4', name: 'Exercise 4: Fingers 1 2 4 3 & Up One String and Back', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 3.gp' },
+            { id: 'chromatic-5', name: 'Exercise 5: Switching Strings', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 4.gp' },
+            { id: 'chromatic-6', name: 'Exercise 6: 4 String Pattern', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 5.gp' },
+            { id: 'chromatic-7', name: 'Exercise 7: Changing Finger Pattern and String Skipping', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 6.gp' },
+            { id: 'chromatic-8', name: 'Exercise 8: Triplets', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 7.gp' },
+            { id: 'chromatic-9', name: 'Exercise 9: Triplets and Switching Strings', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 8.gp' },
+            { id: 'chromatic-10', name: 'Exercise 10: Triplets and String Skipping', file: '/GP Files/Scale Exercises/BLOG TABS/Chromatic Exercise 9.gp' }
           ]
         }
       ];
