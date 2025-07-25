@@ -52,7 +52,7 @@ export default function PickingFingerExercisesPage() {
             <div className="mb-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
               <strong>Important:</strong> These exercises use <strong>strict alternate picking</strong> (down-up-down-up). Start at slow tempos to ensure clean execution. You can also practice these exercises using hammer-ons and pull-offs for legato technique - just pick the first note and each time you change strings. However, the main focus is developing picking precision and finger independence.
             </div>
-            <AlphaTabPlayerCDN key="finger-exercises-player" containerId="finger-exercises-alphatab-container" />
+            <AlphaTabPlayerCDN key="finger-exercises-player" containerId="finger-exercises-alphatab-container" showSlursAndSlides={false} />
           </section>
 
           {/* Practice Guidelines */}
@@ -69,60 +69,9 @@ export default function PickingFingerExercisesPage() {
             </div>
           </section>
 
-          {/* Finger Independence */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-4">Finger Independence</h2>
-            <p className="text-gray-700 mb-4">Traditional exercises (1-2-3-4) are limited. Real music requires fingers in any order. These exercises target:</p>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-amber-50 rounded-lg p-3">
-                <h4 className="font-semibold text-amber-900 mb-2">Common</h4>
-                <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• 1-2-3-4 (sequential)</li>
-                  <li>• 4-3-2-1 (reverse)</li>
-                  <li>• 1-3-2-4 (basic skip)</li>
-                </ul>
-              </div>
-              <div className="bg-orange-50 rounded-lg p-3">
-                <h4 className="font-semibold text-orange-900 mb-2">Challenge</h4>
-                <ul className="text-sm text-orange-800 space-y-1">
-                  <li>• 1-4-2-3 (wide stretch)</li>
-                  <li>• 2-4-1-3 (middle emphasis)</li>
-                  <li>• 3-1-4-2 (complex cross)</li>
-                </ul>
-              </div>
-              <div className="bg-amber-100 rounded-lg p-3">
-                <h4 className="font-semibold text-amber-900 mb-2">Advanced</h4>
-                <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• 4-1-3-2 (maximum reach)</li>
-                  <li>• 2-3-1-4 (roll pattern)</li>
-                  <li>• 3-4-1-2 (split reach)</li>
-                </ul>
-              </div>
-            </div>
-          </section>
 
-          {/* String Navigation */}
-          <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-4">String Navigation</h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-amber-50 rounded-lg p-4">
-                <h3 className="font-semibold text-amber-900 mb-2">Adjacent Strings</h3>
-                <ul className="text-sm text-amber-800 space-y-1">
-                  <li>• Smooth transitions between neighbors</li>
-                  <li>• Consistent pick angle</li>
-                  <li>• Avoid accidental string contact</li>
-                </ul>
-              </div>
-              <div className="bg-orange-50 rounded-lg p-4">
-                <h3 className="font-semibold text-orange-900 mb-2">String Skipping</h3>
-                <ul className="text-sm text-orange-800 space-y-1">
-                  <li>• Jump over strings with precision</li>
-                  <li>• Control pick depth and attack</li>
-                  <li>• Develop spatial awareness</li>
-                </ul>
-              </div>
-            </div>
-          </section>
+
+
 
           {/* Next Steps */}
           <section className="mb-8">

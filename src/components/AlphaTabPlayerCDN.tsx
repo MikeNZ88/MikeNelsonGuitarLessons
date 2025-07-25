@@ -14,6 +14,9 @@ interface Exercise {
 
 interface AlphaTabPlayerCDNProps {
   containerId?: string;
+  showTabInstructions?: boolean;
+  showSlursAndSlides?: boolean;
+  showSlides?: boolean;
 }
 
 // Grouped exercise arrays for dropdown
@@ -151,7 +154,7 @@ declare global {
   }
 }
 
-export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }: AlphaTabPlayerCDNProps = {}) {
+export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', showTabInstructions = true, showSlursAndSlides = true, showSlides = true }: AlphaTabPlayerCDNProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const alphaTabRef = useRef<any>(null);
   const pathname = usePathname();
@@ -1347,18 +1350,24 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container' }
         <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
       {/* How to Read the Tab Section */}
-      <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
-        <h3 className="text-lg font-semibold text-amber-800 mb-2">How to Read This Tab</h3>
-        <ul className="list-disc pl-5 text-amber-900 space-y-1">
-          <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
-          <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
-          <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
-          <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
-          <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
-          <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
-        </ul>
+      {showTabInstructions && (
+        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6 max-w-2xl mx-auto">
+          <h3 className="text-lg font-semibold text-amber-800 mb-2">How to Read This Tab</h3>
+          <ul className="list-disc pl-5 text-amber-900 space-y-1">
+            <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
+            <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
+            <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
+            {showSlursAndSlides && (
+              <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
+            )}
+            {showSlides && (
+              <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
+            )}
+            <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
+          </ul>
 
-      </div>
+        </div>
+      )}
     </div>
   );
 }

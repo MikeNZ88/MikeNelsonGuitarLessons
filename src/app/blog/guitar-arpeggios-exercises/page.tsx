@@ -49,7 +49,7 @@ export default function GuitarArpeggiosExercisesPage() {
             <div className="mb-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
               <strong>Note:</strong> All examples use arpeggios with the root note <strong>C</strong>. You can transpose these by moving the arpeggio up or down the neck—e.g., move Cmaj7 up 2 frets and it becomes Dmaj7. For the three-octave arpeggios, the tab highlights each C note so you can clearly see where each octave begins and ends. Practicing these arpeggios in smaller sections ("chunks") as well as the full pattern is highly effective—each octave is a useful arpeggio shape on its own and worth memorizing. The last two examples show a pattern of multiple arpeggios in one key (C major); these arpeggios are built from the C major scale. For more, see <a href="/blog/what-is-a-chord" className="underline text-amber-700 hover:text-amber-900">What is a Chord?</a> and <a href="/blog/key-chords-explorer" className="underline text-amber-700 hover:text-amber-900">Chords in Every Key</a>.
             </div>
-            <AlphaTabPlayerCDN key={Date.now()} containerId="arpeggio-alphatab-container" />
+            <AlphaTabPlayerCDN key={Date.now()} containerId="arpeggio-alphatab-container" showSlursAndSlides={false} />
           </section>
 
           {/* How to Practice */}

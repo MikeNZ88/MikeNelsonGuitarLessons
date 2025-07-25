@@ -1719,21 +1719,21 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-20">
+      <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-8">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-6">Guitar Learning Blog</h1>
-          <p className="text-xl text-amber-200 max-w-2xl mx-auto mb-8">
+          <h1 className="text-3xl font-bold mb-3">Guitar Learning Blog</h1>
+          <p className="text-lg text-amber-200 max-w-2xl mx-auto mb-4">
             Comprehensive guides and interactive tools for all guitarists
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <button
               onClick={() => setIsQuickRefOpen(true)}
-              className="bg-white text-amber-800 px-6 py-3 rounded-lg font-medium hover:bg-amber-50 transition-colors flex items-center gap-2"
+              className="bg-white text-amber-800 px-4 py-2 rounded-lg font-medium hover:bg-amber-50 transition-colors flex items-center gap-2 text-sm"
             >
-              <BookOpen className="h-5 w-5" />
+              <BookOpen className="h-4 w-4" />
               Quick Reference Index
             </button>
-            <span className="text-amber-200 text-sm">
+            <span className="text-amber-200 text-xs">
               Find specific topics instantly
             </span>
           </div>
@@ -1741,20 +1741,20 @@ export default function Blog() {
       </section>
 
       {/* Hierarchical Filters */}
-      <section className="py-8 bg-white border-b">
+      <section className="py-4 bg-white border-b">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
             {/* Search Bar */}
             <div className="relative max-w-md flex items-center">
               <span className="absolute left-0 pl-3 flex items-center h-full pointer-events-none">
-                <Search className="h-6 w-6 text-gray-400" />
+                <Search className="h-5 w-5 text-gray-400" />
               </span>
               <input
                 type="text"
                 placeholder="Search blog posts..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full h-12 pl-12 pr-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-base"
+                className="block w-full h-10 pl-10 pr-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-colors text-sm"
                 style={{ boxSizing: 'border-box' }}
               />
               
@@ -1762,14 +1762,14 @@ export default function Blog() {
             </div>
 
             {/* Topic Category Filter */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="text-gray-700 font-medium">Topic:</span>
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-gray-700 font-medium text-sm">Topic:</span>
+              <div className="flex flex-wrap gap-1">
                 {topicCategories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedTopicCategory(category)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                       selectedTopicCategory === category
                         ? 'bg-amber-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-amber-100 hover:text-amber-700'
@@ -1782,14 +1782,14 @@ export default function Blog() {
             </div>
 
             {/* Skill Level Filter */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="text-gray-700 font-medium">Level:</span>
-              <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-gray-700 font-medium text-sm">Level:</span>
+              <div className="flex flex-wrap gap-1">
                 {skillLevels.map((level) => (
                   <button
                     key={level}
                     onClick={() => setSelectedSkillLevel(level)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                       selectedSkillLevel === level
                         ? 'bg-orange-600 text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-700'
@@ -1803,7 +1803,7 @@ export default function Blog() {
           </div>
 
           {/* Results Count */}
-          <div className="mt-6 text-gray-600 text-sm">
+          <div className="mt-3 text-gray-600 text-xs">
             Showing {sortedPosts.length} of {posts.length} posts
             {(selectedTopicCategory !== 'All Posts' || selectedSkillLevel !== 'All Levels' || searchQuery !== '') && (
               <span>
@@ -1817,7 +1817,7 @@ export default function Blog() {
       </section>
 
       {/* Blog Posts */}
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           {sortedPosts.length === 0 ? (
             <div className="text-center py-16">
@@ -1936,6 +1936,7 @@ export default function Blog() {
                <div>
                  <h3 className="text-2xl font-bold text-gray-800">Quick Reference Index</h3>
                  <p className="text-gray-600 mt-1">Find specific topics and jump directly to relevant sections</p>
+                 <p className="text-amber-700 text-sm mt-2 italic">Common scales and chords are included below, but many others are available throughout the blog in the chord libraries and Scale Explorer.</p>
                </div>
                <button 
                  onClick={() => {

@@ -990,53 +990,33 @@ const EXTENSION_CHORDS: Record<ExtensionChordType, ChordShape[]> = {
   ],
   '13th Chords': [
     {
-      name: 'F13 With Root (5 strings)',
-      frets: [-1, 8, 7, 8, 10, 10],
-      fingers: ['', '2', '1', '3', '4', '4'],
-      startFret: 7,
-      rootString: 5,
-      description: 'F13 with root - F(1) A(3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
-      technique: 'A string root 13th - barred 3rd finger on G & B strings',
-      difficulty: 'Advanced'
-    },
-    {
-      name: 'Fm13 A String Root (5 strings)',
-      frets: [-1, 8, 6, 8, 10, 10],
-      fingers: ['', '2', '1', '3', '4', '4'],
-      startFret: 6,
-      rootString: 5,
-      description: 'Fm13 - F(1) A♭(♭3) E♭(♭7) G(9) D(13), 5th, 11th omitted',
-      technique: 'A string root minor 13th - barred 3rd finger on G & B strings',
-      difficulty: 'Advanced'
-    },
-    {
-      name: 'F13 Rootless Voicing (4 strings)',
-      frets: [-1, -1, 7, 8, 8, 10],
-      fingers: ['', '', '1', '2', '3', '4'],
-      startFret: 7,
-      rootString: 4,
-      description: 'F13 rootless - A(3) E♭(♭7) G(9) D(13), root, 5th, 11th omitted',
-      technique: 'Rootless 13th voicing',
-      difficulty: 'Advanced'
-    },
-    {
-      name: 'FMaj13 Upper String Voicing (4 strings)',
-      frets: [-1, -1, 7, 9, 8, 10],
-      fingers: ['', '', '1', '3', '2', '4'],
-      startFret: 7,
-      rootString: 4,
-      description: 'FMaj13 upper voicing - A(3) E(7) G(9) D(13), root, 5th, 11th omitted',
-      technique: 'Upper string major 13th',
-      difficulty: 'Advanced'
-    },
-    {
-      name: 'F13 E String Root (1st position)',
+      name: 'F13 (No 5 or 11)',
       frets: [1, -1, 1, 2, 3, 3],
       fingers: ['1', '', '1', '2', '3', '4'],
       startFret: 1,
       rootString: 6,
-      description: 'F13 E string root - F(1) F(1) A(3) E♭(♭7) G(9) voicing',
-      technique: 'E string root alternative',
+      description: 'F13 - F(1) A(3) E♭(♭7) G(9) D(13), 5th and 11th omitted',
+      technique: 'E string root with 1st finger on bass',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'FMaj13 (No 5 or 11)',
+      frets: [1, -1, 2, 2, 3, 3],
+      fingers: ['1', '', '2', '3', '4', '4'],
+      startFret: 1,
+      rootString: 6,
+      description: 'FMaj13 - F(1) A(3) E(7) G(9) D(13), 5th and 11th omitted',
+      technique: 'E string root with 1st finger on bass',
+      difficulty: 'Advanced'
+    },
+    {
+      name: 'Fm13 (No 5 or 11)',
+      frets: [1, -1, 1, 1, 3, 3],
+      fingers: ['1', '', '1', '1', '3', '4'],
+      startFret: 1,
+      rootString: 6,
+      description: 'Fm13 - F(1) A♭(♭3) E♭(♭7) G(9) D(13), 5th and 11th omitted',
+      technique: 'E string root with 1st finger on bass',
       difficulty: 'Advanced'
     }
   ],
@@ -1044,7 +1024,7 @@ const EXTENSION_CHORDS: Record<ExtensionChordType, ChordShape[]> = {
     {
       name: 'F7♭9 A String Root (4 strings)',
       frets: [-1, 8, 7, 8, 7, -1],
-      fingers: ['', '3', '1', '4', '2', ''],
+      fingers: ['', '2', '1', '3', '1', ''],
       startFret: 7,
       rootString: 5,
       description: 'F7♭9 - F(1) A(3) E♭(♭7) G♭(♭9), 5th omitted',
@@ -1054,7 +1034,7 @@ const EXTENSION_CHORDS: Record<ExtensionChordType, ChordShape[]> = {
     {
       name: 'F7#9 "Hendrix" A String Root (4 strings)',
       frets: [-1, 8, 7, 8, 9, -1],
-      fingers: ['', '3', '1', '2', '4', ''],
+      fingers: ['', '2', '1', '3', '4', ''],
       startFret: 7,
       rootString: 5,
       description: 'F7#9 - F(1) A(3) E♭(♭7) G#(#9), 5th omitted',
