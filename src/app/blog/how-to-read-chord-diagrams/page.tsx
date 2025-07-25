@@ -98,47 +98,7 @@ export default function HowToReadChordDiagrams() {
               </div>
             </section>
 
-            {/* What You'll Learn */}
-            <section className="mb-12">
-              <h3 className="text-2xl font-semibold text-amber-800 mb-6 flex items-center">
-                <BookOpen className="h-7 w-7 mr-3" />
-                What This Video Covers
-              </h3>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="bg-amber-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-amber-800 mb-2">📋 Reading the Grid</h4>
-                    <p className="text-amber-800 text-sm">
-                      Understand the vertical lines (strings) and horizontal lines (frets) that make up chord diagrams.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-orange-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-orange-800 mb-2">🎯 Finger Placement</h4>
-                    <p className="text-orange-800 text-sm">
-                      Learn how numbers and dots indicate where to place your fingers for perfect chord formation.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="bg-brown-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-brown-800 mb-2">❌ Muted Strings</h4>
-                    <p className="text-brown-800 text-sm">
-                      Recognize the symbols that tell you which strings to avoid playing in each chord.
-                    </p>
-                  </div>
-                  
-                  <div className="bg-amber-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-amber-800 mb-2">⭕ Open Strings</h4>
-                    <p className="text-amber-800 text-sm">
-                      Identify which strings to play "open" (without pressing any frets) for proper chord sound.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
+
 
             {/* Why This Matters */}
             <section className="mb-12">
@@ -160,30 +120,7 @@ export default function HowToReadChordDiagrams() {
               </div>
             </section>
 
-            {/* Next Steps */}
-            <section className="mb-12">
-              <h3 className="text-2xl font-semibold text-amber-800 mb-6">
-                Ready to Put This Into Practice?
-              </h3>
-              
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-orange-50 p-6 rounded-lg border-l-4 border-orange-500">
-                  <h4 className="font-semibold text-orange-800 mb-3">🎸 Start with Basic Chords</h4>
-                  <p className="text-orange-800 text-sm">
-                    Practice reading diagrams with simple chords like G, C, D, Em, and Am. 
-                    These form the foundation of thousands of popular songs.
-                  </p>
-                </div>
-                
-                <div className="bg-amber-50 p-6 rounded-lg border-l-4 border-amber-500">
-                  <h4 className="font-semibold text-amber-800 mb-3">📖 Practice Daily</h4>
-                  <p className="text-amber-800 text-sm">
-                    The more chord diagrams you read, the faster you'll become at interpreting them. 
-                    Soon it will become second nature.
-                  </p>
-                </div>
-              </div>
-            </section>
+
 
             {/* Call to Action */}
             <section className="bg-gradient-to-r from-amber-100 to-orange-100 p-8 rounded-lg text-center">
