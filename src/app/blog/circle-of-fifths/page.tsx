@@ -145,7 +145,7 @@ const SimpleCircleOfFifths = () => {
   return (
     <div className="flex flex-col items-center p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-amber-800 mb-2">Circle of Fifths</h1>
+                    <h2 className="text-3xl font-bold text-amber-800 mb-2">Circle of Fifths</h2>
         <p className="text-amber-700 max-w-md">
           Click any key to see its sharps and flats. The fundamental relationship between keys in Western music theory.
         </p>
@@ -1110,7 +1110,7 @@ const CircleOfFifths = () => {
   return (
     <div className="flex flex-col items-center p-8 bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-amber-800 mb-2">Circle of Fifths with Chords</h1>
+                    <h2 className="text-3xl font-bold text-amber-800 mb-2">Circle of Fifths with Chords</h2>
         <p className="text-amber-700 max-w-md">
           Click any key to highlight its diatonic chords. Major keys (outer circle) and relative minor keys (inner circle) are shown together. 
           The relative minor is the circle underneath the major - e.g., Am is relative minor of C major, Bm is relative minor of D major. 
