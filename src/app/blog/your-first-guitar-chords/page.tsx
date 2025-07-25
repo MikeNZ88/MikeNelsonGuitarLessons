@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     description: 'Learn your first 8 essential guitar chords with interactive diagrams and transition tips.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/your-first-guitar-chords',
+  },
 };
 
 export default function YourFirstGuitarChords() {

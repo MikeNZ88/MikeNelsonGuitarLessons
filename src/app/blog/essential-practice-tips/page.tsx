@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description: "Master fundamental practice techniques to accelerate your guitar learning. Expert advice from a Wellington guitar teacher.",
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/essential-practice-tips',
+  },
 };
 
 export default function EssentialPracticeTips() {

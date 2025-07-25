@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master barre chords with interactive diagrams and step-by-step instructions for all chord types.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/barre-chord-library',
+  },
 };
 
 export default function BarreChordLibraryLayout({

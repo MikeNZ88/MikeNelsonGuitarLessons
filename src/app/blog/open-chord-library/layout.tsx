@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master essential open chords with interactive diagrams for beginners.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/open-chord-library',
+  },
 };
 
 export default function OpenChordLibraryLayout({
