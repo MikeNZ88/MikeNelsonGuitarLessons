@@ -968,23 +968,23 @@ const EXTENSION_CHORDS: Record<ExtensionChordType, ChordShape[]> = {
       difficulty: 'Practical'
     },
     {
-      name: 'FMaj9#11 (rootless) A String Root (4 strings)',
+      name: 'FMaj9#11 (NO ROOT) A String Root (4 strings)',
       frets: [-1, 12, 10, 12, 12, 12],
       fingers: ['', '2', '1', '3', '4', '4'],
       startFret: 10,
       rootString: 5,
-      description: 'FMaj9#11 (rootless) - A(3) C(5) G(9) B(#11) E(7), root omitted',
-      technique: 'A string root major 9#11 - barre 4th finger on B & E strings',
+      description: 'FMaj9#11 (rootless) - A(3) C(5) G(9) B(#11) E(7), NO ROOT',
+      technique: 'Rootless major 9#11 - barre 4th finger on B & E strings',
       difficulty: 'Practical'
     },
     {
-      name: 'Fm11 (rootless) A String Root (4 strings)',
+      name: 'Fm11 (NO ROOT) A String Root (4 strings)',
       frets: [-1, 11, 10, 12, 11, 11],
       fingers: ['', '2', '1', '4', '3', '3'],
       startFret: 10,
       rootString: 5,
-      description: 'Fm11 (rootless) - A♭(♭3) C(5) G(9) B♭(11) E♭(♭7), root omitted',
-      technique: 'A string root minor 11th - barre 3rd finger on B & E strings',
+      description: 'Fm11 (rootless) - A♭(♭3) C(5) G(9) B♭(11) E♭(♭7), NO ROOT',
+      technique: 'Rootless minor 11th - barre 3rd finger on B & E strings',
       difficulty: 'Practical'
     }
   ],
@@ -1450,6 +1450,9 @@ function MoveableGuitarChordShapes() {
     // Handle specific transposed chords first
     if (shape.name.includes('Am9')) return 'Am9';
     if (shape.name.includes('A♭Maj9')) return 'A♭Maj9';
+    
+    // Handle specific chord names that should be preserved exactly
+    if (shape.name.includes('(NO ROOT)')) return shape.name.split(' A String Root')[0];
     
     // Handle extension chords with more specific patterns first
     if (shape.name.includes('Maj9#11')) return ROOT_NOTE + 'Maj9#11';
