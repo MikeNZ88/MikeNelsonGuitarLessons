@@ -131,7 +131,7 @@ export const metadata: Metadata = {
     description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
     images: [
       {
-        url: '/guitar-picking-exercises-thumbnail.png',
+        url: '/Pentatonic Exercise Blog Post.png',
         width: 1200,
         height: 630,
         alt: 'Essential Guitar Picking Exercises Thumbnail',
@@ -143,6 +143,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Essential Guitar Picking Exercises',
     description: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
-    images: ['/guitar-picking-exercises-thumbnail.png'],
+    images: ['/Pentatonic Exercise Blog Post.png'],
   },
 }; 

@@ -750,7 +750,7 @@ export default function Blog() {
     {
       topic: 'Pentatonic Scale Exercises',
       description: 'Interactive tab player with 16th notes and triplets',
-      link: '/blog/guitar-picking-exercises',
+      link: '/blog/pentatonic-scale-exercises',
       category: 'Technique'
     },
     {
@@ -762,13 +762,13 @@ export default function Blog() {
     {
       topic: '16th Note Exercises',
       description: 'Pentatonic scale patterns with alternate picking',
-      link: '/blog/guitar-picking-exercises',
+      link: '/blog/pentatonic-scale-exercises',
       category: 'Technique'
     },
     {
       topic: '16th Note Triplets',
       description: 'Advanced pentatonic patterns with triplets',
-      link: '/blog/guitar-picking-exercises',
+      link: '/blog/pentatonic-scale-exercises',
       category: 'Technique'
     },
     {
@@ -1463,7 +1463,7 @@ export default function Blog() {
       categories: ['Technique', 'Tools', 'Tabs'],
       skillLevel: 'all',
       image: '/Pentatonic Exercise Blog Post.png',
-      slug: 'guitar-picking-exercises',
+      slug: 'pentatonic-scale-exercises',
       author: 'Mike Nelson',
       sortOrder: 9
     },

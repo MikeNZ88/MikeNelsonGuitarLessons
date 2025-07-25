@@ -729,7 +729,7 @@ export default function GuitarPickingTechniquePage() {
               More Guides
             </Link>
             <Link
-              href="/blog/guitar-picking-exercises"
+              href="/blog/pentatonic-scale-exercises"
               className="bg-amber-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors"
             >
               Pentatonic Scale Exercises

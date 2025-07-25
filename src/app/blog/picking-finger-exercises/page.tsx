@@ -83,7 +83,7 @@ export default function PickingFingerExercisesPage() {
                 <li>• Use in real musical contexts</li>
               </ul>
               <p className="text-sm text-amber-700">
-                Continue with <a href="/blog/guitar-arpeggios-exercises" className="underline">Arpeggio Exercises</a> and <a href="/blog/guitar-picking-exercises" className="underline">Advanced Picking</a> to apply these skills.
+                Continue with <a href="/blog/guitar-arpeggios-exercises" className="underline">Arpeggio Exercises</a> and <a href="/blog/pentatonic-scale-exercises" className="underline">Pentatonic Scale Exercises</a> to apply these skills.
               </p>
             </div>
           </section>
