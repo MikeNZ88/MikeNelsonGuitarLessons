@@ -539,13 +539,16 @@ const KeyChordsExplorer = () => {
           </p>
           <ul className="space-y-2 text-gray-700">
             <li>
-              <strong><a href="/blog/scale-explorer-tool" className="text-amber-700 hover:text-amber-800 underline">Scale Explorer:</a></strong> Shows many types of chords built from different scales with fretboard diagrams
+              <strong><a href="/blog/open-chord-library" className="text-amber-700 hover:text-amber-800 underline">Open Chord Library:</a></strong> Good for beginners - includes more chord progressions for a selection of keys that can be played with only open chords
+            </li>
+            <li>
+              <strong><a href="/blog/barre-chord-library" className="text-amber-700 hover:text-amber-800 underline">Barre Chord Library:</a></strong> Essential barre chord shapes for major, minor, and seventh chords that can be moved to any key
             </li>
             <li>
               <strong><a href="/blog/moveable-guitar-chord-shapes" className="text-amber-700 hover:text-amber-800 underline">Moveable Chord Shapes Library:</a></strong> Includes moveable chord shapes for major, minor, diminished, seventh chords, extended chords, suspended chords and altered chords
             </li>
             <li>
-              <strong><a href="/blog/open-chord-library" className="text-amber-700 hover:text-amber-800 underline">Open Chord Library:</a></strong> Good for beginners - includes more chord progressions for a selection of keys that can be played with only open chords
+              <strong><a href="/blog/scale-explorer-tool" className="text-amber-700 hover:text-amber-800 underline">Scale Explorer:</a></strong> Shows many types of chords built from different scales with fretboard diagrams
             </li>
           </ul>
         </div>
