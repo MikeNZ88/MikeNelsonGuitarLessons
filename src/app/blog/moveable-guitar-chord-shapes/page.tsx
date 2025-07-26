@@ -1502,14 +1502,15 @@ function MoveableGuitarChordShapes() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8" id="chord-inversions-7th-chords">
       {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4 text-amber-600">
           Moveable Guitar Chord Shapes
         </h1>
-        <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mb-4">
-          Master essential moveable chord shapes across all chord types. All examples shown with an <strong>F root note</strong> but all shapes are completely moveable to any key.
+        <p className="text-xl text-gray-600 leading-relaxed">
+          Unlock every chord type with moveable shapes for major, minor, 7th, suspended, and extended chords
         </p>
-      </div>
+      </header>
+      <h2 className="text-2xl font-bold text-amber-700 mb-6">Moveable Chord Shapes Overview</h2>
 
       {/* Category Navigation */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">

@@ -32,5 +32,10 @@ export default function TriadsOn3StringSetsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <h1 className="sr-only">Triads on 3-String Sets</h1>
+      {children}
+    </>
+  );
 } 

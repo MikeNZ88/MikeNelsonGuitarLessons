@@ -400,6 +400,15 @@ function BarreChordLibraryContent() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4 text-amber-600">
+          Barre Chord Library
+        </h1>
+        <p className="text-xl text-gray-600 leading-relaxed">
+          Master E and A shape barre chords for every key
+        </p>
+      </header>
+      <h2 className="text-2xl font-bold text-amber-700 mb-6">Barre Chord Shapes and Patterns</h2>
       <div className="text-center mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
           Barre Chord Library

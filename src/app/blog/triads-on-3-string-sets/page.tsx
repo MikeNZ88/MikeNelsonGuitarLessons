@@ -1772,14 +1772,15 @@ export default function TriadsOn3StringSets() {
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6" id="chord-inversions-triads">
       {/* Header */}
-      <div className="text-center mb-6 sm:mb-8 px-4">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-amber-800 mb-3 sm:mb-4">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4 text-amber-600">
           Triads on 3-String Sets
         </h1>
-        <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-          Master the building blocks of guitar chords! Learn the three essential triad shapes on each string group with chord diagrams and fretboard maps.
+        <p className="text-xl text-gray-600 leading-relaxed">
+          Learn how to play major, minor, diminished, and augmented triads across the fretboard
         </p>
-      </div>
+      </header>
+      <h2 className="text-2xl font-bold text-amber-700 mb-6">Triads on 3-String Sets Explained</h2>
 
       {/* Triad Type Selector */}
       <div className="flex justify-center mb-6 px-4">
