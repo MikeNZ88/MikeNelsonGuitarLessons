@@ -42,6 +42,9 @@ const Footer = () => {
               <Link href="/policy.html" className="block hover:text-amber-200 transition-colors">
                 Payment and Cancellation Policy
               </Link>
+              <Link href="/privacy-policy" className="block hover:text-amber-200 transition-colors">
+                Privacy Policy
+              </Link>
             </div>
           </div>
 
