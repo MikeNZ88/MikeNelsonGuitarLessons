@@ -61,6 +61,11 @@ export const metadata: Metadata = {
   other: {
     'msapplication-TileColor': '#d97706',
     'theme-color': '#d97706',
+    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob: https://images.unsplash.com https://mikenelsonguitarlessons.co.nz; media-src 'self' data: https:; connect-src 'self' https: https://www.google-analytics.com https://analytics.google.com; frame-src 'self' https://www.youtube.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin'
   },
 };
 
