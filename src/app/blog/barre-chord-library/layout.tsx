@@ -32,5 +32,10 @@ export default function BarreChordLibraryLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <h1 className="sr-only">Barre Chord Library</h1>
+      {children}
+    </>
+  );
 } 

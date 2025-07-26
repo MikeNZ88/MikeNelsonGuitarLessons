@@ -32,5 +32,10 @@ export default function MoveableChordShapesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <h1 className="sr-only">Moveable Guitar Chord Shapes</h1>
+      {children}
+    </>
+  );
 } 

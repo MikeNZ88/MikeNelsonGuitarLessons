@@ -32,5 +32,10 @@ export default function BeginnersGuidePentatonicScalesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <h1 className="sr-only">Beginner's Guide to Pentatonic Scales</h1>
+      {children}
+    </>
+  );
 } 
