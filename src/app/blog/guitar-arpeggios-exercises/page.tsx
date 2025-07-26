@@ -95,13 +95,13 @@ export default function GuitarArpeggiosExercisesPage() {
 
 export const metadata: Metadata = {
   title: 'Guitar Arpeggio Exercises | Mike Nelson Guitar Lessons',
-  description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
+  description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-arpeggios-exercises/',
   },
   openGraph: {
     title: 'Guitar Arpeggio Exercises',
-    description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
+    description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
     images: [
       {
         url: '/guitar-arpeggios-thumbnail.png',
@@ -115,7 +115,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Guitar Arpeggio Exercises',
-    description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
+    description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
     images: ['/guitar-arpeggios-thumbnail.png'],
   },
 }; 

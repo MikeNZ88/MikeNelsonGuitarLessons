@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL('https://mikenelsonguitarlessons.co.nz'),
   title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-  description: "Mike Nelson Guitar Lessons - Guitar teacher with 25+ years of playing experience in Wellington. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Learn guitar theory, scales, and chord progressions.",
+  description: "Guitar teacher in Wellington North. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
   authors: [{ name: "Mike Nelson" }],
   icons: {
     icon: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-    description: "Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
+    description: "Guitar lessons in Wellington North. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
     type: "website",
     locale: "en_NZ",
     url: "https://mikenelsonguitarlessons.co.nz",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
-    description: "Guitar lessons in Wellington North with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
+    description: "Guitar lessons in Wellington North. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
     images: ['https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg'],
   },
   robots: {
@@ -73,7 +73,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "MusicGroup",
     "name": "Mike Nelson Guitar Lessons",
-    "description": "Guitar lessons in Pukerua Bay, Wellington. Learn guitar theory, scales, modes, and chord progressions with Mike Nelson, a guitar teacher with 25+ years of playing experience.",
+    "description": "Guitar lessons in Pukerua Bay, Wellington. Learn guitar theory, scales, modes, and chord progressions.",
     "url": "https://mikenelsonguitarlessons.co.nz",
     "telephone": "022-127-2154",
     "address": {

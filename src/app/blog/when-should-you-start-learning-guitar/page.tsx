@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'When to Start Learning Guitar? | Mike Nelson Guitar',
-  description: 'Discover the optimal age to start learning guitar based on research. Learn about neuroplasticity, adult learning advantages, and how to determine the right time for you or your child.',
+  description: 'Discover the optimal age to start learning guitar based on research. Learn about neuroplasticity, adult learning advantages, and how to determine the right time.',
   openGraph: {
     title: 'When Should You Start Learning Guitar? What the Research Actually Says',
     description: 'Discover the optimal age to start learning guitar based on research and expert advice.',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'When Should You Start Learning Guitar? What the Research Actually Says',
-    description: 'Discover the optimal age to start learning guitar based on research and expert advice.',
+    description: 'Discover the optimal age to start learning guitar based on research.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {

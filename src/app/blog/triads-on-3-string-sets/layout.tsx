@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Triads on 3-String Sets | Mike Nelson Guitar Lessons',
-  description: 'Master triads on 3-string sets with my comprehensive guide. Learn major, minor, diminished, and augmented triads with interactive diagrams and practice exercises.',
+  description: 'Master triads on 3-string sets with comprehensive guide. Learn major, minor, diminished, and augmented triads with interactive diagrams.',
   openGraph: {
     title: 'Triads on 3-String Sets',
     description: 'Master triads on 3-string sets with comprehensive guide and interactive diagrams.',

@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Complete Beginner\'s Guide to Learning Guitar | Mike Nelson Guitar Lessons',
-  description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, practice tips, and beginner songs with interactive rhythm tools.',
+  title: 'Complete Beginner\'s Guide to Learning Guitar',
+  description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, practice tips, and beginner songs.',
   openGraph: {
     title: 'Complete Beginner\'s Guide to Learning Guitar',
-    description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, and beginner songs with interactive tools.',
+    description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, and beginner songs.',
     images: [
       {
         url: '/blog-thumbnail.svg',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Complete Beginner\'s Guide to Learning Guitar',
-    description: 'Everything you need to know to start learning guitar in New Zealand with interactive practice tools.',
+    description: 'Everything you need to know to start learning guitar in New Zealand.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {

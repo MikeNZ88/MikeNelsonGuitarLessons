@@ -5,7 +5,7 @@ import { ArrowLeft, Music, DollarSign, Zap, Monitor, Settings } from 'lucide-rea
 
 export const metadata: Metadata = {
   title: 'My Kiesel A2 7-String | Mike Nelson Guitar Lessons',
-  description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real import costs ($4,385 NZD), customs process, GST fees, and honest review from a Wellington guitar teacher.',
+  description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real import costs ($4,385 NZD), customs process, GST fees, and honest review.',
   openGraph: {
     title: 'My Kiesel A2 7-String - NZ Import Guide & Review',
     description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real costs, customs process, and honest review.',

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Target, Music, BookOpen, Users, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: "6 Essential Practice Tips for Guitar Students | Mike Nelson Guitar Lessons",
+  title: "6 Essential Practice Tips for Guitar Students",
   description: "Master fundamental practice techniques to accelerate your guitar learning. Expert advice from a Wellington guitar teacher.",
   openGraph: {
     title: "6 Essential Practice Tips for Guitar Students",

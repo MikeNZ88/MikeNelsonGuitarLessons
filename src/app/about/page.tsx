@@ -5,10 +5,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Mike Nelson | Guitar Teacher Wellington',
-  description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+  description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
   openGraph: {
     title: 'About Mike Nelson | Guitar Teacher Wellington',
-    description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players.',
+    description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players.',
     type: 'website',
     images: [
       {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'About Mike Nelson | Guitar Teacher Wellington',
-    description: 'Mike Nelson - Guitar teacher with 25+ years of playing experience in Wellington North. Teaching beginners to intermediate players.',
+    description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players.',
     images: ['/Mike Photo.jpg'],
   },
   alternates: {

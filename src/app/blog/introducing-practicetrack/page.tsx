@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Target, Music, BarChart3, Settings, Smartphone, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: "Introducing PracticeTrack - Your Musical Journey Companion | Mike Nelson Guitar Lessons",
+  title: "Introducing PracticeTrack - Your Musical Journey Companion",
   description: "Discover PracticeTrack, a free practice tracking app designed to help musicians improve through deliberate, structured practice with goals and analytics.",
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/introducing-practicetrack',

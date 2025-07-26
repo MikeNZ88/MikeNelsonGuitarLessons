@@ -5,10 +5,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
-  description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
+  description: 'Structured guitar lessons from beginner to advanced. Home studio in Pukerua Bay, mobile lessons, and online options.',
   openGraph: {
     title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
-    description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
+    description: 'Structured guitar lessons from beginner to advanced. Home studio in Pukerua Bay, mobile lessons, and online options.',
     type: 'website',
     images: [
       {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Guitar Lessons & Curriculum | Mike Nelson Guitar',
-    description: 'Structured guitar lessons from beginner to advanced with Mike Nelson, a guitar teacher with 25+ years of playing experience. Home studio in Pukerua Bay, mobile lessons, and online options.',
+    description: 'Structured guitar lessons from beginner to advanced. Home studio in Pukerua Bay, mobile lessons, and online options.',
     images: ['/Mike Photo.jpg'],
   },
   alternates: {

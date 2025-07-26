@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas | Mike Nelson Guitar Lessons',
+  title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas',
   description: 'Master practical techniques for finding notes and intervals across guitar strings. Learn mathematical relationships that make fretboard navigation easy.',
   openGraph: {
     title: 'Guitar Fretboard Navigation: Cross-String Movement Formulas',

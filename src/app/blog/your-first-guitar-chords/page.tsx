@@ -3,7 +3,7 @@ import Link from 'next/link';
 import ChordDiagram from '@/components/ChordDiagram';
 
 export const metadata: Metadata = {
-  title: 'Your First Guitar Chords: A Complete Beginner Guide | Mike Nelson Guitar Lessons',
+  title: 'Your First Guitar Chords: A Complete Beginner Guide',
   description: 'Learn your first 8 essential guitar chords with interactive diagrams and smooth transition tips. Master A, E, G, D, C, Em, Am, and Dm chords.',
   openGraph: {
     title: 'Your First Guitar Chords: A Complete Beginner Guide',

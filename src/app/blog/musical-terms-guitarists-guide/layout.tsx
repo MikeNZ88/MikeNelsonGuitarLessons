@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Musical Terms for Guitarists: Complete A-Z Guide | Mike Nelson Guitar Lessons',
-  description: 'Master essential musical terms with my complete A-Z guide for guitarists. Learn theory concepts, techniques, and terminology to improve your guitar playing.',
+  description: 'Master essential musical terms with complete A-Z guide for guitarists. Learn theory concepts, techniques, and terminology.',
   openGraph: {
     title: 'Musical Terms for Guitarists: Complete A-Z Guide',
     description: 'Master essential musical terms with complete A-Z guide for guitarists.',

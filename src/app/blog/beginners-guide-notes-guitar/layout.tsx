@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Beginner\'s Guide to Guitar Notes | Mike Nelson Guitar Lessons',
-  description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, octaves, and how notes repeat across the guitar neck.',
+  description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, and how notes repeat across the guitar neck.',
   openGraph: {
     title: 'Beginner\'s Guide to Guitar Notes',
-    description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, and octaves.',
+    description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, and how notes repeat.',
     images: [
       {
         url: '/blog-thumbnail.svg',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "Beginner's Guide to Guitar Notes",
-    description: 'Learn guitar notes on the fretboard with interactive diagrams and clear explanations.',
+    description: 'Learn guitar notes on the fretboard with interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {

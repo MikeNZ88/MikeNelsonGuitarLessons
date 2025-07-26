@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Key Chords Explorer: Interactive Chord Library | Mike Nelson Guitar Lessons',
-  description: 'Explore chords within different keys with my interactive chord library. Find major, minor, and seventh chords for any key with visual diagrams and audio playback.',
+  title: 'Key Chords Explorer: Interactive Chord Library',
+  description: 'Explore chords within different keys with interactive chord library. Find major, minor, and seventh chords for any key.',
   openGraph: {
     title: 'Key Chords Explorer: Interactive Chord Library',
-    description: 'Explore chords within different keys with interactive diagrams and audio playback.',
+    description: 'Explore chords within different keys with interactive diagrams.',
     images: [
       {
         url: '/blog-thumbnail.svg',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Key Chords Explorer: Interactive Chord Library',
-    description: 'Explore chords within different keys with interactive diagrams and audio.',
+    description: 'Explore chords within different keys with interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
