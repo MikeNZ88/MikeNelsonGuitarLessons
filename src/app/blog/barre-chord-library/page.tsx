@@ -400,7 +400,6 @@ function BarreChordLibraryContent() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
 
-      <h2 className="text-2xl font-bold text-amber-700 mb-6 text-center">Barre Chord Shapes and Patterns</h2>
       <div className="text-center mb-8">
         <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
           Barre Chord Library
