@@ -75,6 +75,24 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Add Security Headers
+        run: |
+          # Create a script to add headers to all HTML files
+          find ./out -name "*.html" -type f | while read file; do
+            # Create a temporary file
+            temp_file=$(mktemp)
+            
+            # Add headers before the closing </head> tag
+            sed '/<\/head>/i\
+            <meta http-equiv="Content-Security-Policy" content="default-src '\''self'\''; script-src '\''self'\'' '\''unsafe-inline'\'' '\''unsafe-eval'\'' https://cdn.jsdelivr.net https://unpkg.com https://www.googletagmanager.com; style-src '\''self'\'' '\''unsafe-inline'\'' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src '\''self'\'' https://fonts.gstatic.com; img-src '\''self'\'' data: https: blob: https://images.unsplash.com https://mikenelsonguitarlessons.co.nz; media-src '\''self'\'' data: https:; connect-src '\''self'\'' https: https://www.google-analytics.com https://analytics.google.com; frame-src '\''self'\'' https://www.youtube.com; object-src '\''none'\''; base-uri '\''self'\''; form-action '\''self'\''; frame-ancestors '\''self'\''; upgrade-insecure-requests">\
+            <meta http-equiv="X-Content-Type-Options" content="nosniff">\
+            <meta http-equiv="X-Frame-Options" content="DENY">\
+            <meta http-equiv="X-XSS-Protection" content="1; mode=block">\
+            <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">' "$file" > "$temp_file"
+            
+            # Replace the original file
+            mv "$temp_file" "$file"
+          done
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
