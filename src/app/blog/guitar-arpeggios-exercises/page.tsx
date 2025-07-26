@@ -97,6 +97,9 @@ export const metadata: Metadata = {
   title: 'Guitar Arpeggio Exercises | Mike Nelson Guitar Lessons',
   description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
   keywords: 'guitar arpeggio exercises, arpeggios, guitar technique, major arpeggio, minor arpeggio, dominant arpeggio, diminished arpeggio, sweep picking, guitar practice, guitar lessons',
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-arpeggios-exercises/',
+  },
   openGraph: {
     title: 'Guitar Arpeggio Exercises',
     description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.',
