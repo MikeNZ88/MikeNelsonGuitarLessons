@@ -11,7 +11,7 @@ export default function UnderstandingGuitarFretboard() {
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-8">
             <h1 className="text-4xl font-bold text-amber-800 mb-6">
-              Understanding the Guitar Fretboard: Why Strings Are Tuned This Way
+              Understanding Guitar Fretboard: Why Strings Are Tuned This Way
             </h1>
             
             <div className="prose prose-lg max-w-none">

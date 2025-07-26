@@ -6,10 +6,10 @@ import FretDisplay from '@/components/FretDisplay';
 import QuickReferenceChromaticScale from '@/components/QuickReferenceChromaticScale';
 
 export const metadata: Metadata = {
-  title: "What is a Chord? Guitar Chord Guide | Mike Nelson",
+  title: "What is a Chord? Structure, Intervals, and Types | Mike Nelson",
   description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
   openGraph: {
-    title: "What is a Chord? Understanding Guitar Chord Structure and Types",
+    title: "What is a Chord? Structure, Intervals, and Types",
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     type: 'article',
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   // Add twitter card as well
   twitter: {
     card: 'summary_large_image',
-    title: "What is a Chord? Understanding Guitar Chord Structure and Types",
+    title: "What is a Chord? Structure, Intervals, and Types",
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     images: ['/what-is-a-chord-thumbnail.svg']
   },
@@ -60,7 +60,7 @@ export default function WhatIsChord() {
 
         <header className="mb-8">
           <h1 className="text-4xl font-bold mb-4 text-amber-600">
-            What is a Chord? Understanding Structure, Intervals, and Types
+            What is a Chord? Structure, Intervals, and Types
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
             Learn the fundamental structure of guitar chords and why they work the way they do

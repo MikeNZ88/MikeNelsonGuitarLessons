@@ -38,7 +38,7 @@ export default function IntroducingPracticeTrack() {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">
-            Introducing PracticeTrack: The Practice Log That Actually Works
+            Introducing PracticeTrack: The Practice Log That Works
           </h1>
           
           <p className="text-xl text-gray-600 leading-relaxed">
