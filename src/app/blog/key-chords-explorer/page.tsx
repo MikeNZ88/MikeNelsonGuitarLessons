@@ -170,11 +170,11 @@ const KeyChordsExplorer = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-blue-50">
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
+        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4 text-center">
           Key Chords Explorer
         </h1>
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-amber-600 mb-4">Chords in Every Key</h2>
+          <h2 className="text-3xl font-bold text-amber-600 mb-4 text-center">Chords in Every Key</h2>
           <p className="text-gray-600 mb-6">
             Explore all the chords that naturally occur in any major or minor key. Every key contains the same pattern of chord relationships.
           </p>
