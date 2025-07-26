@@ -37,7 +37,7 @@ export default function About() {
       <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white section-padding">
         <div className="container-max text-center">
           <h1 className="text-4xl md:text-6xl font-bold font-playfair mb-6">
-            Mike Nelson Guitar Lessons
+            About Mike Nelson
           </h1>
           <p className="text-xl text-amber-100 mb-8 max-w-3xl mx-auto">
             I am a guitarist with over 25 years of playing experience. I have taught students young and old, from complete beginners to intermediate level players who need to improve their technique or get out of a rut!
