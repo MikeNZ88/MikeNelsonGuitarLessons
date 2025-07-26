@@ -48,7 +48,7 @@ export default function GuitarPickingExercisesPage() {
           {/* Tab Player */}
           <section className="mb-12">
             <h2 className="text-2xl font-semibold text-amber-900 mb-6">
-              Tab Player
+              Pentatonic Scale Tab Player
             </h2>
             <p className="text-gray-600 mb-6">
               Use the dropdown below to select and practice different pentatonic exercises.<br/>
@@ -60,7 +60,7 @@ export default function GuitarPickingExercisesPage() {
 
           {/* How to Practice */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-6">How to Practice</h2>
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">How to Practice Pentatonic Scales</h2>
             <p className="mb-4 text-gray-700">
               The examples start at <strong>20 BPM</strong>. This is a beginner speed—since these are 16th notes and 16th note triplets, we're slowing down significantly to ensure clean execution. Players with a bit more experience may prefer to start at 40 BPM. Start at a speed that you can play the exercise comfortably and cleanly. Increase the tempo by 5–10 BPM at a time and stay at that speed until you can play it comfortably and cleanly. 
               <br/>

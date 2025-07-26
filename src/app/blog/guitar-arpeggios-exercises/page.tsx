@@ -40,7 +40,7 @@ export default function GuitarArpeggiosExercisesPage() {
           {/* Tab Player */}
           <section className="mb-12">
             <h2 className="text-2xl font-semibold text-amber-900 mb-6">
-              Tab Player
+              Arpeggio Tab Player
             </h2>
             <p className="text-gray-600 mb-6">
               Use the dropdown below to select and practice different arpeggio types and patterns.<br/>
@@ -54,7 +54,7 @@ export default function GuitarArpeggiosExercisesPage() {
 
           {/* How to Practice */}
           <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-6">How to Practice</h2>
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">How to Practice Arpeggios</h2>
             <p className="mb-4 text-gray-700">
               The examples start at <strong>40 BPM</strong>. Start slow and focus on accuracy, finger placement, and smooth string transitions. Gradually increase the tempo as you gain confidence. For more on effective practice, see <a href="/blog/essential-practice-tips" className="underline text-amber-700 hover:text-amber-900">6 Essential Practice Tips for Guitar Students</a>.
             </p>

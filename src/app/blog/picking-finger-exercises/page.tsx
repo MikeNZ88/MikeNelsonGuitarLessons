@@ -43,7 +43,7 @@ export default function PickingFingerExercisesPage() {
           {/* Tab Player */}
           <section className="mb-12">
             <h2 className="text-2xl font-semibold text-amber-900 mb-6">
-              Interactive Tab Player
+              Chromatic Finger Exercise Tab Player
             </h2>
             <p className="text-gray-600 mb-6">
               Use the dropdown below to select and practice each of the 10 chromatic finger exercises.<br/>
@@ -57,7 +57,7 @@ export default function PickingFingerExercisesPage() {
 
           {/* Practice Guidelines */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-4">Practice Guidelines</h2>
+            <h2 className="text-2xl font-semibold text-amber-900 mb-4">Chromatic Exercise Practice Guidelines</h2>
             <div className="bg-amber-50 rounded-lg p-4 mb-4">
               <p className="text-gray-700 mb-3">Start at 60 BPM. Focus on accuracy before speed. See <a href="/blog/essential-practice-tips" className="underline text-amber-700">Essential Practice Tips</a> for more strategies.</p>
               <ul className="text-sm text-gray-700 space-y-1">

@@ -58,7 +58,7 @@ export default function YourFirstGuitarChords() {
 
             {/* Table of Contents Menu */}
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-              <h2 className="text-xl font-semibold text-amber-900 mb-4">Table of Contents</h2>
+              <h2 className="text-xl font-semibold text-amber-900 mb-4">First Guitar Chords Guide Contents</h2>
               <nav className="space-y-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
