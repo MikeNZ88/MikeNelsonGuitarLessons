@@ -4,10 +4,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: "Beginner's Guide to Guitar Scales - Start with One String",
-  description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns. Simple, practical approach for beginners.",
+  description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns.",
   openGraph: {
     title: "Beginner's Guide to Guitar Scales - Start with One String",
-    description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns. Perfect for beginners.",
+    description: "Learn guitar scales the easy way - start by understanding scales along one string before moving to complex fretboard patterns.",
     type: 'article',
     images: [
       {

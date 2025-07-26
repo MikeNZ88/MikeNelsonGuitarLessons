@@ -4,10 +4,10 @@ import { Music, Target, Heart, Trophy } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'My Teaching Approach | Mike Nelson Guitar',
+  title: 'My Teaching Approach | Mike Nelson',
   description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
   openGraph: {
-    title: 'My Teaching Approach | Mike Nelson Guitar',
+    title: 'My Teaching Approach | Mike Nelson',
     description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
     type: 'website',
     images: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'My Teaching Approach | Mike Nelson Guitar',
+    title: 'My Teaching Approach | Mike Nelson',
     description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
     images: ['/Mike Photo.jpg'],
   },

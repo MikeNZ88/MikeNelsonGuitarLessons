@@ -4,10 +4,10 @@ import { Youtube, BookOpen, Music, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'How to Read Guitar Chord Diagrams - Video Tutorial | Mike Nelson Guitar Lessons',
-  description: 'Learn to read guitar chord diagrams with this comprehensive video tutorial. Master finger placement, muted strings, and open strings for perfect chord formation.',
+  description: 'Learn to read guitar chord diagrams with this comprehensive video tutorial. Master finger placement and open strings.',
   openGraph: {
     title: 'How to Read Guitar Chord Diagrams - Video Tutorial',
-    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement, muted strings, and chord notation.',
+    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement and open strings.',
     images: [
       {
         url: '/youtube-logo.svg',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'How to Read Guitar Chord Diagrams - Video Tutorial',
-    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement, muted strings, and chord notation.',
+    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement and open strings.',
     images: ['/youtube-logo.svg'],
   },
   alternates: {

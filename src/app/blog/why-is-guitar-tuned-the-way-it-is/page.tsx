@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Why is Guitar Tuned This Way? | Mike Nelson Guitar',
+  title: 'Why is Guitar Tuned This Way? | Mike Nelson',
   description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard and how it affects your playing.',
   openGraph: {
     title: 'Why is Guitar Tuned This Way?',

@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Interactive Guitar Tools | Mike Nelson Guitar',
+  title: 'Interactive Guitar Tools | Mike Nelson',
   description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',
   openGraph: {
-    title: 'Interactive Guitar Tools | Mike Nelson Guitar',
+    title: 'Interactive Guitar Tools | Mike Nelson',
     description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',
     type: 'website',
     images: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Interactive Guitar Tools | Mike Nelson Guitar',
+    title: 'Interactive Guitar Tools | Mike Nelson',
     description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',
     images: ['/Mike Photo.jpg'],
   },

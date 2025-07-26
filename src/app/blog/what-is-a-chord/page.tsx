@@ -7,10 +7,10 @@ import QuickReferenceChromaticScale from '@/components/QuickReferenceChromaticSc
 
 export const metadata: Metadata = {
   title: "What is a Chord? Guitar Chord Guide | Mike Nelson",
-  description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.",
+  description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
   openGraph: {
     title: "What is a Chord? Understanding Guitar Chord Structure and Types",
-    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.",
+    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     type: 'article',
     images: [
       {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "What is a Chord? Understanding Guitar Chord Structure and Types",
-    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes. Essential chord theory for beginners.",
+    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     images: ['/what-is-a-chord-thumbnail.svg']
   },
   alternates: {
