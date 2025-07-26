@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Mike Nelson | Guitar Teacher Wellington',
-  description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
+  description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players.',
   openGraph: {
     title: 'About Mike Nelson | Guitar Teacher Wellington',
     description: 'Mike Nelson - Guitar teacher in Wellington North. Teaching beginners to intermediate players.',

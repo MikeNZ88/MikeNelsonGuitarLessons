@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Barre Chord Library: Complete Guide | Mike Nelson Guitar Lessons',
-  description: 'Master barre chords with my comprehensive library. Interactive diagrams for E and A shape barre chords, major, minor, seventh chords, and suspended chords. Learn to play any chord in any key.',
+  description: 'Master barre chords with comprehensive library. Interactive diagrams for E and A shape barre chords, major, minor, seventh chords.',
   openGraph: {
     title: 'Barre Chord Library: Complete Guide',
-    description: 'Master barre chords with interactive diagrams for E and A shape patterns. Learn major, minor, seventh, and suspended chords that work in any key.',
+    description: 'Master barre chords with interactive diagrams for E and A shape patterns. Learn major, minor, seventh, and suspended chords.',
     images: [
       {
         url: '/blog-thumbnail.svg',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Barre Chord Library: Complete Guide',
-    description: 'Master barre chords with interactive diagrams and step-by-step instructions for all chord types.',
+    description: 'Master barre chords with interactive diagrams and step-by-step instructions.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
