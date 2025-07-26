@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Target, Music, BarChart3, Settings, Smartphone, CheckCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: "Introducing PracticeTrack - Your Musical Journey Companion",
+  title: "Introducing PracticeTrack: Your Musical Journey Companion",
   description: "Discover PracticeTrack, a free practice tracking app designed to help musicians improve through deliberate, structured practice with goals and analytics.",
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/introducing-practicetrack',
@@ -38,7 +38,7 @@ export default function IntroducingPracticeTrack() {
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-6">
-            Introducing PracticeTrack: The Practice Log That Works
+            Introducing PracticeTrack: Your Musical Journey Companion
           </h1>
           
           <p className="text-xl text-gray-600 leading-relaxed">

@@ -43,7 +43,7 @@ export default function WhenShouldYouStartLearningGuitar() {
 
           {/* Header */}
           <header className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-black mb-4 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-amber-800 mb-4 leading-tight">
               When Should You Start Learning Guitar? Research Insights
             </h1>
             <div className="flex items-center text-gray-600 text-sm">

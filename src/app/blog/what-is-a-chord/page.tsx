@@ -59,7 +59,7 @@ export default function WhatIsChord() {
         </nav>
 
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-amber-600">
+          <h1 className="text-4xl font-bold mb-4 text-amber-800">
             What is a Chord? Structure, Intervals, and Types
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed">
