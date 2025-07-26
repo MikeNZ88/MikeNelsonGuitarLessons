@@ -125,24 +125,27 @@ export default function GuitarPickingExercisesPage() {
 export const metadata: Metadata = {
   title: 'Pentatonic Scale Exercises | Mike Nelson Guitar Lessons',
   description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
-  keywords: 'pentatonic scale exercises, guitar picking, picking technique, alternate picking, triplets, legato, guitar practice, guitar lessons',
+  keywords: 'pentatonic scale exercises, guitar picking, alternate picking, legato, triplets, guitar technique, guitar lessons',
   openGraph: {
     title: 'Pentatonic Scale Exercises',
-    description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.',
+    description: 'Unlock your picking technique with focused pentatonic scale exercises and interactive tabs.',
     images: [
       {
-        url: '/Pentatonic Exercise Blog Post.png',
+        url: '/blog-thumbnail.svg',
         width: 1200,
         height: 630,
-        alt: 'Essential Guitar Picking Exercises Thumbnail',
+        alt: 'Pentatonic Scale Exercises',
       },
     ],
     type: 'article',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Essential Guitar Picking Exercises',
-    description: 'Master guitar picking technique with progressive exercises featuring interactive tablature, audio playback, and expert practice tips.',
-    images: ['/Pentatonic Exercise Blog Post.png'],
+    title: 'Pentatonic Scale Exercises',
+    description: 'Unlock your picking technique with focused pentatonic scale exercises and interactive tabs.',
+    images: ['/blog-thumbnail.svg'],
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/pentatonic-scale-exercises',
   },
 }; 

@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master essential musical terms with complete A-Z guide for guitarists.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/musical-terms-guitarists-guide',
+  },
 };
 
 export default function MusicalTermsGuitaristsGuideLayout({

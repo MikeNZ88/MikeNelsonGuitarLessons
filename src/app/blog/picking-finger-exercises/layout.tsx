@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns.',
     images: ['/guitar-picking-exercises-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/picking-finger-exercises',
+  },
 };
 
 export default function PickingFingerExercisesLayout({

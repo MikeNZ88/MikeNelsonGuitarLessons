@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, pricing, and where to buy.',
     images: [{ url: '/yamaha-pac112j.webp' }],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz',
+  },
 }
 
 export default function ElectricGuitarBeginnerGuide() {

@@ -23,9 +23,8 @@ export const metadata: Metadata = {
     description: 'Explore guitar lessons, theory, and practice tips on the Mike Nelson Guitar Lessons blog.',
     images: ['/blog-thumbnail.svg'],
   },
-  alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog',
-  },
+  // Individual blog posts will define their own canonical URLs
+  // This prevents the global canonical from overriding individual post canonicals
 };
 
 export default function BlogLayout({

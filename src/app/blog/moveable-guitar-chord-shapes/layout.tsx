@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master moveable chord shapes for all chord types with interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes',
+  },
 };
 
 export default function MoveableChordShapesLayout({

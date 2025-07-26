@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master triads on 3-string sets with comprehensive guide and interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/triads-on-3-string-sets',
+  },
 };
 
 export default function TriadsOn3StringSetsLayout({

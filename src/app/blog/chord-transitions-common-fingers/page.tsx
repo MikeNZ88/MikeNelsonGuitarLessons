@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     title: "Smoother Chord Changes: Common Fingers Between Guitar Chords",
     description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",
     images: ["/chord-transitions-thumbnail.svg"]
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers',
   }
 }
 

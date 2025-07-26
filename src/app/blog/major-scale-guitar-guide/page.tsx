@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     description: 'Master essential guitar shapes and patterns with comprehensive major scale guide.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/major-scale-guitar-guide',
+  },
 };
 
 export default function MajorScaleGuitarGuide() {

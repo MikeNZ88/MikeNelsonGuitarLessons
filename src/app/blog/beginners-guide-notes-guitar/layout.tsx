@@ -19,9 +19,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Beginner\'s Guide to Guitar Notes',
+    title: "Beginner's Guide to Guitar Notes",
     description: 'Learn guitar notes on the fretboard with interactive diagrams and clear explanations.',
     images: ['/blog-thumbnail.svg'],
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-notes-guitar',
   },
 };
 

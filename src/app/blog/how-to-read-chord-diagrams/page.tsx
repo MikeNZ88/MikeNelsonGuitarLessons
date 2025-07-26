@@ -26,6 +26,9 @@ export const metadata: Metadata = {
     description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement, muted strings, and chord notation.',
     images: ['/youtube-logo.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/how-to-read-chord-diagrams',
+  },
 };
 
 export default function HowToReadChordDiagrams() {

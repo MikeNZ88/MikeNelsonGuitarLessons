@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     type: 'article',
     locale: 'en_NZ',
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/kiesel-a2-7-string-review',
+  },
 }
 
 export default function KieselA2Review() {

@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Explore chords within different keys with interactive diagrams and audio.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/key-chords-explorer',
+  },
 };
 
 export default function KeyChordsExplorerLayout({

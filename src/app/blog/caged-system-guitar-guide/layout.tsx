@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     description: 'Master the CAGED system with comprehensive instructions and interactive diagrams.',
     images: ['/blog-thumbnail.svg'],
   },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/caged-system-guitar-guide',
+  },
 };
 
 export default function CagedSystemGuitarGuideLayout({

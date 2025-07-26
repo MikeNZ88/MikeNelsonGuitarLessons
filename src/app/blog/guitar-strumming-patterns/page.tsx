@@ -18,6 +18,9 @@ export const metadata: Metadata = {
         alt: 'Guitar Strumming Patterns Guide'
       }
     ]
+  },
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-strumming-patterns',
   }
 };
 

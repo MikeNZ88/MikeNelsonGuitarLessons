@@ -5,7 +5,10 @@ import { ArrowLeft, Music } from 'lucide-react'
 export const metadata: Metadata = {
   title: "Wellington Music Stores Disappearing | Mike Nelson",
   description: "The closure of Kapiti Music marks the end of an era for local music stores. Exploring what's left for Wellington region musicians.",
-  keywords: "Wellington music stores, Kapiti Music, music shops Wellington, guitar stores, Kingdom Music, Rockshop, Music Planet"
+  keywords: "Wellington music stores, Kapiti Music, music shops Wellington, guitar stores, Kingdom Music, Rockshop, Music Planet",
+  alternates: {
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores',
+  }
 }
 
 export default function WellingtonMusicStoresPost() {
