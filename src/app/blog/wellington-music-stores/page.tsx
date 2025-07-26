@@ -24,7 +24,7 @@ export default function WellingtonMusicStoresPost() {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
-            Wellington's Music Stores Keep Disappearing - Kapiti Coast Now Has None
+            Wellington's Music Stores Keep Disappearing
           </h1>
           
           <div className="text-gray-600 mb-8">

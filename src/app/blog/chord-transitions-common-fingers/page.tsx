@@ -42,7 +42,7 @@ export default function ChordTransitionsPost() {
           </Link>
           
           <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
-            🎸 Smoother Chord Changes: Identifying Common Fingers Between Chords on Guitar
+            🎸 Smoother Chord Changes: Common Fingers Between Chords
           </h1>
           
 
