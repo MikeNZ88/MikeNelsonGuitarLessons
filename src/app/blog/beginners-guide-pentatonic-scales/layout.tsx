@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-pentatonic-scales',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-pentatonic-scales/',
   },
 };
 

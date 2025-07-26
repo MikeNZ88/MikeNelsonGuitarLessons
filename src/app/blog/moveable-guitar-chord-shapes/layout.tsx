@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes/',
   },
 };
 
