@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Interactive Guitar Tools | Mike Nelson Guitar',
   description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams and audio playback.',
-  keywords: 'interactive guitar tools, scale explorer, rhythm tool, chord library, guitar learning tools, fretboard diagrams, guitar theory tools',
   openGraph: {
     title: 'Interactive Guitar Tools | Mike Nelson Guitar',
     description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',

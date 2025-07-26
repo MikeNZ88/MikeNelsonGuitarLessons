@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Contact Mike Nelson | Guitar Lessons Wellington',
   description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby. Get in touch today.',
-  keywords: 'contact guitar teacher, book guitar lessons Wellington, guitar lessons Pukerua Bay, guitar teacher contact, learn guitar Wellington',
   openGraph: {
     title: 'Contact Mike Nelson | Guitar Lessons Wellington',
     description: 'Book guitar lessons with Mike Nelson, a guitar teacher with 25+ years of playing experience in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',

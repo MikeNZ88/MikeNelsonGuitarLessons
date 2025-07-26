@@ -6,7 +6,6 @@ import { ArrowLeft, Music, DollarSign, Zap, Monitor, Settings } from 'lucide-rea
 export const metadata: Metadata = {
   title: 'My Kiesel A2 7-String | Mike Nelson Guitar Lessons',
   description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real import costs ($4,385 NZD), customs process, GST fees, and honest review from a Wellington guitar teacher.',
-  keywords: 'Kiesel A2 7-string, import guitar New Zealand, Kiesel guitars NZ, custom guitar import costs, guitar import GST, Wellington guitar teacher, 7-string guitar review, extended range guitar, metal guitar, neck-through guitar, passive pickups',
   openGraph: {
     title: 'My Kiesel A2 7-String - NZ Import Guide & Review',
     description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real costs, customs process, and honest review.',

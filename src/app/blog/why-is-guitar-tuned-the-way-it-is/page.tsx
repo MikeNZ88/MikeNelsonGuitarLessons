@@ -4,7 +4,6 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Why is Guitar Tuned This Way? | Mike Nelson Guitar',
   description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard and how it affects your playing.',
-  keywords: 'guitar tuning, standard tuning, EADGBE, guitar history, guitar strings, tuning logic, guitar theory',
   openGraph: {
     title: 'Why is Guitar Tuned This Way?',
     description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard.',

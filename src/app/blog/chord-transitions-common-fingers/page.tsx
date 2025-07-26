@@ -5,7 +5,6 @@ import { ArrowLeft, Music } from 'lucide-react'
 export const metadata: Metadata = {
   title: "Smoother Chord Changes Guide | Mike Nelson Guitar",
   description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",
-  keywords: "guitar chord transitions, common fingers, chord changes, guitar fingering, open chords, guitar lessons",
   openGraph: {
     title: "Smoother Chord Changes: Common Fingers Between Guitar Chords",
     description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",

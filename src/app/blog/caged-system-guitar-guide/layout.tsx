@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'The CAGED System: A Guitar Fretboard Guide | Mike Nelson Guitar Lessons',
   description: 'Master the CAGED system with my comprehensive guide. Learn how to navigate the guitar fretboard using the 5 essential chord shapes and scale patterns.',
-  keywords: 'CAGED system, guitar fretboard, chord shapes, scale patterns, guitar theory, guitar lessons, fretboard navigation',
   openGraph: {
     title: 'The CAGED System: A Guitar Fretboard Guide',
     description: 'Master the CAGED system with comprehensive instructions and interactive diagrams.',

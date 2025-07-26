@@ -5,7 +5,6 @@ import { Download, BookOpen, Music, Target, ExternalLink } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Major Scale Guitar Guide | Mike Nelson Guitar Lessons',
   description: 'Master essential guitar shapes and patterns with my comprehensive major scale guide. Learn one-octave shapes, modes, arpeggios, and fretboard mastery techniques.',
-  keywords: 'major scale guitar, guitar scales, scale patterns, guitar modes, arpeggios, guitar theory, guitar lessons, fretboard mastery',
   openGraph: {
     title: 'Major Scale Guitar Guide',
     description: 'Master essential guitar shapes and patterns with comprehensive major scale guide.',

@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Triads on 3-String Sets | Mike Nelson Guitar Lessons',
   description: 'Master triads on 3-string sets with my comprehensive guide. Learn major, minor, diminished, and augmented triads with interactive diagrams and practice exercises.',
-  keywords: 'triads, 3-string triads, guitar triads, chord construction, guitar theory, guitar lessons, triad shapes',
   openGraph: {
     title: 'Triads on 3-String Sets',
     description: 'Master triads on 3-string sets with comprehensive guide and interactive diagrams.',

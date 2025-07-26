@@ -5,7 +5,6 @@ import { ArrowLeft, BarChart3, Music } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Learn Rhythm with the Interactive Rhythm Tool | Mike Nelson Guitar Lessons',
   description: 'Explore rhythm fundamentals, time signatures, and note values with interactive audio and notation. Try the free Rhythm Tool to improve your timing and understanding.',
-  keywords: 'guitar rhythm, rhythm tool, time signatures, note values, interactive rhythm, music education, guitar lessons',
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/rhythm-tool/',
   },

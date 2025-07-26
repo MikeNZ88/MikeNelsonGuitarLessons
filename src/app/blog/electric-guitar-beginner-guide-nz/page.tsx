@@ -6,7 +6,6 @@ import { Guitar, ShoppingCart, Zap, DollarSign, Star, CheckCircle, ArrowRight, M
 export const metadata: Metadata = {
   title: 'Beginner Electric Guitar Guide - New Zealand 2025 | Mike Nelson Guitar Lessons',
   description: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, pricing, and where to buy. Updated for 2025 with current NZ pricing.',
-  keywords: 'beginner electric guitar, electric guitar New Zealand, first electric guitar, guitar amp, Yamaha Pacifica, Ibanez GRX, electric guitar setup, guitar lessons Wellington',
   openGraph: {
     title: 'Beginner Electric Guitar Guide - New Zealand 2025',
     description: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, pricing, and where to buy.',

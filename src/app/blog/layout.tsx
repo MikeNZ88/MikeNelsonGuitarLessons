@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Guitar Blog | Mike Nelson Guitar Lessons',
   description: 'Explore guitar lessons, theory, and practice tips on the Mike Nelson Guitar Lessons blog. Learn chords, scales, technique, and more from a teacher with 25+ years of experience.',
-  keywords: 'guitar blog, guitar lessons, guitar theory, guitar teacher, practice tips, guitar chords, guitar scales, music education',
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/',
   },

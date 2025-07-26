@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Blues Licks Exercises | Mike Nelson Guitar Lessons',
   description: 'Master blues guitar licks with my comprehensive exercise collection. Learn essential blues phrases, techniques, and improvisation skills with interactive tabs.',
-  keywords: 'blues licks, blues guitar, guitar licks, blues exercises, blues improvisation, guitar lessons, blues guitar lessons',
   openGraph: {
     title: 'Blues Licks Exercises',
     description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',

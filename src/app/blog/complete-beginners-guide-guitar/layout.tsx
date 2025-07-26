@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Complete Beginner\'s Guide to Learning Guitar | Mike Nelson Guitar Lessons',
   description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, practice tips, and beginner songs with interactive rhythm tools.',
-  keywords: 'beginner guitar guide, learn guitar New Zealand, first guitar, guitar lessons for beginners, guitar practice tips, beginner guitar songs',
   openGraph: {
     title: 'Complete Beginner\'s Guide to Learning Guitar',
     description: 'Everything you need to know to start learning guitar in New Zealand. What to buy, what you\'ll learn, and beginner songs with interactive tools.',

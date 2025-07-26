@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Interactive Rhythm Tool | Mike Nelson Guitar',
   description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',
-  keywords: 'rhythm tool, interactive rhythm, time signatures, note values, guitar rhythm, music timing, rhythm practice',
   openGraph: {
     title: 'Interactive Rhythm Tool | Mike Nelson Guitar',
     description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback and visual notation.',

@@ -5,7 +5,6 @@ import { ArrowLeft, Target, Users, Award } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'Guitar Picking Technique: Complete Progressive Guide | Mike Nelson Guitar Lessons',
   description: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
-  keywords: 'guitar picking technique, pick grip, alternate picking, string crossing, pick slanting, guitar lessons',
   openGraph: {
     title: 'Guitar Picking Technique: Complete Progressive Guide',
     description: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',

@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Beginner\'s Guide to Guitar Notes | Mike Nelson Guitar Lessons',
   description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, octaves, and how notes repeat across the guitar neck.',
-  keywords: 'guitar notes, fretboard notes, guitar note names, sharps and flats, guitar octaves, guitar theory for beginners',
   openGraph: {
     title: 'Beginner\'s Guide to Guitar Notes',
     description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, and octaves.',

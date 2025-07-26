@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Finger Picking Exercises | Mike Nelson Guitar',
   description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns with interactive tabs and audio.',
-  keywords: 'finger picking exercises, fingerstyle guitar, thumb independence, arpeggio patterns, guitar technique, finger coordination',
   openGraph: {
     title: 'Finger Picking Exercises | Mike Nelson Guitar',
     description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns.',

@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Beginner\'s Guide to Pentatonic Scales | Mike Nelson Guitar Lessons',
   description: 'Learn pentatonic scales with my step-by-step guide. Master the 5 essential pentatonic patterns with interactive diagrams and practice tips for guitar.',
-  keywords: 'pentatonic scales, guitar scales, minor pentatonic, major pentatonic, scale patterns, guitar lessons, beginner guitar scales',
   openGraph: {
     title: 'Beginner\'s Guide to Pentatonic Scales',
     description: 'Learn pentatonic scales with step-by-step instructions and interactive diagrams.',

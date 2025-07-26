@@ -6,7 +6,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'My Teaching Approach | Mike Nelson Guitar',
   description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',
-  keywords: 'guitar teaching approach, personalized guitar lessons, learn songs you love, practical music theory, guitar lessons Wellington',
   openGraph: {
     title: 'My Teaching Approach | Mike Nelson Guitar',
     description: 'Personalized, practical guitar lessons designed to get you playing the music you love. Goal-oriented learning with songs you love and practical music theory.',

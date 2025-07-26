@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Open Chord Library: Essential Guitar Chords | Mike Nelson Guitar Lessons',
   description: 'Master essential open chords with my comprehensive library. Interactive diagrams for major, minor, seventh, and suspended chords perfect for beginners.',
-  keywords: 'open chords, guitar chords, beginner guitar chords, chord diagrams, guitar chord library, guitar lessons',
   openGraph: {
     title: 'Open Chord Library: Essential Guitar Chords',
     description: 'Master essential open chords with interactive diagrams perfect for beginners.',
