@@ -34,7 +34,7 @@ export default function Home() {
   const testimonials = [
     {
       text: "Mike is brilliant. He is authentic, patient, and he knows his stuff. I am learning guitar later in life and was worried I couldn't do it. Mike has given me the confidence and structure to practise and persevere.",
-      author: "Greg Le'Maire",
+      author: "Greg Lemaire",
       rating: 5
     },
     {
