@@ -5,11 +5,11 @@ import AlphaTabPlayerCDN from '@/components/AlphaTabPlayerCDN';
 export default function EasiestBeginnerGuitarRiffsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
-      <div className="container mx-auto px-4 py-12">
-        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+      <div className="container mx-auto px-4 py-8 sm:py-12">
+        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-4 sm:p-8">
           {/* Header */}
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-amber-900 mb-4">
+          <header className="mb-6 sm:mb-8 text-center">
+            <h1 className="text-2xl sm:text-4xl font-bold text-amber-900 mb-4">
               10 Easiest Beginner Guitar Riffs
             </h1>
             <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
@@ -34,81 +34,82 @@ export default function EasiestBeginnerGuitarRiffsPage() {
             <h2 className="text-2xl font-semibold text-amber-900 mb-4 text-center">
               Why Learn These Classic Guitar Riffs?
             </h2>
-            <div className="prose prose-lg text-gray-700 space-y-4">
+            <div className="prose prose-lg text-gray-700">
               <p>
                 These 10 riffs represent some of the most recognizable guitar parts in rock history. Learning them will not only make you sound great but also teach you fundamental techniques that apply to countless other songs.
               </p>
-              
-              <h3 className="text-xl font-semibold text-amber-800 mt-6 mb-3">Benefits for Beginning Guitarists</h3>
-              <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li><strong>Build finger strength and dexterity</strong> - These riffs use common fingering patterns</li>
-                <li><strong>Develop timing and rhythm</strong> - Each riff teaches different rhythmic concepts</li>
-                <li><strong>Learn essential techniques</strong> - Palm muting, bending, hammer-ons, and more</li>
-                <li><strong>Boost confidence</strong> - Playing recognizable songs motivates practice</li>
-                <li><strong>Foundation for advanced playing</strong> - These techniques appear in thousands of songs</li>
-              </ul>
             </div>
+          </section>
+
+
+
+          {/* Tab Player */}
+          <section className="mb-12">
+            <h2 className="text-2xl font-semibold text-amber-900 mb-6">
+              Interactive Guitar Riffs Tab Player
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Use the dropdown below to select and practice each of the 10 beginner guitar riffs. The player includes standard notation and guitar tablature. All riffs use all downstrokes except for Come As You Are and Walk This Way (they include upstrokes). Come As You Are and Enter Sandman both start at the end of a bar - press the metronome button to hear this timing. Remember that the top staff (the one with musical symbols, not the tab with fret numbers) includes the fingers on the left hand for you to use.
+            </p>
+                        <div className="mb-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
+              <strong>Practice Tips:</strong> You can slow down the riffs if you want. Pay attention to the rhythm and try to feel the groove of each riff. All riffs use an overdriven/distorted tone except for Come As You Are, Otherside, and Jeremy which use a clean tone.
+            </div>
+            <AlphaTabPlayerCDN key="beginner-riffs-player" containerId="beginner-riffs-alphatab-container" showSlursAndSlides={true} />
           </section>
 
           {/* Riff Descriptions */}
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-4">Complete Guide to 10 Easy Guitar Riffs</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-amber-900 mb-4">Complete Guide to 10 Easy Guitar Riffs</h2>
             <p className="text-gray-600 mb-6">Each riff below is carefully selected to progressively build your guitar skills, from absolute beginner to more challenging techniques.</p>
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Column 1: Riffs 1-5 */}
-              <div className="space-y-4">
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">1. Smoke On The Water - Deep Purple</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Machine Head" (1972) - The quintessential beginner riff. Uses the same two strings with easy fingering.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">2. TNT - AC/DC</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "T.N.T." (1975) - A driving rock riff that introduces string bending and moving between different string sets.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">3. Otherside - Red Hot Chili Peppers</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Californication" (1999) - A clean, melodic riff that's slightly faster with more movement around the fretboard.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">4. Come As You Are - Nirvana</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Nevermind" (1991) - Features more movement back and forth between strings with a distinctive grunge sound.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">5. Jeremy - Pearl Jam</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Ten" (1991) - Introduces hammer-ons and requires faster speed with melodic playing.</p>
-                </div>
+            <div className="space-y-4">
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">1. Smoke On The Water - Deep Purple</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Machine Head" (1972) - The quintessential beginner riff. Uses the same two strings with easy fingering.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">2. TNT - AC/DC</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "T.N.T." (1975) - A driving rock riff that introduces string bending and moving between different string sets.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">3. Otherside - Red Hot Chili Peppers</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Californication" (1999) - A clean, melodic riff that's slightly faster with more movement around the fretboard.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">4. Come As You Are - Nirvana</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Nevermind" (1991) - Features more movement back and forth between strings with a distinctive grunge sound.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">5. Jeremy - Pearl Jam</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Ten" (1991) - Introduces hammer-ons and requires faster speed with melodic playing.</p>
               </div>
 
-              {/* Column 2: Riffs 6-10 */}
-              <div className="space-y-4">
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">6. Man In The Box - Alice In Chains</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Facelift" (1990) - Introduces dead notes and string damping techniques.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">7. Louie Louie - The Kingsmen</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">A classic three-chord progression (1963) that requires moving power chords on different string sets.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">8. Walk This Way - Aerosmith</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Toys in the Attic" (1975) - Requires alternate picking and is quite fast.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">9. Iron Man - Black Sabbath</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From the album "Paranoid" (1970) - Requires sliding power chords and more movement across the fretboard.</p>
-                </div>
-                
-                <div className="bg-amber-50 rounded-lg p-4 h-32">
-                  <h3 className="text-lg font-semibold text-amber-800 mb-2">10. Enter Sandman - Metallica</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">From "The Black Album" (1991) - Requires palm muting, more difficult timing, and covers a wider fret range.</p>
-                </div>
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">6. Man In The Box - Alice In Chains</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Facelift" (1990) - Introduces dead notes and string damping techniques.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">7. Louie Louie - The Kingsmen</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">A classic three-chord progression (1963) that requires moving power chords on different string sets.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">8. Walk This Way - Aerosmith</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Toys in the Attic" (1975) - Requires alternate picking and is quite fast.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">9. Iron Man - Black Sabbath</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From the album "Paranoid" (1970) - Requires sliding power chords and more movement across the fretboard.</p>
+              </div>
+              
+              <div className="bg-amber-50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">10. Enter Sandman - Metallica</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">From "The Black Album" (1991) - Requires palm muting, more difficult timing, and covers a wider fret range.</p>
               </div>
             </div>
             
@@ -144,29 +145,15 @@ export default function EasiestBeginnerGuitarRiffsPage() {
               </div>
             </div>
 
-            <h3 className="text-xl font-semibold text-amber-800 mb-3">Common Beginner Techniques You'll Learn</h3>
-                         <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
-               <li><strong>Power Chords</strong> - Foundation of rock music (5th and root notes)</li>
-               <li><strong>Palm Muting</strong> - Creates tight, percussive sound</li>
-               <li><strong>String Bending</strong> - Adds expression and blues feel</li>
-               <li><strong>Hammer-ons and Slides</strong> - Smooth note transitions</li>
-               <li><strong>Alternate Picking</strong> - Efficient picking technique</li>
-               <li><strong>Dead Notes/Muting</strong> - Rhythmic percussive effects</li>
-             </ul>
-          </section>
-
-          {/* Tab Player */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-amber-900 mb-6">
-              Interactive Guitar Riffs Tab Player
-            </h2>
-                                    <p className="text-gray-600 mb-6">
-                          Use the dropdown below to select and practice each of the 10 beginner guitar riffs. The player includes standard notation and guitar tablature.
-                        </p>
-            <div className="mb-4 p-3 bg-amber-100 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
-              <strong>Practice Tips:</strong> You can slow down the riffs if you want. Focus on playing clean notes with good tone. Pay attention to the rhythm and try to feel the groove of each riff.
-            </div>
-            <AlphaTabPlayerCDN key="beginner-riffs-player" containerId="beginner-riffs-alphatab-container" showSlursAndSlides={true} />
+            <h3 className="text-xl font-semibold text-amber-800 mb-3">Common Techniques You'll Learn</h3>
+            <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
+              <li><strong>Power Chords</strong> - Foundation of rock music (5th and root notes)</li>
+              <li><strong>1/4 Bends</strong> - Adds expression and blues feel</li>
+              <li><strong>Hammer-ons and Slides</strong> - Smooth note transitions</li>
+              <li><strong>Dead Notes/Muting</strong> - Rhythmic percussive effects</li>
+              <li><strong>Alternate Picking</strong> - Efficient picking technique</li>
+              <li><strong>Palm Muting</strong> - Creates tight, percussive sound</li>
+            </ul>
           </section>
 
           {/* Conclusion and Next Steps */}

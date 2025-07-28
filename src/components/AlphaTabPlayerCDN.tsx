@@ -1521,6 +1521,11 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       )}
 
       {/* AlphaTab Rendering Container */}
+      {/* Mobile rotation tip - appears before tab player */}
+      <div className="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
+        <strong>Tip:</strong> Rotate for better viewing on mobile device.
+      </div>
+      
       <div ref={containerRef} className="w-full overflow-x-auto mb-4" style={{ 
         maxHeight: isPlaying ? '600px' : 'none', 
         overflowY: isPlaying ? 'auto' : 'visible' 
