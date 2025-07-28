@@ -227,18 +227,18 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   // Page detection logic - moved outside useMemo so it's available in component scope
   const pageDetection = {
     pathname: pathname || '',
-    isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
-    isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false,
-    isFingerExercisesPage: pathname?.includes('/picking-finger-exercises/') || false,
-    isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs/') || false
+    isBluesLicksPage: pathname?.includes('/blues-licks-exercises') || false,
+    isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises') || false,
+    isFingerExercisesPage: pathname?.includes('/picking-finger-exercises') || false,
+    isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs') || false
   };
   
   console.log('🔍 Page Detection:', pageDetection);
   
-  const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
-                       pageDetection.pathname.includes('/guitar-arpeggios-exercises/') ||
-                       pageDetection.pathname.includes('/picking-finger-exercises/') ||
-                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs/');
+  const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises') || 
+                       pageDetection.pathname.includes('/guitar-arpeggios-exercises') ||
+                       pageDetection.pathname.includes('/picking-finger-exercises') ||
+                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs');
   console.log('🔍 Pathname check:', pathnameCheck);
   
   // Memoize currentExercises to prevent unnecessary re-renders
@@ -609,8 +609,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             scrollSpeed: 300, // Scroll speed in pixels per second
             isLooping: false // Will be controlled dynamically via the loop button
           },
-          // For blues licks, always use track 0 (lead guitar)
-          tracks: pathname?.includes('/blues-licks-exercises/') ? [0] : undefined,
+                  // For blues licks, always use track 0 (lead guitar)
+        tracks: pathname?.includes('/blues-licks-exercises') ? [0] : undefined,
           display: {
             scale: zoom, // Use the responsive zoom value
             layoutMode: 'page',
@@ -813,8 +813,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       setStatus('Ready to play!');
       setIsReady(true);
       
-      // Enable all tracks for blues licks after render is complete
-      if (currentExercises.length > 0 && currentExercises[0].items.length > 1) {
+              // Enable all tracks for blues licks after render is complete
+        if (pageDetection.isBluesLicksPage && currentExercises.length > 0 && currentExercises[0].items.length > 1) {
         console.log('🎵 Enabling all tracks after render for blues licks');
         console.log('🎵 Number of tracks:', currentExercises[0].items.length);
         
@@ -947,8 +947,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         }
       } else {
         // Set default tempo: 40 BPM for arpeggio page, 60 BPM for finger exercises, 20 BPM for pentatonic exercises
-        const isArpeggioPage = pathname?.includes('/guitar-arpeggios-exercises/');
-        const isFingerExercisesPage = pathname?.includes('/picking-finger-exercises/');
+        const isArpeggioPage = pathname?.includes('/guitar-arpeggios-exercises');
+        const isFingerExercisesPage = pathname?.includes('/picking-finger-exercises');
         const defaultTempo = isArpeggioPage ? 40 : isFingerExercisesPage ? 60 : 20;
         console.log(`No tempo found in score, using default ${defaultTempo} BPM for this page`);
         setTempo(defaultTempo);
