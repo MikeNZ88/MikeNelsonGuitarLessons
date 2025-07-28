@@ -76,7 +76,6 @@ export default function EasiestBeginnerGuitarRiffsLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h1 className="sr-only">10 Easiest Beginner Guitar Riffs</h1>
       {children}
     </>
   );
