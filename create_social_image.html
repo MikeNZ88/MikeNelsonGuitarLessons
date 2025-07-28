@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        .social-card {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #92400e 0%, #d97706 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .guitar-icon {
+            width: 80px;
+            height: 80px;
+            fill: white;
+        }
+        .site-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .tagline {
+            font-size: 24px;
+            font-weight: 400;
+            opacity: 0.9;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="social-card">
+        <div class="logo-section">
+            <svg class="guitar-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                <path d="M19.5 9.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5.67 1.5 1.5 1.5 1.5-.67 1.5-1.5zm-13 4c0-.83-.67-1.5-1.5-1.5S4 12.67 4 13.5 4.67 15 5.5 15s1.5-.67 1.5-1.5z"/>
+                <path d="M20 4h-2v2h-2V4h-2V2h2V0h2v2h2v2zM4 20h2v-2h2v2h2v2H8v2H6v-2H4v-2z"/>
+                <path d="M12 8c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/>
+            </svg>
+            <div class="site-title">Mike Nelson Guitar Lessons</div>
+        </div>
+        <div class="tagline">Learn Guitar Theory, Scales, Chords & Techniques in Wellington</div>
+    </div>
+</body>
+</html>

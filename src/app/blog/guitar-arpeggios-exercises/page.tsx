@@ -102,20 +102,23 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Guitar Arpeggio Exercises',
     description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
-    images: [
-      {
-        url: '/guitar-arpeggios-thumbnail.png',
-        width: 1200,
-        height: 630,
-        alt: 'Guitar Arpeggio Exercises Thumbnail',
-      },
-    ],
+    images: [{
+      url: '/mike_nelson_guitar_logo.jpg',
+      width: 1200,
+      height: 630,
+      alt: 'Guitar Arpeggios Exercises'
+    }],
     type: 'article',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Guitar Arpeggio Exercises',
     description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
-    images: ['/guitar-arpeggios-thumbnail.png'],
+          images: [{
+        url: '/arpeggio-social.jpg',
+        width: 1200,
+        height: 662,
+        alt: 'Guitar Arpeggios Exercises'
+      }],
   },
 }; 

@@ -37,10 +37,10 @@ export const metadata: Metadata = {
     siteName: "Mike Nelson Guitar Lessons",
     images: [
       {
-        url: 'https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Mike Nelson Guitar Teacher with Scale Explorer Tool',
+        alt: 'Mike Nelson Guitar Lessons',
       }
     ],
   },
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Mike Nelson Guitar Lessons | Guitar Teacher Wellington",
     description: "Guitar lessons in Wellington North. Home studio and mobile lessons in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.",
-    images: ['https://mikenelsonguitarlessons.co.nz/Mike%20Photo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
   },
   robots: {
     index: true,

@@ -12,21 +12,24 @@ export const metadata: Metadata = {
     title: "What is a Chord? Structure, Intervals, and Types",
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     type: 'article',
-    images: [
-      {
-        url: '/what-is-a-chord-thumbnail.svg',
+    images: [{
+        url: '/mike_nelson_guitar_logo.jpg',
         width: 240,
         height: 120,
         alt: 'Chord Puzzle Thumbnail'
-      }
-    ]
+      }]
   },
   // Add twitter card as well
   twitter: {
     card: 'summary_large_image',
     title: "What is a Chord? Structure, Intervals, and Types",
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
-    images: ['/what-is-a-chord-thumbnail.svg']
+          images: [{
+        url: '/what-is-chord-thumbnail-social.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'What is a Chord Guitar Guide'
+      }]
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord',

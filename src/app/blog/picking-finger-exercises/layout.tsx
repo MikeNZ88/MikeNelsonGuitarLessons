@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     type: 'article',
     images: [
       {
-        url: '/guitar-picking-exercises-thumbnail.svg',
+        url: '/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Finger Picking Exercises',
@@ -20,7 +20,12 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Finger Picking Exercises | Mike Nelson',
     description: 'Master finger picking technique with progressive exercises. Learn thumb independence, finger coordination, and arpeggio patterns.',
-    images: ['/guitar-picking-exercises-thumbnail.svg'],
+          images: [{
+        url: '/mike_nelson_guitar_logo.jpg',
+        width: 1200,
+        height: 662,
+        alt: 'Guitar Picking Finger Exercises'
+      }],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/picking-finger-exercises',

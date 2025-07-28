@@ -130,7 +130,7 @@ export const metadata: Metadata = {
     description: 'Unlock your picking technique with focused pentatonic scale exercises and interactive tabs.',
     images: [
       {
-        url: '/blog-thumbnail.svg',
+        url: '/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Pentatonic Scale Exercises',
@@ -142,7 +142,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Pentatonic Scale Exercises',
     description: 'Unlock your picking technique with focused pentatonic scale exercises and interactive tabs.',
-    images: ['/blog-thumbnail.svg'],
+    images: ['/mike_nelson_guitar_logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/pentatonic-scale-exercises',

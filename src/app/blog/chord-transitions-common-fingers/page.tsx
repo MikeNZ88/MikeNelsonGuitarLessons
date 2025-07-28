@@ -8,20 +8,23 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Smoother Chord Changes: Common Fingers Between Guitar Chords",
     description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",
-    images: [
-      {
-        url: "/chord-transitions-thumbnail.svg",
-        width: 1000,
-        height: 700,
-        alt: "Guitar chord diagram showing common fingers between C Major and A minor chords"
-      }
-    ]
+    images: [{
+      url: "/mike_nelson_guitar_logo.jpg",
+      width: 1000,
+      height: 700,
+      alt: "Guitar chord diagram showing common fingers between C Major and A minor chords"
+    }]
   },
   twitter: {
     card: "summary_large_image",
     title: "Smoother Chord Changes: Common Fingers Between Guitar Chords",
     description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",
-    images: ["/chord-transitions-thumbnail.svg"]
+          images: [{
+        url: "/chord-transitions-thumbnail-social.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Guitar Chord Transitions Guide"
+      }]
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers',

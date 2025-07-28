@@ -12,18 +12,18 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/blog-thumbnail.svg',
+        url: '/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'Guitar Blog',
-      },
+        alt: 'Mike Nelson Guitar Lessons Blog'
+      }
     ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Guitar Blog | Mike Nelson Guitar Lessons',
     description: 'Explore guitar lessons, theory, and practice tips on the Mike Nelson Guitar Lessons blog.',
-    images: ['/blog-thumbnail.svg'],
+    images: ['/mike_nelson_guitar_logo.jpg'],
   },
   // Individual blog posts will define their own canonical URLs
   // This prevents the global canonical from overriding individual post canonicals

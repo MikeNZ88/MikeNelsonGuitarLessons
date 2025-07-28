@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
     images: [
       {
-        url: '/blog-thumbnail.svg',
+        url: '/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Blues Licks Exercises',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Blues Licks Exercises',
     description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
-    images: ['/blog-thumbnail.svg'],
+    images: ['/mike_nelson_guitar_logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/blues-licks-exercises',
