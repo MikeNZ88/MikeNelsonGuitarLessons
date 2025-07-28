@@ -1284,7 +1284,7 @@ export default function Blog() {
     {
       id: '17',
       title: 'Master Guitar Strumming Patterns',
-      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 10 progressive patterns from beginner to advanced.',
+      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 11 progressive patterns from beginner to advanced, plus create custom patterns with our interactive builder.',
       readTime: '12 min read',
       category: 'Beginner - Intermediate',
       primaryCategory: 'Rhythm',

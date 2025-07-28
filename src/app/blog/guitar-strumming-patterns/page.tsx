@@ -5,10 +5,10 @@ import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine';
 
 export const metadata: Metadata = {
   title: 'Guitar Strumming Patterns Guide',
-  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 11 progressive patterns from beginner to advanced.',
+  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 11 progressive patterns from beginner to advanced, plus use our interactive pattern builder to create custom strumming patterns.',
       openGraph: {
       title: 'Master Guitar Strumming Patterns: Interactive Guide with Audio',
-      description: 'Learn guitar strumming patterns with playable examples. Progressive lessons from basic downstrokes to advanced 16th note patterns.',
+      description: 'Learn guitar strumming patterns with playable examples. Master 11 progressive patterns from basic downstrokes to advanced 16th notes, plus create custom patterns with our interactive builder.',
     type: 'article',
     images: [
       {
