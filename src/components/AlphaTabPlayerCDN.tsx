@@ -607,7 +607,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             cursorFollowMode: 'beat', // Follow cursor by beat for better visibility
             scrollMode: 'offscreen', // Enable offscreen scrolling
             scrollSpeed: 300, // Scroll speed in pixels per second
-            isLooping: false // We'll handle looping manually for better control
+            isLooping: false // Will be controlled dynamically via the loop button
           },
           // For blues licks, always use track 0 (lead guitar)
           tracks: pathname?.includes('/blues-licks-exercises/') ? [0] : undefined,
@@ -853,6 +853,15 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       console.log('Score loaded successfully');
       console.log('Score keys:', Object.keys(score));
       
+      // Apply loop setting after score loads (if loop was enabled)
+      if (isLoopingRef.current && alphaTabRef.current) {
+        console.log('🔄 Applying loop setting after score load:', isLoopingRef.current);
+        alphaTabRef.current.isLooping = isLoopingRef.current;
+        if (alphaTabRef.current.player) {
+          alphaTabRef.current.player.isLooping = isLoopingRef.current;
+        }
+      }
+      
             // Log details about tracks and their notation
       if (score.tracks && score.tracks.length > 0) {
         console.log('Found', score.tracks.length, 'tracks');
@@ -961,30 +970,20 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       const stateNames = ['Paused', 'Playing', 'Stopped'];
       setPlayerState(stateNames[e.state] || 'Unknown');
       setIsPlaying(e.state === 1); // 1 = playing
-      
-      // Handle looping when playback ends
-      if (e.state === 2 && isLoopingRef.current) { // 2 = stopped
-        console.log('Playback ended, looping enabled - restarting...');
-        setTimeout(() => {
-          if (alphaTabRef.current && isLoopingRef.current) {
-            console.log('Attempting to restart playback for loop...');
-            alphaTabRef.current.play();
-          }
-        }, 100); // Small delay to ensure proper restart
-      }
     });
 
-    // Add finished event handler for more reliable loop detection
+    // Minimal backup loop handling in case built-in looping has issues
     api.playerFinished.on(() => {
       console.log('Player finished event fired');
-      if (isLoopingRef.current) {
-        console.log('Loop enabled, restarting playback...');
+      // Only use manual restart if built-in looping is enabled but not working
+      if (isLoopingRef.current && alphaTabRef.current && alphaTabRef.current.isLooping) {
+        // Wait a very short time to see if built-in looping kicks in
         setTimeout(() => {
-          if (alphaTabRef.current && isLoopingRef.current) {
-            console.log('Restarting playback from finished event...');
+          if (isLoopingRef.current && alphaTabRef.current && !alphaTabRef.current.isPlaying) {
+            console.log('🔄 Built-in loop didn\'t restart, using manual backup');
             alphaTabRef.current.play();
           }
-        }, 150); // Slightly longer delay for finished event
+        }, 50); // Very short delay to check if built-in loop worked
       }
     });
 
@@ -1006,18 +1005,6 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     api.playerPositionChanged.on((e: any) => {
       // Enhanced position tracking with debugging
       console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
-      
-      // Check if we've reached the end for looping (backup method)
-      if (api.score && e.currentTick >= api.score.lastTickTempo && isLoopingRef.current && isPlaying) {
-        console.log('Reached end of track via position, triggering loop...');
-        setTimeout(() => {
-          if (alphaTabRef.current && isLoopingRef.current) {
-            console.log('Restarting from position check...');
-            alphaTabRef.current.stop();
-            alphaTabRef.current.play();
-          }
-        }, 100);
-      }
       
       // Ensure cursor follows playback smoothly
       if (isPlaying && api.scrollToCursor) {
@@ -1253,12 +1240,12 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     setIsLooping(newLoopState);
     isLoopingRef.current = newLoopState; // Update ref to match state
     
-    // Also set the loop state on the AlphaTab player if it supports it
-    if (alphaTabRef.current && alphaTabRef.current.isLooping !== undefined) {
+    // Use AlphaTab's built-in looping functionality
+    if (alphaTabRef.current) {
+      console.log('🔄 Setting AlphaTab built-in loop:', newLoopState);
       alphaTabRef.current.isLooping = newLoopState;
+      console.log('🔄 AlphaTab loop state set to:', alphaTabRef.current.isLooping);
     }
-    
-    console.log('🔄 Loop toggled:', newLoopState);
   };
 
   const handleMetronomeToggle = () => {
