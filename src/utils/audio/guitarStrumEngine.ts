@@ -636,6 +636,27 @@ export class GuitarStrumEngine {
       ]
     },
     {
+      id: 'sixteenth-three-ups',
+      name: '16th Note Pattern with 3 Ups',
+      beatsPerMeasure: 4,
+      description: 'Intermediate 16th note pattern featuring three consecutive upstrokes on beat 3',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        // Skip 1e, 1&, 1a
+        { type: 'down', time: 1, label: '2' },
+        { type: 'down', time: 1.5, label: '&' },
+        { type: 'up', time: 1.75, label: 'a' },
+        { type: 'up', time: 2.25, label: 'e' },
+        // Skip 3&
+        { type: 'up', time: 2.75, label: 'a' },
+        // Skip 3, 3e, 3&, 3a
+        { type: 'down', time: 3, label: '4' },
+        // Skip 4e
+        { type: 'down', time: 3.5, label: '&' },
+        { type: 'up', time: 3.75, label: 'a' },
+      ]
+    },
+    {
       id: 'sixteenth',
       name: '16th Note Pattern',
       beatsPerMeasure: 4,

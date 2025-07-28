@@ -30,7 +30,7 @@ export default function StrummingPattern({
   const loopIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Determine if this is a 16th note pattern
-  const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+  const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth' || pattern.id === 'sixteenth-three-ups';
 
   // Always use percussive mode
   useEffect(() => {
@@ -222,7 +222,7 @@ export default function StrummingPattern({
             const positions = [];
             
             // Check if this is a 16th note pattern
-            const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth';
+            const is16th = pattern.id === 'sixteenth' || pattern.id === 'funk-sixteenth' || pattern.id === 'sixteenth-three-ups';
             
             if (is16th) {
               // For 16th note pattern, show all 16 positions: 1 e & a 2 e & a 3 e & a 4 e & a

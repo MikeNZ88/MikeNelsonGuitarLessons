@@ -1,10 +1,11 @@
 import { Metadata } from 'next';
 import StrummingPattern from '@/components/rhythm/StrummingPattern';
+import PatternGenerator from '@/components/rhythm/PatternGenerator';
 import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine';
 
 export const metadata: Metadata = {
   title: 'Guitar Strumming Patterns Guide',
-  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 10 progressive patterns from beginner to advanced.',
+  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 11 progressive patterns from beginner to advanced.',
       openGraph: {
       title: 'Master Guitar Strumming Patterns: Interactive Guide with Audio',
       description: 'Learn guitar strumming patterns with playable examples. Progressive lessons from basic downstrokes to advanced 16th note patterns.',
@@ -31,19 +32,24 @@ export default function GuitarStrummingPatternsPage() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent mb-6">
             Master Guitar Strumming Patterns
           </h1>
           <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            The secret to solid timing and rhythm with 10 progressive patterns every guitarist needs
+            The secret to solid timing and rhythm with 11 progressive patterns every guitarist needs
           </p>
-          <a href="#patterns" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors mb-8">
-            Go Straight to Strumming Patterns
-          </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <a href="#patterns" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors">
+              Go Straight to Strumming Patterns
+            </a>
+            <a href="#pattern-builder" className="inline-block bg-white text-amber-800 border-2 border-amber-600 px-6 py-3 rounded-lg font-medium hover:bg-amber-50 hover:border-amber-700 transition-colors">
+              🎵 Go to Strumming Pattern Builder
+            </a>
+          </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-2xl mx-auto">
             <p className="text-amber-800 text-sm mb-3">
               <strong>Interactive Audio Guide:</strong> Each pattern below includes playable audio examples.
-              Click the play button to hear how each pattern sounds with an Em chord.
+              Click the play button to hear how each pattern sounds.
             </p>
             <p className="text-amber-800 text-sm">
               <strong>Use the metronome</strong> to hear the pulse of each beat - especially helpful for 
@@ -62,7 +68,7 @@ export default function GuitarStrummingPatternsPage() {
             <p className="text-gray-700 leading-relaxed mb-6">
               Strumming patterns are the heartbeat of guitar playing and one of the most crucial skills for 
               beginners to master. But here's the secret that many guitarists miss: <strong>great strumming 
-              isn't about which strings you hit—it's about maintaining consistent hand movement.</strong>
+              is about consistent hand movement.</strong>
             </p>
 
             <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
@@ -285,7 +291,7 @@ export default function GuitarStrummingPatternsPage() {
               Your hand still moves down, but doesn't hit the strings - it's a ghost strum!
             </p>
           </div>
-          <StrummingPattern pattern={patterns[5]} bpm={100} forcePercussion hideSoundModeToggle />
+          <StrummingPattern pattern={patterns[6]} bpm={100} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -301,7 +307,7 @@ export default function GuitarStrummingPatternsPage() {
               creates forward momentum. Great for driving rock and pop songs.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[6]} bpm={150} forcePercussion hideSoundModeToggle />
+          <StrummingPattern pattern={patterns[7]} bpm={150} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -317,7 +323,7 @@ export default function GuitarStrummingPatternsPage() {
               feel. The emphasis on off-beats gives it a distinctive rhythmic character.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[7]} bpm={120} forcePercussion hideSoundModeToggle />
+          <StrummingPattern pattern={patterns[8]} bpm={120} forcePercussion hideSoundModeToggle />
           
 
         </div>
@@ -333,41 +339,73 @@ export default function GuitarStrummingPatternsPage() {
               This creates a distinctive rhythmic feel used in ska, reggae, and punk music.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[8]} bpm={150} forcePercussion hideSoundModeToggle />
+          <StrummingPattern pattern={patterns[9]} bpm={150} forcePercussion hideSoundModeToggle />
           
 
         </div>
 
-        {/* Pattern 9: 16th Note Pattern */}
+        {/* Pattern 9: 16th Note Pattern with 3 Ups */}
         <div className="mb-12">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Pattern 9: 16th Note Pattern
+              Pattern 9: 16th Note Pattern with 3 Ups
+            </h2>
+            <p className="text-gray-600">
+              This intermediate 16th note pattern features three consecutive upstrokes on beat 3. 
+              It's a great stepping stone to more complex 16th note patterns, building coordination 
+              between your picking hand and rhythmic accuracy.
+            </p>
+          </div>
+          <StrummingPattern pattern={patterns[4]} bpm={80} />
+          
+
+        </div>
+
+        {/* Pattern 10: 16th Note Pattern */}
+        <div className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Pattern 10: 16th Note Pattern
             </h2>
             <p className="text-gray-600">
               Ready for a challenge? This pattern uses 16th note subdivisions. Each beat is divided into 
               four parts: "1-e-&-a". This creates a more complex, flowing rhythm.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[4]} bpm={60} />
+          <StrummingPattern pattern={patterns[5]} bpm={60} />
           
 
         </div>
 
-        {/* Pattern 10: Funk 16th Note Pattern */}
+        {/* Pattern 11: Funk 16th Note Pattern */}
         <div className="mb-12">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Pattern 10: Funk 16th Note Pattern
+              Pattern 11: Funk 16th Note Pattern
             </h2>
             <p className="text-gray-600">
               This advanced funk pattern uses complex 16th note syncopation. It's all about the groove - 
               the strategic placement of strums and ghost strums creates that infectious funk rhythm.
             </p>
           </div>
-          <StrummingPattern pattern={patterns[9]} bpm={120} />
+          <StrummingPattern pattern={patterns[10]} bpm={120} />
           
 
+        </div>
+
+        {/* Pattern Generator */}
+        <div id="pattern-builder" className="mb-12">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">
+              Create Your Own Patterns
+            </h2>
+            <p className="text-gray-600">
+              Now that you've learned these 11 essential patterns, why not create your own? 
+              Use our interactive Pattern Generator to build custom strumming patterns. 
+              Just click on the grid squares and the down/up strokes are automatically assigned!
+            </p>
+          </div>
+          <PatternGenerator />
         </div>
 
         {/* Common Mistakes */}
