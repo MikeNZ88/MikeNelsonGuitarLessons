@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/when-should-you-start-learning-guitar',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/when-should-you-start-learning-guitar/',
   },
 };
 

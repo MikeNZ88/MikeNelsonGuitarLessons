@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     ]
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-fretboard-navigation',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-fretboard-navigation/',
   }
 };
 

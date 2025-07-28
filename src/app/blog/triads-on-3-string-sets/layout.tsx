@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/triads-on-3-string-sets',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/triads-on-3-string-sets/',
   },
 };
 

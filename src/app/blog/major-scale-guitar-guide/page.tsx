@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/major-scale-guitar-guide',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/major-scale-guitar-guide/',
   },
 };
 

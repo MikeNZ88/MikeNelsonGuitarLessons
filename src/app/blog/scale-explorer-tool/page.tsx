@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Scale Explorer - Interactive Guitar Learning Tool | Mike Nelson Guitar Lessons",
   description: "Learn guitar scales with our free interactive Scale Explorer. Start with the major scale and understand how all other scales relate to it.",
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool/',
   },
 };
 

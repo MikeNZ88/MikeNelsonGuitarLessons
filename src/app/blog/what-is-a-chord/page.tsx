@@ -32,7 +32,7 @@ export const metadata: Metadata = {
       }]
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord/',
   }
 };
 

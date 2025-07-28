@@ -16,7 +16,7 @@ export const metadata: Metadata = {
       }],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-picking-technique-guide',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-picking-technique-guide/',
   },
 };
 

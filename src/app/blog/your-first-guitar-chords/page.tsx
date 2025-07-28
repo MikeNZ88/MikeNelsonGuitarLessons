@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/your-first-guitar-chords',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/your-first-guitar-chords/',
   },
 };
 

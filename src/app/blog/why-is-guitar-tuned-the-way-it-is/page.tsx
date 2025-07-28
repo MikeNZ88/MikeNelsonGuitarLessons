@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/why-is-guitar-tuned-the-way-it-is',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/why-is-guitar-tuned-the-way-it-is/',
   },
 };
 

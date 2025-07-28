@@ -145,6 +145,6 @@ export const metadata: Metadata = {
     images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/pentatonic-scale-exercises',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/pentatonic-scale-exercises/',
   },
 }; 

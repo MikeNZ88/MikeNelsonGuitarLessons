@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     ]
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-strumming-patterns',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/guitar-strumming-patterns/',
   }
 };
 

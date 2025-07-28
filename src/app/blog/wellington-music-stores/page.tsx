@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Wellington Music Stores Disappearing | Mike Nelson",
   description: "The closure of Kapiti Music marks the end of an era for local music stores. Exploring what's left for Wellington region musicians.",
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores/',
   }
 }
 

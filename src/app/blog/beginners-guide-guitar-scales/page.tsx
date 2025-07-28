@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     ]
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-guitar-scales',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/beginners-guide-guitar-scales/',
   }
 };
 
