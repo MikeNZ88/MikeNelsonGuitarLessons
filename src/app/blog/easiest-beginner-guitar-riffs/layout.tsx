@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: 'article',
     images: [
       {
-        url: '/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Album covers of classic rock songs including Black Sabbath Paranoid, Aerosmith Toys in the Attic, Deep Purple Machine Head, Nirvana Nevermind, Metallica Black Album, Alice in Chains Facelift, AC/DC TNT, Red Hot Chili Peppers Californication, The Kingsmen Louie Louie, and Pearl Jam Ten',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: '10 Easiest Beginner Guitar Riffs | Learn Classic Rock Songs',
     description: 'Master 10 iconic beginner guitar riffs from Deep Purple, Black Sabbath, AC/DC, Nirvana & more. Step-by-step tutorials with interactive tabs for new guitarists.',
-          images: ['/mike_nelson_guitar_logo.jpg'],
+          images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
   },
 };
 

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Interactive Rhythm Tool | Mike Nelson',
     description: 'Free interactive rhythm tool for learning time signatures, note values, and timing. Practice with audio playback.',
-    images: ['/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/rhythm-tool',

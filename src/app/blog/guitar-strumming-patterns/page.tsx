@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'article',
     images: [
       {
-        url: '/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Guitar Strumming Patterns Guide'

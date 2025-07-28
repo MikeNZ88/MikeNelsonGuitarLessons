@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Interactive Guitar Tools | Mike Nelson',
     description: 'Free interactive guitar tools including Scale Explorer, Rhythm Tool, and chord libraries. Learn guitar theory with visual fretboard diagrams.',
-    images: ['/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/tools',

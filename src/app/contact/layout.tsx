@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Contact Mike Nelson | Guitar Lessons Wellington',
     description: 'Book guitar lessons in Wellington North. Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby.',
-    images: ['/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/contact',

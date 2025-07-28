@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "Smoother Chord Changes: Common Fingers Between Guitar Chords",
     description: "Learn how to identify common fingers between chords for smoother transitions. Master chord changes with essential fingering tips and visual diagrams.",
     images: [{
-      url: "/mike_nelson_guitar_logo.jpg",
+      url: "https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg",
       width: 1000,
       height: 700,
       alt: "Guitar chord diagram showing common fingers between C Major and A minor chords"

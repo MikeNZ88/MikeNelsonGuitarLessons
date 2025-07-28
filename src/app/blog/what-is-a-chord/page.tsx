@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
     type: 'article',
     images: [{
-        url: '/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
         width: 240,
         height: 120,
         alt: 'Chord Puzzle Thumbnail'

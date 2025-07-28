@@ -103,7 +103,7 @@ export const metadata: Metadata = {
     title: 'Guitar Arpeggio Exercises',
     description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
     images: [{
-      url: '/mike_nelson_guitar_logo.jpg',
+      url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
       width: 1200,
       height: 630,
       alt: 'Guitar Arpeggios Exercises'
