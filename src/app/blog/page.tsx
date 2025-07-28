@@ -1498,7 +1498,7 @@ export default function Blog() {
     {
       id: '36',
       title: '10 Easiest Beginner Guitar Riffs',
-      excerpt: 'Learn 10 classic guitar riffs perfect for beginners. Master iconic melodies from Deep Purple, Black Sabbath, AC/DC and more with interactive tab player.',
+      excerpt: 'Learn 10 classic guitar riffs perfect for beginners. Master iconic riffs from Deep Purple, Black Sabbath, AC/DC and more with interactive tab player.',
       readTime: 'Interactive Tool',
       category: 'Beginner',
       primaryCategory: 'Technique',

@@ -609,7 +609,7 @@ export default function WhatIsChord() {
           <div id="open-chord-library" className="bg-amber-50 p-6 rounded-lg border border-amber-200 mt-8 scroll-mt-24">
             <h4 className="text-lg font-semibold mb-3 text-amber-800">Open Chord Library</h4>
             <p className="mb-4 text-amber-700">
-              Ready to see these chord structures in action? Check out our <Link href="/blog/open-chord-library" className="text-amber-600 hover:underline">Open Chord Library</Link> to visualize chord diagrams and see the interval patterns we've discussed.
+              Ready to see these chord structures in action? Check out the <Link href="/blog/open-chord-library" className="text-amber-600 hover:underline">Open Chord Library</Link> to visualize chord diagrams and see the interval patterns we've discussed.
             </p>
           </div>
         </section>
@@ -620,7 +620,7 @@ export default function WhatIsChord() {
           <div className="grid md:grid-cols-2 gap-4">
             <Link href="/blog/how-to-read-chord-diagrams" className="block p-4 border rounded-lg hover:bg-amber-50 transition-colors">
               <h4 className="font-semibold text-amber-600">How to Read Chord Diagrams</h4>
-              <p className="text-sm text-amber-700 mt-2">Learn to read chord diagrams and understand guitar chord notation.</p>
+              <p className="text-sm text-amber-700 mt-2">Learn how to read chord diagrams.</p>
             </Link>
             <Link href="/blog/caged-system-guitar-guide" className="block p-4 border rounded-lg hover:bg-amber-50 transition-colors">
               <h4 className="font-semibold text-amber-600">CAGED System Guitar Guide</h4>
