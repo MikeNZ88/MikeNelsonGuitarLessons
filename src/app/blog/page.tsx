@@ -1237,7 +1237,7 @@ export default function Blog() {
       image: '/moveable-chord-shapes-thumbnail.svg',
       slug: 'barre-chord-library',
       author: 'Mike Nelson',
-      sortOrder: 5
+      sortOrder: 6
     },
     {
       id: '23',
@@ -1251,7 +1251,7 @@ export default function Blog() {
       image: '/what-is-chord-thumbnail.svg',
       slug: 'what-is-a-chord',
       author: 'Mike Nelson',
-      sortOrder: 6
+      sortOrder: 7
     },
     {
       id: '16',
@@ -1279,7 +1279,7 @@ export default function Blog() {
       image: '/open-chord-library-thumbnail.svg',
       slug: 'open-chord-library',
       author: 'Mike Nelson',
-      sortOrder: 6
+      sortOrder: 5
     },
     {
       id: '17',
@@ -1293,7 +1293,7 @@ export default function Blog() {
       image: '/strumming-patterns-thumbnail.svg',
       slug: 'guitar-strumming-patterns',
       author: 'Mike Nelson',
-      sortOrder: 7
+      sortOrder: 5
     },
     {
       id: '20',
@@ -1321,7 +1321,7 @@ export default function Blog() {
       image: '/beginners-guide-pentatonic-scales-thumbnail.svg',
       slug: 'beginners-guide-pentatonic-scales',
       author: 'Mike Nelson',
-      sortOrder: 20
+      sortOrder: 9
     },
     {
       id: '4',
@@ -1335,7 +1335,7 @@ export default function Blog() {
       image: '/chord-transitions-thumbnail.svg',
       slug: 'chord-transitions-common-fingers',
       author: 'Mike Nelson',
-      sortOrder: 18
+      sortOrder: 4
     },
     {
       id: '25',
@@ -1379,7 +1379,7 @@ export default function Blog() {
       image: '/major-scale-guide.png',
       slug: 'major-scale-guitar-guide',
       author: 'Mike Nelson',
-      sortOrder: 10
+      sortOrder: 22
     },
     {
       id: '13',
@@ -1465,7 +1465,7 @@ export default function Blog() {
       image: '/Pentatonic Exercise Blog Post.png',
       slug: 'pentatonic-scale-exercises',
       author: 'Mike Nelson',
-      sortOrder: 9
+      sortOrder: 10
     },
     {
       id: '35',
@@ -1493,7 +1493,7 @@ export default function Blog() {
       image: '/Blues Blog Post.png',
       slug: 'blues-licks-exercises',
       author: 'Mike Nelson',
-      sortOrder: 10
+      sortOrder: 11
     },
     {
       id: '36',
@@ -1507,7 +1507,7 @@ export default function Blog() {
       image: '/guitar-riff-blog.png',
       slug: 'easiest-beginner-guitar-riffs',
       author: 'Mike Nelson',
-      sortOrder: 11
+      sortOrder: 6
     },
     {
       id: '1',
@@ -1609,7 +1609,7 @@ export default function Blog() {
       image: '/beginners-guide-scales-thumbnail.svg',
       slug: 'beginners-guide-notes-guitar',
       author: 'Mike Nelson',
-      sortOrder: 4
+      sortOrder: 5
     },
     {
       id: '30',
@@ -1637,7 +1637,7 @@ export default function Blog() {
       image: '/musical-terms-thumbnail.svg',
       slug: 'musical-terms-guitarists-guide',
       author: 'Mike Nelson',
-      sortOrder: 22
+      sortOrder: 20
     },
     {
       id: '34',
