@@ -145,6 +145,13 @@
         <priority>0.8</priority>
     </url>
     
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/easiest-beginner-guitar-riffs</loc>
+        <lastmod>2025-01-18</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
     <!-- CHORD FUNDAMENTALS - Core Teaching Content -->
     <url>
         <loc>https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord</loc>

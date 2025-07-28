@@ -10,6 +10,7 @@ interface Exercise {
   id: string;
   name: string;
   file: string;
+  tempo?: number;
 }
 
 interface AlphaTabPlayerCDNProps {
@@ -148,6 +149,70 @@ const bluesLicksExercises = [
   },
 ];
 
+// Beginner Guitar Riffs exercises
+const beginnerRiffsExercises = [
+  {
+    id: 'smoke-on-the-water',
+    name: 'Smoke On The Water - Deep Purple (1972)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Smoke On The Water Riff.gp',
+    tempo: 120
+  },
+  {
+    id: 'iron-man-main',
+    name: 'Iron Man - Black Sabbath (1970)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Iron Man Main Riff.gp',
+    tempo: 140
+  },
+  {
+    id: 'walk-this-way',
+    name: 'Walk This Way - Aerosmith (1975)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Walk This Way.gp',
+    tempo: 110
+  },
+  {
+    id: 'tnt-acdc',
+    name: 'TNT - AC/DC (1975)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/TNT ACDC Riff.gp',
+    tempo: 130
+  },
+  {
+    id: 'man-in-the-box',
+    name: 'Man In The Box - Alice In Chains (1990)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/AIC MAN IN THE BOX.gp',
+    tempo: 110
+  },
+  {
+    id: 'enter-sandman',
+    name: 'Enter Sandman - Metallica (1991)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Enter Sandman .gp',
+    tempo: 135
+  },
+  {
+    id: 'jeremy-pearl-jam',
+    name: 'Jeremy - Pearl Jam (1991)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Pearl Jam Jeremy.gp',
+    tempo: 140
+  },
+  {
+    id: 'otherside-rhcp',
+    name: 'Otherside - Red Hot Chili Peppers (1999)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Otherside RHCP.gp',
+    tempo: 95
+  },
+  {
+    id: 'come-as-you-are',
+    name: 'Come As You Are - Nirvana (1991)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Come As You Are .gp',
+    tempo: 120
+  },
+  {
+    id: 'louie-louie',
+    name: 'Louie Louie - The Kingsmen (1963)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/Louie Louie.gp',
+    tempo: 130
+  }
+];
+
 declare global {
   interface Window {
     alphaTab: any;
@@ -159,22 +224,25 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const alphaTabRef = useRef<any>(null);
   const pathname = usePathname();
   
+  // Page detection logic - moved outside useMemo so it's available in component scope
+  const pageDetection = {
+    pathname: pathname || '',
+    isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
+    isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false,
+    isFingerExercisesPage: pathname?.includes('/picking-finger-exercises/') || false,
+    isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs/') || false
+  };
+  
+  console.log('🔍 Page Detection:', pageDetection);
+  
+  const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
+                       pageDetection.pathname.includes('/guitar-arpeggios-exercises/') ||
+                       pageDetection.pathname.includes('/picking-finger-exercises/') ||
+                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs/');
+  console.log('🔍 Pathname check:', pathnameCheck);
+  
   // Memoize currentExercises to prevent unnecessary re-renders
   const currentExercises = useMemo(() => {
-    const pageDetection = {
-      pathname: pathname || '',
-      isBluesLicksPage: pathname?.includes('/blues-licks-exercises/') || false,
-      isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises/') || false,
-      isFingerExercisesPage: pathname?.includes('/picking-finger-exercises/') || false
-    };
-    
-    console.log('🔍 Page Detection:', pageDetection);
-    
-    const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises/') || 
-                         pageDetection.pathname.includes('/guitar-arpeggios-exercises/') ||
-                         pageDetection.pathname.includes('/picking-finger-exercises/');
-    console.log('🔍 Pathname check:', pathnameCheck);
-
     if (!pathnameCheck) {
       return [];
     }
@@ -276,6 +344,26 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       ];
     }
 
+    if (pageDetection.isBeginnerRiffsPage) {
+      return [
+        {
+          group: 'Beginner Guitar Riffs',
+          items: [
+            { id: 'smoke-on-the-water', name: 'Smoke On The Water - Deep Purple', file: '/GP Files/Scale Exercises/BLOG TABS/Smoke On The Water Riff.gp', tempo: 120 },
+            { id: 'tnt-acdc', name: 'TNT - AC/DC', file: '/GP Files/Scale Exercises/BLOG TABS/TNT ACDC Riff.gp', tempo: 130 },
+            { id: 'otherside-rhcp', name: 'Otherside - Red Hot Chili Peppers', file: '/GP Files/Scale Exercises/BLOG TABS/Otherside RHCP.gp', tempo: 95 },
+            { id: 'come-as-you-are', name: 'Come As You Are - Nirvana', file: '/GP Files/Scale Exercises/BLOG TABS/Come As You Are .gp', tempo: 120 },
+            { id: 'jeremy-pearl-jam', name: 'Jeremy - Pearl Jam', file: '/GP Files/Scale Exercises/BLOG TABS/Pearl Jam Jeremy.gp', tempo: 140 },
+            { id: 'man-in-the-box', name: 'Man In The Box - Alice In Chains', file: '/GP Files/Scale Exercises/BLOG TABS/AIC MAN IN THE BOX.gp', tempo: 110 },
+            { id: 'louie-louie', name: 'Louie Louie - The Kingsmen', file: '/GP Files/Scale Exercises/BLOG TABS/Louie Louie.gp', tempo: 130 },
+            { id: 'walk-this-way', name: 'Walk This Way - Aerosmith', file: '/GP Files/Scale Exercises/BLOG TABS/Walk This Way.gp', tempo: 110 },
+            { id: 'iron-man-main', name: 'Iron Man - Black Sabbath', file: '/GP Files/Scale Exercises/BLOG TABS/Iron Man Main Riff.gp', tempo: 140 },
+            { id: 'enter-sandman', name: 'Enter Sandman - Metallica', file: '/GP Files/Scale Exercises/BLOG TABS/Enter Sandman .gp', tempo: 135 }
+          ]
+        }
+      ];
+    }
+
     return [];
   }, [pathname]);
 
@@ -305,6 +393,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [playerState, setPlayerState] = useState('Stopped');
   const [tempo, setTempo] = useState<number | null>(null); // Will be set from loaded score
   const [originalTempo, setOriginalTempo] = useState<number | null>(null); // Store the original tempo from the file
+  const [playbackSpeed, setPlaybackSpeed] = useState<number>(100); // Playback speed as percentage (100 = normal speed)
   const [version, setVersion] = useState(Date.now()); // Force reload
   const [isLooping, setIsLooping] = useState(false); // Loop playback state
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
@@ -517,7 +606,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             enableMetronome: true, // Enable metronome support
             cursorFollowMode: 'beat', // Follow cursor by beat for better visibility
             scrollMode: 'offscreen', // Enable offscreen scrolling
-            scrollSpeed: 300 // Scroll speed in pixels per second
+            scrollSpeed: 300, // Scroll speed in pixels per second
+            isLooping: false // We'll handle looping manually for better control
           },
           // For blues licks, always use track 0 (lead guitar)
           tracks: pathname?.includes('/blues-licks-exercises/') ? [0] : undefined,
@@ -877,9 +967,24 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         console.log('Playback ended, looping enabled - restarting...');
         setTimeout(() => {
           if (alphaTabRef.current && isLoopingRef.current) {
+            console.log('Attempting to restart playback for loop...');
             alphaTabRef.current.play();
           }
         }, 100); // Small delay to ensure proper restart
+      }
+    });
+
+    // Add finished event handler for more reliable loop detection
+    api.playerFinished.on(() => {
+      console.log('Player finished event fired');
+      if (isLoopingRef.current) {
+        console.log('Loop enabled, restarting playback...');
+        setTimeout(() => {
+          if (alphaTabRef.current && isLoopingRef.current) {
+            console.log('Restarting playback from finished event...');
+            alphaTabRef.current.play();
+          }
+        }, 150); // Slightly longer delay for finished event
       }
     });
 
@@ -901,6 +1006,18 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     api.playerPositionChanged.on((e: any) => {
       // Enhanced position tracking with debugging
       console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      
+      // Check if we've reached the end for looping (backup method)
+      if (api.score && e.currentTick >= api.score.lastTickTempo && isLoopingRef.current && isPlaying) {
+        console.log('Reached end of track via position, triggering loop...');
+        setTimeout(() => {
+          if (alphaTabRef.current && isLoopingRef.current) {
+            console.log('Restarting from position check...');
+            alphaTabRef.current.stop();
+            alphaTabRef.current.play();
+          }
+        }, 100);
+      }
       
       // Ensure cursor follows playback smoothly
       if (isPlaying && api.scrollToCursor) {
@@ -1024,7 +1141,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     });
   };
 
-  const loadExercise = async (filePath: string) => {
+  const loadExercise = async (filePath: string, exerciseTempo?: number) => {
     try {
       setStatus('Loading exercise...');
       console.log('Loading exercise:', filePath);
@@ -1044,6 +1161,19 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       if (alphaTabRef.current) {
         console.log('Loading ArrayBuffer into AlphaTab...');
         alphaTabRef.current.load(arrayBuffer);
+        
+        // Set the tempo if provided (for beginner riffs)
+        if (exerciseTempo) {
+          console.log('🎵 Setting exercise tempo to:', exerciseTempo);
+          setTempo(exerciseTempo);
+          setOriginalTempo(exerciseTempo);
+        }
+        
+        // Reset playback speed to 100% for new exercises
+        setPlaybackSpeed(100);
+        if (alphaTabRef.current.playbackSpeed !== undefined) {
+          alphaTabRef.current.playbackSpeed = 1;
+        }
       }
       
     } catch (err) {
@@ -1064,7 +1194,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
       const group = currentExercises[0];
       exercise = group.items.find(item => item.id === exerciseId);
-      console.log('🔄 Found blues exercise:', exercise);
+      console.log('🔄 Found exercise:', exercise);
     } else {
       // Find in pentatonic exercises
       exercise = sixteenthNotes.find(ex => ex.id === exerciseId) ||
@@ -1073,7 +1203,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     
     if (exercise) {
       console.log('🔄 Loading exercise file:', exercise.file);
-      loadExercise(exercise.file);
+      loadExercise(exercise.file, (exercise as any).tempo);
     } else {
       console.log('❌ No exercise found for ID:', exerciseId);
     }
@@ -1122,6 +1252,12 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     const newLoopState = !isLooping;
     setIsLooping(newLoopState);
     isLoopingRef.current = newLoopState; // Update ref to match state
+    
+    // Also set the loop state on the AlphaTab player if it supports it
+    if (alphaTabRef.current && alphaTabRef.current.isLooping !== undefined) {
+      alphaTabRef.current.isLooping = newLoopState;
+    }
+    
     console.log('🔄 Loop toggled:', newLoopState);
   };
 
@@ -1131,6 +1267,22 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       alphaTabRef.current.metronomeVolume = !isMetronomeOn ? 0.3 : 0;
     }
     console.log('🥁 Metronome toggled:', !isMetronomeOn);
+  };
+
+  const handleSpeedChange = (newSpeed: number) => {
+    setPlaybackSpeed(newSpeed);
+    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
+      // Convert percentage to decimal (e.g., 100% = 1.0, 50% = 0.5)
+      alphaTabRef.current.playbackSpeed = newSpeed / 100;
+    }
+  };
+
+  const adjustSpeed = (change: number) => {
+    const newSpeed = Math.max(25, Math.min(200, playbackSpeed + change));
+    setPlaybackSpeed(newSpeed);
+    if (alphaTabRef.current && alphaTabRef.current.playbackSpeed !== undefined) {
+      alphaTabRef.current.playbackSpeed = newSpeed / 100;
+    }
   };
 
   const handleTempoChange = (newTempo: number) => {
@@ -1176,6 +1328,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             {pathname?.includes('/blues-licks-exercises/') ? 'Select Blues Lick Exercise' : 
              pathname?.includes('/guitar-arpeggios-exercises/') ? 'Select Arpeggio Exercise' :
              pathname?.includes('/picking-finger-exercises/') ? 'Select Finger Exercise' :
+             pathname?.includes('/easiest-beginner-guitar-riffs/') ? 'Select Beginner Riff' :
              'Select Exercise'}
           </label>
           <select
@@ -1223,37 +1376,62 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         </>
       )}
 
-      {/* Tempo Control */}
-      <div className="mb-4">
-        <label htmlFor="tempo-control" className="block text-sm font-medium text-gray-700 mb-2">
-          Tempo: {tempo || 'Loading...'} BPM
-        </label>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={() => adjustTempo(-5)}
-            disabled={tempo === null}
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md font-medium transition-colors disabled:opacity-50"
-          >
-            -5
-          </button>
-          <input
-            type="range"
-            id="tempo-control"
-            min="10"
-            max="200"
-            value={tempo || ''}
-            onChange={(e) => handleTempoChange(Number(e.target.value))}
-            className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          />
-          <button
-            onClick={() => adjustTempo(5)}
-            disabled={tempo === null}
-            className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md font-medium transition-colors disabled:opacity-50"
-          >
-            +5
-          </button>
+      {/* Speed/Tempo Control - Different for beginner riffs vs other exercises */}
+      {pageDetection.isBeginnerRiffsPage ? (
+        <div className="mb-4">
+          <label htmlFor="speed-control" className="block text-sm font-medium text-gray-700 mb-2">
+            Speed: {playbackSpeed}%
+          </label>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => adjustSpeed(-10)}
+              className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md font-medium transition-colors"
+            >
+              -10%
+            </button>
+            <input
+              type="range"
+              id="speed-control"
+              min="25"
+              max="100"
+              value={playbackSpeed}
+              onChange={(e) => handleSpeedChange(Number(e.target.value))}
+              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mb-4">
+          <label htmlFor="tempo-control" className="block text-sm font-medium text-gray-700 mb-2">
+            Tempo: {tempo || 'Loading...'} BPM
+          </label>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={() => adjustTempo(-5)}
+              disabled={tempo === null}
+              className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md font-medium transition-colors disabled:opacity-50"
+            >
+              -5
+            </button>
+            <input
+              type="range"
+              id="tempo-control"
+              min="10"
+              max="200"
+              value={tempo || ''}
+              onChange={(e) => handleTempoChange(Number(e.target.value))}
+              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            />
+            <button
+              onClick={() => adjustTempo(5)}
+              disabled={tempo === null}
+              className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md font-medium transition-colors disabled:opacity-50"
+            >
+              +5
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Status and Controls */}
       {/* Remove the status and playback info section */}
@@ -1357,13 +1535,16 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
             <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
             <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
+            {pageDetection.isBeginnerRiffsPage && (
+              <li><span className="font-bold text-amber-700">Brackets ( ):</span> Numbers in brackets are notes held from the previous bar.</li>
+            )}
             {showSlursAndSlides && (
               <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
             )}
             {showSlides && (
               <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
             )}
-            <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
+            <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the top staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
           </ul>
 
         </div>

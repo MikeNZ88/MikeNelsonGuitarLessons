@@ -1496,6 +1496,20 @@ export default function Blog() {
       sortOrder: 10
     },
     {
+      id: '36',
+      title: '10 Easiest Beginner Guitar Riffs',
+      excerpt: 'Learn 10 classic guitar riffs perfect for beginners. Master iconic melodies from Deep Purple, Black Sabbath, AC/DC and more with interactive tab player.',
+      readTime: 'Interactive Tool',
+      category: 'Beginner',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Tools', 'Tabs'],
+      skillLevel: 'beginner',
+      image: '/guitar-riff-blog.png',
+      slug: 'easiest-beginner-guitar-riffs',
+      author: 'Mike Nelson',
+      sortOrder: 11
+    },
+    {
       id: '1',
       title: '6 Essential Practice Tips for Guitar Students',
       excerpt: 'Discover proven practice techniques that will accelerate your guitar learning and help you make the most of your practice time.',

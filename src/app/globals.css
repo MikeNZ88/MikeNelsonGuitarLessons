@@ -477,3 +477,29 @@ img {
     margin-bottom: 0.25em;
   }
 }
+
+/* AlphaTab Rest Highlighting Override */
+/* Try to reduce or hide the highlighting on rest beats */
+.alphatab-cdn-container .at-cursor-beat-rest,
+.alphatab-cdn-container .at-cursor-rest,
+.alphatab-cdn-container [data-rest="true"].at-cursor-beat,
+.alphatab-cdn-container .at-rest.at-cursor,
+.alphatab-cdn-container .at-beat.at-rest.at-cursor {
+  opacity: 0.3 !important;
+  fill: transparent !important;
+  stroke: transparent !important;
+}
+
+/* Alternative: completely hide rest cursor highlighting */
+.alphatab-cdn-container .at-cursor-beat[data-beat-type="rest"],
+.alphatab-cdn-container .at-cursor-beat.at-rest {
+  display: none !important;
+}
+
+/* Specific targeting for beginner riffs page - completely hide rest highlighting */
+body:has([href*="easiest-beginner-guitar-riffs"]) .alphatab-cdn-container .at-cursor-beat[data-beat-type="rest"],
+body:has([href*="easiest-beginner-guitar-riffs"]) .alphatab-cdn-container .at-cursor-beat.at-rest,
+body:has([href*="easiest-beginner-guitar-riffs"]) .alphatab-cdn-container .at-cursor-rest {
+  display: none !important;
+  visibility: hidden !important;
+}
