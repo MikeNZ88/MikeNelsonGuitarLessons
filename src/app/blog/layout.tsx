@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Mike Nelson Guitar Lessons Blog'
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Guitar Blog | Mike Nelson Guitar Lessons',
     description: 'Explore guitar lessons, theory, and practice tips on the Mike Nelson Guitar Lessons blog.',
-    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   // Individual blog posts will define their own canonical URLs
   // This prevents the global canonical from overriding individual post canonicals

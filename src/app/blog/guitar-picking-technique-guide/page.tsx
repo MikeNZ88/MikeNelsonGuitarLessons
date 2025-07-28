@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: 'Guitar Picking Technique: Complete Progressive Guide',
     description: 'Master guitar picking from basic grip to advanced motion mechanics. Progressive guide covering pick slanting, string crossing, and escape techniques.',
           images: [{ 
-        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Artist Guitars Collection'

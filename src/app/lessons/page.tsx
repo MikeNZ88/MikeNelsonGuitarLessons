@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Guitar Lessons & Curriculum | Mike Nelson',
     description: 'Structured guitar lessons from beginner to advanced. Home studio in Pukerua Bay, mobile lessons, and online options.',
-    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/lessons',

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description: 'Master moveable chord shapes for all chord types with interactive diagrams.',
     images: [
       {
-        url: 'https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg',
+        url: 'https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg',
         width: 1200,
         height: 630,
         alt: 'Moveable Guitar Chord Shapes Library',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Moveable Guitar Chord Shapes Library',
     description: 'Master moveable chord shapes for all chord types.',
-    images: ['https://mikenelsonguitarlessons.co.nz/mike_nelson_guitar_logo.jpg'],
+    images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes/',
