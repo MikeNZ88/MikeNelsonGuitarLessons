@@ -395,14 +395,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [originalTempo, setOriginalTempo] = useState<number | null>(null); // Store the original tempo from the file
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(100); // Playback speed as percentage (100 = normal speed)
   const [version, setVersion] = useState(Date.now()); // Force reload
-  const [isLooping, setIsLooping] = useState(false); // Loop playback state
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
-  const isLoopingRef = useRef(false); // Ref to track loop state for event listeners
- 
-  // Ensure loop state is properly initialized
-  useEffect(() => {
-    isLoopingRef.current = isLooping;
-  }, [isLooping]);
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
@@ -607,7 +600,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             cursorFollowMode: 'beat', // Follow cursor by beat for better visibility
             scrollMode: 'offscreen', // Enable offscreen scrolling
             scrollSpeed: 300, // Scroll speed in pixels per second
-            isLooping: false // Will be controlled dynamically via the loop button
+
           },
                   // For blues licks, always use track 0 (lead guitar)
         tracks: pathname?.includes('/blues-licks-exercises') ? [0] : undefined,
@@ -853,14 +846,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       console.log('Score loaded successfully');
       console.log('Score keys:', Object.keys(score));
       
-      // Apply loop setting after score loads (if loop was enabled)
-      if (isLoopingRef.current && alphaTabRef.current) {
-        console.log('🔄 Applying loop setting after score load:', isLoopingRef.current);
-        alphaTabRef.current.isLooping = isLoopingRef.current;
-        if (alphaTabRef.current.player) {
-          alphaTabRef.current.player.isLooping = isLoopingRef.current;
-        }
-      }
+      
       
             // Log details about tracks and their notation
       if (score.tracks && score.tracks.length > 0) {
@@ -972,20 +958,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       setIsPlaying(e.state === 1); // 1 = playing
     });
 
-    // Minimal backup loop handling in case built-in looping has issues
-    api.playerFinished.on(() => {
-      console.log('Player finished event fired');
-      // Only use manual restart if built-in looping is enabled but not working
-      if (isLoopingRef.current && alphaTabRef.current && alphaTabRef.current.isLooping) {
-        // Wait a very short time to see if built-in looping kicks in
-        setTimeout(() => {
-          if (isLoopingRef.current && alphaTabRef.current && !alphaTabRef.current.isPlaying) {
-            console.log('🔄 Built-in loop didn\'t restart, using manual backup');
-            alphaTabRef.current.play();
-          }
-        }, 50); // Very short delay to check if built-in loop worked
-      }
-    });
+
 
     // Enhanced cursor tracking events
     api.playedBeatChanged.on((e: any) => {
@@ -1235,18 +1208,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     }
   };
 
-  const handleLoopToggle = () => {
-    const newLoopState = !isLooping;
-    setIsLooping(newLoopState);
-    isLoopingRef.current = newLoopState; // Update ref to match state
-    
-    // Use AlphaTab's built-in looping functionality
-    if (alphaTabRef.current) {
-      console.log('🔄 Setting AlphaTab built-in loop:', newLoopState);
-      alphaTabRef.current.isLooping = newLoopState;
-      console.log('🔄 AlphaTab loop state set to:', alphaTabRef.current.isLooping);
-    }
-  };
+
 
   const handleMetronomeToggle = () => {
     setIsMetronomeOn(!isMetronomeOn);
@@ -1363,6 +1325,31 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         </>
       )}
 
+      {/* Repeat Information for specific blog posts */}
+      {pageDetection.isBluesLicksPage && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+          <p className="text-sm text-amber-800">
+            <strong>Note:</strong> Each progression repeats 4 times in the tab.
+          </p>
+        </div>
+      )}
+      
+      {pageDetection.isFingerExercisesPage && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+          <p className="text-sm text-amber-800">
+            <strong>Note:</strong> Each exercise repeats twice in the tab.
+          </p>
+        </div>
+      )}
+      
+      {pathname?.includes('/pentatonic-scale-exercises') && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-md">
+          <p className="text-sm text-amber-800">
+            <strong>Note:</strong> Each exercise repeats twice in the tab.
+          </p>
+        </div>
+      )}
+
       {/* Speed/Tempo Control - Different for beginner riffs vs other exercises */}
       {pageDetection.isBeginnerRiffsPage ? (
         <div className="mb-4">
@@ -1472,19 +1459,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         >
           <MdStop size={26} className="mr-2" /><span className="sr-only">Stop</span>
         </button>
-        <button
-          onClick={handleLoopToggle}
-          disabled={!isReady}
-          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
-            ${isReady
-              ? isLooping
-                ? 'bg-amber-600 hover:bg-amber-700 text-white'
-                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-          `}
-        >
-          <MdLoop className="mr-2" size={22} />Loop
-        </button>
+
         <button
           onClick={handleMetronomeToggle}
           disabled={!isReady}
