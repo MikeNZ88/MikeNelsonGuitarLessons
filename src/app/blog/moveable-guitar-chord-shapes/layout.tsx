@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes//',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/moveable-guitar-chord-shapes',
   },
 };
 

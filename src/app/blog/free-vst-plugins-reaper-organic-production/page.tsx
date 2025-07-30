@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/free-vst-plugins-reaper-organic-production/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/free-vst-plugins-reaper-organic-production',
   },
 };
 
@@ -1164,9 +1164,9 @@ export default function FreeVSTPluginsReaperGuide() {
                 <div className="mt-8 p-4 bg-gray-50 rounded-lg">
                   <h3 className="font-semibold mb-2">Related Articles:</h3>
                   <ul className="space-y-1">
-                    <li><Link href="/blog/guitar-picking-technique-guide/" className="text-blue-600 hover:underline">Guitar Picking Technique: Complete Progressive Guide</Link></li>
-                    <li><Link href="/blog/guitar-strumming-patterns/" className="text-blue-600 hover:underline">Master Guitar Strumming Patterns</Link></li>
-                    <li><Link href="/blog/beginners-guide-guitar-scales/" className="text-blue-600 hover:underline">Beginner's Guide to Guitar Scales</Link></li>
+                                    <li><Link href="/blog/guitar-picking-technique-guide" className="text-blue-600 hover:underline">Guitar Picking Technique: Complete Progressive Guide</Link></li>
+                <li><Link href="/blog/guitar-strumming-patterns" className="text-blue-600 hover:underline">Master Guitar Strumming Patterns</Link></li>
+                <li><Link href="/blog/beginners-guide-guitar-scales" className="text-blue-600 hover:underline">Beginner's Guide to Guitar Scales</Link></li>
                   </ul>
                 </div>
 
