@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/youtube-logo.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/how-to-read-chord-diagrams/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/how-to-read-chord-diagrams',
   },
 };
 

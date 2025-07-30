@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     images: [{ url: '/yamaha-pac112j.webp' }],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/electric-guitar-beginner-guide-nz',
   },
 }
 

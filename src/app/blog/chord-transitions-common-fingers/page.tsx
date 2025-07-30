@@ -27,7 +27,7 @@ export const metadata: Metadata = {
       }]
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/chord-transitions-common-fingers',
   }
 }
 

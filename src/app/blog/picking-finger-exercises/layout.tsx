@@ -28,7 +28,7 @@ export const metadata: Metadata = {
       }],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/picking-finger-exercises/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/picking-finger-exercises',
   },
 };
 

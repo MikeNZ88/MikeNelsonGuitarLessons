@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/Mike Photo.jpg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/approach/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/approach',
   },
 };
 

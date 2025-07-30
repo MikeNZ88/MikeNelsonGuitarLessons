@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {
-    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/essential-practice-tips/',
+    canonical: 'https://mikenelsonguitarlessons.co.nz/blog/essential-practice-tips',
   },
 };
 
