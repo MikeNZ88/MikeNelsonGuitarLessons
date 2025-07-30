@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/blog/free-vst-plugins-reaper-organic-production",
+      "destination": "/blog/free-vst-plugins-reaper-organic-production/",
+      "permanent": true
+    },
+    {
+      "source": "/((?!api/)(?!_next/)(?!.*\\.).*[^/])$",
+      "destination": "/$1/",
+      "permanent": true
+    }
+  ],
+  "trailingSlash": true
+} 

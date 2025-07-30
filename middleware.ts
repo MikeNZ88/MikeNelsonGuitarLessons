@@ -14,15 +14,17 @@ export function middleware(request: NextRequest) {
 
   // Check if current path should be redirected
   if (redirects[pathname]) {
-    return NextResponse.redirect(new URL(redirects[pathname], request.url))
+    return NextResponse.redirect(new URL(redirects[pathname], request.url), 301)
   }
 
-  // Force trailing slash for all pages except homepage and specific files
+  // Force trailing slash for all pages except homepage, API routes, and files
   if (!pathname.endsWith('/') && 
       pathname !== '/' && 
       !pathname.includes('.') && 
-      !pathname.includes('/api/')) {
-    return NextResponse.redirect(new URL(pathname + '/', request.url))
+      !pathname.startsWith('/api/') &&
+      !pathname.startsWith('/_next/')) {
+    const newUrl = new URL(pathname + '/', request.url)
+    return NextResponse.redirect(newUrl, 301)
   }
 
   return NextResponse.next()
