@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Remove trailingSlash: true to allow both formats
+  // Force deployment update
   images: {
     remotePatterns: [
       {
