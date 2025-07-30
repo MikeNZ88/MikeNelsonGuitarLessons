@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // TEMPORARILY DISABLED - testing if middleware is causing 404s
+  return NextResponse.next()
+  
+  /*
   const { pathname } = request.nextUrl
 
   // Redirect specific duplicate pages to canonical versions (keep these specific ones)
@@ -19,6 +23,7 @@ export function middleware(request: NextRequest) {
 
   // Let Next.js handle everything else - no trailing slash enforcement
   return NextResponse.next()
+  */
 }
 
 export const config = {
