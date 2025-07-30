@@ -1,15 +1,19 @@
 {
   "redirects": [
     {
-      "source": "/blog/free-vst-plugins-reaper-organic-production",
-      "destination": "/blog/free-vst-plugins-reaper-organic-production/",
+      "source": "/policy.html",
+      "destination": "/privacy-policy",
       "permanent": true
     },
     {
-      "source": "/((?!api/)(?!_next/)(?!.*\\.).*[^/])$",
-      "destination": "/$1/",
+      "source": "/scale-explorer/index.html",
+      "destination": "/scale-explorer",
+      "permanent": true
+    },
+    {
+      "source": "/blog/rhythm-tool",
+      "destination": "/rhythm-tool",
       "permanent": true
     }
-  ],
-  "trailingSlash": true
+  ]
 } 
