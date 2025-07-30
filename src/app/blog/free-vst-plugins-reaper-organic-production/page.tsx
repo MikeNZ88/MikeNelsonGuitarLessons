@@ -42,31 +42,31 @@ export default function FreeVSTPluginsReaperGuide() {
       </div>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-16">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-r from-amber-800 to-orange-700 text-white py-12 sm:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-4">
-              <div className="flex items-center mr-4">
-                <Music className="w-6 h-6 mr-2 text-amber-200" />
-                <span className="text-amber-200 font-medium">All Levels</span>
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 mb-4">
+              <div className="flex items-center">
+                <Music className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-amber-200" />
+                <span className="text-amber-200 font-medium text-sm sm:text-base">All Levels</span>
               </div>
-              <span className="text-amber-200">•</span>
-              <span className="text-amber-200 ml-4">25 min read</span>
+              <span className="text-amber-200 hidden sm:inline">•</span>
+              <span className="text-amber-200 text-sm sm:text-base">25 min read</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               Beginner Guide to Recording Guitar: Complete Free Software Setup (2025)
             </h1>
-                    <p className="text-xl text-amber-200 mb-8">
-          Learn how to record guitar using completely free software - no expensive gear required!
-        </p>
-            <div className="flex flex-wrap gap-3 justify-center">
+            <p className="text-lg sm:text-xl text-amber-200 mb-6 sm:mb-8 px-2">
+              Learn how to record guitar using completely free software - no expensive gear required!
+            </p>
+            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
               <div className="flex items-center bg-amber-600 px-3 py-1 rounded-full">
-                <Download className="w-4 h-4 mr-2" />
-                <span className="text-sm">All Free</span>
+                <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">All Free</span>
               </div>
               <div className="flex items-center bg-orange-600 px-3 py-1 rounded-full">
-                <Award className="w-4 h-4 mr-2" />
-                <span className="text-sm">Professional Quality</span>
+                <Award className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Professional Quality</span>
               </div>
             </div>
           </div>
@@ -74,10 +74,10 @@ export default function FreeVSTPluginsReaperGuide() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
+      <section className="py-8 sm:py-12 lg:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <article className="bg-white rounded-lg shadow-lg p-8 md:p-12">
+            <article className="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 lg:p-12">
               
               {/* What You'll Learn Box */}
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
@@ -128,7 +128,7 @@ export default function FreeVSTPluginsReaperGuide() {
               {/* Table of Contents */}
               <div className="bg-gray-50 border-l-4 border-amber-500 p-6 mb-8">
                 <h2 className="text-xl font-bold text-gray-800 mb-4">Table of Contents</h2>
-                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                   <div>
                     <h3 className="font-semibold text-gray-700 mb-2">Getting Started</h3>
                     <ul className="space-y-1 text-gray-600">
@@ -166,7 +166,7 @@ export default function FreeVSTPluginsReaperGuide() {
                 </div>
               </div>
 
-              <div className="prose max-w-none">
+              <div className="prose max-w-none [&_a]:break-words [&_a]:break-all [&_a:hover]:break-all">
                 
                 <h2 id="the-guitar" className="text-2xl font-bold text-amber-800 mb-6 pb-2 border-b border-amber-200">
                   The Guitar
@@ -387,9 +387,9 @@ export default function FreeVSTPluginsReaperGuide() {
                   <strong>Important:</strong> We're only downloading VST format plugins. Installation differs between Mac and Windows:
                 </p>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
-                  <h4 className="text-amber-800 font-semibold mb-3">Mac Installation (Simple):</h4>
-                  <ol className="text-amber-700 space-y-2">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-6">
+                  <h4 className="text-amber-800 font-semibold mb-3 text-sm sm:text-base">Mac Installation (Simple):</h4>
+                  <ol className="text-amber-700 space-y-2 text-sm sm:text-base">
                     <li>Download and install the plugin for Mac</li>
                     <li>Next time you open Reaper, the plugin will be available</li>
                     <li>To use: Press <strong>Command+T</strong> (or <strong>Ctrl+T</strong>) to create a new track, or select an existing track</li>
@@ -398,9 +398,9 @@ export default function FreeVSTPluginsReaperGuide() {
                   </ol>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-8">
-                  <h4 className="text-amber-800 font-semibold mb-3">Windows Installation:</h4>
-                  <ol className="text-amber-700 space-y-2">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 sm:p-6 mb-8">
+                  <h4 className="text-amber-800 font-semibold mb-3 text-sm sm:text-base">Windows Installation:</h4>
+                  <ol className="text-amber-700 space-y-2 text-sm sm:text-base">
                     <li>First, check where your plugins folder is in Reaper: <strong>Options → Preferences → Plugins → VST</strong></li>
                     <li>When downloading the VST plugin, install it and copy the folder path</li>
                     <li>Paste the folder path where it asks for where to save the plugin</li>
@@ -425,8 +425,8 @@ export default function FreeVSTPluginsReaperGuide() {
 
                 <h4 className="text-lg font-semibold text-gray-800 mb-3">1. Neural Amp Modeler (NAM) (FREE) - Revolutionary AI-Powered</h4>
                 
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
+                <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 mb-6">
+                  <div className="order-2 lg:order-1">
                     <ul className="list-disc pl-6 text-gray-700 space-y-2">
                       <li><strong>Description</strong>: Revolutionary AI-powered amp modeling that captures the exact sound of real amplifiers using machine learning. People clone their real amps and share the "profiles" - you can download these profiles to get the exact sound of specific amplifiers.</li>
                       <li><strong>Best For</strong>: Ultra-realistic amp tones that sound indistinguishable from the real hardware</li>
@@ -439,15 +439,15 @@ export default function FreeVSTPluginsReaperGuide() {
                           <li>Free amp captures available from ToneHunt.org</li>
                         </ul>
                       </li>
-                      <li><strong>Download</strong>: <a href="https://neuralampmodeler.com/" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline">https://neuralampmodeler.com/</a></li>
+                      <li><strong>Download</strong>: <a href="https://neuralampmodeler.com/" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline break-all">https://neuralampmodeler.com/</a></li>
                       <li><strong>Setup Guide</strong>: <a href="https://www.youtube.com/watch?v=DFWVvJx1Cfs" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline">Complete NAM Setup & Usage Tutorial</a></li>
-                      <li><strong>Community Captures</strong>: <a href="https://tonehunt.org/" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline">https://tonehunt.org/</a> - Thousands of free amp captures</li>
+                      <li><strong>Community Captures</strong>: <a href="https://tonehunt.org/" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline break-all">https://tonehunt.org/</a> - Thousands of free amp captures</li>
                     </ul>
                   </div>
-                  <div className="flex flex-col space-y-4">
-                    <img src="/NAM.avif" alt="Neural Amp Modeler Interface" className="rounded-lg shadow-sm border border-gray-200 bg-gray-50 p-2" />
+                  <div className="flex flex-col space-y-4 order-1 lg:order-2">
+                    <img src="/NAM.avif" alt="Neural Amp Modeler Interface" className="rounded-lg shadow-sm border border-gray-200 bg-gray-50 p-2 w-full h-auto" />
                     <div>
-                      <img src="/TONEHUNT.png" alt="ToneHunt Community Captures" className="rounded-lg shadow-sm border border-gray-200 bg-gray-50 p-2" />
+                      <img src="/TONEHUNT.png" alt="ToneHunt Community Captures" className="rounded-lg shadow-sm border border-gray-200 bg-gray-50 p-2 w-full h-auto" />
                       <p className="text-center text-sm text-gray-600 mt-2 font-semibold">ToneHunt.org - Free Amp Captures</p>
                     </div>
                   </div>
@@ -471,8 +471,8 @@ export default function FreeVSTPluginsReaperGuide() {
 
                 <h4 className="text-lg font-semibold text-gray-800 mb-3">3. Blue Cat's Free Amp (FREE)</h4>
                 
-                <div className="grid md:grid-cols-2 gap-6 mb-6">
-                  <div>
+                <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 mb-6">
+                  <div className="order-2 lg:order-1">
                     <ul className="list-disc pl-6 text-gray-700 space-y-2">
                       <li><strong>Description</strong>: Simple but effective amp simulator with natural tube warmth</li>
                       <li><strong>Best For</strong>: Clean to moderate overdrive tones with organic character</li>
@@ -480,7 +480,7 @@ export default function FreeVSTPluginsReaperGuide() {
                       <li><strong>Download</strong>: <a href="https://www.bluecataudio.com/Products/Product_FreeAmp/" target="_blank" rel="noopener noreferrer" className="text-amber-600 hover:text-amber-700 underline">https://www.bluecataudio.com/Products/Product_FreeAmp/</a></li>
                     </ul>
                   </div>
-                  <div className="flex items-start">
+                  <div className="flex items-start order-1 lg:order-2">
                     <img src="/Bluecat amp.png" alt="Blue Cat's Free Amp Interface" className="rounded-lg shadow-sm border border-gray-200 bg-gray-50 p-2 w-full h-auto max-w-sm" />
                   </div>
                 </div>
