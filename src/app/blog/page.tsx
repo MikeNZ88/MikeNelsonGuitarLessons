@@ -1118,6 +1118,12 @@ export default function Blog() {
       category: 'Technique'
     },
     {
+      topic: 'Free VST Plugins',
+      description: 'Complete guide to free plugins for Reaper DAW',
+      link: '/blog/free-vst-plugins-reaper-organic-production',
+      category: 'Gear'
+    },
+    {
       topic: 'String Tuning',
       description: 'Why E-A-D-G-B-E tuning',
       link: '/blog/understanding-guitar-fretboard',
@@ -1652,6 +1658,20 @@ export default function Blog() {
       slug: 'guitar-arpeggios-exercises',
       author: 'Mike Nelson',
       sortOrder: 18
+    },
+    {
+      id: '37',
+      title: 'Beginner Guide to Recording Guitar: Complete Free Software Setup (2025)',
+      excerpt: 'Learn how to record guitar using completely free software. Step-by-step guide to Reaper DAW and essential free VST plugins for guitar recording.',
+      readTime: '25 min read',
+      category: 'All',
+      primaryCategory: 'Gear',
+      categories: ['Gear', 'Tools'],
+      skillLevel: 'all',
+      image: '/reaper-guide-thumbnail.png',
+      slug: 'free-vst-plugins-reaper-organic-production',
+      author: 'Mike Nelson',
+      sortOrder: 24
     }
   ];
 
