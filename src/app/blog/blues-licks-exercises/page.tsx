@@ -19,7 +19,6 @@ function CollapsibleSection({ title, children, isOpen, onToggle }: {
       >
         <div className="flex items-center gap-2">
           <span>{title}</span>
-          <span className="text-sm font-normal text-amber-700">(Click to expand)</span>
         </div>
         <svg
           className={`w-6 h-6 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -40,12 +39,12 @@ function CollapsibleSection({ title, children, isOpen, onToggle }: {
 }
 
 export default function BluesLicksExercises() {
-  const [isBbKingDetailsOpen, setIsBbKingDetailsOpen] = useState(false);
-  const [isChordTheoryOpen, setIsChordTheoryOpen] = useState(false);
+  const [isBbKingDetailsOpen, setIsBbKingDetailsOpen] = useState(true);
+  const [isChordTheoryOpen, setIsChordTheoryOpen] = useState(true);
 
-  const [isScaleRulesOpen, setIsScaleRulesOpen] = useState(false);
-  const [isProgressiveLevelsOpen, setIsProgressiveLevelsOpen] = useState(false);
-  const [isLevels3To5Open, setIsLevels3To5Open] = useState(false);
+  const [isScaleRulesOpen, setIsScaleRulesOpen] = useState(true);
+  const [isProgressiveLevelsOpen, setIsProgressiveLevelsOpen] = useState(true);
+  const [isLevels3To5Open, setIsLevels3To5Open] = useState(true);
 
   const handleMenuClick = (sectionId: string, setOpenState?: (open: boolean) => void) => {
     // Open the section if it has a state setter
@@ -121,25 +120,134 @@ export default function BluesLicksExercises() {
         <p className="text-amber-900 text-sm mb-2">
           This is why the blues doesn't fit neatly into a traditional major or minor key. It also explains why we can play the <span className="font-bold text-amber-800">minor pentatonic</span> scale over these "major" chords: blues melodies often use both the <span className="font-bold text-amber-800">minor 3rd (b3)</span> and the <span className="font-bold text-amber-800">major 3rd (3)</span> together, creating the classic blues tension and release.
         </p>
-        <p className="text-amber-900 text-base flex items-start gap-2 mt-4">
+        <p className="text-amber-900 text-sm flex items-start gap-2 mt-4">
           <span aria-label="info" className="mt-0.5">{/* Lightbulb SVG */}
             <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#F59E42" opacity="0.15"/><path d="M8 2.5a4.5 4.5 0 0 0-2.5 8.25V12a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-1.25A4.5 4.5 0 0 0 8 2.5Zm-1.5 9.5v-1.05a.5.5 0 0 0-.25-.43A3.5 3.5 0 1 1 12 8.52a.5.5 0 0 0-.25.43V12h-4Z" fill="#D97706"/></svg>
           </span>
           <span><span className="font-bold">Summary:</span> Blues is special because it blends major and minor sounds, and uses dominant 7th chords for all three main chords in the progression.</span>
         </p>
-        <p className="text-amber-900 text-base flex items-start gap-2 mt-2">
+        <p className="text-amber-900 text-sm flex items-start gap-2 mt-2">
           <span aria-label="info" className="mt-0.5">{/* Lightbulb SVG */}
             <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#F59E42" opacity="0.15"/><path d="M8 2.5a4.5 4.5 0 0 0-2.5 8.25V12a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-1.25A4.5 4.5 0 0 0 8 2.5Zm-1.5 9.5v-1.05a.5.5 0 0 0-.25-.43A3.5 3.5 0 1 1 12 8.52a.5.5 0 0 0-.25.43V12h-4Z" fill="#D97706"/></svg>
           </span>
           <span><span className="font-bold">Note:</span> Not all blues is based on dominant 7th ("major blues") progressions. <span className="font-bold text-amber-800">Minor blues</span> progressions use minor chords (e.g., Am, Dm, Em) and the minor pentatonic/blues scale throughout. The concepts on this page focus on the classic major/dominant 7th blues, but the minor blues sound is just as important!</span>
         </p>
-        <p className="text-amber-900 text-base flex items-start gap-2 mt-2">
+        <p className="text-amber-900 text-sm flex items-start gap-2 mt-2">
           <span aria-label="info" className="mt-0.5">{/* Lightbulb SVG */}
             <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#F59E42" opacity="0.15"/><path d="M8 2.5a4.5 4.5 0 0 0-2.5 8.25V12a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-1.25A4.5 4.5 0 0 0 8 2.5Zm-1.5 9.5v-1.05a.5.5 0 0 0-.25-.43A3.5 3.5 0 1 1 12 8.52a.5.5 0 0 0-.25.43V12h-4Z" fill="#D97706"/></svg>
           </span>
           <span><span className="font-bold">Most importantly:</span> Study great blues players, their approach and their licks. The theory provides the foundation, but the real learning comes from listening to and transcribing the masters like B.B. King, Albert King, Freddie King, Eric Clapton, Stevie Ray Vaughan, and many others.</span>
         </p>
       </div>
+
+      {/* 12-Bar Blues Progression Diagram */}
+      <div className="mb-8 bg-white border border-amber-300 rounded-lg p-6">
+        <h3 className="text-lg font-bold text-amber-900 mb-4 text-center">A Major 12-Bar Blues Progression</h3>
+        <div className="grid grid-cols-4 gap-2 max-w-2xl mx-auto">
+          {/* Bar 1-4 */}
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 1</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 2</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 3</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 4</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          
+          {/* Bar 5-8 */}
+          <div className="text-center p-3 bg-green-50 border border-green-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 5</div>
+            <div className="text-lg font-bold text-green-800">D7</div>
+            <div className="text-xs text-gray-500">IV7</div>
+          </div>
+          <div className="text-center p-3 bg-green-50 border border-green-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 6</div>
+            <div className="text-lg font-bold text-green-800">D7</div>
+            <div className="text-xs text-gray-500">IV7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 7</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 8</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          
+          {/* Bar 9-12 */}
+          <div className="text-center p-3 bg-red-50 border border-red-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 9</div>
+            <div className="text-lg font-bold text-red-800">E7</div>
+            <div className="text-xs text-gray-500">V7</div>
+          </div>
+          <div className="text-center p-3 bg-green-50 border border-green-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 10</div>
+            <div className="text-lg font-bold text-green-800">D7</div>
+            <div className="text-xs text-gray-500">IV7</div>
+          </div>
+          <div className="text-center p-3 bg-blue-50 border border-blue-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 11</div>
+            <div className="text-lg font-bold text-blue-800">A7</div>
+            <div className="text-xs text-gray-500">I7</div>
+          </div>
+          <div className="text-center p-3 bg-red-50 border border-red-200 rounded">
+            <div className="text-xs text-gray-600 mb-1">Bar 12</div>
+            <div className="text-lg font-bold text-red-800">E7</div>
+            <div className="text-xs text-gray-500">V7</div>
+          </div>
+        </div>
+        
+                 {/* Legend */}
+         <div className="flex justify-center gap-6 mt-4 text-sm">
+           <div className="flex items-center gap-2">
+             <div className="w-4 h-4 bg-blue-100 border border-blue-200 rounded"></div>
+             <span className="text-gray-700">A7 - The one chord</span>
+           </div>
+           <div className="flex items-center gap-2">
+             <div className="w-4 h-4 bg-green-100 border border-green-200 rounded"></div>
+             <span className="text-gray-700">D7 - The four chord</span>
+           </div>
+           <div className="flex items-center gap-2">
+             <div className="w-4 h-4 bg-red-100 border border-red-200 rounded"></div>
+             <span className="text-gray-700">E7 - The five chord</span>
+           </div>
+         </div>
+        
+                 <div className="text-center mt-4 text-sm text-gray-600">
+           <p>This progression repeats continuously. Bars 9-12 are called the "turnaround" - they create tension and lead back to Bar 1. Bar 12 is sometimes played with the 1 chord (A7), but we are using the 5 chord (E7) for a stronger resolution.</p>
+         </div>
+      </div>
+
+      {/* Tab Player - Now placed after the blues theory intro */}
+      <div id="interactive-tabs" className="mb-8">
+        <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Blues Licks Tab Player</h2>
+        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
+          <p className="text-amber-900 text-sm mb-3">
+            Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. Exercise 1A uses the b3 - 3 - 1 lick almost exclusively, while Exercise 1B uses the b3 - 3 - b7 lick. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
+          </p>
+          <p className="text-amber-900 text-sm mb-4">The final exercise uses the BB King box for E7. It also uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
+          <p className="text-amber-900 text-sm font-semibold">
+            📖 Additional theory details, fretboard diagrams, and advanced concepts can be found below the tab player.
+          </p>
+        </div>
+        <AlphaTabPlayerCDN key={Date.now()} containerId="blues-licks-alphatab-container" />
+      </div>
+
+      {/* Additional Theory Sections */}
 
       {/* Blues Essentials */}
       <div className="mb-8">
@@ -653,6 +761,18 @@ export default function BluesLicksExercises() {
               <div className="text-amber-700 text-sm mt-4 text-center italic">
                 These are just examples but these notes are available on many different places on the fretboard. These positions have been chosen because, with the exception of the 9th fret, they are all located inside the A Minor Pentatonic Shape 1 (where beginners start).
               </div>
+              
+              {/* Example showing different octaves of the b3 - 3 - 1 lick */}
+              <div className="mt-6 text-center">
+                <img 
+                  src="/b3 3 1 .png" 
+                  alt="Examples of ♭3 - 3 - 1 lick showing both lower octave (A on 7th fret D string) and higher octave (A on 10th fret B string)" 
+                  className="mx-auto max-w-full h-auto rounded-lg shadow-md border-4 border-amber-300"
+                />
+                <div className="text-amber-700 text-sm mt-2 italic">
+                  This example shows the ♭3 - 3 - 1 lick for A with two different octaves: lower 1 (A on 7th fret D string) and higher 1 (A on 10th fret B string).
+                </div>
+              </div>
             </div>
 
         </div>
@@ -858,19 +978,6 @@ export default function BluesLicksExercises() {
 
 
       </div>
-
-      {/* Tab Player */}
-      <div id="interactive-tabs" className="mb-8">
-        <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Blues Licks Tab Player</h2>
-        <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
-          <p className="text-amber-900 text-sm mb-3">
-            Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. Exercise 1A uses the b3 - 3 - 1 lick almost exclusively, while Exercise 1B uses the b3 - 3 - b7 lick. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
-          </p>
-          <p className="text-amber-900 text-sm mb-4">The final exercise uses the BB King box for E7. It also uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
-        </div>
-        <AlphaTabPlayerCDN key={Date.now()} containerId="blues-licks-alphatab-container" />
-      </div>
-
 
 
       {/* How to Practice */}
