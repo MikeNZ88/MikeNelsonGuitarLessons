@@ -115,37 +115,44 @@ const bluesLicksExercises = [
   {
     id: 'b3-3-1-lick-3-chords',
     name: 'b3 - 3 - 1 lick, 3 chords',
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-b7-lick-3-chords',
     name: 'b3 - 3 - b7 lick, 3 chords',
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-1-lick-major-am', // This is V2
     name: 'Am Pentatonic', // Corrected label
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-1-lick-am-em', // This is V3
     name: 'A Major Pentatonic over A7, Am Pentatonic over D7, A Major Pentatonic over E7', // Corrected label
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-1-lick-e-major-em', // This is V4
     name: 'E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-1-lick-major-am-blues-d-major', // This is V5
     name: 'A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7', // Corrected label
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp',
+    tempo: 80
   },
   {
     id: 'b3-3-1-lick-hybrid-bbking-v6', // This is V6
     name: 'A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
+    tempo: 80
   },
 ];
 
@@ -255,37 +262,44 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             {
               id: 'b3-3-1-lick-3-chords',
               name: '1A. b3 - 3 - 1 lick over each of the 3 Chords: A7, D7, & E7',
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-b7-lick-3-chords',
               name: '1B. b3 - 3 - b7 lick over each of the 3 Chords: A7, D7, & E7',
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V7.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-1-lick-major-am', // This is V2
               name: '2. Am Pentatonic', // Corrected label
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V2.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-1-lick-am-em', // This is V3
               name: '3. A Major Pentatonic over A7, Am Pentatonic over D7, A Major Pentatonic over E7', // Corrected label
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V3.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-1-lick-multi',
               name: '4. E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-1-lick-em-em',
               name: '5A. A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7',
-              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp'
+              file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp',
+              tempo: 80
             },
             {
               id: 'b3-3-1-lick-hybrid-bbking-v6',
               name: '5B. A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
+              tempo: 80
             },
           ]
         }
@@ -897,11 +911,22 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       
       setStatus('Score loaded, initializing audio...');
       
-      // Try multiple ways to get the tempo from the score
+      // Try multiple ways to get the tempo - PRIORITY: Exercise tempo override first!
       let initialTempo = null;
       
+      // Method 0 (HIGHEST PRIORITY): Check if the exercise has a custom tempo override
+      // Find exercise by looking through all current exercises for tempo override
+      let exerciseWithTempo = null;
+      if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
+        // Look for any exercise with tempo property (for blues licks, all should have tempo: 80)
+        exerciseWithTempo = currentExercises[0].items.find(item => 'tempo' in item && (item as any).tempo);
+        if (exerciseWithTempo) {
+          initialTempo = (exerciseWithTempo as any).tempo;
+          console.log('🎵 Using exercise tempo override:', initialTempo, 'from exercise:', exerciseWithTempo.name);
+        }
+      }
       // Method 1: Check masterVolume.tempo
-      if (score.masterVolume?.tempo) {
+      else if (score.masterVolume?.tempo) {
         initialTempo = score.masterVolume.tempo;
         console.log('Found tempo in masterVolume.tempo:', initialTempo);
       }
