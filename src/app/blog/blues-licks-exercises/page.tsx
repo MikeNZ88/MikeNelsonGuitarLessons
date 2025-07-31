@@ -39,7 +39,7 @@ function CollapsibleSection({ title, children, isOpen, onToggle }: {
 }
 
 export default function BluesLicksExercises() {
-  const [isBbKingDetailsOpen, setIsBbKingDetailsOpen] = useState(true);
+
   const [isChordTheoryOpen, setIsChordTheoryOpen] = useState(true);
 
   const [isScaleRulesOpen, setIsScaleRulesOpen] = useState(true);
@@ -99,7 +99,7 @@ export default function BluesLicksExercises() {
               <h3 className="font-semibold text-amber-800 mb-2">Advanced Concepts</h3>
               <ul className="space-y-2 text-sm">
                 <li><a href="#scale-rules" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('scale-rules', setIsScaleRulesOpen); }}>Scale Rules for Major 12 Bar Blues</a></li>
-                <li><a href="#bb-king-box" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('bb-king-box'); }}>What is the BB King Box?</a></li>
+
                 <li><a href="#chord-theory" className="text-amber-700 hover:text-amber-900 underline cursor-pointer" onClick={(e) => { e.preventDefault(); handleMenuClick('chord-theory', setIsChordTheoryOpen); }}>Chord Note Theory</a></li>
               </ul>
             </div>
@@ -239,7 +239,7 @@ export default function BluesLicksExercises() {
           <p className="text-amber-900 text-sm mb-3">
             Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. Exercise 1A uses the b3 - 3 - 1 lick almost exclusively, while Exercise 1B uses the b3 - 3 - b7 lick. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
           </p>
-          <p className="text-amber-900 text-sm mb-4">The final exercise uses the BB King box for E7. It also uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
+          <p className="text-amber-900 text-sm mb-4">The final exercise uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
           <p className="text-amber-900 text-sm font-semibold">
             📖 Additional theory details, fretboard diagrams, and advanced concepts can be found below the tab player.
           </p>
@@ -832,78 +832,7 @@ export default function BluesLicksExercises() {
         </CollapsibleSection>
         </div>
 
-        {/* BB King Box Explanation */}
-        <div id="bb-king-box" className="bg-amber-50 border-l-4 border-amber-400 rounded p-4 mb-6">
-          <h2 className="text-xl font-bold text-amber-900 mb-2">What is the BB King Box?</h2>
-          <p className="text-amber-900 text-sm mb-3">
-            The BB King Box is a specific pentatonic scale pattern that BB King used as his signature soloing position. It's a hybrid approach that blends major and minor pentatonic scales, giving you access to both the "sweet" major 3rd and the "bluesy" minor 3rd.
-          </p>
-          
-          <CollapsibleSection 
-            title="BB King Box Details" 
-            isOpen={isBbKingDetailsOpen} 
-            onToggle={() => setIsBbKingDetailsOpen(!isBbKingDetailsOpen)} 
-          >
-            <h3 className="text-lg font-semibold text-amber-900 mb-2">A BB King Box Positions:</h3>
-            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-              <div className="text-amber-900 text-sm space-y-1">
-                <div><span className="font-bold">1:</span> 10th fret B string</div>
-                <div><span className="font-bold">2:</span> 12th fret B string</div>
-                <div><span className="font-bold">4:</span> 10th fret high E string</div>
-                <div><span className="font-bold">5:</span> 12th fret high E string</div>
-                <div><span className="font-bold">6:</span> 11th fret G string</div>
-              </div>
-            </div>
-            
-            <h3 className="text-lg font-semibold text-amber-900 mb-2">When to Use Each BB King Box:</h3>
-            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-              <div className="text-amber-900 text-sm space-y-2">
-                <div><span className="font-bold">A BB King Box:</span> Use over A7 (I chord)</div>
-                <div><span className="font-bold">D BB King Box:</span> Use over D7 (IV chord)</div>
-                <div><span className="font-bold">E BB King Box:</span> Use over E7 (V chord)</div>
-              </div>
-            </div>
-            
-            <h3 className="text-lg font-semibold text-amber-900 mb-2">Other BB King Box Starting Positions:</h3>
-            <div className="bg-white border border-amber-200 rounded p-3 mb-3">
-              <div className="text-amber-900 text-sm space-y-1">
-                <div><span className="font-bold">D BB King Box:</span> Starts on D (3rd fret B string, or 15th fret B string)</div>
-                <div><span className="font-bold">E BB King Box:</span> Starts on E (5th fret B string, or 17th fret B string)</div>
-              </div>
-              <div className="text-amber-700 text-xs mt-2">
-                <span className="font-bold">Remember:</span> The first note of each BB King Box is the root note of the chord.
-              </div>
-            </div>
-            
-            <h3 className="text-lg font-semibold text-amber-900 mb-2">Key Features:</h3>
-            <ul className="list-none pl-0 text-amber-900 space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                <span><span className="font-bold">Bend from 2 to ♭3</span> (half-step bend) - creates the classic blues tension</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                <span><span className="font-bold">Bend from 2 to 3</span> (whole-step bend) - adds the major pentatonic sweetness</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                <span><span className="font-bold">Bend from 5 to ♭7</span> (1½-step bend) - creates the dominant 7th blues sound</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                <span><span className="font-bold">Bend from 5 to 6</span> (whole-step bend) - adds major scale color</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-                <span><span className="font-bold">♭5 (blue note)</span> - available between the 2 frets used on high E string</span>
-              </li>
-            </ul>
-            
-            <p className="text-amber-900 text-sm mt-3">
-              This pattern gives you the complete blues vocabulary in one position - you can play pure minor pentatonic, pure major pentatonic, or blend them together for that signature BB King sound.
-            </p>
-          </CollapsibleSection>
-        </div>
+
 
         {/* Progressive Application Levels */}
         <div id="progressive-levels" className="mb-8">
@@ -966,7 +895,7 @@ export default function BluesLicksExercises() {
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 5: Multiple Scales (Exercise 5A & 5B)</h3>
                 <p className="text-amber-900 text-sm mb-2"><strong>5A:</strong> Use the b3 - 3 - 1 lick and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Major blues</Link> over E7.</p>
-                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use the b3 - 3 - 1 lick and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and A & E BB King Box over A7 & E7.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use the b3 - 3 - 1 lick and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">E Major blues</Link> over E7.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Master the complete blues vocabulary</span>

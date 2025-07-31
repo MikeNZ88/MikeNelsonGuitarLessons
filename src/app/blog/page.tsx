@@ -385,6 +385,36 @@ export default function Blog() {
       link: '/blog/open-chord-library/?blues=D#progressions',
       category: 'Theory'
     },
+    {
+      topic: 'BB King Box (Key A)',
+      description: 'BB King box pattern in A major blues',
+      link: '/blog/bb-king-box-different-keys',
+      category: 'Technique'
+    },
+    {
+      topic: 'BB King Box (Key C)',
+      description: 'BB King box pattern in C major blues',
+      link: '/blog/bb-king-box-different-keys',
+      category: 'Technique'
+    },
+    {
+      topic: 'BB King Box (Key D)',
+      description: 'BB King box pattern in D major blues',
+      link: '/blog/bb-king-box-different-keys',
+      category: 'Technique'
+    },
+    {
+      topic: 'BB King Box (Key E)',
+      description: 'BB King box pattern in E major blues',
+      link: '/blog/bb-king-box-different-keys',
+      category: 'Technique'
+    },
+    {
+      topic: 'BB King Box (Key G)',
+      description: 'BB King box pattern in G major blues',
+      link: '/blog/bb-king-box-different-keys',
+      category: 'Technique'
+    },
 
     {
       topic: 'Common Fingers',
@@ -1502,6 +1532,20 @@ export default function Blog() {
       sortOrder: 11
     },
     {
+      id: '37',
+      title: 'BB King Box in Different Keys: Complete Blues Guitar Guide',
+      excerpt: 'Master the iconic BB King box pattern in all major blues keys (A, C, D, E, G) with interactive fretboard diagrams. Learn the classic blues licks and positions.',
+      readTime: 'Interactive Tool',
+      category: 'Intermediate',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Scales and Fretboard', 'Tools', 'Blues'],
+      skillLevel: 'intermediate',
+      image: '/blog-thumbnail.svg',
+      slug: 'bb-king-box-different-keys',
+      author: 'Mike Nelson',
+      sortOrder: 12
+    },
+    {
       id: '36',
       title: '10 Easiest Beginner Guitar Riffs',
       excerpt: 'Learn 10 classic guitar riffs perfect for beginners. Master iconic riffs from Deep Purple, Black Sabbath, AC/DC and more with interactive tab player.',
@@ -1660,7 +1704,7 @@ export default function Blog() {
       sortOrder: 18
     },
     {
-      id: '37',
+      id: '38',
       title: 'Beginner Guide to Recording Guitar: Complete Free Software Setup (2025)',
       excerpt: 'Learn how to record guitar using completely free software. Step-by-step guide to Reaper DAW and essential free VST plugins for guitar recording.',
       readTime: '25 min read',

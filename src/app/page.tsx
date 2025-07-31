@@ -70,9 +70,14 @@ export default function Home() {
                     Mike Nelson
                   </span>
                 </h1>
-                <p className="text-lg md:text-xl text-amber-100 leading-relaxed max-w-2xl">
-                  <span className="text-amber-200">Available in Pukerua Bay, Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby, and online.</span>
-                </p>
+                <div className="space-y-3 text-lg md:text-xl text-amber-100 leading-relaxed max-w-2xl">
+                  <p className="text-amber-200 font-semibold">Based in Pukerua Bay</p>
+                  <p className="text-amber-100">
+                    I can also travel to you if you live in{' '}
+                    <span className="text-amber-200 font-medium">Plimmerton • Cambourne • Mana • Paremata • Papakowhai • Whitby</span>
+                  </p>
+                  <p className="text-amber-200 font-semibold">Online Lessons also available</p>
+                </div>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
@@ -80,8 +85,8 @@ export default function Home() {
                   Book Your First Lesson
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/about" className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800">
-                  Learn More About Mike
+                <Link href="/blog" className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800">
+                  Learning Blog
                 </Link>
               </div>
               
