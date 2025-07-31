@@ -239,7 +239,7 @@ export default function BluesLicksExercises() {
           <p className="text-amber-900 text-sm mb-3">
             Each example uses the Major 12 bar blues chord progression. You will hear the chords but we are only showing the lead part in the tab. The tab shows where these chord changes occur. Exercise 1A uses the b3 - 3 - 1 lick almost exclusively, while Exercise 1B uses the b3 - 3 - b7 lick. The other exercises all use the lick at least once but they also contain licks made from specific scales. You will see the scale name above the relevant bar that it is used. The b3 - 3 - 1 licks are all labelled.
           </p>
-          <p className="text-amber-900 text-sm mb-4">The final exercise uses a hybrid blues scale, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
+          <p className="text-amber-900 text-sm mb-4">The final exercise uses Hybrid blues Scales, which adds the notes together of the <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A major blues</Link> and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-minor" className="text-amber-700 hover:text-amber-800 underline">Am blues</Link> scales.</p>
           <p className="text-amber-900 text-sm font-semibold">
             📖 Additional theory details, fretboard diagrams, and advanced concepts can be found below the tab player.
           </p>
@@ -895,7 +895,7 @@ export default function BluesLicksExercises() {
               <div className="bg-amber-50 border-l-4 border-amber-400 rounded p-4">
                 <h3 className="text-lg font-bold text-amber-900 mb-2">Level 5: Multiple Scales (Exercise 5A & 5B)</h3>
                 <p className="text-amber-900 text-sm mb-2"><strong>5A:</strong> Use the b3 - 3 - 1 lick and <Link href="/blog/beginners-guide-pentatonic-scales/?key=F%23&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">A Major pentatonic</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Major blues</Link> over E7.</p>
-                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use the b3 - 3 - 1 lick and <Link href="/scale-explorer/index.html?scale=A&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">A Hybrid blues</Link> over A7, <Link href="/blog/beginners-guide-pentatonic-scales/?key=B&scroll=shapes" className="text-amber-700 hover:text-amber-800 underline">D Major pentatonic</Link> over D7, and <Link href="/scale-explorer/index.html?scale=E&category=blues-scales&mode=blues-major" className="text-amber-700 hover:text-amber-800 underline">E Major blues</Link> over E7.</p>
+                <p className="text-amber-900 text-sm mb-2"><strong>5B:</strong> Use the b3 - 3 - 1 lick and A hybrid blues over A7, D hybrid blues over D7, E hybrid blues over E7.</p>
                 <div className="flex items-center gap-2">
                   <span aria-label="check"><svg width="18" height="18" fill="none" viewBox="0 0 18 18"><circle cx="9" cy="9" r="9" fill="#F59E42" opacity="0.15"/><path d="M5 9.5l2.5 2.5L13 7.5" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
                   <span className="text-amber-900 text-sm">Master the complete blues vocabulary</span>
@@ -919,20 +919,20 @@ export default function BluesLicksExercises() {
         <h3 className="text-xl font-bold text-amber-900 mb-3">Tempo Reference Guide</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="bg-amber-50 p-4 rounded-lg">
-            <h4 className="font-bold text-amber-800 mb-2">Beginner (40-60 BPM)</h4>
-            <p className="text-amber-900 text-sm">Focus on clean notes and proper technique</p>
+            <h4 className="font-bold text-amber-800 mb-2">Beginner Starting Tempo (80 BPM)</h4>
+            <p className="text-amber-900 text-sm">Start here and focus on clean notes and proper technique</p>
           </div>
           <div className="bg-amber-50 p-4 rounded-lg">
-            <h4 className="font-bold text-amber-800 mb-2">Intermediate (60-80 BPM)</h4>
-            <p className="text-amber-900 text-sm">Add expression and dynamics</p>
+            <h4 className="font-bold text-amber-800 mb-2">Slow Tempo (100 BPM)</h4>
+            <p className="text-amber-900 text-sm">Build up gradually to this tempo, adding expression and dynamics</p>
           </div>
           <div className="bg-amber-50 p-4 rounded-lg">
-            <h4 className="font-bold text-amber-800 mb-2">Advanced (80-100 BPM)</h4>
-            <p className="text-amber-900 text-sm">Master the blues feel and timing</p>
+            <h4 className="font-bold text-amber-800 mb-2">Medium Tempo (120 BPM)</h4>
+            <p className="text-amber-900 text-sm">Continue building speed and master the blues feel and timing</p>
           </div>
           <div className="bg-amber-50 p-4 rounded-lg">
-            <h4 className="font-bold text-amber-800 mb-2">Performance (100+ BPM)</h4>
-            <p className="text-amber-900 text-sm">Ready for live playing and improvisation</p>
+            <h4 className="font-bold text-amber-800 mb-2">Fast Tempo (150 BPM)</h4>
+            <p className="text-amber-900 text-sm">Advanced speed for live playing and improvisation</p>
           </div>
         </div>
       </div>

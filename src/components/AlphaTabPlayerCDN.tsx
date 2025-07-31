@@ -137,20 +137,20 @@ const bluesLicksExercises = [
     tempo: 80
   },
   {
-    id: 'b3-3-1-lick-e-major-em', // This is V4
-    name: 'E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
-    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp',
-    tempo: 80
-  },
-  {
-    id: 'b3-3-1-lick-major-am-blues-d-major', // This is V5
+    id: 'b3-3-1-lick-major-am-blues-d-major', // This is V5 - now Exercise 4
     name: 'A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7', // Corrected label
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp',
     tempo: 80
   },
   {
+    id: 'b3-3-1-lick-e-major-em', // This is V4 - now Exercise 5A
+    name: 'E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
+    file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp',
+    tempo: 80
+  },
+  {
     id: 'b3-3-1-lick-hybrid-bbking-v6', // This is V6
-    name: 'A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7', // Corrected label
+    name: 'Hybrid blues Scales over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7', // Updated to Hybrid blues Scales
     file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
     tempo: 80
   },
@@ -284,20 +284,20 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
               tempo: 80
             },
             {
-              id: 'b3-3-1-lick-multi',
-              name: '4. E Major Pentatonic over E7 (first bar), Em Pentatonic over E7 (last bar)',
+              id: 'b3-3-1-lick-em-em',
+              name: '4. A Major Pentatonic (over A7 and E7), Am Pentatonic & D Major Pentatonic (over D7)',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V4.gp',
               tempo: 80
             },
             {
-              id: 'b3-3-1-lick-em-em',
-              name: '5A. A Major Pentatonic over A7, D Major Pentatonic over D7, A Major Blues over E7',
+              id: 'b3-3-1-lick-multi',
+              name: '5A. E Major and Em Pentatonic over E7',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V5.gp',
               tempo: 80
             },
             {
               id: 'b3-3-1-lick-hybrid-bbking-v6',
-              name: '5B. A Hybrid Blues over A7, D Major Pentatonic over D7, A & E BB King Box over A7 & E7',
+              name: '5B. Hybrid Blues Scales',
               file: '/GP Files/Scale Exercises/BLOG TABS/12 Bar Blues in A V6.gp',
               tempo: 80
             },
