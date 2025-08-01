@@ -75,6 +75,15 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
+      - name: Copy 404.html for GitHub Pages
+        run: |
+          # Copy 404.html to the root of the output directory for GitHub Pages
+          if [ -f "./public/404.html" ]; then
+            cp "./public/404.html" "./out/404.html"
+            echo "404.html copied to output directory"
+          else
+            echo "404.html not found in public directory"
+          fi
       - name: Add Security Headers
         run: |
           # Create a script to add headers to all HTML files
