@@ -1,9 +1,0 @@
-# Redirect trailing slash URLs to non-trailing slash versions
-/blog/*/ /blog/:splat 301
-/lessons/ /lessons 301
-/about/ /about 301
-/contact/ /contact 301
-/approach/ /approach 301
-/tools/ /tools 301
-/rhythm-tool/ /rhythm-tool 301
-/privacy-policy/ /privacy-policy 301 
