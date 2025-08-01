@@ -3,27 +3,40 @@
 <head>
     <meta charset="utf-8">
     <title>Redirecting...</title>
+    <meta http-equiv="refresh" content="0; url=/">
     <script>
-        // Get the current URL path
-        var path = window.location.pathname;
-        
-        // Specific redirects for renamed URLs
-        if (path === '/blog/free-vst-plugins-reaper-organic-production' || path === '/blog/free-vst-plugins-reaper-organic-production/') {
-            window.location.replace('/blog/beginner-guide-recording-guitar-free-software');
-            return;
-        }
-        
-        // Remove trailing slash and redirect
-        if (path.endsWith('/') && path !== '/') {
-            var newPath = path.slice(0, -1);
-            window.location.replace(newPath);
-        } else {
-            // If no trailing slash or it's the homepage, show 404
-            document.body.innerHTML = '<h1>Page Not Found</h1><p>The page you are looking for does not exist.</p><a href="/">Go to Homepage</a>';
-        }
+        (function() {
+            // Get the current URL path
+            var path = window.location.pathname;
+            
+            console.log('404 redirect for path:', path);
+            
+            // Specific redirects for renamed URLs
+            if (path === '/blog/free-vst-plugins-reaper-organic-production' || path === '/blog/free-vst-plugins-reaper-organic-production/') {
+                console.log('Redirecting old blog post URL');
+                window.location.href = '/blog/beginner-guide-recording-guitar-free-software';
+                return;
+            }
+            
+            // Remove trailing slash and redirect
+            if (path.endsWith('/') && path !== '/') {
+                var newPath = path.slice(0, -1);
+                console.log('Removing trailing slash, redirecting to:', newPath);
+                window.location.href = newPath;
+                return;
+            }
+            
+            // If no redirect needed, show 404
+            console.log('No redirect needed, showing 404');
+            setTimeout(function() {
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;"><h1>Page Not Found</h1><p>The page you are looking for does not exist.</p><a href="/" style="color: #007bff; text-decoration: none;">Go to Homepage</a></div>';
+            }, 100);
+        })();
     </script>
 </head>
 <body>
-    <p>Redirecting...</p>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <p>Redirecting...</p>
+    </div>
 </body>
 </html> 
