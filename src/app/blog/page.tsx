@@ -1150,7 +1150,7 @@ export default function Blog() {
     {
       topic: 'Free VST Plugins',
       description: 'Complete guide to free plugins for Reaper DAW',
-      link: '/blog/free-vst-plugins-reaper-organic-production',
+      link: '/blog/beginner-guide-recording-guitar-free-software',
       category: 'Gear'
     },
     {
@@ -1713,7 +1713,7 @@ export default function Blog() {
       categories: ['Gear', 'Tools'],
       skillLevel: 'all',
       image: '/reaper-guide-thumbnail.png',
-      slug: 'free-vst-plugins-reaper-organic-production',
+      slug: 'beginner-guide-recording-guitar-free-software',
       author: 'Mike Nelson',
       sortOrder: 24
     }

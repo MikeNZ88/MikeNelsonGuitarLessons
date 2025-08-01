@@ -7,6 +7,12 @@
         // Get the current URL path
         var path = window.location.pathname;
         
+        // Specific redirects for renamed URLs
+        if (path === '/blog/free-vst-plugins-reaper-organic-production' || path === '/blog/free-vst-plugins-reaper-organic-production/') {
+            window.location.replace('/blog/beginner-guide-recording-guitar-free-software');
+            return;
+        }
+        
         // Remove trailing slash and redirect
         if (path.endsWith('/') && path !== '/') {
             var newPath = path.slice(0, -1);
