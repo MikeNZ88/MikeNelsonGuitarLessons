@@ -1680,19 +1680,22 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                 >
                   {mutedTracks.has(i) ? 'Unmute' : 'Mute'}
                 </button>
-                <button
-                  onClick={() => handleTrackSolo(i)}
-                  disabled={!isReady}
-                  className={`px-3 py-1 text-xs font-semibold rounded transition-colors
-                    ${!isReady 
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : soloedTracks.has(i)
-                        ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
-                  `}
-                >
-                  {soloedTracks.has(i) ? 'Unsolo' : 'Solo'}
-                </button>
+                {/* Only show Solo button if there are multiple tracks */}
+                {availableTracks > 1 && (
+                  <button
+                    onClick={() => handleTrackSolo(i)}
+                    disabled={!isReady}
+                    className={`px-3 py-1 text-xs font-semibold rounded transition-colors
+                      ${!isReady 
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : soloedTracks.has(i)
+                          ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                          : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
+                    `}
+                  >
+                    {soloedTracks.has(i) ? 'Unsolo' : 'Solo'}
+                  </button>
+                )}
               </div>
               );
             })}
