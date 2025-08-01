@@ -1716,6 +1716,20 @@ export default function Blog() {
       slug: 'beginner-guide-recording-guitar-free-software',
       author: 'Mike Nelson',
       sortOrder: 24
+    },
+    {
+      id: '39',
+      title: 'The Complete Guide to Guitar String Bending: Master the Art of Expressive Playing',
+              excerpt: 'Master guitar string bending with this comprehensive guide. Learn proper technique, build finger strength, develop pitch accuracy, and add emotion to your playing with interactive exercises and tab players.',
+      readTime: 'Interactive Guide',
+      category: 'All',
+      primaryCategory: 'Technique',
+      categories: ['Technique', 'Tools'],
+      skillLevel: 'all',
+              image: '/guitar-bending-guide-thumbnail.webp',
+      slug: 'complete-guide-guitar-string-bending',
+      author: 'Mike Nelson',
+      sortOrder: 10.5
     }
   ];
 

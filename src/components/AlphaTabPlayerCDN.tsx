@@ -238,7 +238,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises') || false,
     isFingerExercisesPage: pathname?.includes('/picking-finger-exercises') || false,
     isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs') || false,
-    isBBKingBoxPage: pathname?.includes('/bb-king-box-different-keys') || false
+    isBBKingBoxPage: pathname?.includes('/bb-king-box-different-keys') || false,
+    isStringBendingPage: pathname?.includes('/complete-guide-guitar-string-bending') || false
   };
   
   console.log('🔍 Page Detection:', pageDetection);
@@ -247,7 +248,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                        pageDetection.pathname.includes('/guitar-arpeggios-exercises') ||
                        pageDetection.pathname.includes('/picking-finger-exercises') ||
                        pageDetection.pathname.includes('/easiest-beginner-guitar-riffs') ||
-                       pageDetection.pathname.includes('/bb-king-box-different-keys');
+                       pageDetection.pathname.includes('/bb-king-box-different-keys') ||
+                       pageDetection.pathname.includes('/complete-guide-guitar-string-bending');
   console.log('🔍 Pathname check:', pathnameCheck);
   
   // Memoize currentExercises to prevent unnecessary re-renders
@@ -394,6 +396,57 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       ];
     }
 
+    if (pageDetection.isStringBendingPage) {
+      return [
+        {
+          group: 'Basic Bends',
+          items: [
+            { id: 'full-bend-slow', name: '1. Full Bend Slow (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp?v=10', tempo: 120 },
+            { id: 'full-bend-fast', name: '2. Full Bend Fast (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 2.gp?v=10', tempo: 120 },
+            { id: 'full-bend-downward', name: '3. Full Bend Downward (The Lower Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 3.gp?v=10', tempo: 120 }
+          ]
+        },
+        {
+          group: 'Adding Vibrato',
+          items: [
+            { id: 'full-bend-vibrato', name: '4. Full Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 4.gp?v=4', tempo: 120 },
+            { id: 'half-bend-vibrato', name: '5. Half Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 5.gp?v=4', tempo: 120 },
+            { id: 'one-half-bend-vibrato', name: '6. 1½ Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 6.gp?v=4', tempo: 120 }
+          ]
+        },
+        {
+          group: 'Release Techniques',
+          items: [
+            { id: 'full-bend-and-release', name: '7. Full Bend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 7.gp?v=4', tempo: 120 },
+            { id: 'full-prebend-and-release', name: '8. Full Prebend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 8.gp?v=4', tempo: 120 },
+            { id: 'full-prebend', name: '9. Full Prebend (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 9.gp?v=4', tempo: 120 },
+            { id: 'quarter-bend-and-release', name: '10. ¼ Bend and Release', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 16.gp?v=4', tempo: 120 }
+          ]
+        },
+        {
+          group: 'Playing Two Strings and Bending One',
+          items: [
+            { id: 'full-bend-release-pick-note', name: '11. Full Bend and Release, Then Pick a Note', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 10.gp?v=4', tempo: 120 },
+            { id: 'unison-bends', name: '12. Unison Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 11.gp?v=4', tempo: 120 },
+            { id: 'double-stop-bends', name: '13. Double Stop Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 12.gp?v=4', tempo: 120 }
+          ]
+        },
+        {
+          group: 'Bending Two Strings at Once',
+          items: [
+            { id: 'full-parallel-bends', name: '14. Full Parallel Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 15.gp?v=4', tempo: 120 }
+          ]
+        },
+        {
+          group: 'Bending with Other Fingers',
+          items: [
+            { id: 'half-bend-vibrato-2nd-finger', name: '15. Half Bend and Vibrato Using 2nd Finger (Downward Bend)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 13.gp?v=4', tempo: 120 },
+            { id: 'full-bend-release-1st-finger', name: '16. Full Bend and Release Using 1st Finger (Downward Bend)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 14.gp?v=4', tempo: 120 }
+          ]
+        }
+      ];
+    }
+
     return [];
   }, [pathname]);
 
@@ -430,6 +483,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [zoom, setZoom] = useState(1.2);
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
   const [availableTracks, setAvailableTracks] = useState<number>(1);
+  const [mutedTracks, setMutedTracks] = useState<Set<number>>(new Set());
+  const [soloedTracks, setSoloedTracks] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     const checkScreen = () => {
@@ -730,8 +785,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
 
   // Helper function to get current exercise data
   const getCurrentExerciseData = () => {
-    if (currentExercises.length > 0 && currentExercises[0].items.length > 0) {
-      const group = currentExercises[0];
+    // Search across ALL groups, not just the first one
+    for (const group of currentExercises) {
       const found = group.items.find(item => item.id === selectedExercise);
       if (found) return found;
     }
@@ -875,6 +930,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     api.scoreLoaded.on((score: any) => {
       console.log('Score loaded successfully');
       console.log('Score keys:', Object.keys(score));
+      console.log('🎵 TRACK DEBUG - Score object:', score);
+      console.log('🎵 TRACK DEBUG - score.tracks:', score.tracks);
+      console.log('🎵 TRACK DEBUG - score.tracks type:', typeof score.tracks);
+      console.log('🎵 TRACK DEBUG - score.tracks length:', score.tracks?.length);
       
       
       
@@ -885,6 +944,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         // Update available tracks count
         setAvailableTracks(score.tracks.length);
         console.log('🎵 Setting available tracks:', score.tracks.length);
+        
+        // Clear any previous track settings when loading new score
+        setMutedTracks(new Set());
+        setSoloedTracks(new Set());
         
         score.tracks.forEach((track: any, i: number) => {
           console.log(`Track ${i}:`, {
@@ -1283,6 +1346,71 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     }
   };
 
+  const handleTrackMute = (trackIndex: number) => {
+    const newMutedTracks = new Set(mutedTracks);
+    
+    if (newMutedTracks.has(trackIndex)) {
+      newMutedTracks.delete(trackIndex);
+    } else {
+      newMutedTracks.add(trackIndex);
+      // If track is soloed and we're muting it, remove from solo
+      if (soloedTracks.has(trackIndex)) {
+        const newSoloedTracks = new Set(soloedTracks);
+        newSoloedTracks.delete(trackIndex);
+        setSoloedTracks(newSoloedTracks);
+      }
+    }
+    
+    setMutedTracks(newMutedTracks);
+    applyTrackSettings(newMutedTracks, soloedTracks.has(trackIndex) ? new Set(Array.from(soloedTracks).filter(t => t !== trackIndex)) : soloedTracks);
+  };
+
+  const handleTrackSolo = (trackIndex: number) => {
+    const newSoloedTracks = new Set(soloedTracks);
+    
+    if (newSoloedTracks.has(trackIndex)) {
+      newSoloedTracks.delete(trackIndex);
+    } else {
+      newSoloedTracks.add(trackIndex);
+      // If track is muted and we're soloing it, remove from mute
+      if (mutedTracks.has(trackIndex)) {
+        const newMutedTracks = new Set(mutedTracks);
+        newMutedTracks.delete(trackIndex);
+        setMutedTracks(newMutedTracks);
+      }
+    }
+    
+    setSoloedTracks(newSoloedTracks);
+    applyTrackSettings(mutedTracks.has(trackIndex) ? new Set(Array.from(mutedTracks).filter(t => t !== trackIndex)) : mutedTracks, newSoloedTracks);
+  };
+
+  const applyTrackSettings = (muted: Set<number>, soloed: Set<number>) => {
+    if (alphaTabRef.current && alphaTabRef.current.score) {
+      console.log('🎵 Applying track settings - Muted:', Array.from(muted), 'Soloed:', Array.from(soloed));
+      
+      // Use AlphaTab's built-in track control API methods
+      alphaTabRef.current.score.tracks.forEach((track: any, index: number) => {
+        const shouldBeMuted = muted.has(index) || (soloed.size > 0 && !soloed.has(index));
+        const shouldBeSoloed = soloed.has(index);
+        
+        try {
+          // Use the official AlphaTab API methods
+          if (alphaTabRef.current.changeTrackMute) {
+            alphaTabRef.current.changeTrackMute([index], shouldBeMuted);
+          }
+          
+          if (alphaTabRef.current.changeTrackSolo) {
+            alphaTabRef.current.changeTrackSolo([index], shouldBeSoloed);
+          }
+          
+          console.log(`🎵 Track ${index} (${track.name || 'Unknown'}) - Muted: ${shouldBeMuted}, Soloed: ${shouldBeSoloed}`);
+        } catch (error) {
+          console.log(`🎵 Error setting track ${index}:`, error);
+        }
+      });
+    }
+  };
+
   const adjustTempo = (change: number) => {
     if (tempo === null) return; // Don't adjust if tempo hasn't loaded yet
     const newTempo = Math.max(20, Math.min(200, tempo + change));
@@ -1319,6 +1447,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
              pathname?.includes('/guitar-arpeggios-exercises/') ? 'Select Arpeggio Exercise' :
              pathname?.includes('/picking-finger-exercises/') ? 'Select Finger Exercise' :
              pathname?.includes('/easiest-beginner-guitar-riffs/') ? 'Select Beginner Riff' :
+             pathname?.includes('/complete-guide-guitar-string-bending/') ? 'Select String Bending Exercise' :
              'Select Exercise'}
           </label>
           <select
@@ -1517,6 +1646,75 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
 
       </div>
 
+      {/* Track Controls - Show if there are any tracks */}
+      {availableTracks > 0 && (
+        <div className="mb-4">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Track Controls:</h4>
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: availableTracks }, (_, i) => {
+              // Get track name based on the current page and track number
+              const getTrackName = (trackIndex: number) => {
+                if (pageDetection.isBluesLicksPage || pageDetection.isBBKingBoxPage) {
+                  return trackIndex === 0 ? 'Lead Guitar' : 'Chords';
+                }
+                return 'Guitar';
+              };
+              
+              const trackName = getTrackName(i);
+              
+              return (
+                <div key={i} className="flex items-center space-x-1 bg-gray-50 rounded-lg p-2">
+                  <span className="text-sm font-medium text-gray-600 min-w-[4rem]">
+                    {trackName}
+                  </span>
+                <button
+                  onClick={() => handleTrackMute(i)}
+                  disabled={!isReady}
+                  className={`px-3 py-1 text-xs font-semibold rounded transition-colors
+                    ${!isReady 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : mutedTracks.has(i)
+                        ? 'bg-red-500 hover:bg-red-600 text-white'
+                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
+                  `}
+                >
+                  {mutedTracks.has(i) ? 'Unmute' : 'Mute'}
+                </button>
+                <button
+                  onClick={() => handleTrackSolo(i)}
+                  disabled={!isReady}
+                  className={`px-3 py-1 text-xs font-semibold rounded transition-colors
+                    ${!isReady 
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : soloedTracks.has(i)
+                        ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
+                  `}
+                >
+                  {soloedTracks.has(i) ? 'Unsolo' : 'Solo'}
+                </button>
+              </div>
+              );
+            })}
+          </div>
+          {(mutedTracks.size > 0 || soloedTracks.size > 0) && (
+            <div className="mt-2 flex gap-2">
+              <button
+                onClick={() => {
+                  setMutedTracks(new Set());
+                  setSoloedTracks(new Set());
+                  applyTrackSettings(new Set(), new Set());
+                }}
+                disabled={!isReady}
+                className="px-3 py-1 text-xs font-semibold rounded bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
+              >
+                Clear All
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
           <strong>Error:</strong> {error}
@@ -1542,15 +1740,24 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           <ul className="list-disc pl-5 text-amber-900 space-y-1">
             <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
             <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
-            <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && (
+              <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
+            )}
             {pageDetection.isBeginnerRiffsPage && (
               <li><span className="font-bold text-amber-700">Brackets ( ):</span> Numbers in brackets are notes held from the previous bar.</li>
             )}
-            {showSlursAndSlides && (
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && showSlursAndSlides && (
               <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
             )}
-            {showSlides && (
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && showSlides && (
               <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
+            )}
+            {(pageDetection.isStringBendingPage || pageDetection.isBBKingBoxPage || pageDetection.isBluesLicksPage) && (
+              <>
+                <li><span className="font-bold text-amber-700">Bend Arrows:</span> Upward arrow (↗) shows bend, downward arrow (↘) shows release.</li>
+                <li><span className="font-bold text-amber-700">Bend Amount:</span> Numbers like 1/4, 1/2, Full, or 1 1/2 show how much to bend the string.</li>
+                <li><span className="font-bold text-amber-700">Vibrato:</span> Squiggly lines indicate vibrato on the note.</li>
+              </>
             )}
             <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the top staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
           </ul>

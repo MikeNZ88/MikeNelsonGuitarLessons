@@ -318,6 +318,13 @@
         <priority>0.6</priority>
     </url>
     
+    <url>
+        <loc>https://mikenelsonguitarlessons.co.nz/blog/complete-guide-guitar-string-bending</loc>
+        <lastmod>2025-08-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
     <!-- ADDITIONAL STATIC PAGES -->
     <url>
         <loc>https://mikenelsonguitarlessons.co.nz/thank-you.html</loc>
