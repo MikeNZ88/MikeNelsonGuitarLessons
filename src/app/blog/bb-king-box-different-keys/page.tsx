@@ -26,8 +26,8 @@ interface BBKingBoxData {
   [key: string]: KeyData;
 }
 
-// Function to get note name for a given string and fret
-function getNoteName(stringName: string, fret: number): string {
+// Function to get note name for a given string and fret with key-specific enharmonic spelling
+function getNoteName(stringName: string, fret: number, key: string = 'A'): string {
   const openNotes: { [key: string]: string } = {
     'E': 'E', // High E
     'B': 'B',
@@ -36,8 +36,16 @@ function getNoteName(stringName: string, fret: number): string {
     'A': 'A'
   };
   
-  // Use flat naming for minor thirds and other common flat notes
-  const noteNames = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  // Key-specific note names based on key signatures
+  const noteNamesByKey: { [key: string]: string[] } = {
+    'A': ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'], // 3 sharps: F#, C#, G#
+    'C': ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'], // No sharps/flats (use flats for accidentals)
+    'D': ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'], // 2 sharps: F#, C# (but use some flats for other accidentals)
+    'E': ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'], // 4 sharps: F#, C#, G#, D#
+    'G': ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B']  // 1 sharp: F# (use flats for other accidentals)
+  };
+  
+  const noteNames = noteNamesByKey[key] || noteNamesByKey['A'];
   const openNote = openNotes[stringName] || 'E'; // Default to E for low E string
   const openNoteIndex = noteNames.indexOf(openNote);
   const noteIndex = (openNoteIndex + fret) % 12;
@@ -209,7 +217,19 @@ function BBKingBoxDiagram({ keyData, selectedChord, showBentNotes = false }: {
   );
 }
 
-function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }: { keyData: KeyData, showBentNotes?: boolean, setShowBentNotes?: (value: boolean) => void }) {
+function BBKingBoxesDisplay({ 
+  keyData, 
+  showBentNotes = false, 
+  setShowBentNotes,
+  showNoteNames = false,
+  setShowNoteNames 
+}: { 
+  keyData: KeyData, 
+  showBentNotes?: boolean, 
+  setShowBentNotes?: (value: boolean) => void,
+  showNoteNames?: boolean,
+  setShowNoteNames?: (value: boolean) => void
+}) {
   const chords = Object.keys(keyData.boxes);
   const colors = ['bg-blue-500', 'bg-green-500', 'bg-purple-500'];
   
@@ -336,7 +356,7 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
                           {isHighlighted && (
                             <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
                               <span className="text-white text-xs font-bold">
-                                {getNoteName(stringName, fret)}
+                                {getNoteName(stringName, fret, keyData.key)}
                               </span>
                             </div>
                           )}
@@ -381,19 +401,33 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
                 When you click "Show Bent Notes" below, the orange circles with arrows indicate notes that can be reached by bending from the main box notes. These bent notes add expressive possibilities and are commonly used in blues playing to create tension and emotion.
               </p>
               
-              {/* Show Bent Notes Button */}
-              {setShowBentNotes && (
-                <div className="flex justify-center mb-6">
-                  <button
-                    onClick={() => setShowBentNotes(!showBentNotes)}
-                    className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
-                      showBentNotes
-                        ? 'bg-amber-600 text-white'
-                        : 'bg-amber-200 text-amber-800 hover:bg-amber-300'
-                    }`}
-                  >
-                    {showBentNotes ? 'Hide Bent Notes' : 'Show Bent Notes'}
-                  </button>
+              {/* Control Buttons */}
+              {(setShowBentNotes || setShowNoteNames) && (
+                <div className="flex justify-center gap-4 mb-6">
+                  {setShowBentNotes && (
+                    <button
+                      onClick={() => setShowBentNotes(!showBentNotes)}
+                      className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                        showBentNotes
+                          ? 'bg-amber-600 text-white'
+                          : 'bg-amber-200 text-amber-800 hover:bg-amber-300'
+                      }`}
+                    >
+                      {showBentNotes ? 'Hide Bent Notes' : 'Show Bent Notes'}
+                    </button>
+                  )}
+                                 {setShowNoteNames && (
+                 <button
+                   onClick={() => setShowNoteNames(!showNoteNames)}
+                   className={`px-6 py-2 rounded-md text-sm font-medium transition-colors ${
+                     showNoteNames
+                       ? 'bg-green-600 text-white'
+                       : 'bg-green-200 text-green-800 hover:bg-green-300'
+                   }`}
+                 >
+                   {showNoteNames ? 'Show Intervals' : 'Show Note Names'}
+                 </button>
+               )}
                 </div>
               )}
               
@@ -488,16 +522,18 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
                                }`}
                              >
                                {isHighlighted && (
-                                 <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
+                                 <div className={`w-4 h-4 rounded-full flex items-center justify-center ${
+                                   scaleDegree === '♭3' ? 'bg-orange-500' : 'bg-blue-500'
+                                 }`}>
                                    <span className="text-white text-xs font-bold">
-                                     {scaleDegree}
+                                     {showNoteNames ? getNoteName(stringName, fret, keyData.key) : scaleDegree}
                                    </span>
                                  </div>
                                )}
                                {isBentNote && (
                                  <div className="w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center">
                                    <span className="text-white text-xs font-bold">
-                                     {bentScaleDegree}
+                                     {showNoteNames ? getNoteName(stringName, fret, keyData.key) : bentScaleDegree}
                                    </span>
                                  </div>
                                )}
@@ -605,14 +641,14 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
                               {isHighlighted && (
                                 <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
                                   <span className="text-white text-xs font-bold">
-                                    {scaleDegree}
+                                    {showNoteNames ? getNoteName(stringName, fret, keyData.key) : scaleDegree}
                                   </span>
                                 </div>
                               )}
                               {isBentNote && (
                                 <div className="w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center">
                                   <span className="text-white text-xs font-bold">
-                                    {bentScaleDegree}
+                                    {showNoteNames ? getNoteName(stringName, fret, keyData.key) : bentScaleDegree}
                                   </span>
                                 </div>
                               )}
@@ -724,14 +760,14 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
                                   scaleDegree === '♭6' ? 'bg-red-500' : 'bg-purple-500'
                                 }`}>
                                   <span className="text-white text-xs font-bold">
-                                    {scaleDegree}
+                                    {showNoteNames ? getNoteName(stringName, fret, keyData.key) : scaleDegree}
                                   </span>
                                 </div>
                               )}
                               {isBentNote && (
                                 <div className="w-4 h-4 bg-orange-400 rounded-full flex items-center justify-center">
                                   <span className="text-white text-xs font-bold">
-                                    {bentScaleDegree}
+                                    {showNoteNames ? getNoteName(stringName, fret, keyData.key) : bentScaleDegree}
                                   </span>
                                 </div>
                               )}
@@ -759,6 +795,7 @@ function BBKingBoxesDisplay({ keyData, showBentNotes = false, setShowBentNotes }
 export default function BBKingBoxDifferentKeys() {
   const [selectedKey, setSelectedKey] = useState('A');
   const [showBentNotes, setShowBentNotes] = useState(false);
+  const [showNoteNames, setShowNoteNames] = useState(false);
 
   const currentKeyData = bbKingBoxData[selectedKey as keyof typeof bbKingBoxData];
 
@@ -947,7 +984,13 @@ export default function BBKingBoxDifferentKeys() {
                 </div>
               </div>
               
-              <BBKingBoxesDisplay keyData={currentKeyData} showBentNotes={showBentNotes} setShowBentNotes={setShowBentNotes} />
+              <BBKingBoxesDisplay 
+                keyData={currentKeyData} 
+                showBentNotes={showBentNotes} 
+                setShowBentNotes={setShowBentNotes}
+                showNoteNames={showNoteNames}
+                setShowNoteNames={setShowNoteNames}
+              />
             </div>
 
             {/* Interactive Tab Player */}
