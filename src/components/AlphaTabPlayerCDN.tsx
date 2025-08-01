@@ -396,56 +396,56 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       ];
     }
 
-    if (pageDetection.isStringBendingPage) {
-      return [
-        {
-          group: 'Basic Bends',
-          items: [
-            { id: 'full-bend-slow', name: '1. Full Bend Slow (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp?v=10', tempo: 120 },
-            { id: 'full-bend-fast', name: '2. Full Bend Fast (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 2.gp?v=10', tempo: 120 },
-            { id: 'full-bend-downward', name: '3. Full Bend Downward (The Lower Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 3.gp?v=10', tempo: 120 }
-          ]
-        },
-        {
-          group: 'Adding Vibrato',
-          items: [
-            { id: 'full-bend-vibrato', name: '4. Full Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 4.gp?v=4', tempo: 120 },
-            { id: 'half-bend-vibrato', name: '5. Half Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 5.gp?v=4', tempo: 120 },
-            { id: 'one-half-bend-vibrato', name: '6. 1½ Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 6.gp?v=4', tempo: 120 }
-          ]
-        },
-        {
-          group: 'Release Techniques',
-          items: [
-            { id: 'full-bend-and-release', name: '7. Full Bend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 7.gp?v=4', tempo: 120 },
-            { id: 'full-prebend-and-release', name: '8. Full Prebend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 8.gp?v=4', tempo: 120 },
-            { id: 'full-prebend', name: '9. Full Prebend (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 9.gp?v=4', tempo: 120 },
-            { id: 'quarter-bend-and-release', name: '10. ¼ Bend and Release', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 16.gp?v=4', tempo: 120 }
-          ]
-        },
-        {
-          group: 'Playing Two Strings and Bending One',
-          items: [
-            { id: 'full-bend-release-pick-note', name: '11. Full Bend and Release, Then Pick a Note', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 10.gp?v=4', tempo: 120 },
-            { id: 'unison-bends', name: '12. Unison Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 11.gp?v=4', tempo: 120 },
-            { id: 'double-stop-bends', name: '13. Double Stop Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 12.gp?v=4', tempo: 120 }
-          ]
-        },
-        {
-          group: 'Bending Two Strings at Once',
-          items: [
-            { id: 'full-parallel-bends', name: '14. Full Parallel Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 15.gp?v=4', tempo: 120 }
-          ]
-        },
-        {
-          group: 'Bending with Other Fingers',
-          items: [
-            { id: 'half-bend-vibrato-2nd-finger', name: '15. Half Bend and Vibrato Using 2nd Finger (Downward Bend)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 13.gp?v=4', tempo: 120 },
-            { id: 'full-bend-release-1st-finger', name: '16. Full Bend and Release Using 1st Finger (Downward Bend)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 14.gp?v=4', tempo: 120 }
-          ]
+            if (pageDetection.isStringBendingPage) {
+          return [
+            {
+              group: 'Basic Bends',
+              items: [
+                { id: 'full-bend-slow', name: '1. Full Bend Slow (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp?v=10', tempo: 120 },
+                { id: 'full-bend-fast', name: '2. Full Bend Fast (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 2.gp?v=10', tempo: 120 },
+                { id: 'full-bend-downward', name: '3. Full Bend Downward (The Lower Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 6.gp?v=10', tempo: 120 }
+              ]
+            },
+            {
+              group: 'Adding Vibrato',
+              items: [
+                { id: 'full-bend-vibrato', name: '4. Full Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 3.gp?v=10', tempo: 120 },
+                { id: 'half-bend-vibrato', name: '5. Half Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 4.gp?v=10', tempo: 120 },
+                { id: 'one-half-bend-vibrato', name: '6. 1½ Bend Vibrato (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 5.gp?v=10', tempo: 120 }
+              ]
+            },
+            {
+              group: 'Release Techniques',
+              items: [
+                { id: 'full-bend-and-release', name: '7. Full Bend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 7.gp?v=10', tempo: 120 },
+                { id: 'full-prebend-and-release', name: '8. Full Prebend and Release (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 8.gp?v=10', tempo: 120 },
+                { id: 'full-prebend', name: '9. Full Prebend (The Higher Three Strings)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 9.gp?v=10', tempo: 120 },
+                { id: 'full-bends-with-added-note', name: '10. Full Bends with Added Note on Higher String', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 10.gp?v=4', tempo: 120 },
+                { id: 'quarter-bend-and-release', name: '11. ¼ Bend and Release with Vibrato', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 16.gp?v=4', tempo: 120 }
+              ]
+            },
+            {
+              group: 'Playing Two Strings and Bending One',
+              items: [
+                { id: 'unison-bends', name: '12. Unison Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 11.gp?v=4', tempo: 120 },
+                { id: 'double-stop-bends', name: '13. Double Stop Bends', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 12.gp?v=4', tempo: 120 }
+              ]
+            },
+            {
+              group: 'Bending Two Strings at Once',
+              items: [
+                { id: 'full-bend-two-strings-vibrato', name: '14. Full Bend on Two Strings with Vibrato', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 15.gp?v=4', tempo: 120 }
+              ]
+            },
+            {
+              group: 'Bending with Other Fingers',
+              items: [
+                { id: 'half-bend-vibrato-2nd-finger', name: '15. Half Bend and Vibrato Using 2nd Finger', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 13.gp?v=4', tempo: 120 },
+                { id: 'full-bend-release-1st-finger', name: '16. Full Bend and Release Using 1st Finger (Downward Bend)', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 14.gp?v=4', tempo: 120 }
+              ]
+            }
+          ];
         }
-      ];
-    }
 
     return [];
   }, [pathname]);
