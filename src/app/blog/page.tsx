@@ -1534,13 +1534,13 @@ export default function Blog() {
     {
       id: '37',
       title: 'BB King Box in Different Keys: Complete Blues Guitar Guide',
-      excerpt: 'Master the iconic BB King box pattern in all major blues keys (A, C, D, E, G) with interactive fretboard diagrams. Learn the classic blues licks and positions.',
+      excerpt: 'Master the iconic BB King box pattern in all major blues keys (A, C, D, E, G) with interactive fretboard diagrams and tabs. Learn the classic blues licks and positions.',
       readTime: 'Interactive Tool',
       category: 'Intermediate',
       primaryCategory: 'Technique',
       categories: ['Technique', 'Scales and Fretboard', 'Tools', 'Blues'],
       skillLevel: 'intermediate',
-      image: '/blog-thumbnail.svg',
+      image: '/BB King.jpg',
       slug: 'bb-king-box-different-keys',
       author: 'Mike Nelson',
       sortOrder: 12

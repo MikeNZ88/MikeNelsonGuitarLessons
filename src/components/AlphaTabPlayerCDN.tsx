@@ -237,7 +237,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     isBluesLicksPage: pathname?.includes('/blues-licks-exercises') || false,
     isArpeggioPage: pathname?.includes('/guitar-arpeggios-exercises') || false,
     isFingerExercisesPage: pathname?.includes('/picking-finger-exercises') || false,
-    isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs') || false
+    isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs') || false,
+    isBBKingBoxPage: pathname?.includes('/bb-king-box-different-keys') || false
   };
   
   console.log('🔍 Page Detection:', pageDetection);
@@ -245,7 +246,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises') || 
                        pageDetection.pathname.includes('/guitar-arpeggios-exercises') ||
                        pageDetection.pathname.includes('/picking-finger-exercises') ||
-                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs');
+                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs') ||
+                       pageDetection.pathname.includes('/bb-king-box-different-keys');
   console.log('🔍 Pathname check:', pathnameCheck);
   
   // Memoize currentExercises to prevent unnecessary re-renders
@@ -373,6 +375,19 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             { id: 'walk-this-way', name: 'Walk This Way - Aerosmith', file: '/GP Files/Scale Exercises/BLOG TABS/Walk This Way.gp', tempo: 110 },
             { id: 'iron-man-main', name: 'Iron Man - Black Sabbath', file: '/GP Files/Scale Exercises/BLOG TABS/Iron Man Main Riff.gp', tempo: 140 },
             { id: 'enter-sandman', name: 'Enter Sandman - Metallica', file: '/GP Files/Scale Exercises/BLOG TABS/Enter Sandman .gp', tempo: 135 }
+          ]
+        }
+      ];
+    }
+
+    if (pageDetection.isBBKingBoxPage) {
+      return [
+        {
+          group: 'BB King Box Exercises',
+          items: [
+            { id: 'bb-king-box-key-a', name: 'BB King Box Exercise (Key of A)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of A).gp', tempo: 80 },
+            { id: 'bb-king-box-key-e', name: 'BB King Box Exercise (Key of E)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of E).gp', tempo: 80 },
+            { id: 'bb-king-box-key-g', name: 'BB King Box Exercise (Key of G)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of G).gp', tempo: 80 }
           ]
         }
       ];
