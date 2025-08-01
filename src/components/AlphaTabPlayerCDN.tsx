@@ -385,7 +385,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         {
           group: 'BB King Box Exercises',
           items: [
-            { id: 'bb-king-box-key-a', name: 'BB King Box Exercise (Key of A)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of A).gp', tempo: 80 },
+            { id: 'bb-king-box-key-a-1', name: 'BB King Box Exercise 1 (Key of A)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of A) 2.gp', tempo: 80 },
+            { id: 'bb-king-box-key-a-2', name: 'BB King Box Exercise 2 (Key of A)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of A).gp', tempo: 80 },
             { id: 'bb-king-box-key-e', name: 'BB King Box Exercise (Key of E)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of E).gp', tempo: 80 },
             { id: 'bb-king-box-key-g', name: 'BB King Box Exercise (Key of G)', file: '/GP Files/Scale Exercises/BLOG TABS/BB King Box Exercise (Key of G).gp', tempo: 80 }
           ]
