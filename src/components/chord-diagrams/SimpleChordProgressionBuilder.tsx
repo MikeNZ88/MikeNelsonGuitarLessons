@@ -14,10 +14,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [gridSize, setGridSize] = useState<number>(4);
   const [progressionTitle, setProgressionTitle] = useState<string>('My Chord Progression');
   const [chords, setChords] = useState<(ChordData | null)[]>(Array(4).fill(null));
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | string | null>(null);
   const [globalShowFingering, setGlobalShowFingering] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareRowSize, setCompareRowSize] = useState(4);
+  const [customText, setCustomText] = useState('');
+  const [compareRows, setCompareRows] = useState<Array<{
+    title: string;
+    chords: (ChordData | null)[];
+  }>>([
+    { title: 'Variation 1', chords: Array(4).fill(null) },
+    { title: 'Variation 2', chords: Array(4).fill(null) }
+  ]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Initialize empty chord
@@ -116,6 +126,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       title: progressionTitle,
       gridSize,
       chords,
+      compareMode,
+      compareRowSize,
+      compareRows,
+      customText,
       showFingering: globalShowFingering,
       savedAt: new Date().toISOString()
     };
@@ -146,8 +160,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           setProgressionTitle(progressionData.title);
           setGridSize(progressionData.gridSize);
           setChords(progressionData.chords);
+          if (progressionData.compareMode !== undefined) {
+            setCompareMode(progressionData.compareMode);
+          }
+          if (progressionData.compareRows) {
+            setCompareRows(progressionData.compareRows);
+          }
+          if (progressionData.compareRowSize !== undefined) {
+            setCompareRowSize(progressionData.compareRowSize);
+          }
           if (progressionData.showFingering !== undefined) {
             setGlobalShowFingering(progressionData.showFingering);
+          }
+          if (progressionData.customText) {
+            setCustomText(progressionData.customText);
           }
           
           // Update chord array size if needed
@@ -177,7 +203,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   };
 
   const createNewProgression = () => {
-    if (chords.some(chord => chord !== null)) {
+    if (chords.some(chord => chord !== null) || (compareMode && compareRows.some(row => row.chords.some(chord => chord !== null)))) {
       const confirmed = confirm('This will clear your current progression. Continue?');
       if (!confirmed) return;
     }
@@ -185,8 +211,108 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     setProgressionTitle('My Chord Progression');
     setGridSize(4);
     setChords(Array(4).fill(null));
+    setCompareRows([
+      { title: 'Variation 1', chords: Array(compareRowSize).fill(null) },
+      { title: 'Variation 2', chords: Array(compareRowSize).fill(null) }
+    ]);
     setGlobalShowFingering(false);
+    setCustomText('');
     setEditingIndex(null);
+  };
+
+  // Compare mode functions
+  const toggleCompareMode = () => {
+    setCompareMode(!compareMode);
+    setEditingIndex(null);
+  };
+
+  const updateCompareRow = (rowIndex: number, chordIndex: number, chord: ChordData) => {
+    const newRows = [...compareRows];
+    newRows[rowIndex].chords[chordIndex] = chord;
+    setCompareRows(newRows);
+  };
+
+  const updateCompareRowTitle = (rowIndex: number, title: string) => {
+    const newRows = [...compareRows];
+    newRows[rowIndex].title = title;
+    setCompareRows(newRows);
+  };
+
+  const addCompareRow = () => {
+    if (compareRows.length < 6) { // Max 6 rows for practical purposes
+      setCompareRows([...compareRows, { 
+        title: `Variation ${compareRows.length + 1}`, 
+        chords: Array(compareRowSize).fill(null) 
+      }]);
+    }
+  };
+
+  const removeCompareRow = (rowIndex: number) => {
+    if (compareRows.length > 1) {
+      const newRows = compareRows.filter((_, index) => index !== rowIndex);
+      setCompareRows(newRows);
+    }
+  };
+
+  const clearCompareChord = (rowIndex: number, chordIndex: number) => {
+    const newRows = [...compareRows];
+    newRows[rowIndex].chords[chordIndex] = null;
+    setCompareRows(newRows);
+    setEditingIndex(null);
+  };
+
+  const updateCompareRowSize = (newSize: number) => {
+    setCompareRowSize(newSize);
+    // Update all existing rows to the new size
+    const updatedRows = compareRows.map(row => {
+      const newChords = Array(newSize).fill(null);
+      // Copy existing chords up to the new size
+      for (let i = 0; i < Math.min(row.chords.length, newSize); i++) {
+        newChords[i] = row.chords[i];
+      }
+      return { ...row, chords: newChords };
+    });
+    setCompareRows(updatedRows);
+  };
+
+  // Draw custom text with intelligent wrapping and styling
+  const drawCustomText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
+    if (!text.trim()) return 0; // Return 0 height if no text
+    
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let currentLine = '';
+    
+    // Set font for measuring
+    ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    
+    // Wrap text into lines
+    for (let word of words) {
+      const testLine = currentLine + (currentLine ? ' ' : '') + word;
+      const metrics = ctx.measureText(testLine);
+      
+      if (metrics.width > maxWidth && currentLine) {
+        lines.push(currentLine);
+        currentLine = word;
+      } else {
+        currentLine = testLine;
+      }
+    }
+    
+    if (currentLine) {
+      lines.push(currentLine);
+    }
+    
+    // Draw clean text without background
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#7C2D12'; // Dark amber text to match chord names
+    
+    lines.forEach((line, index) => {
+      const lineY = y + (index * lineHeight);
+      ctx.fillText(line, x, lineY);
+    });
+    
+    return lines.length * lineHeight + 20; // Return total height with minimal padding
   };
 
   // Export as image
@@ -197,32 +323,59 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Define row layouts based on grid size
-    let rowLayouts: number[] = [];
-    switch (gridSize) {
-      case 4: rowLayouts = [4]; break;
-      case 5: rowLayouts = [3, 2]; break;
-      case 6: rowLayouts = [3, 3]; break;
-      case 7: rowLayouts = [4, 3]; break;
-      case 8: rowLayouts = [4, 4]; break;
-      case 9: rowLayouts = [3, 3, 3]; break;
-      case 10: rowLayouts = [4, 3, 3]; break;
-      default: rowLayouts = [4]; break;
+    const maxCanvasWidth = 1080; // Optimal for Instagram/social media
+    const diagramSize = compareMode ? 160 : 220; // Smaller diagrams for better fit
+    const spacing = compareMode ? 20 : 30;
+    
+    let canvasWidth: number;
+    let canvasHeight: number;
+    
+    if (compareMode) {
+      // Calculate required width for the largest row
+      const maxRowChords = Math.max(...compareRows.map(row => row.chords.length));
+      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
+      canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
+      
+      // Dynamic height for compare mode based on number of rows
+      const titleAreaHeight = 150;
+      const rowHeight = diagramSize + 80; // Include space for row title
+      const diagramsHeight = compareRows.length * rowHeight;
+      const customTextHeight = customText.trim() ? 60 : 0; // Reduced estimate for clean text
+      const brandingHeight = 120;
+      const paddingHeight = 100;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + brandingHeight + paddingHeight;
+    } else {
+      // Calculate required width for normal mode
+      const rowLayouts = (() => {
+        switch (gridSize) {
+          case 2: return [2];
+          case 3: return [3];
+          case 4: return [4];
+          case 5: return [3, 2];
+          case 6: return [3, 3];
+          case 7: return [4, 3];
+          case 8: return [4, 4];
+          case 9: return [3, 3, 3];
+          case 10: return [4, 3, 3];
+          default: return [4];
+        }
+      })();
+      const maxRowChords = Math.max(...rowLayouts);
+      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
+      canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
+      
+      // Fixed dimensions for normal mode
+      const titleAreaHeight = 200;
+      const maxRows = Math.max(1, rowLayouts.length);
+      const diagramsHeight = maxRows * (diagramSize + 100);
+      const customTextHeight = customText.trim() ? 60 : 0; // Reduced estimate for clean text
+      const brandingHeight = 120;
+      const paddingHeight = 100;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + brandingHeight + paddingHeight;
     }
-
-    // Fixed canvas dimensions based on 10-chord layout for consistent social media sizing
-    const canvasWidth = 1200;
-    const diagramSize = 260;
-    const spacing = 35;
     
-    // Use fixed dimensions based on 10-chord layout [4, 3, 3] = 3 rows
-    const titleAreaHeight = 200; // Space for title and progression text
-    const maxRows = 3; // Maximum rows from 10-chord layout
-    const diagramsHeight = maxRows * (diagramSize + 100); // Height for maximum diagram rows
-    const brandingHeight = 120; // Space for branding footer
-    const paddingHeight = 100; // Extra padding
-    
-    const canvasHeight = titleAreaHeight + diagramsHeight + brandingHeight + paddingHeight;
+    // Ensure height is at least equal to width (never landscape)
+    canvasHeight = Math.max(canvasHeight, canvasWidth);
     
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -234,72 +387,119 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    // Use the diagram size and spacing already defined above
-    const maxRowWidth = Math.max(...rowLayouts) * diagramSize + (Math.max(...rowLayouts) - 1) * spacing;
-    
-    // Calculate positioning with title higher up
-    const titleY = 120; // Fixed position higher up on the page
-    const progressionY = titleY + 80; // Increased space after title
-    
-    // Position diagrams to maintain their current good positioning
-    const diagramsStartY = 280; // Keep diagrams where they look good
+    // Calculate positioning
+    const titleY = compareMode ? 80 : 120;
+    const progressionY = titleY + (compareMode ? 60 : 80);
+    const diagramsStartY = compareMode ? 180 : 280;
 
-    // Draw title (same color as chord diagram circles)
-    ctx.font = 'bold italic 42px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    // Draw title - consistent size for both modes
+    ctx.font = `bold italic 42px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#7C2D12'; // Same as finger position circles
+    ctx.fillStyle = '#7C2D12';
     ctx.fillText(progressionTitle, canvasWidth / 2, titleY);
 
-    // Draw chord names progression with dynamic line wrapping
-    const filledChords = chords.filter(chord => chord !== null) as ChordData[];
-    if (filledChords.length > 0) {
-      ctx.font = 'italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-      ctx.fillStyle = '#FEF3C7';
-      const chordNames = filledChords.map(c => c.name).join(' → ');
-      
-      // Check if text fits on one line (90% of canvas width for margins)
-      const maxLineWidth = canvasWidth * 0.9;
-      const textWidth = ctx.measureText(chordNames).width;
-      
-      if (textWidth <= maxLineWidth) {
-        // Single line
-        ctx.fillText(chordNames, canvasWidth / 2, progressionY);
-      } else {
-        // Split into two lines - find a good break point
-        const chordArray = filledChords.map(c => c.name);
-        const midPoint = Math.ceil(chordArray.length / 2);
+    if (compareMode) {
+      // Compare mode: Draw rows with titles
+      compareRows.forEach((row, rowIndex) => {
+        const rowY = diagramsStartY + rowIndex * (diagramSize + 80);
         
-        const firstLine = chordArray.slice(0, midPoint).join(' → ');
-        const secondLine = chordArray.slice(midPoint).join(' → ');
+        // Draw row title
+        ctx.font = 'bold italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = '#FEF3C7';
+        ctx.fillText(row.title, canvasWidth / 2, rowY - 20);
         
-        // Draw two lines with spacing
-        const lineSpacing = 40;
-        ctx.fillText(firstLine, canvasWidth / 2, progressionY - lineSpacing / 2);
-        ctx.fillText(secondLine, canvasWidth / 2, progressionY + lineSpacing / 2);
+        // Draw 4 chord diagrams in this row
+        const rowWidth = compareRowSize * diagramSize + (compareRowSize - 1) * spacing;
+        const rowStartX = (canvasWidth - rowWidth) / 2;
+        
+        for (let chordIndex = 0; chordIndex < compareRowSize; chordIndex++) {
+          const chord = row.chords[chordIndex];
+          const x = rowStartX + chordIndex * (diagramSize + spacing);
+          const y = rowY;
+          
+          if (chord) {
+            drawChordDiagram(ctx, chord, x, y, diagramSize);
+          } else {
+            drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${chordIndex + 1}`);
+          }
+        }
+      });
+
+      // Draw custom text below diagrams
+      if (customText.trim()) {
+        const textY = diagramsStartY + compareRows.length * (diagramSize + 80) + 20;
+        drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 30);
+      }
+    } else {
+      // Normal mode: Draw chord progression with arrow notation
+      const filledChords = chords.filter(chord => chord !== null) as ChordData[];
+      if (filledChords.length > 0) {
+        ctx.font = 'italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = '#FEF3C7';
+        const chordNames = filledChords.map(c => c.name).join(' → ');
+        
+        // Check if text fits on one line
+        const maxLineWidth = canvasWidth * 0.9;
+        const textWidth = ctx.measureText(chordNames).width;
+        
+        if (textWidth <= maxLineWidth) {
+          ctx.fillText(chordNames, canvasWidth / 2, progressionY);
+        } else {
+          // Split into two lines
+          const chordArray = filledChords.map(c => c.name);
+          const midPoint = Math.ceil(chordArray.length / 2);
+          
+          const firstLine = chordArray.slice(0, midPoint).join(' → ');
+          const secondLine = chordArray.slice(midPoint).join(' → ');
+          
+          const lineSpacing = 40;
+          ctx.fillText(firstLine, canvasWidth / 2, progressionY - lineSpacing / 2);
+          ctx.fillText(secondLine, canvasWidth / 2, progressionY + lineSpacing / 2);
+        }
+      }
+
+      // Draw diagrams using grid layout
+      const rowLayouts = (() => {
+        switch (gridSize) {
+          case 2: return [2];
+          case 3: return [3];
+          case 4: return [4];
+          case 5: return [3, 2];
+          case 6: return [3, 3];
+          case 7: return [4, 3];
+          case 8: return [4, 4];
+          case 9: return [3, 3, 3];
+          case 10: return [4, 3, 3];
+          default: return [4];
+        }
+      })();
+
+      let currentIndex = 0;
+      rowLayouts.forEach((rowCount, rowIndex) => {
+        const rowWidth = rowCount * diagramSize + (rowCount - 1) * spacing;
+        const rowStartX = (canvasWidth - rowWidth) / 2;
+        const rowY = diagramsStartY + rowIndex * (diagramSize + 100);
+        
+        for (let col = 0; col < rowCount && currentIndex < chords.length; col++) {
+          const chord = chords[currentIndex];
+          const x = rowStartX + col * (diagramSize + spacing);
+          const y = rowY;
+
+          if (chord) {
+            drawChordDiagram(ctx, chord, x, y, diagramSize);
+          } else {
+            drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${currentIndex + 1}`);
+          }
+          currentIndex++;
+        }
+      });
+
+      // Draw custom text below diagrams
+      if (customText.trim()) {
+        const textY = diagramsStartY + rowLayouts.length * (diagramSize + 100) + 20;
+        drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 30);
       }
     }
-
-    // Draw each chord diagram using custom row layouts
-    let currentIndex = 0;
-    rowLayouts.forEach((rowCount, rowIndex) => {
-      const rowWidth = rowCount * diagramSize + (rowCount - 1) * spacing;
-      const rowStartX = (canvasWidth - rowWidth) / 2;
-      const rowY = diagramsStartY + rowIndex * (diagramSize + 100);
-      
-      for (let col = 0; col < rowCount && currentIndex < chords.length; col++) {
-        const chord = chords[currentIndex];
-        const x = rowStartX + col * (diagramSize + spacing);
-        const y = rowY;
-
-        if (chord) {
-          drawChordDiagram(ctx, chord, x, y, diagramSize);
-        } else {
-          // Draw empty placeholder
-          drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${currentIndex + 1}`);
-        }
-        currentIndex++;
-      }
-    });
 
     // Draw branding footer
     const footerY = canvasHeight - 70;
@@ -528,11 +728,58 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             placeholder="Enter progression title"
           />
         </div>
+
+        {/* Custom Text */}
+        <div>
+          <label className="block text-sm font-medium mb-2">
+            <span className="flex items-center gap-2">
+              <span>Custom Text</span>
+              <span className="text-amber-400 text-xs">(optional)</span>
+            </span>
+          </label>
+          <textarea
+            value={customText}
+            onChange={(e) => setCustomText(e.target.value)}
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
+            placeholder="Add descriptive text to your chord progression (e.g., 'A gentle progression perfect for ballads')"
+            rows={3}
+            maxLength={200}
+          />
+          <div className="flex justify-between items-center mt-1">
+            <span className="text-xs text-gray-500">
+              Appears below the chord diagrams in exported image
+            </span>
+            <span className={`text-xs ${customText.length > 180 ? 'text-amber-400' : 'text-gray-500'}`}>
+              {customText.length}/200
+            </span>
+          </div>
+        </div>
+
+        {/* Mode Toggle */}
+        <div className="text-center">
+          <button
+            onClick={toggleCompareMode}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              compareMode 
+                ? 'bg-amber-600 hover:bg-amber-700 text-white' 
+                : 'bg-gray-700 hover:bg-gray-600 text-white'
+            }`}
+          >
+            {compareMode ? 'Switch to Normal Mode' : 'Switch to Compare Mode'}
+          </button>
+          <p className="text-gray-400 text-sm mt-2">
+            {compareMode 
+              ? 'Compare mode: Show multiple variations with custom row titles' 
+              : 'Normal mode: Single chord progression with arrows'
+            }
+          </p>
+        </div>
         
+        {!compareMode && (
                   <div>
-            <label className="block text-sm font-medium mb-2">Number of Chords (4-10):</label>
+            <label className="block text-sm font-medium mb-2">Number of Chords (2-10):</label>
             <div className="flex gap-2 flex-wrap">
-              {[4, 5, 6, 7, 8, 9, 10].map(size => (
+              {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(size => (
                 <button
                   key={size}
                   onClick={() => handleGridSizeChange(size)}
@@ -547,59 +794,88 @@ const SimpleChordProgressionBuilder: React.FC = () => {
               ))}
             </div>
           </div>
+        )}
+        
+        {compareMode && (
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Chords per row (1-4):</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4].map(size => (
+                    <button
+                      key={size}
+                      onClick={() => updateCompareRowSize(size)}
+                      className={`px-3 py-1 rounded font-semibold transition-colors ${
+                        compareRowSize === size
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={addCompareRow}
+                disabled={compareRows.length >= 6}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg"
+              >
+                Add Row
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Chord Grid */}
-      <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">Click to edit, drag to reorder:</h2>
-        <div className="space-y-4 max-w-6xl mx-auto">
-          {(() => {
-            // Define UI row layouts based on grid size (same as canvas)
-            let uiRowLayouts: number[] = [];
-            switch (gridSize) {
-              case 4: uiRowLayouts = [4]; break;
-              case 5: uiRowLayouts = [3, 2]; break;
-              case 6: uiRowLayouts = [3, 3]; break;
-              case 7: uiRowLayouts = [4, 3]; break;
-              case 8: uiRowLayouts = [4, 4]; break;
-              case 9: uiRowLayouts = [3, 3, 3]; break;
-              case 10: uiRowLayouts = [4, 3, 3]; break;
-              default: uiRowLayouts = [4]; break;
-            }
-            
-            let currentIndex = 0;
-            return uiRowLayouts.map((rowCount, rowIndex) => (
-              <div key={rowIndex} className={`grid gap-4 justify-center`} style={{ gridTemplateColumns: `repeat(${rowCount}, 1fr)`, maxWidth: `${rowCount * 200}px`, margin: '0 auto' }}>
-                {Array.from({ length: rowCount }, (_, colIndex) => {
-                  if (currentIndex >= chords.length) return null;
-                  const chord = chords[currentIndex];
-                  const index = currentIndex++;
+      {/* Compare Mode UI */}
+      {compareMode && (
+        <div className="mb-8">
+          {compareRows.map((row, rowIndex) => (
+            <div key={rowIndex} className="mb-8 border border-gray-700 rounded-lg p-4">
+              <div className="flex items-center gap-3 mb-4">
+                <input
+                  type="text"
+                  value={row.title}
+                  onChange={(e) => updateCompareRowTitle(rowIndex, e.target.value)}
+                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded text-white"
+                  placeholder="Row title"
+                />
+                {compareRows.length > 1 && (
+                  <button
+                    onClick={() => removeCompareRow(rowIndex)}
+                    className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+              
+              <div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${compareRowSize}, 1fr)` }}>
+                {Array.from({ length: compareRowSize }, (_, chordIndex) => {
+                  const chord = row.chords[chordIndex];
+                  const globalIndex = `${rowIndex}-${chordIndex}`;
                   
                   return (
-                    <div key={index} className="text-center">
+                    <div key={chordIndex} className="text-center">
                       <div
-                        className={`bg-gray-800 border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                          dragOverIndex === index 
-                            ? 'border-amber-300 bg-amber-900/20' 
-                            : draggedIndex === index
-                            ? 'border-amber-500 opacity-50'
-                            : 'border-gray-600 hover:border-amber-500'
-                        }`}
-                        draggable={chord !== null}
-                        onClick={() => startEditing(index)}
-                        onDragStart={(e) => handleDragStart(e, index)}
-                        onDragOver={(e) => handleDragOver(e, index)}
-                        onDragLeave={handleDragLeave}
-                        onDrop={(e) => handleDrop(e, index)}
-                        onDragEnd={handleDragEnd}
-                        style={{ cursor: chord ? 'grab' : 'pointer' }}
+                        className="bg-gray-800 border-2 border-gray-600 rounded-lg p-3 cursor-pointer hover:border-amber-500 transition-colors h-32 flex items-center justify-center"
+                        onClick={() => setEditingIndex(globalIndex)}
                       >
-                        <ChordDiagramPreview chord={chord} index={index + 1} />
+                        {chord ? (
+                          <div className="text-center">
+                            <div className="font-semibold text-amber-400">{chord.name}</div>
+                            <div className="text-xs text-gray-400 mt-1">Fret {chord.fretNumber}</div>
+                          </div>
+                        ) : (
+                          <div className="text-gray-500 text-sm">Chord {chordIndex + 1}</div>
+                        )}
                       </div>
                       {chord && (
                         <button
-                          onClick={() => clearChord(index)}
-                          className="mt-2 px-3 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
+                          onClick={() => clearCompareChord(rowIndex, chordIndex)}
+                          className="mt-2 px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
                         >
                           Clear
                         </button>
@@ -608,16 +884,100 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                   );
                 })}
               </div>
-            ));
-          })()}
+            </div>
+          ))}
         </div>
-      </div>
+      )}
+
+      {/* Normal Mode Chord Grid */}
+      {!compareMode && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">Click to edit, drag to reorder:</h2>
+          <div className="space-y-4 max-w-6xl mx-auto">
+            {(() => {
+              // Define UI row layouts based on grid size (same as canvas)
+              let uiRowLayouts: number[] = [];
+              switch (gridSize) {
+                case 2: uiRowLayouts = [2]; break;
+                case 3: uiRowLayouts = [3]; break;
+                case 4: uiRowLayouts = [4]; break;
+                case 5: uiRowLayouts = [3, 2]; break;
+                case 6: uiRowLayouts = [3, 3]; break;
+                case 7: uiRowLayouts = [4, 3]; break;
+                case 8: uiRowLayouts = [4, 4]; break;
+                case 9: uiRowLayouts = [3, 3, 3]; break;
+                case 10: uiRowLayouts = [4, 3, 3]; break;
+                default: uiRowLayouts = [4]; break;
+              }
+              
+              let currentIndex = 0;
+              return uiRowLayouts.map((rowCount, rowIndex) => (
+                <div key={rowIndex} className={`grid gap-4 justify-center`} style={{ gridTemplateColumns: `repeat(${rowCount}, 1fr)`, maxWidth: `${rowCount * 200}px`, margin: '0 auto' }}>
+                  {Array.from({ length: rowCount }, (_, colIndex) => {
+                    if (currentIndex >= chords.length) return null;
+                    const chord = chords[currentIndex];
+                    const index = currentIndex++;
+                    
+                    return (
+                      <div key={index} className="text-center">
+                        <div
+                          className={`bg-gray-800 border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                            dragOverIndex === index 
+                              ? 'border-amber-300 bg-amber-900/20' 
+                              : draggedIndex === index
+                              ? 'border-amber-500 opacity-50'
+                              : 'border-gray-600 hover:border-amber-500'
+                          }`}
+                          draggable={chord !== null}
+                          onClick={() => startEditing(index)}
+                          onDragStart={(e) => handleDragStart(e, index)}
+                          onDragOver={(e) => handleDragOver(e, index)}
+                          onDragLeave={handleDragLeave}
+                          onDrop={(e) => handleDrop(e, index)}
+                          onDragEnd={handleDragEnd}
+                          style={{ cursor: chord ? 'grab' : 'pointer' }}
+                        >
+                          <ChordDiagramPreview chord={chord} index={index + 1} />
+                        </div>
+                        {chord && (
+                          <button
+                            onClick={() => clearChord(index)}
+                            className="mt-2 px-3 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ));
+            })()}
+          </div>
+        </div>
+      )}
 
       {/* Chord Editor */}
-      {editingIndex !== null && chords[editingIndex] && (
+      {editingIndex !== null && (
         <ChordEditor
-          chord={chords[editingIndex]!}
-          onUpdate={(chord) => updateChord(editingIndex, chord)}
+          chord={(() => {
+            if (typeof editingIndex === 'number') {
+              // Normal mode
+              return chords[editingIndex] || createEmptyChord();
+            } else {
+              // Compare mode - editingIndex is "rowIndex-chordIndex"
+              const [rowIndex, chordIndex] = editingIndex.split('-').map(Number);
+              return compareRows[rowIndex]?.chords[chordIndex] || createEmptyChord();
+            }
+          })()}
+          onUpdate={(chord) => {
+            if (typeof editingIndex === 'number') {
+              updateChord(editingIndex, chord);
+            } else {
+              const [rowIndex, chordIndex] = editingIndex.split('-').map(Number);
+              updateCompareRow(rowIndex, chordIndex, chord);
+            }
+          }}
           onClose={() => setEditingIndex(null)}
           globalShowFingering={globalShowFingering}
           setGlobalShowFingering={setGlobalShowFingering}
@@ -646,7 +1006,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           
           <button
             onClick={saveProgression}
-            disabled={chords.every(chord => chord === null)}
+            disabled={
+              compareMode 
+                ? compareRows.every(row => row.chords.every(chord => chord === null))
+                : chords.every(chord => chord === null)
+            }
             className="px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
           >
             Save Progression
@@ -680,7 +1044,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       <div className="text-center">
         <button
           onClick={exportAsImage}
-          disabled={chords.every(chord => chord === null)}
+          disabled={
+            compareMode 
+              ? compareRows.every(row => row.chords.every(chord => chord === null))
+              : chords.every(chord => chord === null)
+          }
           className="px-8 py-3 bg-amber-500 hover:bg-amber-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold rounded-lg"
         >
           Export as Image
