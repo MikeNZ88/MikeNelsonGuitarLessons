@@ -710,6 +710,21 @@ export class GuitarStrumEngine {
       ]
     },
     {
+      id: 'bad-moon-rising',
+      name: 'Bad Moon Rising Pattern',
+      beatsPerMeasure: 4,
+      description: 'Classic Bad Moon Rising strumming pattern with syncopated rhythm',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        // Skip 1&
+        { type: 'down', time: 1, label: '2' },
+        // Skip 2&, 3
+        { type: 'up', time: 2.5, label: '&' },
+        { type: 'down', time: 3, label: '4' },
+        { type: 'up', time: 3.5, label: '&' },
+      ]
+    },
+    {
       id: 'pattern-7',
       name: 'Pattern 7',
       beatsPerMeasure: 4,

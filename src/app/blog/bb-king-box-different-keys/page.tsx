@@ -303,7 +303,7 @@ function BBKingBoxesDisplay({
         const strings = ['E', 'B', 'G', 'D', 'A', 'E'];
         
 
-
+        
         return (
           <div key={chord} className="bg-white border border-gray-300 rounded-lg p-6 shadow-lg">
             <div className="text-center mb-4">
@@ -337,7 +337,7 @@ function BBKingBoxesDisplay({
                     
                     {/* Fret positions */}
                     {displayFrets.map(fret => {
-                      const isHighlighted = 
+                                            const isHighlighted = 
                         (stringName === 'E' && stringIndex === 0 && chordData.GBE.E.includes(fret)) ||
                         (stringName === 'B' && stringIndex === 1 && chordData.GBE.B.includes(fret)) ||
                         (stringName === 'G' && stringIndex === 2 && chordData.GBE.G.includes(fret));
@@ -966,24 +966,24 @@ export default function BBKingBoxDifferentKeys() {
               
               {/* Key Selector */}
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Select a Key:</h3>
-                <div className="flex flex-wrap gap-2">
-                  {Object.keys(bbKingBoxData).map(key => (
-                    <button
-                      key={key}
-                      onClick={() => setSelectedKey(key)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                        selectedKey === key
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
-                    >
-                      Key of {key}
-                    </button>
-                  ))}
-                </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Select a Key:</h3>
+              <div className="flex flex-wrap gap-2">
+                {Object.keys(bbKingBoxData).map(key => (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedKey(key)}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      selectedKey === key
+                        ? 'bg-amber-600 text-white'
+                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    }`}
+                  >
+                    Key of {key}
+                  </button>
+                ))}
               </div>
-              
+            </div>
+
               <BBKingBoxesDisplay 
                 keyData={currentKeyData} 
                 showBentNotes={showBentNotes} 

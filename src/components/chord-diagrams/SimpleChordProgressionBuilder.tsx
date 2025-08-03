@@ -8,6 +8,10 @@ interface ChordData {
   fingerPositions: Array<{ string: number; fret: number; finger?: number | 'T' }>;
   openStrings: number[];
   mutedStrings: number[];
+  strummingPattern?: {
+    beats: Array<'D' | 'U' | null>; // 8 positions for 1,&,2,&,3,&,4,&
+    displayMode?: 'full' | 'beats-1-2' | 'beats-3-4'; // which beats to show
+  };
 }
 
 const SimpleChordProgressionBuilder: React.FC = () => {
@@ -15,19 +19,24 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [progressionTitle, setProgressionTitle] = useState<string>('My Chord Progression');
   const [chords, setChords] = useState<(ChordData | null)[]>(Array(4).fill(null));
   const [editingIndex, setEditingIndex] = useState<number | string | null>(null);
+  const [editingStrummingIndex, setEditingStrummingIndex] = useState<number | string | null>(null);
   const [globalShowFingering, setGlobalShowFingering] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [compareMode, setCompareMode] = useState(false);
-  const [compareRowSize, setCompareRowSize] = useState(4);
+  // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
-  const [compareSubtitle, setCompareSubtitle] = useState<string[]>(['', '', '', '']); // Subtitle with 4 chord slots
+  const [compareSubtitles, setCompareSubtitles] = useState<{[rowIndex: number]: string[]}>({
+    0: ['', '', '', ''],
+    1: ['', '', '', '']
+  }); // Per-row subtitles
   const [compareRows, setCompareRows] = useState<Array<{
     title: string;
     chords: (ChordData | null)[];
+    chordsPerRow: number;
   }>>([
-    { title: 'Variation 1', chords: Array(4).fill(null) },
-    { title: 'Variation 2', chords: Array(4).fill(null) }
+    { title: 'Variation 1', chords: Array(4).fill(null), chordsPerRow: 4 },
+    { title: 'Variation 2', chords: Array(4).fill(null), chordsPerRow: 4 }
   ]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -75,6 +84,26 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     newChords[index] = null;
     setChords(newChords);
     setEditingIndex(null);
+  };
+
+  // Update strumming pattern for a chord
+  const updateStrummingPattern = (index: number | string, pattern: ChordData['strummingPattern']) => {
+    if (typeof index === 'string') {
+      // Compare mode chord
+      const [rowIndex, chordIndex] = index.split('-').map(Number);
+      const newRows = [...compareRows];
+      if (newRows[rowIndex].chords[chordIndex]) {
+        newRows[rowIndex].chords[chordIndex]!.strummingPattern = pattern;
+        setCompareRows(newRows);
+      }
+    } else {
+      // Normal mode chord
+      const newChords = [...chords];
+      if (newChords[index]) {
+        newChords[index]!.strummingPattern = pattern;
+        setChords(newChords);
+      }
+    }
   };
 
   // Drag and drop handlers
@@ -128,9 +157,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       gridSize,
       chords,
       compareMode,
-      compareRowSize,
       compareRows,
-      compareSubtitle,
+      compareSubtitles,
       customText,
       showFingering: globalShowFingering,
       savedAt: new Date().toISOString()
@@ -168,18 +196,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.compareRows) {
             setCompareRows(progressionData.compareRows);
           }
-          if (progressionData.compareRowSize !== undefined) {
-            setCompareRowSize(progressionData.compareRowSize);
-          }
+          // compareRowSize no longer used - using per-row chordsPerRow
           if (progressionData.showFingering !== undefined) {
             setGlobalShowFingering(progressionData.showFingering);
           }
           if (progressionData.customText) {
             setCustomText(progressionData.customText);
           }
-          if (progressionData.compareSubtitle) {
-            setCompareSubtitle(progressionData.compareSubtitle);
-          }
+              if (progressionData.compareSubtitles) {
+      setCompareSubtitles(progressionData.compareSubtitles);
+    }
           
           // Update chord array size if needed
           const newSize = progressionData.gridSize;
@@ -217,12 +243,15 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     setGridSize(4);
     setChords(Array(4).fill(null));
     setCompareRows([
-      { title: 'Variation 1', chords: Array(compareRowSize).fill(null) },
-      { title: 'Variation 2', chords: Array(compareRowSize).fill(null) }
+      { title: 'Variation 1', chords: Array(4).fill(null), chordsPerRow: 4 },
+      { title: 'Variation 2', chords: Array(4).fill(null), chordsPerRow: 4 }
     ]);
     setGlobalShowFingering(false);
     setCustomText('');
-    setCompareSubtitle(['', '', '', '']);
+    setCompareSubtitles({
+      0: Array(4).fill(''),
+      1: Array(4).fill('')
+    });
     setEditingIndex(null);
   };
 
@@ -246,10 +275,17 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
   const addCompareRow = () => {
     if (compareRows.length < 6) { // Max 6 rows for practical purposes
+      const newRowIndex = compareRows.length;
       setCompareRows([...compareRows, { 
         title: `Variation ${compareRows.length + 1}`, 
-        chords: Array(compareRowSize).fill(null) 
+        chords: Array(4).fill(null),
+        chordsPerRow: 4
       }]);
+      
+      // Initialize subtitle for the new row
+      const newSubtitles = { ...compareSubtitles };
+      newSubtitles[newRowIndex] = Array(4).fill('');
+      setCompareSubtitles(newSubtitles);
     }
   };
 
@@ -257,6 +293,19 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     if (compareRows.length > 1) {
       const newRows = compareRows.filter((_, index) => index !== rowIndex);
       setCompareRows(newRows);
+      
+      // Remove subtitle for the deleted row and reindex remaining rows
+      const newSubtitles: {[rowIndex: number]: string[]} = {};
+      Object.keys(compareSubtitles).forEach(rowIndexStr => {
+        const oldIndex = parseInt(rowIndexStr);
+        if (oldIndex < rowIndex) {
+          newSubtitles[oldIndex] = compareSubtitles[oldIndex];
+        } else if (oldIndex > rowIndex) {
+          newSubtitles[oldIndex - 1] = compareSubtitles[oldIndex];
+        }
+        // Skip the deleted row (oldIndex === rowIndex)
+      });
+      setCompareSubtitles(newSubtitles);
     }
   };
 
@@ -267,58 +316,308 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     setEditingIndex(null);
   };
 
-  const updateCompareRowSize = (newSize: number) => {
-    setCompareRowSize(newSize);
-    // Update all existing rows to the new size
-    const updatedRows = compareRows.map(row => {
-      const newChords = Array(newSize).fill(null);
-      // Copy existing chords up to the new size
-      for (let i = 0; i < Math.min(row.chords.length, newSize); i++) {
-        newChords[i] = row.chords[i];
-      }
-      return { ...row, chords: newChords };
-    });
+  const updateRowChordsCount = (rowIndex: number, newSize: number) => {
+    const updatedRows = [...compareRows];
+    const row = updatedRows[rowIndex];
+    
+    // Update the specific row
+    const newChords = Array(newSize).fill(null);
+    // Copy existing chords up to the new size
+    for (let i = 0; i < Math.min(row.chords.length, newSize); i++) {
+      newChords[i] = row.chords[i];
+    }
+    updatedRows[rowIndex] = { ...row, chords: newChords, chordsPerRow: newSize };
     setCompareRows(updatedRows);
+    
+    // Update subtitle for this specific row
+    const updatedSubtitles = { ...compareSubtitles };
+    const currentSubtitle = compareSubtitles[rowIndex] || [];
+    const newSubtitle = Array(newSize).fill('');
+    // Copy existing subtitle entries up to the new size
+    for (let i = 0; i < Math.min(currentSubtitle.length, newSize); i++) {
+      newSubtitle[i] = currentSubtitle[i];
+    }
+    updatedSubtitles[rowIndex] = newSubtitle;
+    setCompareSubtitles(updatedSubtitles);
+  };
+  
+  const updateRowSubtitle = (rowIndex: number, chordIndex: number, value: string) => {
+    const newSubtitles = { ...compareSubtitles };
+    const row = compareRows[rowIndex];
+    if (!newSubtitles[rowIndex]) {
+      newSubtitles[rowIndex] = Array(row.chordsPerRow).fill('');
+    }
+    newSubtitles[rowIndex][chordIndex] = value;
+    setCompareSubtitles(newSubtitles);
   };
 
-  // Draw custom text with intelligent wrapping and styling
+  // Check if any chords exist
+  const hasAnyChords = () => {
+    if (compareMode) {
+      return compareRows.some(row => row.chords.some(chord => chord !== null));
+    } else {
+      return chords.some(chord => chord !== null);
+    }
+  };
+
+  // Check if any chord has a strumming pattern
+  const hasAnyStrummingPattern = () => {
+    if (compareMode) {
+      return compareRows.some(row => 
+        row.chords.some(chord => 
+          chord?.strummingPattern?.beats.some(beat => beat !== null)
+        )
+      );
+    } else {
+      return chords.some(chord => 
+        chord?.strummingPattern?.beats.some(beat => beat !== null)
+      );
+    }
+  };
+
+  // Draw chord diagram legend
+  const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+    ctx.font = 'italic 14px "Poppins", sans-serif';
+    ctx.fillStyle = '#7C2D12'; // Dark amber
+    ctx.textAlign = 'left';
+    
+    // Check if progression uses thumb (T finger)
+    const usesThumb = (() => {
+      if (compareMode) {
+        return compareRows.some(row =>
+          row.chords.some(chord =>
+            chord?.fingerPositions?.some(pos => pos.finger === 'T')
+          )
+        );
+      } else {
+        return chords.some(chord =>
+          chord?.fingerPositions?.some(pos => pos.finger === 'T')
+        );
+      }
+    })();
+
+    // Check if progression uses higher frets (not starting at fret 1)
+    const usesHigherFrets = (() => {
+      if (compareMode) {
+        return compareRows.some(row =>
+          row.chords.some(chord => chord && chord.fretNumber > 1)
+        );
+      } else {
+        return chords.some(chord => chord && chord.fretNumber > 1);
+      }
+    })();
+
+    // Build legend text dynamically
+    const legendText = ['Chord Diagram Guide:'];
+    
+    // Finger numbers line - conditional thumb explanation
+    if (usesThumb) {
+      legendText.push('● = Finger numbers (1,2,3,4,T = thumb)');
+    } else {
+      legendText.push('● = Finger numbers (1,2,3,4)');
+    }
+    
+    // Open/muted strings line
+    legendText.push('O = Open string  •  X = Muted string');
+    
+    // Fret number explanation on its own line (if higher frets are used)
+    if (usesHigherFrets) {
+      legendText.push('Fret number = Starting position');
+    }
+    
+    legendText.forEach((line, index) => {
+      const lineY = y + (index * 18); // Reduced line spacing
+      if (index === 0) {
+        ctx.font = 'bold italic 14px "Poppins", sans-serif';
+        ctx.fillText(line, x, lineY);
+        ctx.font = 'italic 14px "Poppins", sans-serif';
+      } else {
+        ctx.fillText(line, x, lineY);
+      }
+    });
+
+    // Return the height used by the legend for proper spacing
+    return legendText.length * 18;
+  };
+
+  // Draw strumming pattern legend
+  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
+    ctx.font = 'italic 14px "Poppins", sans-serif';
+    ctx.fillStyle = '#7C2D12'; // Dark amber
+    ctx.textAlign = 'left';
+    
+    const legendText = [
+      'Strumming Pattern Guide:',
+      'A bar lasts for 4 beats',
+      '1 & 2 & 3 & 4 & = Beat counting',
+      'D = Downstroke  •  U = Upstroke',
+      'D/U symbols show strum timing',
+      'Chords marked as 2 bars use',
+      'strumming pattern twice'
+    ];
+    
+    legendText.forEach((line, index) => {
+      const lineY = y + (index * 18); // Reduced line spacing
+      if (index === 0) {
+        ctx.font = 'bold italic 14px "Poppins", sans-serif';
+        ctx.fillText(line, x, lineY);
+        ctx.font = 'italic 14px "Poppins", sans-serif';
+      } else {
+        ctx.fillText(line, x, lineY);
+      }
+    });
+  };
+
+  // Draw custom text with intelligent wrapping and bold formatting
   const drawCustomText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
     if (!text.trim()) return 0; // Return 0 height if no text
     
-    const words = text.split(' ');
-    const lines: string[] = [];
-    let currentLine = '';
+    // Define font styles
+    const regularFont = 'italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    const boldFont = 'bold italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
     
-    // Set font for measuring
-    ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-    
-    // Wrap text into lines
-    for (let word of words) {
-      const testLine = currentLine + (currentLine ? ' ' : '') + word;
-      const metrics = ctx.measureText(testLine);
+    // Parse text for bold formatting (**text**)
+    const parseTextSegments = (inputText: string) => {
+      const segments: Array<{ text: string; isBold: boolean }> = [];
+      const parts = inputText.split(/(\*\*.*?\*\*)/);
       
-      if (metrics.width > maxWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
-        currentLine = testLine;
+      parts.forEach(part => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+          // Bold text (remove the ** markers)
+          segments.push({ text: part.slice(2, -2), isBold: true });
+        } else if (part) {
+          // Regular text
+          segments.push({ text: part, isBold: false });
+        }
+      });
+      
+      return segments;
+    };
+    
+    // Function to measure text width with formatting
+    const measureSegments = (segments: Array<{ text: string; isBold: boolean }>) => {
+      let totalWidth = 0;
+      segments.forEach(segment => {
+        ctx.font = segment.isBold ? boldFont : regularFont;
+        totalWidth += ctx.measureText(segment.text).width;
+      });
+      return totalWidth;
+    };
+    
+    // First split by line breaks, then handle word wrapping within each line
+    const inputLines = text.split(/\r?\n/);
+    const finalLines: Array<Array<{ text: string; isBold: boolean }>> = [];
+    
+    inputLines.forEach(inputLine => {
+      if (!inputLine.trim()) {
+        // Empty line - preserve line breaks
+        finalLines.push([]);
+        return;
       }
-    }
+      
+      const lineSegments = parseTextSegments(inputLine);
+      const words: Array<{ text: string; isBold: boolean }> = [];
+      
+      // Break segments into words while preserving formatting
+      lineSegments.forEach(segment => {
+        const segmentWords = segment.text.split(' ');
+        segmentWords.forEach((word, index) => {
+          if (word) {
+            words.push({ text: word, isBold: segment.isBold });
+          }
+          // Add space after word (except last word in segment)
+          if (index < segmentWords.length - 1) {
+            words.push({ text: ' ', isBold: segment.isBold });
+          }
+        });
+        // Add space between segments if there are more segments
+        if (lineSegments.indexOf(segment) < lineSegments.length - 1) {
+          words.push({ text: ' ', isBold: segment.isBold });
+        }
+      });
+      
+      // Wrap words into lines
+      let currentLine: Array<{ text: string; isBold: boolean }> = [];
+      
+      for (let word of words) {
+        const testLine = [...currentLine, word];
+        const testWidth = measureSegments(testLine);
+        
+        if (testWidth > maxWidth && currentLine.length > 0) {
+          finalLines.push(currentLine);
+          currentLine = [word];
+        } else {
+          currentLine = testLine;
+        }
+      }
+      
+      if (currentLine.length > 0) {
+        finalLines.push(currentLine);
+      }
+    });
     
-    if (currentLine) {
-      lines.push(currentLine);
-    }
-    
-    // Draw clean text without background
+    // Draw text with formatting
     ctx.textAlign = 'center';
     ctx.fillStyle = '#7C2D12'; // Dark amber text to match chord names
     
-    lines.forEach((line, index) => {
-      const lineY = y + (index * lineHeight);
-      ctx.fillText(line, x, lineY);
+    finalLines.forEach((line, lineIndex) => {
+      if (line.length === 0) return; // Skip empty lines
+      
+      const lineY = y + (lineIndex * lineHeight);
+      
+      // Calculate total line width for centering
+      const lineWidth = measureSegments(line);
+      let currentX = x - lineWidth / 2;
+      
+      // Draw each segment with appropriate formatting
+      line.forEach(segment => {
+        ctx.font = segment.isBold ? boldFont : regularFont;
+        ctx.textAlign = 'left';
+        ctx.fillText(segment.text, currentX, lineY);
+        currentX += ctx.measureText(segment.text).width;
+      });
     });
     
-    return lines.length * lineHeight + 20; // Return total height with minimal padding
+    return finalLines.length * lineHeight + 20; // Return total height with minimal padding
+  };
+
+  // Calculate chord legend height dynamically
+  const getChordLegendHeight = () => {
+    if (!hasAnyChords()) return 0;
+    
+    // Check if progression uses thumb (T finger)
+    const usesThumb = (() => {
+      if (compareMode) {
+        return compareRows.some(row =>
+          row.chords.some(chord =>
+            chord?.fingerPositions?.some(pos => pos.finger === 'T')
+          )
+        );
+      } else {
+        return chords.some(chord =>
+          chord?.fingerPositions?.some(pos => pos.finger === 'T')
+        );
+      }
+    })();
+
+    // Check if progression uses higher frets (not starting at fret 1)
+    const usesHigherFrets = (() => {
+      if (compareMode) {
+        return compareRows.some(row =>
+          row.chords.some(chord => chord && chord.fretNumber > 1)
+        );
+      } else {
+        return chords.some(chord => chord && chord.fretNumber > 1);
+      }
+    })();
+
+    // Calculate lines: title + finger line + open/muted line + optional fret line
+    let lineCount = 3; // Base lines: title, fingers, open/muted
+    if (usesHigherFrets) {
+      lineCount += 1; // Add fret explanation line
+    }
+    
+    return lineCount * 18 + 10; // 18px per line + 10px padding
   };
 
   // Export as image
@@ -338,18 +637,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     if (compareMode) {
       // Calculate required width for the largest row
-      const maxRowChords = Math.max(...compareRows.map(row => row.chords.length));
+      const maxRowChords = Math.max(...compareRows.map(row => row.chordsPerRow));
       const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
       canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
       
       // Dynamic height for compare mode based on number of rows
-      const titleAreaHeight = 210; // Increased to accommodate subtitle
-      const rowHeight = diagramSize + 80; // Include space for row title
+      const titleAreaHeight = 120; // Reduced for more compact layout
+      const rowHeight = diagramSize + 100 + 40; // Reduced spacing for row title, subtitle, and strumming patterns
       const diagramsHeight = compareRows.length * rowHeight;
-      const customTextHeight = customText.trim() ? 60 : 0; // Reduced estimate for clean text
-      const brandingHeight = 120;
-      const paddingHeight = 100;
-      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + brandingHeight + paddingHeight;
+      const customTextHeight = customText.trim() ? 60 : 0; // Reduced space
+      const chordLegendHeight = getChordLegendHeight(); // Dynamic legend height
+      const strummingLegendHeight = hasAnyStrummingPattern() ? 80 : 0; // Reduced legend space
+      const brandingHeight = 80; // Reduced branding area
+      const paddingHeight = 40; // Reduced padding
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
     } else {
       // Calculate required width for normal mode
       const rowLayouts = (() => {
@@ -371,13 +672,15 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
       
       // Fixed dimensions for normal mode
-      const titleAreaHeight = 200;
+      const titleAreaHeight = 120; // Reduced for compact layout
       const maxRows = Math.max(1, rowLayouts.length);
-      const diagramsHeight = maxRows * (diagramSize + 100);
-      const customTextHeight = customText.trim() ? 60 : 0; // Reduced estimate for clean text
-      const brandingHeight = 120;
-      const paddingHeight = 100;
-      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + brandingHeight + paddingHeight;
+      const diagramsHeight = maxRows * (diagramSize + 80 + 40); // Reduced spacing for strumming patterns
+      const customTextHeight = customText.trim() ? 40 : 0; // Reduced estimate for clean text
+      const chordLegendHeight = getChordLegendHeight(); // Dynamic legend height
+      const strummingLegendHeight = hasAnyStrummingPattern() ? 80 : 0; // Reduced legend space
+      const brandingHeight = 80; // Reduced branding area
+      const paddingHeight = 40; // Reduced padding
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
     }
     
     // Ensure height is at least equal to width (never landscape)
@@ -394,10 +697,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Calculate positioning
-    const titleY = compareMode ? 80 : 120;
+    const titleY = compareMode ? 60 : 80;
     const subtitleY = titleY + 60; // New subtitle position for compare mode
-    const progressionY = compareMode ? subtitleY + 60 : titleY + 80;
-    const diagramsStartY = compareMode ? 240 : 280; // Adjusted for subtitle space
+    const progressionY = compareMode ? subtitleY + 40 : titleY + 60;
+    const diagramsStartY = compareMode ? 160 : 180; // Reduced for more compact layout
 
     // Draw title with dynamic sizing to prevent cut-off
     ctx.textAlign = 'center';
@@ -417,48 +720,72 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     ctx.fillText(progressionTitle, canvasWidth / 2, titleY);
 
-    // Draw subtitle for compare mode
-    if (compareMode) {
-      const filledSubtitle = compareSubtitle.filter(chord => chord.trim() !== '');
-      if (filledSubtitle.length > 0) {
-        ctx.font = 'italic 28px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-        ctx.fillStyle = '#FEF3C7';
-        const subtitleText = filledSubtitle.join(' → ');
-        ctx.fillText(subtitleText, canvasWidth / 2, subtitleY);
-      }
-    }
+    // Per-row subtitles are now drawn within each row section
 
     if (compareMode) {
       // Compare mode: Draw rows with titles
       compareRows.forEach((row, rowIndex) => {
-        const rowY = diagramsStartY + rowIndex * (diagramSize + 80);
+        const rowY = diagramsStartY + rowIndex * (diagramSize + 100 + 40); // Reduced spacing for more compact layout
         
         // Draw row title
-        ctx.font = 'bold italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.font = 'bold italic 28px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#FEF3C7';
-        ctx.fillText(row.title, canvasWidth / 2, rowY - 20);
+        ctx.fillText(row.title, canvasWidth / 2, rowY - 45);
         
-        // Draw 4 chord diagrams in this row
-        const rowWidth = compareRowSize * diagramSize + (compareRowSize - 1) * spacing;
+        // Draw row subtitle if it exists
+        const rowSubtitle = compareSubtitles[rowIndex];
+        if (rowSubtitle) {
+          const filledSubtitle = rowSubtitle.filter(chord => chord.trim() !== '');
+          if (filledSubtitle.length > 0) {
+            ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+            ctx.fillStyle = '#FEF3C7';
+            const subtitleText = filledSubtitle.join(' → ');
+            ctx.fillText(subtitleText, canvasWidth / 2, rowY - 20);
+          }
+        }
+        
+        // Draw chord diagrams in this row
+        const rowWidth = row.chordsPerRow * diagramSize + (row.chordsPerRow - 1) * spacing;
         const rowStartX = (canvasWidth - rowWidth) / 2;
         
-        for (let chordIndex = 0; chordIndex < compareRowSize; chordIndex++) {
+        for (let chordIndex = 0; chordIndex < row.chordsPerRow; chordIndex++) {
           const chord = row.chords[chordIndex];
           const x = rowStartX + chordIndex * (diagramSize + spacing);
           const y = rowY;
           
           if (chord) {
             drawChordDiagram(ctx, chord, x, y, diagramSize);
+            // Draw strumming pattern below chord diagram
+            if (chord.strummingPattern) {
+              drawStrummingPattern(ctx, chord.strummingPattern, x, y, diagramSize);
+            }
           } else {
             drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${chordIndex + 1}`);
           }
         }
       });
 
-      // Draw custom text below diagrams
+      // Draw legends and custom text below diagrams
+      const baseY = diagramsStartY + compareRows.length * (diagramSize + 100 + 40) - 40;
+      let currentY = baseY;
+      
+      // Always show chord legend if chords exist
+      if (hasAnyChords()) {
+        const legendHeight = drawChordLegend(ctx, 60, currentY);
+        currentY += legendHeight + 10; // Add some padding after legend
+      }
+      
+      // Show strumming legend if patterns exist
+      if (hasAnyStrummingPattern()) {
+        drawStrummingLegend(ctx, 60, currentY);
+        currentY += 80; // Reduced space for strumming legend
+      }
+      
+      // Show custom text if it exists
       if (customText.trim()) {
-        const textY = diagramsStartY + compareRows.length * (diagramSize + 80) + 20;
-        drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 30);
+        const textX = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth / 2 : canvasWidth / 2;
+        const textWidth = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth * 0.4 : canvasWidth * 0.9;
+        drawCustomText(ctx, customText, textX, baseY, textWidth, 27);
       }
     } else {
       // Normal mode: Draw chord progression with arrow notation
@@ -508,7 +835,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       rowLayouts.forEach((rowCount, rowIndex) => {
         const rowWidth = rowCount * diagramSize + (rowCount - 1) * spacing;
         const rowStartX = (canvasWidth - rowWidth) / 2;
-        const rowY = diagramsStartY + rowIndex * (diagramSize + 100);
+        const rowY = diagramsStartY + rowIndex * (diagramSize + 80 + 40); // Reduced spacing for more compact layout
         
         for (let col = 0; col < rowCount && currentIndex < chords.length; col++) {
           const chord = chords[currentIndex];
@@ -517,6 +844,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
           if (chord) {
             drawChordDiagram(ctx, chord, x, y, diagramSize);
+            // Draw strumming pattern below chord diagram
+            if (chord.strummingPattern) {
+              drawStrummingPattern(ctx, chord.strummingPattern, x, y, diagramSize);
+            }
           } else {
             drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${currentIndex + 1}`);
           }
@@ -524,26 +855,44 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         }
       });
 
-      // Draw custom text below diagrams
+      // Draw legends and custom text below diagrams
+      const baseY = diagramsStartY + rowLayouts.length * (diagramSize + 80 + 40) + 10;
+      let currentY = baseY;
+      
+      // Always show chord legend if chords exist
+      if (hasAnyChords()) {
+        const legendHeight = drawChordLegend(ctx, 60, currentY);
+        currentY += legendHeight + 10; // Add some padding after legend
+      }
+      
+      // Show strumming legend if patterns exist
+      if (hasAnyStrummingPattern()) {
+        drawStrummingLegend(ctx, 60, currentY);
+        currentY += 80; // Reduced space for strumming legend
+      }
+      
+      // Show custom text if it exists
       if (customText.trim()) {
-        const textY = diagramsStartY + rowLayouts.length * (diagramSize + 100) + 20;
-        drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 30);
+        const textX = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth / 2 : canvasWidth / 2;
+        const textWidth = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth * 0.4 : canvasWidth * 0.9;
+        drawCustomText(ctx, customText, textX, baseY, textWidth, 27);
       }
     }
 
-    // Draw branding footer
-    const footerY = canvasHeight - 70;
+    // Draw branding footer (moved down further)
+    const footerY = canvasHeight - 30;
     
-    // Draw "Mike Nelson Guitar Lessons"
-    ctx.font = 'bold italic 24px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-    ctx.textAlign = 'center';
+    // Draw "Mike Nelson Guitar Lessons" on the left
+    ctx.font = 'bold italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = 'left';
     ctx.fillStyle = 'white';
-    ctx.fillText('Mike Nelson Guitar Lessons', canvasWidth / 2, footerY);
+    ctx.fillText('Mike Nelson Guitar Lessons', 60, footerY);
     
-    // Draw website URL
+    // Draw website URL on the right
     ctx.font = 'italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    ctx.textAlign = 'right';
     ctx.fillStyle = '#FEF3C7';
-    ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth / 2, footerY + 30);
+    ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth - 60, footerY);
 
     // Convert to blob and download
     canvas.toBlob((blob) => {
@@ -600,6 +949,89 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     });
 
     return barreLines;
+  };
+
+  // Draw strumming pattern on canvas
+  const drawStrummingPattern = (ctx: CanvasRenderingContext2D, pattern: ChordData['strummingPattern'], x: number, y: number, size: number) => {
+    if (!pattern || !pattern.beats.some(beat => beat !== null)) return; // Skip if no pattern or all beats are empty
+    
+    const patternHeight = 40;
+    const patternStartY = y + size + 20; // Position below the chord diagram with more spacing
+    const diagramCenterX = x + size / 2; // Center the pattern under the diagram
+    
+    // Determine which beats to show based on displayMode
+    let startBeat = 0;
+    let endBeat = 8;
+    let beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+    
+    switch (pattern.displayMode) {
+      case 'beats-1-2':
+        startBeat = 0;
+        endBeat = 4;
+        beatLabels = ['1', '&', '2', '&'];
+        break;
+      case 'beats-3-4':
+        startBeat = 4;
+        endBeat = 8;
+        beatLabels = ['3', '&', '4', '&'];
+        break;
+      default: // 'full'
+        startBeat = 0;
+        endBeat = 8;
+        beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+        break;
+    }
+    
+    const visibleBeats = pattern.beats.slice(startBeat, endBeat);
+    const visibleLabels = beatLabels.slice(0, endBeat - startBeat);
+    const cellWidth = Math.min(size / visibleBeats.length, 30); // Adaptive width, max 30px per cell
+    const totalWidth = cellWidth * visibleBeats.length;
+    const patternStartX = diagramCenterX - totalWidth / 2;
+    
+    // Draw border around the pattern
+    ctx.strokeStyle = '#92400E';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
+    
+    // Draw beat labels row
+    ctx.font = 'bold 12px "Poppins", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#7C2D12';
+    
+    for (let i = 0; i < visibleLabels.length; i++) {
+      const cellX = patternStartX + i * cellWidth;
+      const labelY = patternStartY + 12;
+      
+      // Draw vertical separator
+      if (i > 0) {
+        ctx.beginPath();
+        ctx.moveTo(cellX, patternStartY);
+        ctx.lineTo(cellX, patternStartY + patternHeight);
+        ctx.stroke();
+      }
+      
+      // Draw beat label
+      ctx.fillText(visibleLabels[i], cellX + cellWidth / 2, labelY);
+    }
+    
+    // Draw horizontal separator between labels and strums
+    ctx.beginPath();
+    ctx.moveTo(patternStartX, patternStartY + 16);
+    ctx.lineTo(patternStartX + totalWidth, patternStartY + 16);
+    ctx.stroke();
+    
+    // Draw strumming row
+    ctx.font = 'bold 16px "Poppins", sans-serif';
+    ctx.fillStyle = '#FEF3C7'; // Light amber for strums
+    
+    for (let i = 0; i < visibleBeats.length; i++) {
+      const beat = visibleBeats[i];
+      if (beat) {
+        const cellX = patternStartX + i * cellWidth;
+        const strumY = patternStartY + 32;
+        ctx.fillText(beat, cellX + cellWidth / 2, strumY);
+      }
+    }
   };
 
   // Draw chord diagram on canvas
@@ -771,16 +1203,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             value={customText}
             onChange={(e) => setCustomText(e.target.value)}
             className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
-            placeholder="Add descriptive text to your chord progression (e.g., 'A gentle progression perfect for ballads')"
+            placeholder="Add descriptive text to your chord progression (e.g., 'A gentle progression perfect for ballads'). Use **text** for bold."
             rows={3}
-            maxLength={400}
+            maxLength={500}
           />
           <div className="flex justify-between items-center mt-1">
             <span className="text-xs text-gray-500">
-              Appears below the chord diagrams in exported image
+              Appears below the chord diagrams in exported image. Use **bold** for emphasis.
             </span>
-            <span className={`text-xs ${customText.length > 360 ? 'text-amber-400' : 'text-gray-500'}`}>
-              {customText.length}/400
+            <span className={`text-xs ${customText.length > 450 ? 'text-amber-400' : 'text-gray-500'}`}>
+              {customText.length}/500
             </span>
           </div>
         </div>
@@ -830,22 +1262,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           <div>
             <div className="flex justify-between items-center mb-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Chords per row (1-4):</label>
-                <div className="flex gap-2">
-                  {[1, 2, 3, 4].map(size => (
-                    <button
-                      key={size}
-                      onClick={() => updateCompareRowSize(size)}
-                      className={`px-3 py-1 rounded font-semibold transition-colors ${
-                        compareRowSize === size
-                          ? 'bg-amber-500 text-white'
-                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
+                <label className="block text-sm font-medium mb-2">Configure rows individually below</label>
               </div>
               <button
                 onClick={addCompareRow}
@@ -862,29 +1279,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       {/* Compare Mode UI */}
       {compareMode && (
         <div className="mb-8">
-          {/* Subtitle Input for Compare Mode */}
-          <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
-            <h3 className="text-lg font-semibold text-amber-400 mb-3">Chord Progression Subtitle</h3>
-            <p className="text-sm text-gray-400 mb-3">Add chord names or roman numerals (e.g., Cmaj7, Dm7, G7, Cmaj7 or I, ii, V, I)</p>
-            <div className="grid grid-cols-4 gap-3">
-              {compareSubtitle.map((chord, index) => (
-                <div key={index} className="text-center">
-                  <input
-                    type="text"
-                    value={chord}
-                    onChange={(e) => {
-                      const newSubtitle = [...compareSubtitle];
-                      newSubtitle[index] = e.target.value;
-                      setCompareSubtitle(newSubtitle);
-                    }}
-                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-center placeholder-gray-500"
-                    placeholder={`Chord ${index + 1}`}
-                  />
-                  <div className="text-xs text-gray-500 mt-1">Position {index + 1}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Per-row subtitles are now included within each row */}
           {compareRows.map((row, rowIndex) => (
             <div key={rowIndex} className="mb-8 border border-gray-700 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-4">
@@ -905,8 +1300,45 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                 )}
               </div>
               
-              <div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${compareRowSize}, 1fr)` }}>
-                {Array.from({ length: compareRowSize }, (_, chordIndex) => {
+              {/* Per-row chord count controls */}
+              <div className="mb-4 p-3 bg-gray-700 rounded-lg border border-gray-600">
+                <label className="block text-sm font-medium text-amber-400 mb-2">Chords in this row (1-8):</label>
+                <div className="flex gap-2 flex-wrap">
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map(size => (
+                    <button
+                      key={size}
+                      onClick={() => updateRowChordsCount(rowIndex, size)}
+                      className={`px-3 py-1 rounded font-semibold transition-colors ${
+                        row.chordsPerRow === size
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Per-row subtitle input */}
+              <div className="mb-4 p-3 bg-gray-800 rounded-lg border border-gray-600">
+                <h4 className="text-sm font-medium text-amber-400 mb-2">Row Subtitle (optional)</h4>
+                <div className={`grid gap-2`} style={{ gridTemplateColumns: `repeat(${row.chordsPerRow}, 1fr)` }}>
+                  {Array.from({ length: row.chordsPerRow }, (_, chordIndex) => (
+                    <input
+                      key={chordIndex}
+                      type="text"
+                      value={compareSubtitles[rowIndex]?.[chordIndex] || ''}
+                      onChange={(e) => updateRowSubtitle(rowIndex, chordIndex, e.target.value)}
+                      className="px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-center text-sm placeholder-gray-500"
+                      placeholder={`Chord ${chordIndex + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              <div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${row.chordsPerRow}, 1fr)` }}>
+                {Array.from({ length: row.chordsPerRow }, (_, chordIndex) => {
                   const chord = row.chords[chordIndex];
                   const globalIndex = `${rowIndex}-${chordIndex}`;
                   
@@ -926,12 +1358,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                         )}
                       </div>
                       {chord && (
-                        <button
-                          onClick={() => clearCompareChord(rowIndex, chordIndex)}
-                          className="mt-2 px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
-                        >
-                          Clear
-                        </button>
+                        <div className="mt-2 flex gap-1 justify-center">
+                          <button
+                            onClick={() => setEditingStrummingIndex(globalIndex)}
+                            className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 rounded text-white"
+                          >
+                            Pattern
+                          </button>
+                          <button
+                            onClick={() => clearCompareChord(rowIndex, chordIndex)}
+                            className="px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
+                          >
+                            Clear
+                          </button>
+                        </div>
                       )}
                     </div>
                   );
@@ -993,12 +1433,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                           <ChordDiagramPreview chord={chord} index={index + 1} />
                         </div>
                         {chord && (
-                          <button
-                            onClick={() => clearChord(index)}
-                            className="mt-2 px-3 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
-                          >
-                            Clear
-                          </button>
+                          <div className="mt-2 flex gap-1 justify-center">
+                            <button
+                              onClick={() => setEditingStrummingIndex(index)}
+                              className="px-2 py-1 text-xs bg-blue-600 hover:bg-blue-700 rounded text-white"
+                            >
+                              Pattern
+                            </button>
+                            <button
+                              onClick={() => clearChord(index)}
+                              className="px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
+                            >
+                              Clear
+                            </button>
+                          </div>
                         )}
                       </div>
                     );
@@ -1034,6 +1482,26 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           onClose={() => setEditingIndex(null)}
           globalShowFingering={globalShowFingering}
           setGlobalShowFingering={setGlobalShowFingering}
+        />
+      )}
+
+      {/* Strumming Pattern Editor */}
+      {editingStrummingIndex !== null && (
+        <StrummingPatternEditor
+          pattern={(() => {
+            if (typeof editingStrummingIndex === 'number') {
+              // Normal mode
+              return chords[editingStrummingIndex]?.strummingPattern;
+            } else {
+              // Compare mode - editingStrummingIndex is "rowIndex-chordIndex"
+              const [rowIndex, chordIndex] = editingStrummingIndex.split('-').map(Number);
+              return compareRows[rowIndex]?.chords[chordIndex]?.strummingPattern;
+            }
+          })()}
+          onUpdate={(pattern) => {
+            updateStrummingPattern(editingStrummingIndex!, pattern);
+          }}
+          onClose={() => setEditingStrummingIndex(null)}
         />
       )}
 
@@ -1524,6 +1992,156 @@ const ChordEditor: React.FC<{
             className="flex-1 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded"
           >
             Save
+          </button>
+          <button
+            onClick={onClose}
+            className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Strumming Pattern Editor Component
+const StrummingPatternEditor: React.FC<{
+  pattern: ChordData['strummingPattern'];
+  onUpdate: (pattern: ChordData['strummingPattern']) => void;
+  onClose: () => void;
+}> = ({ pattern, onUpdate, onClose }) => {
+  const [editPattern, setEditPattern] = useState<{
+    beats: Array<'D' | 'U' | null>;
+    displayMode: 'full' | 'beats-1-2' | 'beats-3-4';
+  }>({
+    beats: pattern?.beats || [null, null, null, null, null, null, null, null],
+    displayMode: pattern?.displayMode || 'full'
+  });
+
+  const beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+
+  const handleBeatClick = (index: number) => {
+    const newBeats = [...editPattern.beats];
+    
+    // Logic for D/U assignment based on beat position
+    if (index % 2 === 0) {
+      // Main beats (1, 2, 3, 4) - toggle D or null
+      newBeats[index] = newBeats[index] === 'D' ? null : 'D';
+    } else {
+      // Off beats (&) - toggle U or null
+      newBeats[index] = newBeats[index] === 'U' ? null : 'U';
+    }
+    
+    setEditPattern({ ...editPattern, beats: newBeats });
+  };
+
+  const handleSave = () => {
+    onUpdate({
+      beats: editPattern.beats,
+      displayMode: editPattern.displayMode
+    });
+    onClose();
+  };
+
+  const getVisibleRange = () => {
+    switch (editPattern.displayMode) {
+      case 'beats-1-2':
+        return { start: 0, end: 4 }; // Beats 1-2 (indices 0-3)
+      case 'beats-3-4':
+        return { start: 4, end: 8 }; // Beats 3-4 (indices 4-7)
+      default:
+        return { start: 0, end: 8 }; // Full bar (beats 1-4, indices 0-7)
+    }
+  };
+
+  const { start, end } = getVisibleRange();
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold text-white">Edit Strumming Pattern</h3>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white"
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Display Mode Selection */}
+        <div className="mb-4">
+          <label className="text-white text-sm font-medium mb-2 block">Display Mode:</label>
+          <div className="flex gap-2">
+            {[
+              { value: 'full', label: 'Full Bar (1-4)' },
+              { value: 'beats-1-2', label: 'Beats 1-2' },
+              { value: 'beats-3-4', label: 'Beats 3-4' }
+            ].map((option) => (
+              <button
+                key={option.value}
+                onClick={() => setEditPattern({ ...editPattern, displayMode: option.value as 'full' | 'beats-1-2' | 'beats-3-4' })}
+                className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
+                  editPattern.displayMode === option.value
+                    ? 'bg-amber-500 text-black'
+                    : 'bg-gray-600 hover:bg-gray-500 text-white'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-2">
+            Choose which beats to display in the strumming pattern
+          </p>
+        </div>
+
+        {/* Strumming Grid */}
+        <div className="mb-4">
+          <div className="border border-gray-600 rounded">
+            {/* Beat labels row */}
+            <div className={`grid border-b border-gray-600`} style={{ gridTemplateColumns: `repeat(${end - start}, 1fr)` }}>
+              {beatLabels.slice(start, end).map((label, index) => (
+                <div key={index} className="p-2 text-center text-white text-sm font-medium border-r border-gray-600 last:border-r-0">
+                  {label}
+                </div>
+              ))}
+            </div>
+            
+            {/* Strumming pattern row */}
+            <div className={`grid`} style={{ gridTemplateColumns: `repeat(${end - start}, 1fr)` }}>
+              {editPattern.beats.slice(start, end).map((beat, index) => {
+                const actualIndex = start + index;
+                const isMainBeat = actualIndex % 2 === 0;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => handleBeatClick(actualIndex)}
+                    className={`p-3 text-center border-r border-gray-600 last:border-r-0 transition-colors ${
+                      beat 
+                        ? 'bg-amber-500 text-black font-bold' 
+                        : 'bg-gray-800 hover:bg-gray-700 text-gray-400'
+                    }`}
+                  >
+                    {beat || (isMainBeat ? 'D' : 'U')}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          
+          <p className="text-xs text-gray-400 mt-2">
+            Click cells to add/remove strums. Main beats (1,2,3,4) = Down, Off beats (&) = Up
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <button
+            onClick={handleSave}
+            className="flex-1 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded"
+          >
+            Save Pattern
           </button>
           <button
             onClick={onClose}

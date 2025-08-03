@@ -15,23 +15,23 @@ export default function CompleteBeginnerGuide() {
     {
       name: 'Verse',
       measures: [
-        { chord: 'D', pattern: patterns[6], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 },
         { chord: 'A (1-2), G (3-4)', pattern: patterns[0], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 }
+        { chord: 'D', pattern: patterns[7], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 }
       ]
     },
     {
       name: 'Chorus',
       measures: [
-        { chord: 'G', pattern: patterns[6], beats: 4 },
-        { chord: 'G', pattern: patterns[6], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 },
-        { chord: 'A', pattern: patterns[6], beats: 4 },
-        { chord: 'G', pattern: patterns[6], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 },
-        { chord: 'D', pattern: patterns[6], beats: 4 }
+        { chord: 'G', pattern: patterns[7], beats: 4 },
+        { chord: 'G', pattern: patterns[7], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 },
+        { chord: 'A', pattern: patterns[7], beats: 4 },
+        { chord: 'G', pattern: patterns[7], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 },
+        { chord: 'D', pattern: patterns[7], beats: 4 }
       ]
     }
   ];
