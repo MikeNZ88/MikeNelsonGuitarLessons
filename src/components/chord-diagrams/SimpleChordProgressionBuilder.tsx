@@ -21,6 +21,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [compareMode, setCompareMode] = useState(false);
   const [compareRowSize, setCompareRowSize] = useState(4);
   const [customText, setCustomText] = useState('');
+  const [compareSubtitle, setCompareSubtitle] = useState<string[]>(['', '', '', '']); // Subtitle with 4 chord slots
   const [compareRows, setCompareRows] = useState<Array<{
     title: string;
     chords: (ChordData | null)[];
@@ -129,6 +130,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       compareMode,
       compareRowSize,
       compareRows,
+      compareSubtitle,
       customText,
       showFingering: globalShowFingering,
       savedAt: new Date().toISOString()
@@ -175,6 +177,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.customText) {
             setCustomText(progressionData.customText);
           }
+          if (progressionData.compareSubtitle) {
+            setCompareSubtitle(progressionData.compareSubtitle);
+          }
           
           // Update chord array size if needed
           const newSize = progressionData.gridSize;
@@ -217,6 +222,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ]);
     setGlobalShowFingering(false);
     setCustomText('');
+    setCompareSubtitle(['', '', '', '']);
     setEditingIndex(null);
   };
 
@@ -337,7 +343,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
       
       // Dynamic height for compare mode based on number of rows
-      const titleAreaHeight = 150;
+      const titleAreaHeight = 210; // Increased to accommodate subtitle
       const rowHeight = diagramSize + 80; // Include space for row title
       const diagramsHeight = compareRows.length * rowHeight;
       const customTextHeight = customText.trim() ? 60 : 0; // Reduced estimate for clean text
@@ -389,14 +395,38 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Calculate positioning
     const titleY = compareMode ? 80 : 120;
-    const progressionY = titleY + (compareMode ? 60 : 80);
-    const diagramsStartY = compareMode ? 180 : 280;
+    const subtitleY = titleY + 60; // New subtitle position for compare mode
+    const progressionY = compareMode ? subtitleY + 60 : titleY + 80;
+    const diagramsStartY = compareMode ? 240 : 280; // Adjusted for subtitle space
 
-    // Draw title - consistent size for both modes
-    ctx.font = `bold italic 42px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    // Draw title with dynamic sizing to prevent cut-off
     ctx.textAlign = 'center';
     ctx.fillStyle = '#7C2D12';
+    
+    // Start with base font size and reduce if text is too wide
+    let titleFontSize = 42;
+    let titleFont = `bold italic ${titleFontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    ctx.font = titleFont;
+    
+    const maxTitleWidth = canvasWidth * 0.9; // Allow 90% of canvas width
+    while (ctx.measureText(progressionTitle).width > maxTitleWidth && titleFontSize > 24) {
+      titleFontSize -= 2;
+      titleFont = `bold italic ${titleFontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+      ctx.font = titleFont;
+    }
+    
     ctx.fillText(progressionTitle, canvasWidth / 2, titleY);
+
+    // Draw subtitle for compare mode
+    if (compareMode) {
+      const filledSubtitle = compareSubtitle.filter(chord => chord.trim() !== '');
+      if (filledSubtitle.length > 0) {
+        ctx.font = 'italic 28px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = '#FEF3C7';
+        const subtitleText = filledSubtitle.join(' → ');
+        ctx.fillText(subtitleText, canvasWidth / 2, subtitleY);
+      }
+    }
 
     if (compareMode) {
       // Compare mode: Draw rows with titles
@@ -743,14 +773,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
             placeholder="Add descriptive text to your chord progression (e.g., 'A gentle progression perfect for ballads')"
             rows={3}
-            maxLength={200}
+            maxLength={400}
           />
           <div className="flex justify-between items-center mt-1">
             <span className="text-xs text-gray-500">
               Appears below the chord diagrams in exported image
             </span>
-            <span className={`text-xs ${customText.length > 180 ? 'text-amber-400' : 'text-gray-500'}`}>
-              {customText.length}/200
+            <span className={`text-xs ${customText.length > 360 ? 'text-amber-400' : 'text-gray-500'}`}>
+              {customText.length}/400
             </span>
           </div>
         </div>
@@ -832,6 +862,29 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       {/* Compare Mode UI */}
       {compareMode && (
         <div className="mb-8">
+          {/* Subtitle Input for Compare Mode */}
+          <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h3 className="text-lg font-semibold text-amber-400 mb-3">Chord Progression Subtitle</h3>
+            <p className="text-sm text-gray-400 mb-3">Add chord names or roman numerals (e.g., Cmaj7, Dm7, G7, Cmaj7 or I, ii, V, I)</p>
+            <div className="grid grid-cols-4 gap-3">
+              {compareSubtitle.map((chord, index) => (
+                <div key={index} className="text-center">
+                  <input
+                    type="text"
+                    value={chord}
+                    onChange={(e) => {
+                      const newSubtitle = [...compareSubtitle];
+                      newSubtitle[index] = e.target.value;
+                      setCompareSubtitle(newSubtitle);
+                    }}
+                    className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-center placeholder-gray-500"
+                    placeholder={`Chord ${index + 1}`}
+                  />
+                  <div className="text-xs text-gray-500 mt-1">Position {index + 1}</div>
+                </div>
+              ))}
+            </div>
+          </div>
           {compareRows.map((row, rowIndex) => (
             <div key={rowIndex} className="mb-8 border border-gray-700 rounded-lg p-4">
               <div className="flex items-center gap-3 mb-4">
