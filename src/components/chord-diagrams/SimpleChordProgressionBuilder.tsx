@@ -630,27 +630,43 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     const maxCanvasWidth = 1080; // Optimal for Instagram/social media
     const diagramSize = compareMode ? 160 : 220; // Smaller diagrams for better fit
+    const splitRowDiagramSize = 140; // Even smaller for 8-chord split rows
     const spacing = compareMode ? 20 : 30;
     
     let canvasWidth: number;
     let canvasHeight: number;
     
     if (compareMode) {
-      // Calculate required width for the largest row
-      const maxRowChords = Math.max(...compareRows.map(row => row.chordsPerRow));
-      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
+      // Calculate required width considering split rows use smaller diagrams
+      const maxRowChords = Math.max(...compareRows.map(row => Math.min(row.chordsPerRow, 4)));
+      const hasEightChordRows = compareRows.some(row => row.chordsPerRow === 8);
+      const effectiveDiagramSize = hasEightChordRows ? Math.max(diagramSize, splitRowDiagramSize) : diagramSize;
+      const requiredWidth = maxRowChords * effectiveDiagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
       canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
       
       // Dynamic height for compare mode based on number of rows
       const titleAreaHeight = 120; // Reduced for more compact layout
-      const rowHeight = diagramSize + 100 + 40; // Reduced spacing for row title, subtitle, and strumming patterns
-      const diagramsHeight = compareRows.length * rowHeight;
+      const normalRowHeight = diagramSize + 100 + 40; // Reduced spacing for row title, subtitle, and strumming patterns
+      const splitRowHeight = splitRowDiagramSize + 80 + 30; // Smaller spacing for split rows
+      // Calculate height based on row types
+      const diagramsHeight = compareRows.reduce((totalHeight, row) => {
+        if (row.chordsPerRow === 8) {
+          return totalHeight + 2 * splitRowHeight; // Two split sub-rows
+        } else {
+          return totalHeight + normalRowHeight; // One normal row
+        }
+      }, 0);
       const customTextHeight = customText.trim() ? 60 : 0; // Reduced space
       const chordLegendHeight = getChordLegendHeight(); // Dynamic legend height
       const strummingLegendHeight = hasAnyStrummingPattern() ? 80 : 0; // Reduced legend space
       const brandingHeight = 80; // Reduced branding area
       const paddingHeight = 40; // Reduced padding
       canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
+      
+      // Make canvas square for better social media compatibility
+      const maxDimension = Math.max(canvasWidth, canvasHeight);
+      canvasWidth = maxDimension;
+      canvasHeight = maxDimension;
     } else {
       // Calculate required width for normal mode
       const rowLayouts = (() => {
@@ -724,13 +740,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     if (compareMode) {
       // Compare mode: Draw rows with titles
+      let currentSubRowY = diagramsStartY;
+      
       compareRows.forEach((row, rowIndex) => {
-        const rowY = diagramsStartY + rowIndex * (diagramSize + 100 + 40); // Reduced spacing for more compact layout
-        
         // Draw row title
         ctx.font = 'bold italic 28px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#FEF3C7';
-        ctx.fillText(row.title, canvasWidth / 2, rowY - 45);
+        ctx.fillText(row.title, canvasWidth / 2, currentSubRowY - 45);
         
         // Draw row subtitle if it exists
         const rowSubtitle = compareSubtitles[rowIndex];
@@ -740,33 +756,83 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
             ctx.fillStyle = '#FEF3C7';
             const subtitleText = filledSubtitle.join(' → ');
-            ctx.fillText(subtitleText, canvasWidth / 2, rowY - 20);
+            ctx.fillText(subtitleText, canvasWidth / 2, currentSubRowY - 20);
           }
         }
         
-        // Draw chord diagrams in this row
-        const rowWidth = row.chordsPerRow * diagramSize + (row.chordsPerRow - 1) * spacing;
-        const rowStartX = (canvasWidth - rowWidth) / 2;
-        
-        for (let chordIndex = 0; chordIndex < row.chordsPerRow; chordIndex++) {
-          const chord = row.chords[chordIndex];
-          const x = rowStartX + chordIndex * (diagramSize + spacing);
-          const y = rowY;
+        // Handle 8-chord rows by splitting into two sub-rows
+        if (row.chordsPerRow === 8) {
+          // First sub-row (chords 0-3) using smaller diagrams
+          const firstRowWidth = 4 * splitRowDiagramSize + 3 * spacing;
+          const firstRowStartX = (canvasWidth - firstRowWidth) / 2;
           
-          if (chord) {
-            drawChordDiagram(ctx, chord, x, y, diagramSize);
-            // Draw strumming pattern below chord diagram
-            if (chord.strummingPattern) {
-              drawStrummingPattern(ctx, chord.strummingPattern, x, y, diagramSize);
+          for (let chordIndex = 0; chordIndex < 4; chordIndex++) {
+            const chord = row.chords[chordIndex];
+            const x = firstRowStartX + chordIndex * (splitRowDiagramSize + spacing);
+            const y = currentSubRowY;
+            
+            if (chord) {
+              drawChordDiagram(ctx, chord, x, y, splitRowDiagramSize);
+              if (chord.strummingPattern) {
+                drawStrummingPattern(ctx, chord.strummingPattern, x, y, splitRowDiagramSize);
+              }
+            } else {
+              drawEmptyDiagram(ctx, x, y, splitRowDiagramSize, `Chord ${chordIndex + 1}`);
             }
-          } else {
-            drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${chordIndex + 1}`);
           }
+          
+          // Move to next sub-row with smaller spacing
+          currentSubRowY += splitRowDiagramSize + 80 + 30;
+          
+          // Second sub-row (chords 4-7) using smaller diagrams
+          const secondRowWidth = 4 * splitRowDiagramSize + 3 * spacing;
+          const secondRowStartX = (canvasWidth - secondRowWidth) / 2;
+          
+          for (let chordIndex = 4; chordIndex < 8; chordIndex++) {
+            const chord = row.chords[chordIndex];
+            const x = secondRowStartX + (chordIndex - 4) * (splitRowDiagramSize + spacing);
+            const y = currentSubRowY;
+            
+            if (chord) {
+              drawChordDiagram(ctx, chord, x, y, splitRowDiagramSize);
+              if (chord.strummingPattern) {
+                drawStrummingPattern(ctx, chord.strummingPattern, x, y, splitRowDiagramSize);
+              }
+            } else {
+              drawEmptyDiagram(ctx, x, y, splitRowDiagramSize, `Chord ${chordIndex + 1}`);
+            }
+          }
+        } else {
+          // Normal row (1-7 chords)
+          const rowWidth = row.chordsPerRow * diagramSize + (row.chordsPerRow - 1) * spacing;
+          const rowStartX = (canvasWidth - rowWidth) / 2;
+          
+          for (let chordIndex = 0; chordIndex < row.chordsPerRow; chordIndex++) {
+            const chord = row.chords[chordIndex];
+            const x = rowStartX + chordIndex * (diagramSize + spacing);
+            const y = currentSubRowY;
+            
+            if (chord) {
+              drawChordDiagram(ctx, chord, x, y, diagramSize);
+              if (chord.strummingPattern) {
+                drawStrummingPattern(ctx, chord.strummingPattern, x, y, diagramSize);
+              }
+            } else {
+              drawEmptyDiagram(ctx, x, y, diagramSize, `Chord ${chordIndex + 1}`);
+            }
+          }
+        }
+        
+        // Move to next row (use appropriate spacing based on row type)
+        if (row.chordsPerRow === 8) {
+          currentSubRowY += splitRowDiagramSize + 80 + 30; // Smaller spacing for split rows
+        } else {
+          currentSubRowY += diagramSize + 100 + 40; // Normal spacing for regular rows
         }
       });
 
       // Draw legends and custom text below diagrams
-      const baseY = diagramsStartY + compareRows.length * (diagramSize + 100 + 40) - 40;
+      const baseY = currentSubRowY - 40;
       let currentY = baseY;
       
       // Always show chord legend if chords exist
@@ -785,7 +851,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       if (customText.trim()) {
         const textX = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth / 2 : canvasWidth / 2;
         const textWidth = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth * 0.4 : canvasWidth * 0.9;
-        drawCustomText(ctx, customText, textX, baseY, textWidth, 27);
+        drawCustomText(ctx, customText, textX, baseY + 37, textWidth, 27); // Added one line space (27px line height + 10px buffer)
       }
     } else {
       // Normal mode: Draw chord progression with arrow notation

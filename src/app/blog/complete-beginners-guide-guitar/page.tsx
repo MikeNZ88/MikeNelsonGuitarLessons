@@ -43,25 +43,25 @@ export default function CompleteBeginnerGuide() {
   const [begSection, setBegSection] = useState<'full' | 'verse' | 'chorus'>('full');
   const begSections = [
     {
-      name: 'Verse',
+      name: 'Verse/Chorus',
       measures: [
-        { chord: 'G', pattern: patterns[3], beats: 4 },
-        { chord: 'C', pattern: patterns[3], beats: 4 },
-        { chord: 'G', pattern: patterns[3], beats: 4 },
-        { chord: 'D', pattern: patterns[3], beats: 4 }
+        { chord: 'G', pattern: patterns[12], beats: 4 },
+        { chord: 'C', pattern: patterns[12], beats: 4 },
+        { chord: 'G', pattern: patterns[12], beats: 4 },
+        { chord: 'D', pattern: patterns[12], beats: 4 }
       ]
     },
     {
-      name: 'Chorus',
+      name: 'Pre-Chorus',
       measures: [
-        { chord: 'C', pattern: patterns[3], beats: 4 },
-        { chord: 'D', pattern: patterns[3], beats: 4 },
-        { chord: 'G', pattern: patterns[3], beats: 4 },
-        { chord: 'Em', pattern: patterns[3], beats: 4 },
-        { chord: 'C', pattern: patterns[3], beats: 4 },
-        { chord: 'D', pattern: patterns[3], beats: 4 },
-        { chord: 'G', pattern: patterns[3], beats: 4 },
-        { chord: 'D', pattern: patterns[3], beats: 4 }
+        { chord: 'C', pattern: patterns[12], beats: 4 },
+        { chord: 'D', pattern: patterns[12], beats: 4 },
+        { chord: 'G', pattern: patterns[12], beats: 4 },
+        { chord: 'Em', pattern: patterns[12], beats: 4 },
+        { chord: 'C', pattern: patterns[12], beats: 4 },
+        { chord: 'D', pattern: patterns[12], beats: 4 },
+        { chord: 'G', pattern: patterns[12], beats: 4 },
+        { chord: 'D', pattern: patterns[12], beats: 4 }
       ]
     }
   ];
@@ -603,9 +603,9 @@ export default function CompleteBeginnerGuide() {
                   
                   {/* Interactive Song Structure Player */}
                   <div className="flex gap-2 mb-4">
-                    <button onClick={() => setBegSection('full')} className={`px-3 py-1 rounded ${begSection==='full'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse & Chorus</button>
-                    <button onClick={() => setBegSection('verse')} className={`px-3 py-1 rounded ${begSection==='verse'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse</button>
-                    <button onClick={() => setBegSection('chorus')} className={`px-3 py-1 rounded ${begSection==='chorus'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Chorus</button>
+                    <button onClick={() => setBegSection('full')} className={`px-3 py-1 rounded ${begSection==='full'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>All Parts</button>
+                    <button onClick={() => setBegSection('verse')} className={`px-3 py-1 rounded ${begSection==='verse'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Verse/Chorus</button>
+                    <button onClick={() => setBegSection('chorus')} className={`px-3 py-1 rounded ${begSection==='chorus'?'bg-amber-600 text-white':'bg-amber-100 text-amber-800'}`}>Pre-Chorus</button>
                   </div>
                   <SongStructurePlayer
                     songTitle="Brown Eyed Girl"

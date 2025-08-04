@@ -773,6 +773,20 @@ export class GuitarStrumEngine {
         { type: 'down', time: 3, label: '4' },
         // Skip &
       ]
+    },
+    {
+      id: 'brown-eyed-girl',
+      name: 'Brown Eyed Girl Pattern',
+      beatsPerMeasure: 4,
+      description: 'Modified pop pattern without the final upstroke',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        { type: 'down', time: 1, label: '2' },
+        { type: 'up', time: 1.5, label: '&' },
+        { type: 'up', time: 2.5, label: '&' },
+        { type: 'down', time: 3, label: '4' },
+        // No final upstroke on 4&
+      ]
     }
   ];
 } 
