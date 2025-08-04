@@ -9,8 +9,9 @@ interface ChordData {
   openStrings: number[];
   mutedStrings: number[];
   strummingPattern?: {
-    beats: Array<'D' | 'U' | null>; // 8 positions for 1,&,2,&,3,&,4,&
-    displayMode?: 'full' | 'beats-1-2' | 'beats-3-4'; // which beats to show
+    beats: Array<'D' | 'U' | null>; // 16 positions for 1,&,2,&,3,&,4,& (x2 bars) to handle wrapping
+    displayMode?: 'full' | 'beats-1-2' | 'beats-3-4' | 'custom' | 'full-bar'; // which beats to show
+    customRange?: { start: number; end: number }; // e.g., { start: 0, end: 3 } for beats 1-1.5
   };
 }
 
@@ -26,6 +27,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [compareMode, setCompareMode] = useState(false);
   // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
+  const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Chords marked as 2 bars use strumming pattern twice');
   const [compareSubtitles, setCompareSubtitles] = useState<{[rowIndex: number]: string[]}>({
     0: ['', '', '', ''],
     1: ['', '', '', '']
@@ -441,20 +443,28 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   };
 
   // Draw strumming pattern legend
-  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    ctx.font = 'italic 14px "Poppins", sans-serif';
-    ctx.fillStyle = '#7C2D12'; // Dark amber
+  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string) => {
+    ctx.fillStyle = '#92400E';
     ctx.textAlign = 'left';
     
-    const legendText = [
+    const baseLegendText = [
       'Strumming Pattern Guide:',
       'A bar lasts for 4 beats',
       '1 & 2 & 3 & 4 & = Beat counting',
       'D = Downstroke  •  U = Upstroke',
-      'D/U symbols show strum timing',
-      'Chords marked as 2 bars use',
-      'strumming pattern twice'
+      'D/U symbols show strum timing'
     ];
+    
+    // Add custom 2-bars text if provided
+    const legendText = [...baseLegendText];
+    if (customTwoBarsText && customTwoBarsText.trim()) {
+      const lines = customTwoBarsText.split(/\s+/);
+      const midpoint = Math.ceil(lines.length / 2);
+      legendText.push(lines.slice(0, midpoint).join(' '));
+      if (lines.length > midpoint) {
+        legendText.push(lines.slice(midpoint).join(' '));
+      }
+    }
     
     legendText.forEach((line, index) => {
       const lineY = y + (index * 18); // Reduced line spacing
@@ -629,9 +639,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     if (!ctx) return;
 
     const maxCanvasWidth = 1080; // Optimal for Instagram/social media
-    const diagramSize = compareMode ? 160 : 220; // Smaller diagrams for better fit
+    const diagramSize = compareMode ? 160 : (gridSize === 5 ? 80 : 110); // Much smaller diagrams to fit properly
     const splitRowDiagramSize = 140; // Even smaller for 8-chord split rows
-    const spacing = compareMode ? 20 : 30;
+    const spacing = compareMode ? 20 : 12; // Minimal spacing for better fit
     
     let canvasWidth: number;
     let canvasHeight: number;
@@ -684,8 +694,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         }
       })();
       const maxRowChords = Math.max(...rowLayouts);
-      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
-      canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
+      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 100; // Minimal margins
+      canvasWidth = Math.min(800, Math.max(600, requiredWidth)); // Force smaller canvas
       
       // Fixed dimensions for normal mode
       const titleAreaHeight = 120; // Reduced for compact layout
@@ -843,7 +853,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       // Show strumming legend if patterns exist
       if (hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, 60, currentY);
+        drawStrummingLegend(ctx, 60, currentY, customStrummingLegendText);
         currentY += 80; // Reduced space for strumming legend
       }
       
@@ -933,7 +943,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       // Show strumming legend if patterns exist
       if (hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, 60, currentY);
+        drawStrummingLegend(ctx, 60, currentY, customStrummingLegendText);
         currentY += 80; // Reduced space for strumming legend
       }
       
@@ -1040,6 +1050,32 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         startBeat = 4;
         endBeat = 8;
         beatLabels = ['3', '&', '4', '&'];
+        break;
+      case 'custom':
+        if (pattern.customRange) {
+          startBeat = pattern.customRange.start;
+          endBeat = pattern.customRange.end;
+          // Generate custom labels based on the range
+          const allLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+          beatLabels = allLabels.slice(startBeat, endBeat);
+        }
+        break;
+      case 'full-bar':
+        if (pattern.customRange) {
+          startBeat = pattern.customRange.start;
+          endBeat = pattern.customRange.end;
+          // Generate wrapped labels - cycle through beat labels starting from any position
+          const allLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+          beatLabels = [];
+          for (let i = 0; i < (endBeat - startBeat); i++) {
+            const labelIndex = (startBeat + i) % 8;
+            beatLabels.push(allLabels[labelIndex]);
+          }
+        } else {
+          startBeat = 0;
+          endBeat = 8;
+          beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+        }
         break;
       default: // 'full'
         startBeat = 0;
@@ -1644,6 +1680,32 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
       {/* Hidden canvas for export */}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+      {/* Custom Strumming Legend Text */}
+      <div>
+        <label className="block text-sm font-medium mb-2">
+          <span className="flex items-center gap-2">
+            <span>Strumming Legend Text</span>
+            <span className="text-amber-400 text-xs">(optional)</span>
+          </span>
+        </label>
+        <input
+          type="text"
+          value={customStrummingLegendText}
+          onChange={(e) => setCustomStrummingLegendText(e.target.value)}
+          className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
+          placeholder="Chords marked as 2 bars use strumming pattern twice"
+          maxLength={100}
+        />
+        <div className="flex justify-between items-center mt-1">
+          <span className="text-xs text-gray-500">
+            Additional text for strumming pattern legend. Leave empty to hide.
+          </span>
+          <span className={`text-xs ${customStrummingLegendText.length > 80 ? 'text-amber-400' : 'text-gray-500'}`}>
+            {customStrummingLegendText.length}/100
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
@@ -2079,33 +2141,52 @@ const StrummingPatternEditor: React.FC<{
 }> = ({ pattern, onUpdate, onClose }) => {
   const [editPattern, setEditPattern] = useState<{
     beats: Array<'D' | 'U' | null>;
-    displayMode: 'full' | 'beats-1-2' | 'beats-3-4';
+    displayMode: 'full' | 'beats-1-2' | 'beats-3-4' | 'custom' | 'full-bar';
+    customRange?: { start: number; end: number }; // e.g., { start: 0, end: 3 } for beats 1-1.5
   }>({
-    beats: pattern?.beats || [null, null, null, null, null, null, null, null],
-    displayMode: pattern?.displayMode || 'full'
+    beats: (() => {
+      const existingBeats = pattern?.beats || [];
+      const paddedBeats = [...existingBeats];
+      // Ensure we always have 16 positions
+      while (paddedBeats.length < 16) {
+        paddedBeats.push(null);
+      }
+      return paddedBeats;
+    })(),
+    displayMode: pattern?.displayMode || 'full',
+    customRange: pattern?.customRange
   });
 
-  const beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+  const beatLabels = ['1', '&', '2', '&', '3', '&', '4', '&', '1', '&', '2', '&', '3', '&', '4', '&']; // 16 positions for wrapping
 
   const handleBeatClick = (index: number) => {
+    console.log('Beat clicked:', index, 'Current beats length:', editPattern.beats.length);
     const newBeats = [...editPattern.beats];
+    const currentBeat = newBeats[index];
+    const isMainBeat = index % 2 === 0; // Main beats (1,2,3,4) vs off beats (&)
+    const defaultStroke = isMainBeat ? 'D' : 'U'; // Default pattern
+    const oppositeStroke = isMainBeat ? 'U' : 'D'; // Opposite of default
     
-    // Logic for D/U assignment based on beat position
-    if (index % 2 === 0) {
-      // Main beats (1, 2, 3, 4) - toggle D or null
-      newBeats[index] = newBeats[index] === 'D' ? null : 'D';
+    if (currentBeat === null) {
+      // 1st click: Set default stroke (D for main beats, U for off beats)
+      newBeats[index] = defaultStroke;
+    } else if (currentBeat === defaultStroke) {
+      // 2nd click: Toggle to opposite stroke
+      newBeats[index] = oppositeStroke;
     } else {
-      // Off beats (&) - toggle U or null
-      newBeats[index] = newBeats[index] === 'U' ? null : 'U';
+      // 3rd click: Remove stroke (back to null)
+      newBeats[index] = null;
     }
     
+    console.log('Updated beats:', newBeats);
     setEditPattern({ ...editPattern, beats: newBeats });
   };
 
   const handleSave = () => {
     onUpdate({
       beats: editPattern.beats,
-      displayMode: editPattern.displayMode
+      displayMode: editPattern.displayMode,
+      customRange: editPattern.customRange
     });
     onClose();
   };
@@ -2116,6 +2197,13 @@ const StrummingPatternEditor: React.FC<{
         return { start: 0, end: 4 }; // Beats 1-2 (indices 0-3)
       case 'beats-3-4':
         return { start: 4, end: 8 }; // Beats 3-4 (indices 4-7)
+      case 'custom':
+        return editPattern.customRange || { start: 0, end: 8 };
+      case 'full-bar':
+        if (editPattern.customRange) {
+          return { start: editPattern.customRange.start, end: editPattern.customRange.end };
+        }
+        return { start: 0, end: 8 }; // Default full cycle from beat 1
       default:
         return { start: 0, end: 8 }; // Full bar (beats 1-4, indices 0-7)
     }
@@ -2143,11 +2231,13 @@ const StrummingPatternEditor: React.FC<{
             {[
               { value: 'full', label: 'Full Bar (1-4)' },
               { value: 'beats-1-2', label: 'Beats 1-2' },
-              { value: 'beats-3-4', label: 'Beats 3-4' }
+              { value: 'beats-3-4', label: 'Beats 3-4' },
+              { value: 'custom', label: 'Custom' },
+              { value: 'full-bar', label: 'Full Bar Range' }
             ].map((option) => (
               <button
                 key={option.value}
-                onClick={() => setEditPattern({ ...editPattern, displayMode: option.value as 'full' | 'beats-1-2' | 'beats-3-4' })}
+                onClick={() => setEditPattern({ ...editPattern, displayMode: option.value as 'full' | 'beats-1-2' | 'beats-3-4' | 'custom' | 'full-bar' })}
                 className={`px-3 py-2 rounded text-xs font-medium transition-colors ${
                   editPattern.displayMode === option.value
                     ? 'bg-amber-500 text-black'
@@ -2159,7 +2249,7 @@ const StrummingPatternEditor: React.FC<{
             ))}
           </div>
           <p className="text-xs text-gray-400 mt-2">
-            Choose which beats to display in the strumming pattern
+            Choose which beats to display. Full Bar Range = all 8 beats for chords that span across bars
           </p>
         </div>
 
@@ -2168,11 +2258,16 @@ const StrummingPatternEditor: React.FC<{
           <div className="border border-gray-600 rounded">
             {/* Beat labels row */}
             <div className={`grid border-b border-gray-600`} style={{ gridTemplateColumns: `repeat(${end - start}, 1fr)` }}>
-              {beatLabels.slice(start, end).map((label, index) => (
-                <div key={index} className="p-2 text-center text-white text-sm font-medium border-r border-gray-600 last:border-r-0">
-                  {label}
-                </div>
-              ))}
+              {beatLabels.slice(start, end).map((label, index) => {
+                const actualIndex = start + index;
+                const isNextBar = actualIndex >= 8;
+                const displayLabel = isNextBar ? `${label}*` : label; // Add * for next bar
+                return (
+                  <div key={index} className="p-2 text-center text-white text-sm font-medium border-r border-gray-600 last:border-r-0">
+                    {displayLabel}
+                  </div>
+                );
+              })}
             </div>
             
             {/* Strumming pattern row */}
@@ -2182,7 +2277,7 @@ const StrummingPatternEditor: React.FC<{
                 const isMainBeat = actualIndex % 2 === 0;
                 return (
                   <button
-                    key={index}
+                    key={actualIndex}
                     onClick={() => handleBeatClick(actualIndex)}
                     className={`p-3 text-center border-r border-gray-600 last:border-r-0 transition-colors ${
                       beat 
@@ -2198,9 +2293,127 @@ const StrummingPatternEditor: React.FC<{
           </div>
           
           <p className="text-xs text-gray-400 mt-2">
-            Click cells to add/remove strums. Main beats (1,2,3,4) = Down, Off beats (&) = Up
+            Click beats: 1st = Default pattern, 2nd = Toggle D↔U, 3rd = Remove stroke
           </p>
+          
+          {/* D/U Toggle Button */}
+          <div className="mt-3">
+            <button
+              onClick={() => {
+                const newBeats = editPattern.beats.map(beat => {
+                  if (beat === 'D') return 'U';
+                  if (beat === 'U') return 'D';
+                  return beat;
+                });
+                setEditPattern({ ...editPattern, beats: newBeats });
+              }}
+              className="px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white rounded text-sm font-medium transition-colors"
+            >
+              Swap All D ↔ U
+            </button>
+            <p className="text-xs text-gray-400 mt-1">
+              Quickly swap all downstrokes and upstrokes
+            </p>
+          </div>
         </div>
+
+        {editPattern.displayMode === 'custom' && (
+          <div className="mb-4 bg-gray-800 p-3 rounded border border-gray-600">
+            <label className="text-white text-sm font-medium mb-2 block">Custom Beat Range:</label>
+            <div className="flex gap-2 items-center">
+              <span className="text-white text-sm">From:</span>
+              <select
+                value={editPattern.customRange?.start || 0}
+                onChange={(e) => setEditPattern({
+                  ...editPattern,
+                  customRange: {
+                    start: parseInt(e.target.value),
+                    end: editPattern.customRange?.end || 3
+                  }
+                })}
+                className="bg-gray-700 text-white px-2 py-1 rounded text-sm"
+              >
+                {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                  <option key={i} value={i}>
+                    {i === 0 ? '1' : i === 1 ? '1&' : i === 2 ? '2' : i === 3 ? '2&' : 
+                     i === 4 ? '3' : i === 5 ? '3&' : i === 6 ? '4' : '4&'}
+                  </option>
+                ))}
+              </select>
+              <span className="text-white text-sm">To:</span>
+              <select
+                value={editPattern.customRange?.end || 3}
+                onChange={(e) => setEditPattern({
+                  ...editPattern,
+                  customRange: {
+                    start: editPattern.customRange?.start || 0,
+                    end: parseInt(e.target.value)
+                  }
+                })}
+                className="bg-gray-700 text-white px-2 py-1 rounded text-sm"
+              >
+                {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
+                  <option key={i} value={i}>
+                    {i === 1 ? '1&' : i === 2 ? '2' : i === 3 ? '2&' : i === 4 ? '3' : 
+                     i === 5 ? '3&' : i === 6 ? '4' : i === 7 ? '4&' : 'End'}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <p className="text-xs text-gray-400 mt-2">
+              Example: From "1" to "2&" = 1.5 beats (1 beat + 1/2 beat)
+            </p>
+          </div>
+        )}
+
+        {editPattern.displayMode === 'full-bar' && (
+          <div className="mb-4 bg-gray-800 p-3 rounded border border-gray-600">
+            <label className="text-white text-sm font-medium mb-2 block">Full Cycle Range:</label>
+            <div className="flex gap-2 items-center">
+              <span className="text-white text-sm">From:</span>
+              <select
+                value={editPattern.customRange?.start || 0}
+                onChange={(e) => setEditPattern({
+                  ...editPattern,
+                  customRange: {
+                    start: parseInt(e.target.value),
+                    end: editPattern.customRange?.end || 8
+                  }
+                })}
+                className="bg-gray-700 text-white px-2 py-1 rounded text-sm"
+              >
+                {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                  <option key={i} value={i}>
+                    {i === 0 ? '1' : i === 1 ? '1&' : i === 2 ? '2' : i === 3 ? '2&' : 
+                     i === 4 ? '3' : i === 5 ? '3&' : i === 6 ? '4' : '4&'}
+                  </option>
+                ))}
+              </select>
+              <span className="text-white text-sm">To:</span>
+              <select
+                value={editPattern.customRange?.end || 8}
+                onChange={(e) => setEditPattern({
+                  ...editPattern,
+                  customRange: {
+                    start: editPattern.customRange?.start || 0,
+                    end: parseInt(e.target.value)
+                  }
+                })}
+                className="bg-gray-700 text-white px-2 py-1 rounded text-sm"
+              >
+                {[8, 9, 10, 11, 12, 13, 14, 15].map(i => (
+                  <option key={i} value={i}>
+                    {i === 8 ? '1 (next)' : i === 9 ? '1& (next)' : i === 10 ? '2 (next)' : i === 11 ? '2& (next)' : 
+                     i === 12 ? '3 (next)' : i === 13 ? '3& (next)' : i === 14 ? '4 (next)' : '4& (next)'}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <p className="text-xs text-gray-400 mt-2">
+              Example: From "2&" to "2 (next)" = 2& in current bar to 2 in next bar
+            </p>
+          </div>
+        )}
 
         <div className="flex gap-3">
           <button
