@@ -710,6 +710,22 @@ export class GuitarStrumEngine {
       ]
     },
     {
+      id: 'upstroke-emphasis',
+      name: 'Upstroke Emphasis',
+      beatsPerMeasure: 4,
+      description: 'Syncopated pattern with upstroke emphasis',
+      strokes: [
+        { type: 'down', time: 0, label: '1' },
+        { type: 'up', time: 0.5, label: '&' },
+        // Skip 2
+        { type: 'up', time: 1.5, label: '&' },
+        // Skip 3
+        { type: 'up', time: 2.5, label: '&' },
+        { type: 'down', time: 3, label: '4' },
+        { type: 'up', time: 3.5, label: '&' },
+      ]
+    },
+    {
       id: 'bad-moon-rising',
       name: 'Bad Moon Rising Pattern',
       beatsPerMeasure: 4,
@@ -719,22 +735,6 @@ export class GuitarStrumEngine {
         // Skip 1&
         { type: 'down', time: 1, label: '2' },
         // Skip 2&, 3
-        { type: 'up', time: 2.5, label: '&' },
-        { type: 'down', time: 3, label: '4' },
-        { type: 'up', time: 3.5, label: '&' },
-      ]
-    },
-    {
-      id: 'pattern-7',
-      name: 'Pattern 7',
-      beatsPerMeasure: 4,
-      description: 'Syncopated pattern with upstroke emphasis',
-      strokes: [
-        { type: 'down', time: 0, label: '1' },
-        { type: 'up', time: 0.5, label: '&' },
-        // Skip 2
-        { type: 'up', time: 1.5, label: '&' },
-        // Skip 3
         { type: 'up', time: 2.5, label: '&' },
         { type: 'down', time: 3, label: '4' },
         { type: 'up', time: 3.5, label: '&' },
@@ -758,24 +758,20 @@ export class GuitarStrumEngine {
       id: 'funk-sixteenth',
       name: 'Funk 16th Note Pattern',
       beatsPerMeasure: 4,
-      description: 'Syncopated funk pattern with 16th note subdivisions and strategic ghost strums',
+      description: 'Syncopated funk pattern with 16th note subdivisions',
       strokes: [
         { type: 'down', time: 0, label: '1' },
-        // Skip 1e (ghost up)
+        { type: 'up', time: 0.25, label: 'e' },
         { type: 'down', time: 0.5, label: '&' },
         { type: 'up', time: 0.75, label: 'a' },
         { type: 'down', time: 1, label: '2' },
-        { type: 'up', time: 1.25, label: 'e' },
-        { type: 'down', time: 1.5, label: '&' },
-        { type: 'up', time: 1.75, label: 'a' },
-        // Skip 3 (ghost down)
+        // Skip &
+        { type: 'down', time: 2, label: '3' },
         { type: 'up', time: 2.25, label: 'e' },
         { type: 'down', time: 2.5, label: '&' },
-        // Skip 3a (ghost up)
+        { type: 'up', time: 2.75, label: 'a' },
         { type: 'down', time: 3, label: '4' },
-        { type: 'up', time: 3.25, label: 'e' },
-        { type: 'down', time: 3.5, label: '&' },
-        { type: 'up', time: 3.75, label: 'a' },
+        // Skip &
       ]
     }
   ];

@@ -9,6 +9,8 @@ interface StrummingPatternProps {
   autoPlay?: boolean;
   forcePercussion?: boolean;
   hideSoundModeToggle?: boolean;
+  hideTitle?: boolean;
+  hideDescription?: boolean;
 }
 
 export default function StrummingPattern({ 
@@ -16,7 +18,9 @@ export default function StrummingPattern({
   bpm: initialBpm = 80,
   autoPlay = false,
   forcePercussion = false,
-  hideSoundModeToggle = false
+  hideSoundModeToggle = false,
+  hideTitle = false,
+  hideDescription = false
 }: StrummingPatternProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLooping, setIsLooping] = useState(false);
@@ -194,8 +198,8 @@ export default function StrummingPattern({
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
         <div className="flex-1">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{pattern.name}</h3>
-          <p className="text-sm text-gray-600 mt-1">{pattern.description}</p>
+          {!hideTitle && <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{pattern.name}</h3>}
+          {!hideDescription && <p className="text-sm text-gray-600 mt-1">{pattern.description}</p>}
         </div>
         <div className="text-center sm:text-right">
           <div className="text-sm text-gray-500">Tempo</div>

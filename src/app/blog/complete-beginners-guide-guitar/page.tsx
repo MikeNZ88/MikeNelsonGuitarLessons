@@ -619,13 +619,13 @@ export default function CompleteBeginnerGuide() {
                 </div>
               </div>
 
-              {/* Link to 10 Strumming Patterns Guide */}
+              {/* Link to Strumming Patterns Guide */}
               <div className="flex justify-center my-8">
                 <Link
                   href="/blog/guitar-strumming-patterns"
                   className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition-colors text-lg"
                 >
-                  Explore More Strumming Patterns: 10 Strumming Patterns Guide
+                  Explore More Strumming Patterns
                 </Link>
               </div>
             </section>
