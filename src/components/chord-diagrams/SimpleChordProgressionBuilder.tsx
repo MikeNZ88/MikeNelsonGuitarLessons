@@ -28,6 +28,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
   const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Chords marked as 2 bars use strumming pattern twice');
+  const [aspectRatio, setAspectRatio] = useState<'square' | 'portrait'>('square');
   const [compareSubtitles, setCompareSubtitles] = useState<{[rowIndex: number]: string[]}>({
     0: ['', '', '', ''],
     1: ['', '', '', '']
@@ -378,8 +379,12 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   };
 
   // Draw chord diagram legend
-  const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number) => {
-    ctx.font = 'italic 14px "Poppins", sans-serif';
+  const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, maxWidth?: number) => {
+    // Use larger text in portrait mode
+    const fontSize = aspectRatio === 'portrait' ? 18 : 14;
+    const lineSpacing = aspectRatio === 'portrait' ? 24 : 18;
+    
+    ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
     ctx.fillStyle = '#7C2D12'; // Dark amber
     ctx.textAlign = 'left';
     
@@ -427,23 +432,55 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       legendText.push('Fret number = Starting position');
     }
     
-    legendText.forEach((line, index) => {
-      const lineY = y + (index * 18); // Reduced line spacing
+    // Process text with wrapping if maxWidth is provided
+    const finalLines: string[] = [];
+    legendText.forEach(line => {
+      if (maxWidth) {
+        // Wrap text to fit within maxWidth
+        const words = line.split(' ');
+        let currentLine = '';
+        
+        words.forEach(word => {
+          const testLine = currentLine + (currentLine ? ' ' : '') + word;
+          const testWidth = ctx.measureText(testLine).width;
+          
+          if (testWidth > maxWidth && currentLine !== '') {
+            finalLines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        });
+        
+        if (currentLine !== '') {
+          finalLines.push(currentLine);
+        }
+      } else {
+        finalLines.push(line);
+      }
+    });
+    
+    finalLines.forEach((line, index) => {
+      const lineY = y + (index * lineSpacing);
       if (index === 0) {
-        ctx.font = 'bold italic 14px "Poppins", sans-serif';
+        ctx.font = `bold italic ${fontSize}px "Poppins", sans-serif`;
         ctx.fillText(line, x, lineY);
-        ctx.font = 'italic 14px "Poppins", sans-serif';
+        ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
       } else {
         ctx.fillText(line, x, lineY);
       }
     });
 
     // Return the height used by the legend for proper spacing
-    return legendText.length * 18;
+    return finalLines.length * lineSpacing;
   };
 
   // Draw strumming pattern legend
-  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string) => {
+  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string, maxWidth?: number) => {
+    // Use larger text in portrait mode
+    const fontSize = aspectRatio === 'portrait' ? 18 : 14;
+    const lineSpacing = aspectRatio === 'portrait' ? 24 : 18;
+    
     ctx.fillStyle = '#92400E';
     ctx.textAlign = 'left';
     
@@ -466,12 +503,40 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       }
     }
     
-    legendText.forEach((line, index) => {
-      const lineY = y + (index * 18); // Reduced line spacing
+    // Process text with wrapping if maxWidth is provided
+    const finalLines: string[] = [];
+    legendText.forEach(line => {
+      if (maxWidth) {
+        // Wrap text to fit within maxWidth
+        const words = line.split(' ');
+        let currentLine = '';
+        
+        words.forEach(word => {
+          const testLine = currentLine + (currentLine ? ' ' : '') + word;
+          const testWidth = ctx.measureText(testLine).width;
+          
+          if (testWidth > maxWidth && currentLine !== '') {
+            finalLines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        });
+        
+        if (currentLine !== '') {
+          finalLines.push(currentLine);
+        }
+      } else {
+        finalLines.push(line);
+      }
+    });
+    
+    finalLines.forEach((line, index) => {
+      const lineY = y + (index * lineSpacing);
       if (index === 0) {
-        ctx.font = 'bold italic 14px "Poppins", sans-serif';
+        ctx.font = `bold italic ${fontSize}px "Poppins", sans-serif`;
         ctx.fillText(line, x, lineY);
-        ctx.font = 'italic 14px "Poppins", sans-serif';
+        ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
       } else {
         ctx.fillText(line, x, lineY);
       }
@@ -482,9 +547,12 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const drawCustomText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
     if (!text.trim()) return 0; // Return 0 height if no text
     
+    // Use same font size as legend text
+    const fontSize = aspectRatio === 'portrait' ? 18 : 14;
+    
     // Define font styles
-    const regularFont = 'italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-    const boldFont = 'bold italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+    const regularFont = `italic ${fontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    const boldFont = `bold italic ${fontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
     
     // Parse text for bold formatting (**text**)
     const parseTextSegments = (inputText: string) => {
@@ -567,7 +635,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     });
     
     // Draw text with formatting
-    ctx.textAlign = 'center';
+    ctx.textAlign = 'left';
     ctx.fillStyle = '#7C2D12'; // Dark amber text to match chord names
     
     finalLines.forEach((line, lineIndex) => {
@@ -575,9 +643,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       const lineY = y + (lineIndex * lineHeight);
       
-      // Calculate total line width for centering
-      const lineWidth = measureSegments(line);
-      let currentX = x - lineWidth / 2;
+      // Use left alignment - start at x position
+      let currentX = x;
       
       // Draw each segment with appropriate formatting
       line.forEach(segment => {
@@ -627,7 +694,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       lineCount += 1; // Add fret explanation line
     }
     
-    return lineCount * 18 + 10; // 18px per line + 10px padding
+    const lineSpacing = aspectRatio === 'portrait' ? 24 : 18;
+    return lineCount * lineSpacing + (aspectRatio === 'portrait' ? 15 : 10); // More padding in portrait
   };
 
   // Export as image
@@ -639,9 +707,23 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     if (!ctx) return;
 
     const maxCanvasWidth = 1080; // Optimal for Instagram/social media
-    const diagramSize = compareMode ? 160 : (gridSize === 5 ? 80 : 110); // Much smaller diagrams to fit properly
-    const splitRowDiagramSize = 140; // Even smaller for 8-chord split rows
-    const spacing = compareMode ? 20 : 12; // Minimal spacing for better fit
+    
+    // Adjust diagram sizes based on aspect ratio
+    let diagramSize: number;
+    let splitRowDiagramSize: number;
+    let spacing: number;
+    
+    if (aspectRatio === 'portrait') {
+      // Portrait mode: Smaller diagrams to prevent cut-off, closer spacing
+      diagramSize = compareMode ? 140 : (gridSize === 5 ? 90 : 120);
+      splitRowDiagramSize = 120;
+      spacing = compareMode ? 15 : 10; // Much closer spacing
+    } else {
+      // Square mode: Current compact sizing
+      diagramSize = compareMode ? 160 : (gridSize === 5 ? 80 : 110);
+      splitRowDiagramSize = 140;
+      spacing = compareMode ? 20 : 12;
+    }
     
     let canvasWidth: number;
     let canvasHeight: number;
@@ -651,13 +733,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const maxRowChords = Math.max(...compareRows.map(row => Math.min(row.chordsPerRow, 4)));
       const hasEightChordRows = compareRows.some(row => row.chordsPerRow === 8);
       const effectiveDiagramSize = hasEightChordRows ? Math.max(diagramSize, splitRowDiagramSize) : diagramSize;
-      const requiredWidth = maxRowChords * effectiveDiagramSize + (maxRowChords - 1) * spacing + 120; // 120 for margins
+      const requiredWidth = maxRowChords * effectiveDiagramSize + (maxRowChords - 1) * spacing + (aspectRatio === 'portrait' ? 200 : 120); // More margins in portrait
       canvasWidth = Math.min(maxCanvasWidth, Math.max(800, requiredWidth)); // Minimum 800px
       
       // Dynamic height for compare mode based on number of rows
-      const titleAreaHeight = 120; // Reduced for more compact layout
-      const normalRowHeight = diagramSize + 100 + 40; // Reduced spacing for row title, subtitle, and strumming patterns
-      const splitRowHeight = splitRowDiagramSize + 80 + 30; // Smaller spacing for split rows
+      const titleAreaHeight = aspectRatio === 'portrait' ? 150 : 120; // More space for title in portrait
+      const normalRowHeight = diagramSize + (aspectRatio === 'portrait' ? 120 : 100) + (aspectRatio === 'portrait' ? 60 : 40); // More spacing in portrait
+      const splitRowHeight = splitRowDiagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 50 : 30); // More spacing in portrait
       // Calculate height based on row types
       const diagramsHeight = compareRows.reduce((totalHeight, row) => {
         if (row.chordsPerRow === 8) {
@@ -673,10 +755,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const paddingHeight = 40; // Reduced padding
       canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
       
-      // Make canvas square for better social media compatibility
-      const maxDimension = Math.max(canvasWidth, canvasHeight);
-      canvasWidth = maxDimension;
-      canvasHeight = maxDimension;
+      // Apply aspect ratio
+      if (aspectRatio === 'portrait') {
+        // Portrait: 2:3 ratio (width:height)
+        canvasHeight = Math.max(canvasHeight, (canvasWidth * 3) / 2);
+      } else {
+        // Square: 1:1 ratio
+        const maxDimension = Math.max(canvasWidth, canvasHeight);
+        canvasWidth = maxDimension;
+        canvasHeight = maxDimension;
+      }
     } else {
       // Calculate required width for normal mode
       const rowLayouts = (() => {
@@ -694,23 +782,29 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         }
       })();
       const maxRowChords = Math.max(...rowLayouts);
-      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + 100; // Minimal margins
+      const requiredWidth = maxRowChords * diagramSize + (maxRowChords - 1) * spacing + (aspectRatio === 'portrait' ? 200 : 100); // More margins in portrait
       canvasWidth = Math.min(800, Math.max(600, requiredWidth)); // Force smaller canvas
       
       // Fixed dimensions for normal mode
-      const titleAreaHeight = 120; // Reduced for compact layout
+      const titleAreaHeight = aspectRatio === 'portrait' ? 150 : 120; // More space for title in portrait
       const maxRows = Math.max(1, rowLayouts.length);
-      const diagramsHeight = maxRows * (diagramSize + 80 + 40); // Reduced spacing for strumming patterns
+      const diagramsHeight = maxRows * (diagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 60 : 40)); // More spacing in portrait
       const customTextHeight = customText.trim() ? 40 : 0; // Reduced estimate for clean text
       const chordLegendHeight = getChordLegendHeight(); // Dynamic legend height
       const strummingLegendHeight = hasAnyStrummingPattern() ? 80 : 0; // Reduced legend space
       const brandingHeight = 80; // Reduced branding area
       const paddingHeight = 40; // Reduced padding
       canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
+      
+      // Apply aspect ratio
+      if (aspectRatio === 'portrait') {
+        // Portrait: 2:3 ratio (width:height)
+        canvasHeight = Math.max(canvasHeight, (canvasWidth * 3) / 2);
+      } else {
+        // Square: 1:1 ratio
+        canvasHeight = Math.max(canvasHeight, canvasWidth);
+      }
     }
-    
-    // Ensure height is at least equal to width (never landscape)
-    canvasHeight = Math.max(canvasHeight, canvasWidth);
     
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -723,10 +817,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Calculate positioning
-    const titleY = compareMode ? 60 : 80;
-    const subtitleY = titleY + 60; // New subtitle position for compare mode
-    const progressionY = compareMode ? subtitleY + 40 : titleY + 60;
-    const diagramsStartY = compareMode ? 160 : 180; // Reduced for more compact layout
+    const titleY = compareMode ? (aspectRatio === 'portrait' ? 80 : 60) : (aspectRatio === 'portrait' ? 100 : 80);
+    const subtitleY = titleY + (aspectRatio === 'portrait' ? 80 : 60); // More space in portrait
+    const progressionY = compareMode ? subtitleY + (aspectRatio === 'portrait' ? 60 : 40) : titleY + (aspectRatio === 'portrait' ? 80 : 60);
+    const diagramsStartY = compareMode ? (aspectRatio === 'portrait' ? 200 : 160) : (aspectRatio === 'portrait' ? 220 : 180); // More space in portrait
 
     // Draw title with dynamic sizing to prevent cut-off
     ctx.textAlign = 'center';
@@ -835,33 +929,46 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         
         // Move to next row (use appropriate spacing based on row type)
         if (row.chordsPerRow === 8) {
-          currentSubRowY += splitRowDiagramSize + 80 + 30; // Smaller spacing for split rows
+          currentSubRowY += splitRowDiagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 50 : 30); // More spacing in portrait
         } else {
-          currentSubRowY += diagramSize + 100 + 40; // Normal spacing for regular rows
+          currentSubRowY += diagramSize + (aspectRatio === 'portrait' ? 120 : 100) + (aspectRatio === 'portrait' ? 60 : 40); // More spacing in portrait
         }
       });
 
-      // Draw legends and custom text below diagrams
+      // Draw legends and custom text below diagrams in two-column layout
       const baseY = currentSubRowY - 40;
-      let currentY = baseY;
+      const textAreaY = baseY;
       
-      // Always show chord legend if chords exist
+      // Calculate column positions and widths - use exact halfway point as boundary
+      const leftColumnX = 60;
+      const leftColumnWidth = (canvasWidth / 2) - 120; // Much smaller left column
+      const rightColumnX = canvasWidth / 2 + 40; // Start further right of center
+      const rightColumnWidth = (canvasWidth / 2) - 100; // Smaller right column
+      
+      // Draw legends in left column
+      let currentY = textAreaY;
+      
+      // Draw a visual boundary line for debugging (temporary)
+      ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(canvasWidth / 2, textAreaY - 20);
+      ctx.lineTo(canvasWidth / 2, textAreaY + 200);
+      ctx.stroke();
+      
       if (hasAnyChords()) {
-        const legendHeight = drawChordLegend(ctx, 60, currentY);
-        currentY += legendHeight + 10; // Add some padding after legend
+        const legendHeight = drawChordLegend(ctx, leftColumnX, currentY, leftColumnWidth);
+        currentY += legendHeight + (aspectRatio === 'portrait' ? 20 : 10);
       }
       
-      // Show strumming legend if patterns exist
       if (hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, 60, currentY, customStrummingLegendText);
-        currentY += 80; // Reduced space for strumming legend
+        drawStrummingLegend(ctx, leftColumnX, currentY, customStrummingLegendText, leftColumnWidth);
+        currentY += (aspectRatio === 'portrait' ? 120 : 80);
       }
       
-      // Show custom text if it exists
+      // Draw custom text in right column
       if (customText.trim()) {
-        const textX = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth / 2 : canvasWidth / 2;
-        const textWidth = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth * 0.4 : canvasWidth * 0.9;
-        drawCustomText(ctx, customText, textX, baseY + 37, textWidth, 27); // Added one line space (27px line height + 10px buffer)
+        drawCustomText(ctx, customText, rightColumnX, textAreaY, rightColumnWidth, 27);
       }
     } else {
       // Normal mode: Draw chord progression with arrow notation
@@ -911,7 +1018,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       rowLayouts.forEach((rowCount, rowIndex) => {
         const rowWidth = rowCount * diagramSize + (rowCount - 1) * spacing;
         const rowStartX = (canvasWidth - rowWidth) / 2;
-        const rowY = diagramsStartY + rowIndex * (diagramSize + 80 + 40); // Reduced spacing for more compact layout
+        const rowY = diagramsStartY + rowIndex * (diagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 60 : 40)); // More spacing in portrait
         
         for (let col = 0; col < rowCount && currentIndex < chords.length; col++) {
           const chord = chords[currentIndex];
@@ -931,32 +1038,45 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         }
       });
 
-      // Draw legends and custom text below diagrams
-      const baseY = diagramsStartY + rowLayouts.length * (diagramSize + 80 + 40) + 10;
-      let currentY = baseY;
+      // Draw legends and custom text below diagrams in two-column layout
+      const baseY = diagramsStartY + rowLayouts.length * (diagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 60 : 40)) + 10;
+      const textAreaY = baseY;
       
-      // Always show chord legend if chords exist
+      // Calculate column positions and widths - use exact halfway point as boundary
+      const leftColumnX = 60;
+      const leftColumnWidth = (canvasWidth / 2) - 120; // Much smaller left column
+      const rightColumnX = canvasWidth / 2 + 40; // Start further right of center
+      const rightColumnWidth = (canvasWidth / 2) - 100; // Smaller right column
+      
+      // Draw legends in left column
+      let currentY = textAreaY;
+      
+      // Draw a visual boundary line for debugging (temporary)
+      ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(canvasWidth / 2, textAreaY - 20);
+      ctx.lineTo(canvasWidth / 2, textAreaY + 200);
+      ctx.stroke();
+      
       if (hasAnyChords()) {
-        const legendHeight = drawChordLegend(ctx, 60, currentY);
-        currentY += legendHeight + 10; // Add some padding after legend
+        const legendHeight = drawChordLegend(ctx, leftColumnX, currentY, leftColumnWidth);
+        currentY += legendHeight + (aspectRatio === 'portrait' ? 20 : 10);
       }
       
-      // Show strumming legend if patterns exist
       if (hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, 60, currentY, customStrummingLegendText);
-        currentY += 80; // Reduced space for strumming legend
+        drawStrummingLegend(ctx, leftColumnX, currentY, customStrummingLegendText, leftColumnWidth);
+        currentY += (aspectRatio === 'portrait' ? 120 : 80);
       }
       
-      // Show custom text if it exists
+      // Draw custom text in right column
       if (customText.trim()) {
-        const textX = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth / 2 : canvasWidth / 2;
-        const textWidth = (hasAnyChords() || hasAnyStrummingPattern()) ? canvasWidth * 0.4 : canvasWidth * 0.9;
-        drawCustomText(ctx, customText, textX, baseY, textWidth, 27);
+        drawCustomText(ctx, customText, rightColumnX, textAreaY, rightColumnWidth, 27);
       }
     }
 
-    // Draw branding footer (moved down further)
-    const footerY = canvasHeight - 30;
+    // Draw branding footer (moved up more)
+    const footerY = canvasHeight - 60;
     
     // Draw "Mike Nelson Guitar Lessons" on the left
     ctx.font = 'bold italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
@@ -964,11 +1084,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.fillStyle = 'white';
     ctx.fillText('Mike Nelson Guitar Lessons', 60, footerY);
     
-    // Draw website URL on the right
+    // Draw website URL underneath the logo on the left
     ctx.font = 'italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-    ctx.textAlign = 'right';
+    ctx.textAlign = 'left';
     ctx.fillStyle = '#FEF3C7';
-    ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth - 60, footerY);
+    ctx.fillText('mikenelsonguitarlessons.co.nz', 60, footerY + 25);
 
     // Convert to blob and download
     canvas.toBlob((blob) => {
@@ -1644,24 +1764,57 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         </p>
       </div>
 
-      {/* Global Fingering Control */}
-      <div className="text-center mb-6">
-        <button
-          onClick={() => setGlobalShowFingering(!globalShowFingering)}
-          className={`px-6 py-2 rounded-lg font-medium transition-colors ${
-            globalShowFingering 
-              ? 'bg-amber-600 hover:bg-amber-700 text-white' 
-              : 'bg-gray-600 hover:bg-gray-700 text-white'
-          }`}
-        >
-          {globalShowFingering ? 'Hide Fingering in Export' : 'Show Fingering in Export'}
-        </button>
-        {globalShowFingering && (
+              {/* Global Fingering Control */}
+        <div className="text-center mb-6">
+          <button
+            onClick={() => setGlobalShowFingering(!globalShowFingering)}
+            className={`px-6 py-2 rounded-lg font-medium transition-colors ${
+              globalShowFingering 
+                ? 'bg-amber-600 hover:bg-amber-700 text-white' 
+                : 'bg-gray-600 hover:bg-gray-700 text-white'
+            }`}
+          >
+            {globalShowFingering ? 'Hide Fingering in Export' : 'Show Fingering in Export'}
+          </button>
+          {globalShowFingering && (
+            <p className="text-gray-400 text-sm mt-2">
+              Fingering numbers and barre lines will be included in exported images
+            </p>
+          )}
+        </div>
+
+        {/* Aspect Ratio Control */}
+        <div className="text-center mb-6">
+          <div className="flex gap-3 justify-center items-center">
+            <span className="text-sm font-medium text-gray-300">Aspect Ratio:</span>
+            <button
+              onClick={() => setAspectRatio('square')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                aspectRatio === 'square'
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white' 
+                  : 'bg-gray-600 hover:bg-gray-700 text-white'
+              }`}
+            >
+              Square (1:1)
+            </button>
+            <button
+              onClick={() => setAspectRatio('portrait')}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                aspectRatio === 'portrait'
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white' 
+                  : 'bg-gray-600 hover:bg-gray-700 text-white'
+              }`}
+            >
+              Portrait (2:3)
+            </button>
+          </div>
           <p className="text-gray-400 text-sm mt-2">
-            Fingering numbers and barre lines will be included in exported images
+            {aspectRatio === 'portrait' 
+              ? 'Portrait mode: More vertical space for larger diagrams and text' 
+              : 'Square mode: Balanced layout for social media'
+            }
           </p>
-        )}
-      </div>
+        </div>
 
       {/* Export */}
       <div className="text-center">

@@ -98,14 +98,17 @@ const arpeggioExercises = [
       { id: 'c-maj7-sweep', name: 'C Major 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cmaj7 Arpeggio Sweep with Legato and Tap.gp' },
       { id: 'c-7-sweep', name: 'C7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C7 Arpeggio Sweep with Legato and Tap.gp' },
       { id: 'c-m7-sweep', name: 'C Minor 7 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7 Arpeggio Sweep with Legato and Tap.gp' },
-      { id: 'c-m7b5-sweep', name: 'C Minor 7b5 Arpeggio (Sweep with Legato & Tap)', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7b5 Arpeggio Sweep with Legato and Tap.gp' }
     ]
-  },
+  }
+];
+
+// Rhythm exercises for the different rhythms blog post
+const rhythmExercises = [
   {
-    group: 'C Major Scale Arpeggio Sequence',
+    group: 'Rhythm Patterns',
     items: [
-      { id: 'c-major-scale-arp-asc', name: 'C Major Scale Arpeggios Ascending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Ascending.gp' },
-      { id: 'c-major-scale-arp-desc', name: 'C Major Scale Arpeggios Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Descending.gp' }
+      { id: 'dotted-8th-rhythm-riff', name: 'Dotted 8th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/dotted 8th note rhythm as a riff.gp', tempo: 70 },
+      { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 }
     ]
   }
 ];
@@ -239,17 +242,19 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     isFingerExercisesPage: pathname?.includes('/picking-finger-exercises') || false,
     isBeginnerRiffsPage: pathname?.includes('/easiest-beginner-guitar-riffs') || false,
     isBBKingBoxPage: pathname?.includes('/bb-king-box-different-keys') || false,
-    isStringBendingPage: pathname?.includes('/complete-guide-guitar-string-bending') || false
+    isStringBendingPage: pathname?.includes('/complete-guide-guitar-string-bending') || false,
+    isDifferentRhythmsPage: pathname?.includes('/rhythm-library') || false
   };
   
   console.log('🔍 Page Detection:', pageDetection);
   
-  const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises') || 
-                       pageDetection.pathname.includes('/guitar-arpeggios-exercises') ||
-                       pageDetection.pathname.includes('/picking-finger-exercises') ||
-                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs') ||
-                       pageDetection.pathname.includes('/bb-king-box-different-keys') ||
-                       pageDetection.pathname.includes('/complete-guide-guitar-string-bending');
+    const pathnameCheck = pageDetection.pathname.includes('/blues-licks-exercises') || 
+                       pageDetection.pathname.includes('/guitar-arpeggios-exercises') || 
+                       pageDetection.pathname.includes('/picking-finger-exercises') || 
+                       pageDetection.pathname.includes('/easiest-beginner-guitar-riffs') || 
+                       pageDetection.pathname.includes('/bb-king-box-different-keys') || 
+                       pageDetection.pathname.includes('/complete-guide-guitar-string-bending') ||
+                       pageDetection.pathname.includes('/rhythm-library');
   console.log('🔍 Pathname check:', pathnameCheck);
   
   // Memoize currentExercises to prevent unnecessary re-renders
@@ -446,6 +451,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             }
           ];
         }
+
+    if (pageDetection.isDifferentRhythmsPage) {
+      return rhythmExercises;
+    }
 
     return [];
   }, [pathname]);
@@ -1657,6 +1666,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                 if (pageDetection.isBluesLicksPage || pageDetection.isBBKingBoxPage) {
                   return trackIndex === 0 ? 'Lead Guitar' : 'Chords';
                 }
+                if (pageDetection.isDifferentRhythmsPage) {
+                  return trackIndex === 0 ? 'Guitar' : 'Drums';
+                }
                 return 'Guitar';
               };
               
@@ -1743,16 +1755,16 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           <ul className="list-disc pl-5 text-amber-900 space-y-1">
             <li><span className="font-bold text-amber-700">Standard Notation:</span> The top staff shows traditional music notation for rhythm and pitch.</li>
             <li><span className="font-bold text-amber-700">Tablature (TAB):</span> The lower staff shows fret numbers for each string—play the indicated fret on the matching string.</li>
-            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && (
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && !pageDetection.isDifferentRhythmsPage && (
               <li><span className="font-bold text-amber-700">Picking Symbols:</span> <span className="font-mono">⊓</span> = Downstroke, <span className="font-mono">∨</span> = Upstroke.</li>
             )}
             {pageDetection.isBeginnerRiffsPage && (
               <li><span className="font-bold text-amber-700">Brackets ( ):</span> Numbers in brackets are notes held from the previous bar.</li>
             )}
-            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && showSlursAndSlides && (
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && !pageDetection.isDifferentRhythmsPage && showSlursAndSlides && (
               <li><span className="font-bold text-amber-700">Slurs:</span> Curved lines between notes indicate hammer-ons or pull-offs (pick the first note, then use your left hand for the next note without picking).</li>
             )}
-            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && showSlides && (
+            {!pageDetection.isStringBendingPage && !pageDetection.isBBKingBoxPage && !pageDetection.isBluesLicksPage && !pageDetection.isDifferentRhythmsPage && showSlides && (
               <li><span className="font-bold text-amber-700">Slides:</span> A diagonal line or "sl." between notes means slide your finger from the first note to the next without lifting.</li>
             )}
             {(pageDetection.isStringBendingPage || pageDetection.isBBKingBoxPage || pageDetection.isBluesLicksPage) && (
@@ -1762,7 +1774,12 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                 <li><span className="font-bold text-amber-700">Vibrato:</span> Squiggly lines indicate vibrato on the note.</li>
               </>
             )}
-            <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the top staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
+            {!pageDetection.isDifferentRhythmsPage && (
+              <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the top staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
+            )}
+            {pageDetection.isDifferentRhythmsPage && (
+              <li><span className="font-bold text-amber-700">Muted Notes (X):</span> The "X" symbol indicates a muted string. Lightly touch the string with your fretting hand and pick to create a percussive sound.</li>
+            )}
           </ul>
 
         </div>

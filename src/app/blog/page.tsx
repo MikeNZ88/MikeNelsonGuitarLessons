@@ -1345,6 +1345,20 @@ export default function Blog() {
       author: 'Mike Nelson',
       sortOrder: 19
     },
+                {
+              id: '40',
+              title: 'Rhythm Library',
+              excerpt: 'Rhythm is the heartbeat of music. Master essential rhythm patterns and techniques that will transform your guitar playing. This growing collection of rhythm examples will help you develop your own musical ideas and tackle songs with similar rhythmic feels.',
+              readTime: 'Interactive',
+              category: 'Beginner - Intermediate',
+              primaryCategory: 'Rhythm',
+              categories: ['Rhythm', 'Technique', 'Tabs'],
+              skillLevel: 'beginner-intermediate',
+              image: '/rhythm-library-thumbnail.svg',
+              slug: 'rhythm-library',
+              author: 'Mike Nelson',
+              sortOrder: 20
+            },
     {
       id: '29',
       title: 'Beginner\'s Guide to Pentatonic Scales',
