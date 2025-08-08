@@ -108,7 +108,8 @@ const rhythmExercises = [
     group: 'Rhythm Patterns',
     items: [
       { id: 'dotted-8th-rhythm-riff', name: 'Dotted 8th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted 8th Note Rhythm as a Riff.gp', tempo: 70 },
-      { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 }
+      { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 },
+      { id: 'sixteenth-rhythm-riff', name: '16th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th note Rhythm as a riff.gp', tempo: 70 }
     ]
   }
 ];
