@@ -108,14 +108,7 @@ const rhythmExercises = [
     group: 'Rhythm Patterns',
     items: [
       { id: 'dotted-8th-rhythm-riff', name: 'Dotted 8th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted 8th Note Rhythm as a Riff.gp', tempo: 70 },
-      { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 },
-      { id: '8th-note-triplets-rhythm', name: '8th Note Triplets Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/8th Note Triplets Rhythm.gp', tempo: 70 },
-      { id: '16th-note-triplets-rhythm', name: '16th Note Triplets Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Note Triplets Rhythm.gp', tempo: 70 },
-      { id: 'rhythm-with-tied-notes', name: 'Rhythm With Notes Tied Across Barline as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Rhythm with notes tied across barline.gp', tempo: 70 },
-      { id: 'syncopated-16th-rhythm', name: '16th Note Rhythm Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Syncopated 16th note Rhythm as a riff.gp', tempo: 70 },
-      { id: '16th-syncopated-rhythm', name: '16th Note Syncopated Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Notes Syncopated Rhythm as a riff.gp', tempo: 70 },
-      { id: 'rhythm-5-4-time', name: 'Rhythm using 5/4 Time as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Rhythm using 5:4 Time as a Riff.gp', tempo: 70 },
-      { id: '16th-vs-8th-triplets', name: '16th Notes Vs 8th Note Triplets as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Notes vs 8th Note Tripets.gp', tempo: 70 }
+      { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 }
     ]
   }
 ];
@@ -708,11 +701,6 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           display: {
             scale: zoom, // Use the responsive zoom value
             layoutMode: 'page',
-            // Bar layout settings
-            stretchLastBar: true, // Stretch the last bar to fill the line
-            barsPerSystem: 4, // Force specific number of bars per line
-            // Alternative: Use barsPerSystemMaximum for adaptive layout
-            // barsPerSystemMaximum: 6,
             showTempo: false,
             showTitle: false,
             showSubtitle: false,
@@ -774,16 +762,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             showPopping: true,
             // Force display of technique annotations
             showTechniqueAnnotations: true,
-
             showLegatoSlides: true,
-            showShiftSlides: true,
-            // Layout settings for better text positioning
-            layout: {
-              mode: 'page',
-              additionalSettings: {
-                respectTextPositioning: true
-              }
-            }
+            showShiftSlides: true
           }
         });
         
@@ -866,9 +846,6 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             display: {
               scale: zoom,
               layoutMode: 'page',
-              // Bar layout settings
-              stretchLastBar: true, // Stretch the last bar to fill the line
-              barsPerSystem: 4, // Force specific number of bars per line
               showTempo: false,
               showTitle: false,
               showSubtitle: false,
@@ -1801,10 +1778,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
               <li><span className="font-bold text-amber-700">Fingering:</span> Numbers above the top staff suggest which left-hand finger to use (1 = index, 2 = middle, 3 = ring, 4 = pinky).</li>
             )}
             {pageDetection.isDifferentRhythmsPage && (
-              <>
-                <li><span className="font-bold text-amber-700">Muted Notes (X):</span> The "X" symbol indicates a muted string. Lightly touch the string with your fretting hand and pick to create a percussive sound.</li>
-                <li><span className="font-bold text-amber-700">Tied Notes:</span> Curved lines connecting notes across the barline indicate tied notes. In standard notation (top staff), this means the note is held for the combined duration. In tab (bottom staff), you'll see the same fret number repeated in brackets (e.g., (5))—hold the note without picking again.</li>
-              </>
+              <li><span className="font-bold text-amber-700">Muted Notes (X):</span> The "X" symbol indicates a muted string. Lightly touch the string with your fretting hand and pick to create a percussive sound.</li>
             )}
           </ul>
 
