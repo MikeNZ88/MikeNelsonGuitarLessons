@@ -1645,9 +1645,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                   ? 'bg-amber-600 hover:bg-amber-700 text-white'
                   : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-              `}
+            `}
           >
             <GiMetronome size={14} />
+            <span className="ml-1">Metronome</span>
           </button>
         </div>
 
