@@ -70,6 +70,57 @@ export default function RhythmLibraryPage() {
             </p>
           </div>
 
+          {/* How to Use the Exercises */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 className="text-2xl font-bold text-amber-900 mb-4">How to Practice These Rhythm Exercises</h2>
+            
+            <div className="space-y-4 text-amber-700">
+              <p className="leading-relaxed">
+                Each exercise uses a <strong>riff designed to teach specific rhythm concepts</strong>. These examples show how different note types and their combinations create distinct rhythmic feels.
+              </p>
+              
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                <h3 className="font-semibold text-amber-900 mb-2">Counting Rhythms Out Loud</h3>
+                <p className="text-amber-800">
+                  <strong>Essential tip:</strong> You will often need to count the rhythm out loud. For example, 16th notes are counted as "1 e & a 2 e & a 3 e & a 4 e & a". 
+                  Try counting only the beats that start each note in the rhythm - this helps you internalize the timing.
+                </p>
+                <div className="mt-3 p-3 bg-amber-100 rounded border border-amber-300">
+                  <p className="text-amber-900 font-medium mb-2">Example - Dotted 8th Note Rhythm:</p>
+                  <p className="text-amber-800 font-mono text-lg">
+                    <span className="font-bold text-amber-900">1</span> (e) (&) <span className="font-bold text-amber-900">a</span> (2) (e) <span className="font-bold text-amber-900">&</span> (a) (3) (e) (&) (a) (4) (e) <span className="font-bold text-amber-900">&</span> (a)
+                  </p>
+                  <p className="mt-2 text-amber-700 text-sm">Say out loud:</p>
+                  <p className="font-mono text-lg text-amber-900 font-bold whitespace-pre">
+                    <span>1</span><span className="invisible"> (e)</span><span className="invisible"> (&)</span><span> a</span><span className="invisible"> (2)</span><span className="invisible"> (e)</span><span> &</span><span className="invisible"> (a)</span><span className="invisible"> (3)</span><span className="invisible"> (e)</span><span className="invisible"> (&)</span><span className="invisible"> (a)</span><span className="invisible"> (4)</span><span className="invisible"> (e)</span><span> &</span><span className="invisible"> (a)</span>
+                  </p>
+                  <p className="text-amber-700 text-sm mt-2">Say the uncircled counts (shown without brackets) out loud, and count the bracketed counts silently in your head. Each note lasts until the next uncircled count. Learning standard music notation will make this even clearer.</p>
+                </div>
+              </div>
+              
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                <h3 className="font-semibold text-amber-900 mb-2">Muted Notes as Training Wheels</h3>
+                <p className="text-amber-800">
+                  Most examples include <strong>muted notes</strong> (marked with "X" in the tab) to help you count and feel the rhythm. 
+                  Think of these as training wheels - they keep you on track while you're learning the pattern.
+                </p>
+              </div>
+              
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                <h3 className="font-semibold text-amber-900 mb-2">Musical Context with Drums</h3>
+                <p className="text-amber-800">
+                  The end of each exercise includes <strong>drums with the riff</strong> to give the rhythm more musical context. 
+                  This helps you hear how the rhythm fits into a complete musical arrangement.
+                </p>
+              </div>
+              
+              <p className="leading-relaxed">
+                Start slowly and focus on accuracy before speed. Use the tempo controls to practice at a comfortable pace, 
+                then gradually increase the speed as you become more confident with each rhythm pattern.
+              </p>
+            </div>
+          </div>
+
           {/* Tab Player */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Rhythm Examples</h2>
