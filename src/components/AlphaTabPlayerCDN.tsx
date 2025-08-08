@@ -1069,6 +1069,14 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       const stateNames = ['Paused', 'Playing', 'Stopped'];
       setPlayerState(stateNames[e.state] || 'Unknown');
       setIsPlaying(e.state === 1); // 1 = playing
+      // When pausing, ensure the current bar stays in view
+      if (e.state === 0 && api.scrollToCursor) {
+        try {
+          api.scrollToCursor();
+        } catch (scrollError) {
+          console.warn('Scroll to cursor on pause failed:', scrollError);
+        }
+      }
     });
 
 
@@ -1749,8 +1757,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       </div>
       
       <div ref={containerRef} className="w-full overflow-x-auto mb-4" style={{ 
-        maxHeight: isPlaying ? '600px' : 'none', 
-        overflowY: isPlaying ? 'auto' : 'visible' 
+        maxHeight: '600px', 
+        overflowY: 'auto' 
       }}>
         <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
