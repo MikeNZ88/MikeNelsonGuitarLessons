@@ -1314,6 +1314,25 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
     }
   };
 
+  // Spacebar to toggle play/pause (outside of text inputs)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const isSpace = e.code === 'Space' || e.key === ' ' || e.key === 'Spacebar';
+      if (!isSpace) return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase();
+      const isTyping = !!target && (target.isContentEditable || tag === 'input' || tag === 'textarea' || tag === 'select');
+      if (isTyping) return; // don't hijack typing
+      e.preventDefault(); // avoid page scrolling
+      if (isReady) {
+        // reuse the same logic as the Play button
+        handlePlay();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isReady, handlePlay]);
+
   const handleStop = () => {
     if (alphaTabRef.current && isReady) {
       console.log('⏹️ Stopping audio...');
