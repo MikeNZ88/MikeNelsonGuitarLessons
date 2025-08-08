@@ -122,8 +122,8 @@ export default function RhythmLibraryPage() {
           </div>
 
           {/* Tab Player */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-amber-900 mb-4">Interactive Rhythm Examples</h2>
+          <div className="bg-white rounded-lg shadow-lg p-5 mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-2">Interactive Rhythm Examples</h2>
             <AlphaTabPlayerCDN />
           </div>
         </div>

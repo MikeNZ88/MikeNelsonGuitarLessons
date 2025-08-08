@@ -1609,111 +1609,97 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       </div> */}
 
       {/* Playback Controls */}
-      <div className="mb-4 flex flex-wrap items-center gap-2">
-        <button
-          onClick={handlePlay}
-          disabled={!isReady}
-          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
-            ${isReady
-              ? isPlaying
-                ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                : 'bg-amber-800 hover:bg-amber-900 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-          `}
-        >
-          {isPlaying ? (
-            <><MdPause size={26} className="mr-2" /><span className="sr-only">Pause</span></>
-          ) : (
-            <><MdPlayArrow size={26} className="mr-2" /><span className="sr-only">Play</span></>
-          )}
-        </button>
-        <button
-          onClick={handleStop}
-          disabled={!isReady}
-          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
-            ${isReady
-              ? 'bg-red-600 hover:bg-red-700 text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-          `}
-        >
-          <MdStop size={26} className="mr-2" /><span className="sr-only">Stop</span>
-        </button>
+      <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        {/* Left: compact transport buttons */}
+        <div className="flex items-center gap-1.5">
+          <button
+            onClick={handlePlay}
+            disabled={!isReady}
+            className={`w-16 h-8 flex items-center justify-center px-2.5 py-1 rounded-md font-semibold transition-colors text-xs
+              ${isReady
+                ? isPlaying
+                  ? 'bg-amber-500 hover:bg-amber-600 text-white'
+                  : 'bg-amber-800 hover:bg-amber-900 text-white'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+              `}
+          >
+            {isPlaying ? (<MdPause size={16} />) : (<MdPlayArrow size={16} />)}
+          </button>
+          <button
+            onClick={handleStop}
+            disabled={!isReady}
+            className={`w-16 h-8 flex items-center justify-center px-2.5 py-1 rounded-md font-semibold transition-colors text-xs
+              ${isReady
+                ? 'bg-red-600 hover:bg-red-700 text-white'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+              `}
+          >
+            <MdStop size={16} />
+          </button>
+          <button
+            onClick={handleMetronomeToggle}
+            disabled={!isReady}
+            className={`h-8 flex items-center justify-center px-2.5 py-1 rounded-md font-semibold transition-colors text-xs
+              ${isReady
+                ? isMetronomeOn
+                  ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                  : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
+                : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
+              `}
+          >
+            <GiMetronome size={14} />
+          </button>
+        </div>
 
-        <button
-          onClick={handleMetronomeToggle}
-          disabled={!isReady}
-          className={`w-28 h-12 flex items-center justify-center px-4 py-2 rounded-md font-semibold transition-colors text-base
-            ${isReady
-              ? isMetronomeOn
-                ? 'bg-amber-600 hover:bg-amber-700 text-white'
-                : 'bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
-          `}
-        >
-          <GiMetronome className="mr-2" size={22} />Metronome
-        </button>
-
-      </div>
-
-      {/* Track Controls - Show if there are any tracks */}
-      {availableTracks > 0 && (
-        <div className="mb-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Track Controls:</h4>
-          <div className="flex flex-wrap gap-2">
+        {/* Right: compact track controls */}
+        {availableTracks > 0 && (
+          <div className="flex items-center flex-wrap gap-1.5">
             {Array.from({ length: availableTracks }, (_, i) => {
-              // Get track name based on the current page and track number
               const getTrackName = (trackIndex: number) => {
                 if (pageDetection.isBluesLicksPage || pageDetection.isBBKingBoxPage) {
-                  return trackIndex === 0 ? 'Lead Guitar' : 'Chords';
+                  return trackIndex === 0 ? 'Lead' : 'Chords';
                 }
                 if (pageDetection.isDifferentRhythmsPage) {
                   return trackIndex === 0 ? 'Guitar' : 'Drums';
                 }
                 return 'Guitar';
               };
-              
               const trackName = getTrackName(i);
-              
               return (
-                <div key={i} className="flex items-center space-x-1 bg-gray-50 rounded-lg p-2">
-                  <span className="text-sm font-medium text-gray-600 min-w-[4rem]">
-                    {trackName}
-                  </span>
-                <button
-                  onClick={() => handleTrackMute(i)}
-                  disabled={!isReady}
-                  className={`px-3 py-1 text-xs font-semibold rounded transition-colors
-                    ${!isReady 
-                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                      : mutedTracks.has(i)
-                        ? 'bg-red-500 hover:bg-red-600 text-white'
-                        : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
-                  `}
-                >
-                  {mutedTracks.has(i) ? 'Unmute' : 'Mute'}
-                </button>
-                {/* Only show Solo button if there are multiple tracks */}
-                {availableTracks > 1 && (
+                <div key={i} className="flex items-center space-x-1 bg-gray-50 rounded-md px-1 py-0.5">
+                  <span className="text-[11px] font-medium text-gray-600 min-w-[3rem]">{trackName}</span>
                   <button
-                    onClick={() => handleTrackSolo(i)}
+                    onClick={() => handleTrackMute(i)}
                     disabled={!isReady}
-                    className={`px-3 py-1 text-xs font-semibold rounded transition-colors
+                    className={`px-1.5 py-0.5 text-[11px] font-medium rounded transition-colors
                       ${!isReady 
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : soloedTracks.has(i)
-                          ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                        : mutedTracks.has(i)
+                          ? 'bg-red-500 hover:bg-red-600 text-white'
                           : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
                     `}
                   >
-                    {soloedTracks.has(i) ? 'Unsolo' : 'Solo'}
+                    {mutedTracks.has(i) ? 'Unmute' : 'Mute'}
                   </button>
-                )}
-              </div>
+                  {availableTracks > 1 && (
+                    <button
+                      onClick={() => handleTrackSolo(i)}
+                      disabled={!isReady}
+                      className={`px-1.5 py-0.5 text-[11px] font-medium rounded transition-colors
+                        ${!isReady 
+                          ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                          : soloedTracks.has(i)
+                            ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                            : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}
+                      `}
+                    >
+                      {soloedTracks.has(i) ? 'Unsolo' : 'Solo'}
+                    </button>
+                  )}
+                </div>
               );
             })}
-          </div>
-          {(mutedTracks.size > 0 || soloedTracks.size > 0) && (
-            <div className="mt-2 flex gap-2">
+            {(mutedTracks.size > 0 || soloedTracks.size > 0) && (
               <button
                 onClick={() => {
                   setMutedTracks(new Set());
@@ -1721,14 +1707,14 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
                   applyTrackSettings(new Set(), new Set());
                 }}
                 disabled={!isReady}
-                className="px-3 py-1 text-xs font-semibold rounded bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
+                className="px-1.5 py-0.5 text-[11px] font-medium rounded bg-blue-100 hover:bg-blue-200 text-blue-700 transition-colors"
               >
-                Clear All
+                Clear
               </button>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
+      </div>
 
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
