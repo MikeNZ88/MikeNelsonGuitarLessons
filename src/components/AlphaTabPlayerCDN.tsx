@@ -109,7 +109,15 @@ const rhythmExercises = [
     items: [
       { id: 'dotted-8th-rhythm-riff', name: 'Dotted 8th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted 8th Note Rhythm as a Riff.gp', tempo: 70 },
       { id: 'dotted-quarter-rhythm-riff', name: 'Dotted Quarter Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted Quarter Note Rhythm as a Riff.gp', tempo: 70 },
-      { id: 'sixteenth-rhythm-riff', name: '16th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th note Rhythm as a riff.gp', tempo: 70 }
+      { id: 'sixteenth-rhythm-riff', name: '16th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th note Rhythm as a riff.gp', tempo: 70 },
+      { id: 'eighth-triplets-rhythm', name: '8th Note Triplets Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/8th Note Triplets Rhythm.gp', tempo: 70 },
+      { id: 'sixteenth-triplets-rhythm', name: '16th Note Triplets Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Note Triplets Rhythm.gp', tempo: 70 },
+      { id: 'tied-notes-rhythm', name: 'Rhythm With Notes Tied Across Barline as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Rhythm with notes tied across barline.gp', tempo: 70 },
+      { id: 'syncopated-16th-rhythm', name: 'Syncopated 16th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Syncopated 16th note Rhythm as a riff.gp', tempo: 70 },
+      { id: 'syncopated-16th-notes-rhythm', name: '16th Notes Syncopated Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Notes Syncopated Rhythm as a riff.gp', tempo: 70 },
+      { id: 'five-four-rhythm', name: 'Rhythm using 5/4 Time as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Rhythm using 5:4 Time as a Riff.gp', tempo: 70 },
+      { id: 'sixteenth-vs-eighth-triplets', name: '16th Notes Vs 8th Note Triplets as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/16th Notes vs 8th Note Tripets.gp', tempo: 70 },
+      { id: 'dotted-8th-plus-16th', name: 'Dotted 8th + 16th Note Rhythm as a Riff', file: '/GP Files/Scale Exercises/BLOG TABS/Dotted 8th Note + 16th note Rhythm.gp', tempo: 70 }
     ]
   }
 ];
