@@ -708,7 +708,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         tracks: pathname?.includes('/blues-licks-exercises') ? [0] : undefined,
           display: {
             scale: zoom, // Use the responsive zoom value
-            layoutMode: 'page',
+            layoutMode: 'horizontal',
             // Bar layout settings
             stretchLastBar: true, // Stretch the last bar to fill the line
             barsPerSystem: 4, // Force specific number of bars per line
@@ -866,7 +866,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             tracks: [trackIndex], // Use the selected track
             display: {
               scale: zoom,
-              layoutMode: 'page',
+              layoutMode: 'horizontal',
               // Bar layout settings
               stretchLastBar: true, // Stretch the last bar to fill the line
               barsPerSystem: 4, // Force specific number of bars per line
@@ -1770,7 +1770,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         maxHeight: isPlaying ? '600px' : 'none', 
         overflowY: isPlaying ? 'auto' : 'visible',
         WebkitOverflowScrolling: 'touch',
-        scrollBehavior: 'smooth'
+        scrollBehavior: 'smooth',
+        minWidth
       }}>
         <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
