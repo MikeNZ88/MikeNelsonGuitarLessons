@@ -505,9 +505,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   useEffect(() => {
     const checkScreen = () => {
       if (window.innerWidth < 768) {
-        // On mobile, render wider and allow horizontal scroll
-        setMinWidth(1200);
-        setZoom(1.15);
+        setMinWidth(600);
+        setZoom(1.05);
       } else {
         setMinWidth(800);
         setZoom(1.2);
@@ -1761,16 +1760,14 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       )}
 
       {/* AlphaTab Rendering Container */}
-      {/* Mobile tip - appears before tab player */}
+      {/* Mobile rotation tip - appears before tab player */}
       <div className="mb-4 p-3 bg-amber-50 border-l-4 border-amber-400 rounded text-amber-900 text-sm">
-        <strong>Tip:</strong> On mobile, swipe left/right to scroll the tab. Rotating your device can also improve the view.
+        <strong>Tip:</strong> Rotate for better viewing on mobile device.
       </div>
       
       <div ref={containerRef} className="w-full overflow-x-auto mb-4" style={{ 
         maxHeight: isPlaying ? '600px' : 'none', 
-        overflowY: isPlaying ? 'auto' : 'visible',
-        WebkitOverflowScrolling: 'touch',
-        scrollBehavior: 'smooth'
+        overflowY: isPlaying ? 'auto' : 'visible' 
       }}>
         <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
