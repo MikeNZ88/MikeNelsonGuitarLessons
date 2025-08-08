@@ -497,7 +497,6 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
-  const [barsPerSystem, setBarsPerSystem] = useState<number>(4);
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
   const [availableTracks, setAvailableTracks] = useState<number>(1);
   const [mutedTracks, setMutedTracks] = useState<Set<number>>(new Set());
@@ -506,14 +505,12 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   useEffect(() => {
     const checkScreen = () => {
       if (window.innerWidth < 768) {
-        // On mobile: allow slight horizontal scroll and fewer bars per system
-        setMinWidth(900);
-        setZoom(1.1);
-        setBarsPerSystem(2);
+        // On mobile, render wider and allow horizontal scroll
+        setMinWidth(1200);
+        setZoom(1.15);
       } else {
         setMinWidth(800);
         setZoom(1.2);
-        setBarsPerSystem(4);
       }
     };
     checkScreen();
@@ -711,10 +708,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         tracks: pathname?.includes('/blues-licks-exercises') ? [0] : undefined,
           display: {
             scale: zoom, // Use the responsive zoom value
-            layoutMode: 'page',
+            layoutMode: 'horizontal',
             // Bar layout settings
             stretchLastBar: true, // Stretch the last bar to fill the line
-            barsPerSystem, // Responsive bars per system
+            barsPerSystem: 4, // Force specific number of bars per line
             // Alternative: Use barsPerSystemMaximum for adaptive layout
             // barsPerSystemMaximum: 6,
             showTempo: false,
@@ -869,10 +866,10 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             tracks: [trackIndex], // Use the selected track
             display: {
               scale: zoom,
-              layoutMode: 'page',
+              layoutMode: 'horizontal',
               // Bar layout settings
-              stretchLastBar: true,
-              barsPerSystem,
+              stretchLastBar: true, // Stretch the last bar to fill the line
+              barsPerSystem: 4, // Force specific number of bars per line
               showTempo: false,
               showTitle: false,
               showSubtitle: false,
