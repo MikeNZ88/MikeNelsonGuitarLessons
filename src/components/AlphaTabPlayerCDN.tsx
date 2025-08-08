@@ -237,9 +237,7 @@ declare global {
 }
 
 export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', showTabInstructions = true, showSlursAndSlides = true, showSlides = true }: AlphaTabPlayerCDNProps = {}) {
-  // Scroll container (outer) and AlphaTab content container (inner)
   const containerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const alphaTabRef = useRef<any>(null);
   const pathname = usePathname();
   
@@ -686,12 +684,12 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         console.log('AlphaTab CDN loaded successfully');
         setStatus('Initializing AlphaTab...');
 
-        if (!containerRef.current || !contentRef.current) return;
+        if (!containerRef.current) return;
 
         console.log('Initializing AlphaTab from CDN...');
         
         // Initialize AlphaTab with working audio configuration
-        alphaTabRef.current = new window.alphaTab.AlphaTabApi(contentRef.current, {
+        alphaTabRef.current = new window.alphaTab.AlphaTabApi(containerRef.current, {
           core: {
             enableLazyLoading: false, // Ensure all elements are rendered for better cursor visibility
             useWorkers: false // Disable workers for better debugging
@@ -842,8 +840,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         console.log('🎵 Destroy failed:', error);
       }
       
-      // Clear only the inner content container
-      if (contentRef.current) contentRef.current.innerHTML = '';
+      // Clear the container
+      containerRef.current.innerHTML = '';
       
       // Wait a moment then reinitialize
       setTimeout(async () => {
@@ -851,7 +849,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           console.log('🎵 Reinitializing AlphaTab with track:', trackIndex);
           
           // Create new AlphaTab instance with the selected track
-          alphaTabRef.current = new window.alphaTab.AlphaTabApi(contentRef.current, {
+          alphaTabRef.current = new window.alphaTab.AlphaTabApi(containerRef.current, {
             core: {
               enableLazyLoading: false,
               useWorkers: false
@@ -1776,12 +1774,9 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         overflowY: isPlaying ? 'auto' : 'visible',
         WebkitOverflowScrolling: 'touch',
         scrollBehavior: 'smooth',
-        // Ensure some horizontal room on mobile
-        minWidth,
-        // Prevent nested element from wrapping too early
-        whiteSpace: 'nowrap'
+        minWidth
       }}>
-        <div ref={contentRef} id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg inline-block" style={{ minWidth }}></div>
+        <div id={containerId} className="alphatab-cdn-container border border-gray-200 rounded-lg" style={{ minWidth }}></div>
       </div>
       {/* How to Read the Tab Section */}
       {showTabInstructions && (
