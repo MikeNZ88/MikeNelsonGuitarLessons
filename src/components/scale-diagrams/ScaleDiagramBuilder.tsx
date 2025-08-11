@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface ScaleData {
   name: string;
@@ -35,6 +35,17 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
   const [scaleNotes, setScaleNotes] = useState<Array<{ string: number; fret: number; isRoot: boolean; noteType: 'root' | 'scale' | 'blues'; color?: string }>>([]);
   const [selectedNoteType, setSelectedNoteType] = useState<'root' | 'scale' | 'blues'>('scale');
   const [selectedColor, setSelectedColor] = useState<string>('#7C2D12'); // Default to dark amber
+  useEffect(() => {
+    // Track colors used in diagrams so the legend editor can load them
+    const collectColors = () => {
+      const colors = new Set<string>();
+      scales.forEach(scale => scale?.scaleNotes.forEach(n => n.color && colors.add(n.color)));
+      try {
+        localStorage.setItem('scaleDiagramUsedColors', JSON.stringify(Array.from(colors)));
+      } catch {}
+    };
+    collectColors();
+  }, [scales]);
 
   // Get current scale data
   const getCurrentScale = (): ScaleData | null => {
@@ -836,14 +847,51 @@ const ScaleDiagramBuilder: React.FC = () => {
         }
       });
 
-      // Draw custom text below diagrams
+      // Below-diagram Y baseline
+      const textY = diagramsStartY + compareRows.length * (diagramHeight + 80) + 20;
+      // Draw custom text (centered)
       if (customText.trim()) {
-        const textY = diagramsStartY + compareRows.length * (diagramHeight + 80) + 20;
         ctx.font = '18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#7C2D12';
         ctx.textAlign = 'center';
         drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 24);
       }
+
+      // Draw colour legend (key) on the left below the diagrams (no shading)
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items) && items.length > 0) {
+            const swatchSize = 16;
+            const gap = 10;
+            const xLeft = 30;
+            // Position legend below custom text to avoid overlap
+            const legendY = textY + (customText.trim() ? 80 : 20);
+            let yCursor = legendY;
+            ctx.textAlign = 'left';
+            ctx.font = '18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+            ctx.fillStyle = '#7C2D12'; // Match custom text colour
+            items.forEach((it) => {
+              // swatch
+              ctx.fillStyle = it.color || '#FFFFFF';
+              ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
+              // label
+              ctx.fillStyle = '#7C2D12'; // Match custom text colour
+              const labelX = xLeft + swatchSize + 10;
+              const text = (it.label || '').toString();
+              const maxWidth = canvasWidth * 0.35; // left column width
+              let display = text;
+              while (ctx.measureText(display).width > maxWidth && display.length > 3) {
+                display = display.slice(0, -2);
+              }
+              if (display !== text) display += '…';
+              ctx.fillText(display, labelX, yCursor + swatchSize - 4);
+              yCursor += swatchSize + gap;
+            });
+          }
+        }
+      } catch {}
     } else {
       // Normal mode: Scale progression text removed - not relevant for scale diagrams
 
@@ -883,14 +931,49 @@ const ScaleDiagramBuilder: React.FC = () => {
         }
       });
 
-      // Draw custom text below diagrams
+      // Below-diagram Y baseline
+      const textY = diagramsStartY + rowLayouts.length * (diagramHeight + 100) + 20;
+      // Draw custom text (centered)
       if (customText.trim()) {
-        const textY = diagramsStartY + rowLayouts.length * (diagramHeight + 100) + 20;
         ctx.font = '18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#7C2D12';
         ctx.textAlign = 'center';
         drawCustomText(ctx, customText, canvasWidth / 2, textY, canvasWidth * 0.9, 24);
       }
+
+      // Draw colour legend (key) on the left below the diagrams (no shading)
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items) && items.length > 0) {
+            const swatchSize = 16;
+            const gap = 10;
+            const xLeft = 30;
+            // Position legend below custom text to avoid overlap
+            const legendY = textY + (customText.trim() ? 80 : 20);
+            let yCursor = legendY;
+            ctx.textAlign = 'left';
+            ctx.font = '18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+            ctx.fillStyle = '#7C2D12'; // Match custom text colour
+            items.forEach((it) => {
+              ctx.fillStyle = it.color || '#FFFFFF';
+              ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
+              ctx.fillStyle = '#7C2D12'; // Match custom text colour
+              const labelX = xLeft + swatchSize + 10;
+              const text = (it.label || '').toString();
+              const maxWidth = canvasWidth * 0.35;
+              let display = text;
+              while (ctx.measureText(display).width > maxWidth && display.length > 3) {
+                display = display.slice(0, -2);
+              }
+              if (display !== text) display += '…';
+              ctx.fillText(display, labelX, yCursor + swatchSize - 4);
+              yCursor += swatchSize + gap;
+            });
+          }
+        }
+      } catch {}
     }
 
     // Draw branding footer - same as chord builder
@@ -906,6 +989,8 @@ const ScaleDiagramBuilder: React.FC = () => {
     ctx.font = 'italic 18px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
     ctx.fillStyle = '#FEF3C7';
     ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth / 2, footerY + 30);
+
+    // (legend drawing moved into branches above; no shaded panel)
 
     // Convert to blob and download
     canvas.toBlob((blob) => {
