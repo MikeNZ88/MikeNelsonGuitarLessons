@@ -119,9 +119,34 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
+              function gtag(){dataLayer.push(arguments);} 
               gtag('js', new Date());
               gtag('config', 'G-M01QMM0HQL');
+            `,
+          }}
+        />
+        {/* Runtime canonical link injection to enforce https apex without trailing slash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(){
+                try {
+                  var base = 'https://mikenelsonguitarlessons.co.nz';
+                  var path = window.location && window.location.pathname ? window.location.pathname : '/';
+                  // Remove trailing slash except for root
+                  if (path.length > 1 && path.endsWith('/')) {
+                    path = path.slice(0, -1);
+                  }
+                  var canonicalUrl = base + (path === '/' ? '' : path);
+                  var link = document.querySelector('link[rel="canonical"]');
+                  if (!link) {
+                    link = document.createElement('link');
+                    link.setAttribute('rel', 'canonical');
+                    document.head.appendChild(link);
+                  }
+                  link.setAttribute('href', canonicalUrl);
+                } catch (e) {}
+              })();
             `,
           }}
         />

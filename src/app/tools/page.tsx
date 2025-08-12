@@ -242,7 +242,7 @@ export default function Tools() {
                 href="/blog"
                 className="bg-white text-amber-600 px-8 py-3 rounded-lg font-semibold border-2 border-amber-600 hover:bg-amber-50 transition-colors"
               >
-                Read Our Blog
+                Read My Blog
               </Link>
             </div>
           </div>

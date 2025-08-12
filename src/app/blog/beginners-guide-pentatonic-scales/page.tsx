@@ -475,7 +475,7 @@ function PentatonicScalesContent() {
           <h2 className="text-lg font-semibold text-orange-800 mb-4">Understanding Major vs Minor Pentatonic</h2>
           <div className="text-sm text-gray-700 space-y-3">
             <p>
-              <strong>Key insight:</strong> Major and minor pentatonic scales use the exact same notes! The difference is which note you treat as "home base" in your playing. <em>Using A minor pentatonic as our example:</em>
+              <strong>Key insight:</strong> Major and minor pentatonic scales use the exact same notes! The difference is which note you treat as "home base" in your playing. <em>For example, using A minor pentatonic:</em>
             </p>
             <p>
               <strong className="text-orange-700">A Minor Pentatonic (Shape 1):</strong> When you emphasize the note A as your starting and ending point, these notes create a minor, bluesy sound. This is the most common scale for rock and blues solos.

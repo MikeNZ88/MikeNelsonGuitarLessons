@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Business Card - Front (1050x600 px ≈ 3.5x2in at 300dpi) -->
+<svg width="1050" height="600" viewBox="0 0 1050 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mike Nelson Guitar Lessons business card front">
+  <!-- Background: Tailwind amber-800 (#92400E) to match site header -->
+  <rect width="1050" height="600" fill="#92400E"/>
+
+  <!-- Safe margin (bleed-safe area) -->
+  <g transform="translate(0,0)">
+    <!-- Single centered icon under logo -->
+    
+    <!-- Brand text centered and moved up by ~20% (120px) -->
+    <g id="brand" transform="translate(0,0)">
+      <text x="525" y="135" text-anchor="middle" fill="#FFFFFF" font-family="'Playfair Display', Georgia, 'Times New Roman', serif" font-size="52" font-weight="700" letter-spacing="0.4">
+        Mike Nelson Guitar Lessons
+      </text>
+    </g>
+
+    <!-- Centered icon directly under logo -->
+    <g id="single-icon" transform="translate(525,175)" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <g transform="translate(-31,-16) scale(2.6)">
+        <path d="m11.9 12.1 4.514-4.514" />
+        <path d="M20.1 2.3a1 1 0 0 0-1.4 0l-1.114 1.114A2 2 0 0 0 17 4.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 17.828 7h1.344a2 2 0 0 0 1.414-.586L21.7 5.3a1 1 0 0 0 0-1.4z" />
+        <path d="m6 16 2 2" />
+        <path d="M8.23 9.85A3 3 0 0 1 11 8a5 5 0 0 1 5 5 3 3 0 0 1-1.85 2.77l-.92.38A2 2 0 0 0 12 18a4 4 0 0 1-4 4 6 6 0 0 1-6-6 4 4 0 0 1 4-4 2 2 0 0 0 1.85-1.23z" />
+      </g>
+    </g>
+
+    <!-- Contact details centered beneath icon/logo block -->
+    <g id="details" transform="translate(525,250)" fill="#FFFFFF" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" text-anchor="middle">
+      <!-- Phone -->
+      <text x="0" y="0" font-size="28" opacity="0.85" letter-spacing="0.5">Phone</text>
+      <text x="0" y="44" font-size="32" font-weight="800">022 127 2154</text>
+
+      <!-- Location -->
+      <text x="0" y="90" font-size="28" opacity="0.85" letter-spacing="0.5">Location</text>
+      <text x="0" y="130" font-size="40">Pukerua Bay</text>
+
+      <!-- Mobile lessons -->
+      <text x="0" y="180" font-size="28" opacity="0.85" letter-spacing="0.5">Mobile lessons</text>
+      <text x="0" y="220" font-size="32">Lessons at your place available in some areas (details on website)</text>
+
+      <!-- Website -->
+      <text x="0" y="260" font-size="28" opacity="0.85" letter-spacing="0.5">Website</text>
+      <text x="0" y="300" font-size="34" font-weight="800">mikenelsonguitarlessons.co.nz</text>
+    </g>
+  </g>
+</svg>
+
+

@@ -1320,7 +1320,7 @@ export default function Blog() {
     {
       id: '17',
       title: 'Master Guitar Strumming Patterns',
-      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 11 progressive patterns from beginner to advanced, plus create custom patterns with our interactive builder.',
+      excerpt: 'Learn guitar strumming patterns with interactive audio examples. Master the secret to solid timing and rhythm with 11 progressive patterns from beginner to advanced, plus create custom patterns with an interactive builder.',
       readTime: '12 min read',
       category: 'Beginner - Intermediate',
       primaryCategory: 'Rhythm',
@@ -1678,7 +1678,7 @@ export default function Blog() {
     {
       id: '30',
       title: 'The Circle of Fifths: A Complete Guide',
-      excerpt: 'Master the fundamental relationship between keys, understand key signatures, and discover the diatonic chords that make up every major and minor key with our interactive tool.',
+      excerpt: 'Master the fundamental relationship between keys, understand key signatures, and discover the diatonic chords that make up every major and minor key with an interactive tool.',
       readTime: 'Interactive Tool',
       category: 'Intermediate - Advanced',
       primaryCategory: 'Theory',

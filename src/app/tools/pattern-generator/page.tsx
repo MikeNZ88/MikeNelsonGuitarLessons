@@ -32,7 +32,7 @@ export default function PatternGeneratorPage() {
               Strumming Pattern Generator
             </h1>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Create your own custom strumming patterns with our interactive generator. 
+              Create your own custom strumming patterns with this interactive generator. 
               Choose between 8th note or 16th note grids and click to build patterns. 
               Down and up strokes are automatically assigned based on traditional strumming rules.
             </p>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Business Card - Back (Portrait 600x1050 px ≈ 2x3.5in at 300dpi) -->
+<svg width="600" height="1050" viewBox="0 0 600 1050" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Business card back with open chords">
+  <defs>
+    <style>
+      .bg { fill: #92400E; }
+      .stroke { stroke: #FFFFFF; stroke-width: 2; }
+      .nut { stroke: #FFFFFF; stroke-width: 6; }
+      .text { fill: #FFFFFF; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      .label { font-size: 24px; font-weight: 700; letter-spacing: 0.4px; }
+    </style>
+    <!-- One diagram: 6 strings, 5 frets; sized to 120x140 (grid only) -->
+    <g id="diagram">
+      <!-- Grid params: s=20 (string spacing), f=24 (fret spacing), nut=8 -->
+      <g class="stroke" transform="translate(0,20)">
+        <!-- strings -->
+        <line x1="0" y1="8" x2="0" y2="128" />
+        <line x1="20" y1="8" x2="20" y2="128" />
+        <line x1="40" y1="8" x2="40" y2="128" />
+        <line x1="60" y1="8" x2="60" y2="128" />
+        <line x1="80" y1="8" x2="80" y2="128" />
+        <line x1="100" y1="8" x2="100" y2="128" />
+        <!-- frets -->
+        <line x1="0" y1="8" x2="100" y2="8" class="nut" />
+        <line x1="0" y1="32" x2="100" y2="32" />
+        <line x1="0" y1="56" x2="100" y2="56" />
+        <line x1="0" y1="80" x2="100" y2="80" />
+        <line x1="0" y1="104" x2="100" y2="104" />
+        <line x1="0" y1="128" x2="100" y2="128" />
+      </g>
+      <!-- markers group to be positioned per chord -->
+      <g id="marks" transform="translate(0,0)"></g>
+    </g>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="600" height="1050" />
+
+  <!-- helper to place a dot at given string (6..1) and fret (1..5); s=20,f=24,nut=8 -->
+  <!-- We use precomputed positions for simplicity in this static SVG. -->
+
+  <!-- Row/Col origins (centered and inside page) -->
+  <!-- Two columns (x: 130, 370), four rows (y: 140, 380, 620, 860) with scale 1.25 -->
+
+  <!-- A Major: x 0 2 2 2 0 (6..1) -->
+  <g transform="translate(130,97) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">A Major</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">X</text>
+      <text x="20" y="12">O</text>
+      <text x="100" y="12">O</text>
+    </g>
+    <!-- dots at (string, fret) → x=(6-string)*20, y=20+8+(f*0.5)+ (fret-1)*24; with group grid offset above -->
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="40" cy="44" r="7" />
+      <circle cx="60" cy="44" r="7" />
+      <circle cx="80" cy="44" r="7" />
+    </g>
+  </g>
+
+  <!-- A minor: x 0 2 2 1 0 -->
+  <g transform="translate(370,97) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">A Minor</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">X</text>
+      <text x="20" y="12">O</text>
+      <text x="100" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="40" cy="44" r="7" />
+      <circle cx="60" cy="44" r="7" />
+      <circle cx="80" cy="20" r="7" />
+    </g>
+  </g>
+
+  <!-- E Major: 0 2 2 1 0 0 -->
+  <g transform="translate(130,337) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">E Major</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">O</text>
+      <text x="80" y="12">O</text>
+      <text x="100" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="20" cy="44" r="7" />
+      <circle cx="40" cy="44" r="7" />
+      <circle cx="60" cy="20" r="7" />
+    </g>
+  </g>
+
+  <!-- E Minor: 0 2 2 0 0 0 -->
+  <g transform="translate(370,337) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">E Minor</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">O</text>
+      <text x="60" y="12">O</text>
+      <text x="80" y="12">O</text>
+      <text x="100" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="20" cy="44" r="7" />
+      <circle cx="40" cy="44" r="7" />
+    </g>
+  </g>
+
+  <!-- D Major: x x 0 2 3 2 -->
+  <g transform="translate(130,577) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">D Major</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">X</text>
+      <text x="20" y="12">X</text>
+      <text x="40" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="60" cy="44" r="7" />
+      <circle cx="80" cy="68" r="7" />
+      <circle cx="100" cy="44" r="7" />
+    </g>
+  </g>
+
+  <!-- D Minor: x x 0 2 3 1 -->
+  <g transform="translate(370,577) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">D Minor</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">X</text>
+      <text x="20" y="12">X</text>
+      <text x="40" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <circle cx="60" cy="44" r="7" />
+      <circle cx="80" cy="68" r="7" />
+      <circle cx="100" cy="20" r="7" />
+    </g>
+  </g>
+
+  <!-- G Major: 3 2 0 0 0 3 -->
+  <g transform="translate(130,810) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">G Major</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="40" y="12">O</text>
+      <text x="60" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <!-- 3rd fret should be mid between 56 and 80 → 68 -->
+      <circle cx="0" cy="68" r="7" />
+      <circle cx="20" cy="44" r="7" />
+      <circle cx="100" cy="68" r="7" />
+      <!-- Added 3rd fret on B string (string 2) at 68 -->
+      <circle cx="80" cy="68" r="7" />
+    </g>
+  </g>
+
+  <!-- C Major: x 3 2 0 1 0 -->
+  <g transform="translate(370,813) scale(1.25)">
+    <use href="#diagram" />
+    <text x="50" y="-8" class="text label" text-anchor="middle">C Major</text>
+    <g class="text" text-anchor="middle" font-size="16" font-weight="700">
+      <text x="0" y="12">X</text>
+      <text x="60" y="12">O</text>
+      <text x="100" y="12">O</text>
+    </g>
+    <g fill="#FFFFFF" transform="translate(0,20)">
+      <!-- 3rd fret A string mid = 68 -->
+      <circle cx="20" cy="68" r="7" />
+      <circle cx="40" cy="44" r="7" />
+      <circle cx="80" cy="20" r="7" />
+    </g>
+  </g>
+
+</svg>
+
+

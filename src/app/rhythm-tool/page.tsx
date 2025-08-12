@@ -755,7 +755,7 @@ export default function RhythmTool() {
                     </h3>
                     <div className="bg-amber-100 p-4 rounded-lg border border-amber-300">
                       <p className="text-amber-900 font-medium mb-3">
-                        <strong>Important:</strong> These days a lot of guitarists just use online guitar tab software to understand the rhythm of a song. Understanding standard notation for rhythm at least (you can rely on the tablature for note positions) is important. It will help you to understand music from a rhythmic perspective. Having a sense of rhythm and understanding rhythm aren't always the same thing, and our intuition can only take us so far.
+                        <strong>Important:</strong> These days a lot of guitarists just use online guitar tab software to understand the rhythm of a song. Understanding standard notation for rhythm at least (you can rely on the tablature for note positions) is important. It will help you to understand music from a rhythmic perspective. Having a sense of rhythm and understanding rhythm aren't always the same thing, and intuition can only take you so far.
                       </p>
                       <p className="text-amber-800 mb-3">
                         This tool provides basic examples to help you become familiar with rhythmic notation and fundamental concepts. It doesn't cover everything in rhythm - there's much more to explore as you progress!

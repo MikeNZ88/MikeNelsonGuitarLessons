@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Facebook Cover - Universal (Mobile-friendly 1280x720 16:9; centered safe content) -->
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mike Nelson Guitar Lessons Facebook cover (universal)">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#93400E"/>
+      <stop offset="100%" stop-color="#7c330b"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1280" height="720" fill="url(#bg)"/>
+
+  <!-- Centered safe content; scaled to fit within both desktop crop and full mobile view -->
+  <g transform="translate(640,250) scale(0.9)" fill="#FFFFFF" text-anchor="middle">
+    <!-- Chord diagram defs (same as site style) -->
+    <defs>
+      <g id="diag-grid">
+        <g stroke="#FFFFFF" stroke-width="2" transform="translate(0,20)">
+          <line x1="0" y1="8" x2="0" y2="128" />
+          <line x1="20" y1="8" x2="20" y2="128" />
+          <line x1="40" y1="8" x2="40" y2="128" />
+          <line x1="60" y1="8" x2="60" y2="128" />
+          <line x1="80" y1="8" x2="80" y2="128" />
+          <line x1="100" y1="8" x2="100" y2="128" />
+          <line x1="0" y1="8" x2="100" y2="8" stroke-width="6" />
+          <line x1="0" y1="32" x2="100" y2="32" />
+          <line x1="0" y1="56" x2="100" y2="56" />
+          <line x1="0" y1="80" x2="100" y2="80" />
+          <line x1="0" y1="104" x2="100" y2="104" />
+          <line x1="0" y1="128" x2="100" y2="128" />
+        </g>
+      </g>
+    </defs>
+
+    <!-- Chord row -->
+    <g transform="translate(-55,-220)">
+      <!-- Cmaj7: x 3 2 0 1 0 -->
+      <g transform="translate(-396,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="0" y="12">X</text>
+          <text x="60" y="12">O</text>
+          <text x="100" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="20" cy="68" r="6" />
+          <circle cx="40" cy="44" r="6" />
+          <circle cx="80" cy="20" r="6" />
+        </g>
+      </g>
+      <!-- Dm11/A: x 0 3 0 3 0 -->
+      <g transform="translate(-264,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="0" y="12">X</text>
+          <text x="20" y="12">O</text>
+          <text x="60" y="12">O</text>
+          <text x="100" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="40" cy="68" r="6" />
+          <circle cx="80" cy="68" r="6" />
+        </g>
+      </g>
+      <!-- Em9: 0 2 2 0 3 2 -->
+      <g transform="translate(-132,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="0" y="12">O</text>
+          <text x="60" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="20" cy="44" r="6" />
+          <circle cx="40" cy="44" r="6" />
+          <circle cx="80" cy="68" r="6" />
+          <circle cx="100" cy="44" r="6" />
+        </g>
+      </g>
+      <!-- Fmaj7#11: 1 3 3 2 0 0 -->
+      <g transform="translate(0,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="80" y="12">O</text>
+          <text x="100" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="0" cy="20" r="6" />
+          <circle cx="20" cy="68" r="6" />
+          <circle cx="40" cy="68" r="6" />
+          <circle cx="60" cy="44" r="6" />
+        </g>
+      </g>
+      <!-- G13: 3 x 3 4 5 3 -->
+      <g transform="translate(132,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="20" y="12">X</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="0" cy="68" r="6" />
+          <circle cx="40" cy="68" r="6" />
+          <circle cx="60" cy="92" r="6" />
+          <circle cx="80" cy="116" r="6" />
+          <circle cx="100" cy="68" r="6" />
+        </g>
+      </g>
+      <!-- Am9: x 0 2 4 1 0 -->
+      <g transform="translate(264,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="0" y="12">X</text>
+          <text x="20" y="12">O</text>
+          <text x="100" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="40" cy="44" r="6" />
+          <circle cx="60" cy="92" r="6" />
+          <circle cx="80" cy="20" r="6" />
+        </g>
+      </g>
+      <!-- Bm7b5 add11: x 2 3 2 3 0 -->
+      <g transform="translate(396,0) scale(1.1)">
+        <use href="#diag-grid" />
+        <g fill="#FFFFFF" text-anchor="middle" font-size="12" font-weight="700">
+          <text x="0" y="12">X</text>
+          <text x="100" y="12">O</text>
+        </g>
+        <g fill="#FFFFFF" transform="translate(0,20)">
+          <circle cx="20" cy="44" r="6" />
+          <circle cx="40" cy="68" r="6" />
+          <circle cx="60" cy="44" r="6" />
+          <circle cx="80" cy="68" r="6" />
+        </g>
+      </g>
+    </g>
+
+    <text y="20" font-family="'Playfair Display', Georgia, 'Times New Roman', serif" font-size="56" font-weight="700" letter-spacing="0.3">Mike Nelson Guitar Lessons</text>
+    <text y="60" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="30" opacity="0.95">Pukerua Bay • Mobile lessons • Online lessons</text>
+    <text y="96" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="30" font-weight="800" opacity="0.98">mikenelsonguitarlessons.co.nz</text>
+  </g>
+</svg>
+
+

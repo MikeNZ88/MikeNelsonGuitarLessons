@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export:cards": "node scripts/svg_to_png.mjs public/business-card-front.svg public/business-card-front.png 1050 && node scripts/svg_to_png.mjs public/business-card-back.svg public/business-card-back.png 600",
+    "export:cards:bleed": "node scripts/svg_to_png.mjs public/business-card-front.svg public/business-card-front-bleed.png 1085 && node scripts/svg_to_png.mjs public/business-card-back.svg public/business-card-back-bleed.png 635",
+    "export:social": "node scripts/svg_to_png.mjs public/social/facebook-profile.svg public/social/facebook-profile.png 1024 && node scripts/svg_to_png.mjs public/social/facebook-cover.svg public/social/facebook-cover.png 1702",
+    "export:social:ring": "node scripts/svg_to_png.mjs public/social/facebook-profile-ring.svg public/social/facebook-profile-ring.png 1024"
   },
   "dependencies": {
     "@coderline/alphatab": "^1.6.0",
@@ -25,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

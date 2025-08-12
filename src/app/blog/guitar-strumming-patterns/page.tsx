@@ -5,14 +5,14 @@ import { GuitarStrumEngine } from '@/utils/audio/guitarStrumEngine';
 
 export const metadata: Metadata = {
   title: 'Guitar Strumming Patterns Guide',
-  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 11 progressive patterns from beginner to advanced, plus use our interactive pattern builder to create custom strumming patterns.',
+  description: 'Learn guitar strumming patterns with interactive audio examples. Master timing and rhythm with 11 progressive patterns from beginner to advanced, plus use a free interactive pattern builder to create custom strumming patterns.',
   robots: {
     index: false,
     follow: false,
   },
   openGraph: {
     title: 'Master Guitar Strumming Patterns: Interactive Guide with Audio',
-    description: 'Learn guitar strumming patterns with playable examples. Master 11 progressive patterns from basic downstrokes to advanced 16th notes, plus create custom patterns with our interactive builder.',
+    description: 'Learn guitar strumming patterns with playable examples. Master 11 progressive patterns from basic downstrokes to advanced 16th notes, plus create custom patterns with an interactive builder.',
     type: 'article',
     images: [
       {
@@ -406,7 +406,7 @@ export default function GuitarStrummingPatternsPage() {
             </h2>
             <p className="text-gray-600">
               Now that you've learned these 11 essential patterns, why not create your own? 
-              Use our interactive Pattern Generator to build custom strumming patterns. 
+              Use my interactive Pattern Generator to build custom strumming patterns. 
               Just click on the grid squares and the down/up strokes are automatically assigned!
             </p>
           </div>
