@@ -499,6 +499,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
+  // User controls (layout/notation toggles removed — fixed layout + standard notation enabled)
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
   const [availableTracks, setAvailableTracks] = useState<number>(1);
   const [mutedTracks, setMutedTracks] = useState<Set<number>>(new Set());
@@ -506,12 +507,23 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
 
   useEffect(() => {
     const checkScreen = () => {
-      if (window.innerWidth < 768) {
-        setMinWidth(600);
-        setZoom(1.05);
-      } else {
+      const w = window.innerWidth;
+      if (w < 390) {
+        // Very small phones
+        setMinWidth(0);
+        setZoom(0.55);
+      } else if (w < 768) {
+        // Mobile phones
+        setMinWidth(0);
+        setZoom(0.6);
+      } else if (w < 1024) {
+        // Small laptops/tablets
         setMinWidth(800);
-        setZoom(1.2);
+        setZoom(0.95);
+      } else {
+        // Desktop
+        setMinWidth(800);
+        setZoom(1.0);
       }
     };
     checkScreen();
@@ -583,10 +595,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         pointer-events: none !important;
       }
       
-      /* Make sure SVG allows cursor overlay */
-      .at svg {
-        overflow: visible !important;
-      }
+      /* (Reverted) Do not constrain AlphaTab width here */
 
       /* Strongest override for all cursor elements */
       .at .at-cursor *,
@@ -607,6 +616,48 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         stroke: orange !important;
         stroke-width: 2px !important;
         stroke-dasharray: 6,3 !important;
+      }
+
+      /* Hide AlphaTab title/metadata on mobile */
+      @media (max-width: 767px) {
+        .alphatab-cdn-container svg .at-title,
+        .alphatab-cdn-container svg .at-subtitle,
+        .alphatab-cdn-container svg .at-artist,
+        .alphatab-cdn-container svg .at-album,
+        .alphatab-cdn-container svg .at-header,
+        .alphatab-cdn-container svg .at-score-info,
+        .alphatab-cdn-container svg [class*="title"],
+        .alphatab-cdn-container svg [class*="subtitle"],
+        .alphatab-cdn-container svg [class*="header"],
+        .alphatab-cdn-container svg [class*="score-info"] {
+          display: none !important;
+        }
+      }
+
+      /* Reduce common AlphaTab text sizes for better fit */
+      .alphatab-cdn-container svg .at-bar-number,
+      .alphatab-cdn-container svg .at-chord-name,
+      .alphatab-cdn-container svg .at-lyrics,
+      .alphatab-cdn-container svg .at-fingering,
+      .alphatab-cdn-container svg .at-technique-text {
+        font-size: 9px !important; /* desktop baseline (smaller) */
+      }
+
+      @media (max-width: 1024px) {
+        .alphatab-cdn-container svg .at-bar-number,
+        .alphatab-cdn-container svg .at-chord-name,
+        .alphatab-cdn-container svg .at-lyrics,
+        .alphatab-cdn-container svg .at-fingering,
+        .alphatab-cdn-container svg .at-technique-text {
+          font-size: 8px !important;
+        }
+      }
+
+      @media (max-width: 767px) {
+        /* Mobile: fallback, reduce all text nodes further */
+        .alphatab-cdn-container svg text {
+          font-size: 6px !important;
+        }
       }
     `;
     document.head.appendChild(style);
@@ -716,7 +767,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             showArtist: false,
             showAlbum: false,
             showWords: false,
-            showMusic: true, // Enable music notation for cursor visibility
+            showMusic: true,
             showCopyright: false,
             showNotices: false,
             showInstructions: false,
@@ -897,6 +948,21 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   }, [selectedExercise, isReady, currentExercises]);
 
 
+  // Update scale on zoom change
+  useEffect(() => {
+    const api = alphaTabRef.current;
+    if (!api) return;
+    try {
+      if (api.settings?.updateSettings) {
+        api.settings.updateSettings({ display: { scale: zoom } });
+        api.render?.();
+      }
+    } catch (e) {
+      console.warn('AlphaTab scale update failed:', e);
+    }
+  }, [zoom]);
+
+
 
   const setupEventListeners = (api: any) => {
     api.renderStarted.on(() => {
@@ -908,41 +974,6 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       console.log('Render finished');
       setStatus('Ready to play!');
       setIsReady(true);
-      
-              // Enable all tracks for blues licks after render is complete
-        if (pageDetection.isBluesLicksPage && currentExercises.length > 0 && currentExercises[0].items.length > 1) {
-        console.log('🎵 Enabling all tracks after render for blues licks');
-        console.log('🎵 Number of tracks:', currentExercises[0].items.length);
-        
-        // Try to use AlphaTab's settings to show all tracks
-        try {
-          if (api.settings) {
-            console.log('🎵 Using AlphaTab settings to show all tracks');
-            api.settings.tracks.showAllTracks = true;
-            api.settings.tracks.showTracks = [0, 1];
-          }
-        } catch (error) {
-          console.log('🎵 Settings approach failed:', error);
-        }
-        
-        // Also try direct track manipulation
-        api.tracks.forEach((track: any, index: number) => {
-          console.log(`🎵 Setting track ${index} visible after render`);
-          track.isVisible = true;
-          track.isMuted = false;
-          track.isSolo = false;
-        });
-        
-        // Force a re-render to show all tracks
-        setTimeout(() => {
-          try {
-            api.render();
-            console.log('🎵 Re-render after render finished completed');
-          } catch (error) {
-            console.log('🎵 Re-render after render finished failed:', error);
-          }
-        }, 100);
-      }
     });
 
     api.scoreLoaded.on((score: any) => {
@@ -1238,11 +1269,28 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       
       // Add cache-busting parameter to ensure we get the latest file
       const cacheBuster = Date.now();
-      const urlWithCacheBuster = `${filePath}?t=${cacheBuster}&v=2`;
+      const encodedPath = encodeURI(filePath).replace(/#/g, '%23');
+      let urlWithCacheBuster = `${encodedPath}?t=${cacheBuster}`;
       
-      const response = await fetch(urlWithCacheBuster);
+      // First attempt (no-store)
+      let response = await fetch(new Request(urlWithCacheBuster, { cache: 'no-store' }));
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status} - File not found: ${filePath}`);
+        console.warn('First fetch attempt failed:', response.status, response.statusText);
+        // Fallback 1: try encoded path by segments
+        const encodedBySegment = filePath
+          .split('/')
+          .map((seg) => (seg ? encodeURIComponent(seg) : ''))
+          .join('/')
+          .replace(/%2F/g, '/');
+        urlWithCacheBuster = `${encodedBySegment}?t=${cacheBuster}`;
+        response = await fetch(new Request(urlWithCacheBuster, { cache: 'no-store' }));
+        if (!response.ok) {
+          // Fallback 2: try without cache buster
+          response = await fetch(new Request(encodedBySegment, { cache: 'no-store' }));
+        }
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status} - File not found: ${filePath}`);
+        }
       }
       
       const arrayBuffer = await response.arrayBuffer();
@@ -1688,6 +1736,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           </button>
         </div>
 
+        {/* Right: compact track controls (layout/notation toggles removed) */}
+
         {/* Right: compact track controls */}
         {availableTracks > 0 && (
           <div className="flex items-center flex-wrap gap-1.5">
@@ -1752,6 +1802,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           </div>
         )}
       </div>
+
 
       {error && (
         <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">

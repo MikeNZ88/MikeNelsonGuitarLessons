@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function RhythmLibraryPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 overflow-x-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white">
-        <div className="container mx-auto px-4 py-8">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white overflow-x-hidden">
+        <div className="container mx-auto px-4 py-8 overflow-x-hidden">
           <Link href="/blog" className="inline-flex items-center text-amber-200 hover:text-white mb-4 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
@@ -58,8 +58,8 @@ export default function RhythmLibraryPage() {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="container mx-auto px-4 py-8 overflow-x-hidden">
+        <div className="max-w-4xl mx-auto overflow-x-hidden">
           
           {/* Introduction */}
           <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
@@ -122,9 +122,11 @@ export default function RhythmLibraryPage() {
           </div>
 
           {/* Tab Player */}
-          <div className="bg-white rounded-lg shadow-lg p-5 mb-6">
+          <div className="bg-white rounded-lg shadow-lg p-5 mb-6 overflow-x-hidden">
             <h2 className="text-xl md:text-2xl font-bold text-amber-900 mb-2">Interactive Rhythm Examples</h2>
-            <AlphaTabPlayerCDN />
+            <div className="overflow-x-auto">
+              <AlphaTabPlayerCDN />
+            </div>
           </div>
         </div>
       </div>
