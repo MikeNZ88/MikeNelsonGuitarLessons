@@ -10,11 +10,19 @@ interface ChordData {
   mutedStrings: number[];
   showFiveFrets?: boolean; // when true, render 5-fret span instead of 4
   strummingPattern?: {
-    beats: Array<'D' | 'U' | null>; // 16 positions for 1,&,2,&,3,&,4,& (x2 bars) to handle wrapping
+    beats: Array<'D' | 'U' | 'X' | null>; // 16 positions for 1,&,2,&,3,&,4,& (x2 bars) to handle wrapping
     displayMode?: 'full' | 'beats-1-2' | 'beats-3-4' | 'custom' | 'full-bar'; // which beats to show
     customRange?: { start: number; end: number }; // e.g., { start: 0, end: 3 } for beats 1-1.5
     symbolSet?: 'strum' | 'pluck'; // 'strum' = D/U, 'pluck' = P/X
   };
+}
+
+// Global strumming pattern (1 bar, 16th-note grid)
+interface GlobalStrumPattern {
+	id: string;
+	name: string;
+	beats: Array<'D' | 'U' | 'X' | null>;
+	symbolSet?: 'strum' | 'pluck';
 }
 
 const SimpleChordProgressionBuilder: React.FC = () => {
@@ -33,10 +41,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [compareMode, setCompareMode] = useState(false);
   // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
-  const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Chords marked as 2 bars use strumming pattern twice');
+  const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing');
+  const [customChordLegendText, setCustomChordLegendText] = useState('● = Finger numbers (1,2,3,4) • O = Open string • X = Unplayed or muted string');
   const [showLegends, setShowLegends] = useState<boolean>(true);
   const [showStrummingLegend, setShowStrummingLegend] = useState<boolean>(true);
   const [showStrumDirections, setShowStrumDirections] = useState<boolean>(true);
+  const [centerLegendText, setCenterLegendText] = useState<boolean>(false);
+  const [legendsSideBySide, setLegendsSideBySide] = useState<boolean>(false); // Place strumming legend to right of chord legend
   const [aspectRatio, setAspectRatio] = useState<'square' | 'portrait'>('square');
   const [strictPortrait, setStrictPortrait] = useState<boolean>(false); // Enforce exact 2:3 by padding height
   const [adaptivePortrait, setAdaptivePortrait] = useState<boolean>(false); // Enforce exact 2:3 by expanding (or scaling) width
@@ -53,13 +64,47 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     { title: 'Variation 1', chords: Array(4).fill(null), chordsPerRow: 4 },
     { title: 'Variation 2', chords: Array(4).fill(null), chordsPerRow: 4 }
   ]);
+  // Manual vertical offsets per row
+  const [normalRowOffsets, setNormalRowOffsets] = useState<{[rowIndex: number]: number}>({});
+  const [compareRowOffsets, setCompareRowOffsets] = useState<{[rowIndex: number]: number}>({});
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Global strumming patterns (separate section)
+  const [globalStrummingPatterns, setGlobalStrummingPatterns] = useState<GlobalStrumPattern[]>([]);
+  const createEmptyGlobalPattern = (): GlobalStrumPattern => ({
+    id: crypto.randomUUID(),
+    name: 'Pattern',
+    beats: Array(16).fill(null),
+    symbolSet: 'strum'
+  });
+  const addGlobalPattern = () => setGlobalStrummingPatterns(prev => [...prev, createEmptyGlobalPattern()]);
+  const removeGlobalPattern = (id: string) => setGlobalStrummingPatterns(prev => prev.filter(p => p.id !== id));
+  const duplicateGlobalPattern = (id: string) => setGlobalStrummingPatterns(prev => {
+    const patt = prev.find(p => p.id === id);
+    if (!patt) return prev;
+    const copy: GlobalStrumPattern = { ...patt, id: crypto.randomUUID(), name: `${patt.name} (copy)`, beats: [...patt.beats] };
+    return [...prev, copy];
+  });
+  const updateGlobalPatternName = (id: string, name: string) => setGlobalStrummingPatterns(prev => prev.map(p => p.id === id ? { ...p, name } : p));
+  const clearGlobalPattern = (id: string) => setGlobalStrummingPatterns(prev => prev.map(p => p.id === id ? { ...p, beats: Array(16).fill(null) } : p));
+  const toggleGlobalPatternBeat = (id: string, index: number) => setGlobalStrummingPatterns(prev => prev.map(p => {
+    if (p.id !== id) return p;
+    const next = [...p.beats];
+    const cur = next[index];
+    next[index] = cur === null ? 'D' : cur === 'D' ? 'U' : cur === 'U' ? 'X' : null;
+    return { ...p, beats: next };
+  }));
 
   // Global shrink/scale factor for all text (user-controlled)
   const [textScale, setTextScale] = useState<number>(1.0); // 1.0 = 100%
   const scaleSize = (size: number) => Math.max(8, Math.round(size * textScale));
+  // Vertical offsets (independent)
+  const [legendOffset, setLegendOffset] = useState<number>(0);
+  const [globalPatternsOffset, setGlobalPatternsOffset] = useState<number>(0);
+  const [customTextOffset, setCustomTextOffset] = useState<number>(0);
   // Branding alignment toggle
-  const [brandAlignRight, setBrandAlignRight] = useState<boolean>(false);
+  type BrandAlign = 'left' | 'center' | 'right';
+  const [brandAlign, setBrandAlign] = useState<BrandAlign>('left');
   const [brandUnderTitle, setBrandUnderTitle] = useState<boolean>(false);
 
   // Initialize empty chord
@@ -165,7 +210,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       setDragOverIndex(null);
       return;
     }
-
+    
     if (draggedIndex === null || draggedIndex === dropIndex) {
       setDraggedIndex(null);
       setDragOverIndex(null);
@@ -222,7 +267,19 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       compareRows,
       compareSubtitles,
       customText,
+      customChordLegendText,
+      customStrummingLegendText,
+      centerLegendText,
       showFingering: globalShowFingering,
+      globalStrummingPatterns,
+      // Persist independent offsets; keep legacy field for backward compat when loading
+      legendOffset,
+      globalPatternsOffset,
+      customTextOffset,
+      legendsSideBySide,
+      normalRowOffsets,
+      compareRowOffsets,
+      brandAlign,
       savedAt: new Date().toISOString()
     };
     
@@ -265,9 +322,47 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.customText) {
             setCustomText(progressionData.customText);
           }
+          if (progressionData.customChordLegendText) {
+            setCustomChordLegendText(progressionData.customChordLegendText);
+          }
+          if (progressionData.centerLegendText !== undefined) {
+            setCenterLegendText(progressionData.centerLegendText);
+          }
+          if (progressionData.customStrummingLegendText) {
+            // Check if this is an old file with just optional text or new file with complete legend
+            const oldOptionalText = 'Chords marked as 2 bars use strumming pattern twice';
+            const completeDefaultLegend = 'Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing';
+            
+            if (progressionData.customStrummingLegendText === oldOptionalText) {
+              // Old file - use complete default legend
+              setCustomStrummingLegendText(completeDefaultLegend);
+            } else {
+              // New file or custom legend - use as is
+              setCustomStrummingLegendText(progressionData.customStrummingLegendText);
+            }
+          }
+          if (progressionData.globalStrummingPatterns) {
+            setGlobalStrummingPatterns(progressionData.globalStrummingPatterns);
+          }
+          // Load independent offsets with backward compatibility
+          if (progressionData.legendOffset !== undefined) setLegendOffset(progressionData.legendOffset);
+          if (progressionData.globalPatternsOffset !== undefined) setGlobalPatternsOffset(progressionData.globalPatternsOffset);
+          if (progressionData.customTextOffset !== undefined) setCustomTextOffset(progressionData.customTextOffset);
+          // Back-compat: old single offset applied to all three
+          if (progressionData.strummingTextOffset !== undefined) {
+            setLegendOffset(progressionData.strummingTextOffset);
+            setGlobalPatternsOffset(progressionData.strummingTextOffset);
+            setCustomTextOffset(progressionData.strummingTextOffset);
+          }
+          if (progressionData.legendsSideBySide !== undefined) {
+            setLegendsSideBySide(progressionData.legendsSideBySide);
+          }
               if (progressionData.compareSubtitles) {
       setCompareSubtitles(progressionData.compareSubtitles);
     }
+          if (progressionData.normalRowOffsets) setNormalRowOffsets(progressionData.normalRowOffsets);
+          if (progressionData.compareRowOffsets) setCompareRowOffsets(progressionData.compareRowOffsets);
+          if (progressionData.brandAlign) setBrandAlign(progressionData.brandAlign);
           
           // Update chord array size if needed
           const newSize = progressionData.gridSize;
@@ -328,6 +423,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ]);
     setGlobalShowFingering(false);
     setCustomText('');
+    setCustomChordLegendText('● = Finger numbers (1,2,3,4) • O = Open string • X = Unplayed or muted string');
+    setCustomStrummingLegendText('Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing');
+    setLegendsSideBySide(false);
     setCompareSubtitles({
       0: Array(4).fill(''),
       1: Array(4).fill('')
@@ -456,7 +554,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   };
 
   // Draw chord diagram legend
-  const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, maxWidth?: number, hideHeading?: boolean) => {
+  const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, maxWidth?: number, hideHeading?: boolean, align: CanvasTextAlign = 'left') => {
     // Legend sizing (respect textScale and Adaptive 2:3 bump)
     const baseLegend = aspectRatio === 'portrait' ? 18 : 14;
     const bumpedLegend = adaptivePortrait ? Math.round(baseLegend * 1.15) : baseLegend;
@@ -465,7 +563,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
     ctx.fillStyle = '#7C2D12'; // Dark amber
-    ctx.textAlign = 'left';
+    ctx.textAlign = align;
     
     // Check if progression uses thumb (T finger)
     const usesThumb = (() => {
@@ -493,8 +591,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       }
     })();
 
-    // Build legend text dynamically
-    const legendText = [hideHeading ? '' : 'Chord Diagram Guide:'];
+    // Use custom legend text if provided, otherwise fall back to dynamic text
+    let legendText: string[];
+    
+    if (customChordLegendText.trim()) {
+      // Split custom text into lines
+      legendText = [hideHeading ? '' : 'Chord Diagram Guide:'];
+      legendText.push(...customChordLegendText.split(/\r?\n/).filter(line => line.trim()));
+    } else {
+      // Fall back to dynamic legend text
+      legendText = [hideHeading ? '' : 'Chord Diagram Guide:'];
     
     // Finger numbers line - conditional thumb explanation
     if (usesThumb) {
@@ -504,11 +610,79 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     }
     
     // Open/muted strings line
-    legendText.push('O = Open string  •  X = Unplayed or muted string');
+      legendText.push('O = Open string  •  X = Unplayed or muted string');
     
     // Fret number explanation on its own line (if higher frets are used)
     if (usesHigherFrets) {
       legendText.push('Fret number = Starting position');
+      }
+    }
+    
+    // Process text with wrapping if maxWidth is provided
+    const finalLines: string[] = [];
+    legendText.forEach(line => {
+      if (maxWidth) {
+        // Wrap text to fit within maxWidth
+        const words = line.split(' ');
+        let currentLine = '';
+        
+        words.forEach(word => {
+          const testLine = currentLine + (currentLine ? ' ' : '') + word;
+          const testWidth = ctx.measureText(testLine).width;
+          
+          if (testWidth > maxWidth && currentLine !== '') {
+            finalLines.push(currentLine);
+            currentLine = word;
+          } else {
+            currentLine = testLine;
+          }
+        });
+        
+        if (currentLine !== '') {
+          finalLines.push(currentLine);
+        }
+      } else {
+        finalLines.push(line);
+      }
+    });
+    
+    finalLines.forEach((line, index) => {
+      const lineY = y + (index * lineSpacing);
+      const renderX = x;
+      if (index === 0) {
+        ctx.font = `bold italic ${fontSize}px "Poppins", sans-serif`;
+        ctx.fillText(line, renderX, lineY);
+        ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
+      } else {
+        ctx.fillText(line, renderX, lineY);
+      }
+    });
+
+    // Return the height used by the legend for proper spacing
+    return finalLines.length * lineSpacing;
+  };
+
+  // Draw strumming pattern legend
+  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string, maxWidth?: number, hideHeading?: boolean, align: CanvasTextAlign = 'left') => {
+    // Legend sizing (respect textScale and Adaptive 2:3 bump)
+    const baseLegend2 = aspectRatio === 'portrait' ? 18 : 14;
+    const bumpedLegend2 = adaptivePortrait ? Math.round(baseLegend2 * 1.15) : baseLegend2;
+    const fontSize = scaleSize(bumpedLegend2);
+    const lineSpacing = Math.round(fontSize * 1.33);
+    
+    ctx.fillStyle = '#92400E';
+    ctx.textAlign = align;
+    
+    // Use custom legend text (now contains complete legend)
+    let legendText: string[];
+    
+    if (customTwoBarsText && customTwoBarsText.trim()) {
+      // Use custom text with line breaks
+      legendText = [hideHeading ? '' : 'Strumming Pattern Guide:'];
+      legendText.push(...customTwoBarsText.split(/\r?\n/).filter(line => line.trim()));
+    } else {
+      // Fallback to basic text if somehow empty
+      legendText = [hideHeading ? '' : 'Strumming Pattern Guide:'];
     }
     
     // Process text with wrapping if maxWidth is provided
@@ -554,78 +728,6 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     return finalLines.length * lineSpacing;
   };
 
-  // Draw strumming pattern legend
-  const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string, maxWidth?: number, hideHeading?: boolean) => {
-    // Legend sizing (respect textScale and Adaptive 2:3 bump)
-    const baseLegend2 = aspectRatio === 'portrait' ? 18 : 14;
-    const bumpedLegend2 = adaptivePortrait ? Math.round(baseLegend2 * 1.15) : baseLegend2;
-    const fontSize = scaleSize(bumpedLegend2);
-    const lineSpacing = Math.round(fontSize * 1.33);
-    
-    ctx.fillStyle = '#92400E';
-    ctx.textAlign = 'left';
-    
-    const baseLegendText: string[] = [
-      hideHeading ? '' : 'Strumming Pattern Guide:',
-      'A bar lasts for 4 beats',
-      '1 & 2 & 3 & 4 & = Beat counting'
-    ];
-    if (showStrumDirections) {
-      baseLegendText.push('D = Downstroke  •  U = Upstroke');
-      baseLegendText.push('D/U symbols show strum timing');
-    }
-    
-    // Add custom 2-bars text if provided
-    const legendText = [...baseLegendText];
-    if (customTwoBarsText && customTwoBarsText.trim()) {
-      const lines = customTwoBarsText.split(/\s+/);
-      const midpoint = Math.ceil(lines.length / 2);
-      legendText.push(lines.slice(0, midpoint).join(' '));
-      if (lines.length > midpoint) {
-        legendText.push(lines.slice(midpoint).join(' '));
-      }
-    }
-    
-    // Process text with wrapping if maxWidth is provided
-    const finalLines: string[] = [];
-    legendText.forEach(line => {
-      if (maxWidth) {
-        // Wrap text to fit within maxWidth
-        const words = line.split(' ');
-        let currentLine = '';
-        
-        words.forEach(word => {
-          const testLine = currentLine + (currentLine ? ' ' : '') + word;
-          const testWidth = ctx.measureText(testLine).width;
-          
-          if (testWidth > maxWidth && currentLine !== '') {
-            finalLines.push(currentLine);
-            currentLine = word;
-          } else {
-            currentLine = testLine;
-          }
-        });
-        
-        if (currentLine !== '') {
-          finalLines.push(currentLine);
-        }
-      } else {
-        finalLines.push(line);
-      }
-    });
-    
-    finalLines.forEach((line, index) => {
-      const lineY = y + (index * lineSpacing);
-      if (index === 0) {
-        ctx.font = `bold italic ${fontSize}px "Poppins", sans-serif`;
-        ctx.fillText(line, x, lineY);
-        ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
-      } else {
-        ctx.fillText(line, x, lineY);
-      }
-    });
-  };
-
   // Draw custom text with intelligent wrapping and bold formatting
   const drawCustomText = (ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
     if (!text.trim()) return 0; // Return 0 height if no text
@@ -642,6 +744,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Parse text for bold formatting (**text**)
     const parseTextSegments = (inputText: string) => {
       const segments: Array<{ text: string; isBold: boolean }> = [];
+      
+      // Check if text contains any bold markers
+      if (!inputText.includes('**')) {
+        // No bold formatting - return entire text as one segment
+        return [{ text: inputText, isBold: false }];
+      }
+      
       const parts = inputText.split(/(\*\*.*?\*\*)/);
       
       parts.forEach(part => {
@@ -693,8 +802,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             words.push({ text: ' ', isBold: segment.isBold });
           }
         });
-        // Add space between segments if there are more segments
-        if (lineSegments.indexOf(segment) < lineSegments.length - 1) {
+        // Only add space between segments if there are multiple segments AND the current segment isn't empty
+        if (lineSegments.length > 1 && lineSegments.indexOf(segment) < lineSegments.length - 1 && segment.text.trim()) {
           words.push({ text: ' ', isBold: segment.isBold });
         }
       });
@@ -720,7 +829,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     });
     
     // Draw text with formatting
-    ctx.textAlign = 'left';
+    // Note: textAlign is set by the caller, don't override it here
     ctx.fillStyle = '#7C2D12'; // Dark amber text to match chord names
     
     finalLines.forEach((line, lineIndex) => {
@@ -728,16 +837,29 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       const lineY = y + (lineIndex * lineHeight);
       
-      // Use left alignment - start at x position
-      let currentX = x;
+      // Calculate the LEFT starting x position for this line
+      const previousAlign = ctx.textAlign;
+      let startX: number;
+      if (previousAlign === 'center') {
+        const totalWidth = measureSegments(line);
+        startX = x - totalWidth / 2;
+      } else if (previousAlign === 'right' || previousAlign === 'end') {
+        const totalWidth = measureSegments(line);
+        startX = x - totalWidth;
+      } else {
+        startX = x;
+      }
       
-      // Draw each segment with appropriate formatting
+      // Draw each segment with left alignment to avoid per-word centering
+      ctx.textAlign = 'left';
+      let currentX = startX;
       line.forEach(segment => {
         ctx.font = segment.isBold ? boldFont : regularFont;
-        ctx.textAlign = 'left';
         ctx.fillText(segment.text, currentX, lineY);
         currentX += ctx.measureText(segment.text).width;
       });
+      // Restore previous alignment for subsequent callers
+      ctx.textAlign = previousAlign;
     });
     
     return finalLines.length * lineHeight + 20; // Return total height with minimal padding
@@ -847,9 +969,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const customTextHeight = customText.trim() ? 60 : 0; // Reduced space
       const chordLegendHeight = showLegends ? getChordLegendHeight() : 0; // Dynamic legend height
       const strummingLegendHeight = hasAnyStrummingPattern() && showStrummingLegend ? 80 : 0; // Reduced legend space
+      const globalPatternsHeight = globalStrummingPatterns.length > 0 ? (26 + globalStrummingPatterns.length * 76) : 0;
       const brandingHeight = 80; // Reduced branding area
       const paddingHeight = 40; // Reduced padding
-      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + globalPatternsHeight + brandingHeight + paddingHeight;
       
       // Apply aspect ratio
       if (aspectRatio === 'portrait') {
@@ -865,7 +988,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           canvasHeight = Math.ceil((canvasWidth * 3) / 2);
         } else {
           // Non-strict: minimum 2:3
-          canvasHeight = Math.max(canvasHeight, (canvasWidth * 3) / 2);
+        canvasHeight = Math.max(canvasHeight, (canvasWidth * 3) / 2);
         }
       } else {
         // Square: 1:1 ratio
@@ -902,9 +1025,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const customTextHeight = customText.trim() ? 40 : 0; // Reduced estimate for clean text
       const chordLegendHeight = showLegends ? getChordLegendHeight() : 0; // Dynamic legend height
       const strummingLegendHeight = hasAnyStrummingPattern() && showStrummingLegend ? 80 : 0; // Reduced legend space
+      const globalPatternsHeight = globalStrummingPatterns.length > 0 ? (26 + globalStrummingPatterns.length * 76) : 0;
       const brandingHeight = 80; // Reduced branding area
       const paddingHeight = 40; // Reduced padding
-      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + brandingHeight + paddingHeight;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + chordLegendHeight + strummingLegendHeight + globalPatternsHeight + brandingHeight + paddingHeight;
       
       // Apply aspect ratio
       if (aspectRatio === 'portrait') {
@@ -958,7 +1082,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       let currentSubRowY = diagramsStartY;
       
       compareRows.forEach((row, rowIndex) => {
-        const rowLift = rowIndex === 0 ? -40 : rowIndex === 1 ? -20 : 0;
+        const rowLift = (rowIndex === 0 ? -40 : rowIndex === 1 ? -20 : 0) + (compareRowOffsets[rowIndex] ?? 0);
         // If this is the third row, add a small downward offset to avoid overlap with previous row
         if (rowIndex === 2) {
           currentSubRowY += 30;
@@ -1035,10 +1159,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             const firstWidth = 4 * small + 3 * spacing;
             const firstStartX = (canvasWidth - firstWidth) / 2;
             for (let chordIndex = 0; chordIndex < 4; chordIndex++) {
-              const chord = row.chords[chordIndex];
+            const chord = row.chords[chordIndex];
               const x = firstStartX + chordIndex * (small + spacing);
               const y = currentSubRowY + rowLift;
-              if (chord) {
+            if (chord) {
                 drawChordDiagram(ctx, chord, x, y, small);
                 if (chord.strummingPattern) drawStrummingPattern(ctx, chord.strummingPattern, x, y, small, !!chord.showFiveFrets);
               } else {
@@ -1060,7 +1184,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
               if (chord) {
                 drawChordDiagram(ctx, chord, x, y, smallSecond);
                 if (chord.strummingPattern) drawStrummingPattern(ctx, chord.strummingPattern, x, y, smallSecond, !!chord.showFiveFrets);
-              } else {
+            } else {
                 drawEmptyDiagram(ctx, x, y, smallSecond, `Chord ${chordIndex + 1}`);
               }
             }
@@ -1109,31 +1233,90 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const rightColumnX = canvasWidth / 2 + 40; // Start further right of center
       const rightColumnWidth = (canvasWidth / 2) - 100; // Smaller right column
       
-      // Draw legends in left column
+      // Draw legends in left column or side by side
       let currentY = textAreaY;
       
-      // Draw a visual boundary line for debugging (temporary)
-      ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(canvasWidth / 2, textAreaY - 20);
-      ctx.lineTo(canvasWidth / 2, textAreaY + 200);
-      ctx.stroke();
+      // Removed old debug boundary line
       
       // Draw legends if enabled
       if (showLegends && hasAnyChords()) {
-        const legendHeight = drawChordLegend(ctx, leftColumnX, currentY, leftColumnWidth, true);
+        const isCentered = legendsSideBySide || centerLegendText;
+        const legendX = centerLegendText && !legendsSideBySide
+          ? canvasWidth / 2
+          : legendsSideBySide
+            ? leftColumnX + leftColumnWidth / 2
+            : leftColumnX;
+        const legendWidth = centerLegendText && !legendsSideBySide
+          ? Math.floor(canvasWidth * 0.8)
+          : leftColumnWidth;
+        const legendHeight = drawChordLegend(
+          ctx,
+          legendX,
+          currentY + legendOffset,
+          legendWidth,
+          true,
+          isCentered ? 'center' : 'left'
+        );
         currentY += legendHeight; // Remove extra gap before strumming legend
       }
       
-      // Draw strumming legend below chord legend if any pattern exists
-      if (showLegends && showStrummingLegend && hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, leftColumnX, currentY, customStrummingLegendText, leftColumnWidth, true);
+      // Draw strumming legend - either below chord legend or to the right
+      if (showLegends && showStrummingLegend && (hasAnyStrummingPattern() || globalStrummingPatterns.length > 0)) {
+        if (legendsSideBySide) {
+          // Draw strumming legend to the right of chord legend
+          drawStrummingLegend(
+            ctx,
+            rightColumnX + rightColumnWidth / 2,
+            textAreaY + legendOffset,
+            customStrummingLegendText,
+            rightColumnWidth,
+            true,
+            'center'
+          );
+          // Keep currentY at the same level since legends are side by side
+        } else {
+          // Draw strumming legend below chord legend
+          const isCentered = centerLegendText;
+          const legendX = isCentered ? canvasWidth / 2 : leftColumnX;
+          const legendWidth = isCentered ? Math.floor(canvasWidth * 0.8) : leftColumnWidth;
+          drawStrummingLegend(
+            ctx,
+            legendX,
+            currentY + legendOffset,
+            customStrummingLegendText,
+            legendWidth,
+            true,
+            isCentered ? 'center' : 'left'
+          );
+          currentY += 70; // reserve space below legend
+        }
+      }
+
+      // Draw global strumming patterns section (compare mode)
+      if (globalStrummingPatterns.length > 0) {
+        // Add extra spacing between legend and global patterns to prevent overlap
+        currentY += 80; // Increased from 40 to 80 to prevent overlap
+        const used = drawGlobalStrummingPatterns(
+          ctx,
+          leftColumnX,
+          currentY + globalPatternsOffset,
+          canvasWidth - leftColumnX * 2 // allow patterns to span much wider for readability
+        );
+        currentY += used;
       }
       
-      // Draw custom text in right column
+      // Draw custom text: always center it for better layout
       if (customText.trim()) {
-        drawCustomText(ctx, customText, rightColumnX, textAreaY, rightColumnWidth, 27);
+        ctx.textAlign = 'center';
+        drawCustomText(
+          ctx,
+          customText,
+          canvasWidth / 2,
+          currentY + 6 + customTextOffset,
+          Math.floor(canvasWidth * 0.8),
+          27
+        );
+        ctx.textAlign = 'left';
       }
     } else {
       // Normal mode: Draw chord progression with arrow notation
@@ -1212,7 +1395,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       rowLayouts.forEach((rowCount, rowIndex) => {
         const rowWidth = rowCount * diagramSize + (rowCount - 1) * spacing;
         const rowStartX = (canvasWidth - rowWidth) / 2;
-        const rowY = diagramsStartY + rowIndex * (diagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 60 : 40)); // More spacing in portrait
+        const baseRowY = diagramsStartY + rowIndex * (diagramSize + (aspectRatio === 'portrait' ? 100 : 80) + (aspectRatio === 'portrait' ? 60 : 40)); // More spacing in portrait
+        const rowY = baseRowY + (normalRowOffsets[rowIndex] ?? 0);
         
         for (let col = 0; col < rowCount && currentIndex < chords.length; col++) {
           const chord = chords[currentIndex];
@@ -1242,29 +1426,89 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const rightColumnX = canvasWidth / 2 + 40; // Start further right of center
       const rightColumnWidth = (canvasWidth / 2) - 100; // Smaller right column
       
-      // Draw legends in left column
+      // Draw legends in left column or side by side
       let currentY = textAreaY;
       
-      // Draw a visual boundary line for debugging (temporary)
-      ctx.strokeStyle = 'rgba(139, 69, 19, 0.4)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(canvasWidth / 2, textAreaY - 20);
-      ctx.lineTo(canvasWidth / 2, textAreaY + 200);
-      ctx.stroke();
+      // Removed old debug boundary line
       
       if (hasAnyChords()) {
-        const legendHeight = drawChordLegend(ctx, leftColumnX, currentY, leftColumnWidth);
+        const isCentered = legendsSideBySide || centerLegendText;
+        const legendX = centerLegendText && !legendsSideBySide
+          ? canvasWidth / 2
+          : legendsSideBySide
+            ? leftColumnX + leftColumnWidth / 2
+            : leftColumnX;
+        const legendWidth = centerLegendText && !legendsSideBySide
+          ? Math.floor(canvasWidth * 0.8)
+          : leftColumnWidth;
+        const legendHeight = drawChordLegend(
+          ctx,
+          legendX,
+          currentY + legendOffset,
+          legendWidth,
+          false,
+          isCentered ? 'center' : 'left'
+        );
         currentY += legendHeight; // Remove extra gap before strumming legend
       }
       
-      if (hasAnyStrummingPattern()) {
-        drawStrummingLegend(ctx, leftColumnX, currentY, customStrummingLegendText, leftColumnWidth);
+      // Draw strumming legend - either below chord legend or to the right
+      if (hasAnyStrummingPattern() || globalStrummingPatterns.length > 0) {
+        if (legendsSideBySide) {
+          // Draw strumming legend to the right of chord legend
+          drawStrummingLegend(
+            ctx,
+            rightColumnX + rightColumnWidth / 2,
+            textAreaY + legendOffset,
+            customStrummingLegendText,
+            rightColumnWidth,
+            undefined,
+            'center'
+          );
+          // Keep currentY at the same level since legends are side by side
+        } else {
+          // Draw strumming legend below chord legend
+          const isCentered = centerLegendText;
+          const legendX = isCentered ? canvasWidth / 2 : leftColumnX;
+          const legendWidth = isCentered ? Math.floor(canvasWidth * 0.8) : leftColumnWidth;
+          drawStrummingLegend(
+            ctx,
+            legendX,
+            currentY + legendOffset,
+            customStrummingLegendText,
+            legendWidth,
+            undefined,
+            isCentered ? 'center' : 'left'
+          );
+          currentY += 70; // reserve space below legend
+        }
+      }
+
+      // Draw global strumming patterns section (renders to PNG)
+      if (globalStrummingPatterns.length > 0) {
+        // Add extra spacing between legend and global patterns to prevent overlap
+        currentY += 80; // Increased from 40 to 80 to prevent overlap
+        const used = drawGlobalStrummingPatterns(
+          ctx,
+          leftColumnX,
+          currentY + globalPatternsOffset,
+          canvasWidth - leftColumnX * 2
+        );
+        currentY += used;
       }
       
-      // Draw custom text in right column
+      // Draw custom text: always center it for better layout
       if (customText.trim()) {
-        drawCustomText(ctx, customText, rightColumnX, textAreaY, rightColumnWidth, 27);
+        ctx.textAlign = 'center';
+        drawCustomText(
+          ctx,
+          customText,
+          canvasWidth / 2,
+          currentY + 6 + customTextOffset,
+          Math.floor(canvasWidth * 0.8),
+          27
+        );
+        ctx.textAlign = 'left';
       }
     }
 
@@ -1272,11 +1516,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const drawBranding = (x: number, y: number, align: CanvasTextAlign) => {
       ctx.font = 'bold italic 22px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = align;
-      ctx.fillStyle = 'white';
+    ctx.fillStyle = 'white';
       ctx.fillText('Mike Nelson Guitar Lessons', x, y);
       ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = align;
-      ctx.fillStyle = '#FEF3C7';
+    ctx.fillStyle = '#FEF3C7';
       ctx.fillText('mikenelsonguitarlessons.co.nz', x, y + 25);
     };
 
@@ -1290,8 +1534,18 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       // Footer position (left or right)
       // Move footer branding up 2px
       const footerY = canvasHeight - 50;
-      const brandX = brandAlignRight ? canvasWidth - 60 : 60;
-      const textAlign: CanvasTextAlign = brandAlignRight ? 'right' : 'left';
+      let brandX: number;
+      let textAlign: CanvasTextAlign;
+      if (brandAlign === 'center') {
+        brandX = canvasWidth / 2;
+        textAlign = 'center';
+      } else if (brandAlign === 'right') {
+        brandX = canvasWidth - 60;
+        textAlign = 'right';
+      } else {
+        brandX = 60;
+        textAlign = 'left';
+      }
       drawBranding(brandX, footerY, textAlign);
     }
 
@@ -1467,10 +1721,109 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         const cellX = patternStartX + i * cellWidth;
         const strumY = patternStartY + 32;
         const usePluck = (pattern.symbolSet === 'pluck') || pluckMode;
-        const symbol = usePluck ? (beat === 'D' ? 'P' : beat === 'U' ? 'X' : beat) : beat;
+        const symbol = usePluck ? (beat === 'D' ? 'P' : beat === 'U' ? 'X' : beat) : (beat === 'X' ? 'X' : beat);
         ctx.fillText(symbol, cellX + cellWidth / 2, strumY);
       }
     }
+  };
+
+  // Draw a standalone 1-bar strumming pattern (no diagram context)
+  const drawStandaloneStrummingPattern = (
+    ctx: CanvasRenderingContext2D,
+    pattern: { beats: Array<'D' | 'U' | 'X' | null>; symbolSet?: 'strum' | 'pluck' },
+    x: number,
+    y: number,
+    maxWidth: number
+  ): number => {
+    if (!pattern || !pattern.beats?.some(b => b !== null)) {
+      return 0;
+    }
+    const patternHeight = 68;
+    const labelRowHeight = 26;
+    // Render full bar in 16th-note resolution: 1 e & a 2 e & a 3 e & a 4 e & a
+    const beatLabels = ['1', 'e', '&', 'a', '2', 'e', '&', 'a', '3', 'e', '&', 'a', '4', 'e', '&', 'a'];
+    const visibleBeats = (pattern.beats || []).slice(0, 16);
+    const visibleLabels = beatLabels;
+    const cellWidth = Math.min(maxWidth / visibleBeats.length, 42);
+    const totalWidth = cellWidth * visibleBeats.length;
+    const patternStartX = x + Math.max(0, (maxWidth - totalWidth) / 2);
+    const patternStartY = y;
+
+    // Border
+    ctx.strokeStyle = '#92400E';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
+
+    // Labels row (16th labels)
+    ctx.font = `bold ${scaleSize(18)}px "Poppins", sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#7C2D12';
+    for (let i = 0; i < visibleLabels.length; i++) {
+      const cellX = patternStartX + i * cellWidth;
+      const labelY = patternStartY + labelRowHeight / 2;
+      if (i > 0) {
+        ctx.beginPath();
+        ctx.moveTo(cellX, patternStartY);
+        ctx.lineTo(cellX, patternStartY + patternHeight);
+        ctx.stroke();
+      }
+      ctx.fillText(visibleLabels[i], cellX + cellWidth / 2, labelY);
+    }
+
+    // Separator
+    ctx.beginPath();
+    ctx.moveTo(patternStartX, patternStartY + labelRowHeight);
+    ctx.lineTo(patternStartX + totalWidth, patternStartY + labelRowHeight);
+    ctx.stroke();
+
+    // Strums
+    ctx.font = `bold ${scaleSize(24)}px "Poppins", sans-serif`;
+    ctx.fillStyle = '#FEF3C7';
+    for (let i = 0; i < visibleBeats.length; i++) {
+      const beat = visibleBeats[i];
+      if (beat) {
+        const cellX = patternStartX + i * cellWidth;
+        const strumY = patternStartY + labelRowHeight + (patternHeight - labelRowHeight) / 2;
+        const usePluck = (pattern.symbolSet === 'pluck') || pluckMode;
+        const symbol = usePluck ? (beat === 'D' ? 'P' : beat === 'U' ? 'X' : beat) : (beat === 'X' ? 'X' : beat);
+        ctx.fillText(symbol, cellX + cellWidth / 2, strumY);
+      }
+    }
+    ctx.textBaseline = 'alphabetic';
+    return patternHeight + 12;
+  };
+
+  // Draw all global strumming patterns and return total height used
+  const drawGlobalStrummingPatterns = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    startY: number,
+    maxWidth: number
+  ): number => {
+    if (!globalStrummingPatterns.length) return 0;
+    let used = 0;
+    // Skip section title per request
+    globalStrummingPatterns.forEach((p, idx) => {
+      // Name centered
+      ctx.fillStyle = '#FEF3C7';
+      ctx.font = `bold ${scaleSize(22)}px "Poppins", sans-serif`;
+      ctx.textAlign = 'center';
+      // Remove numeric prefix from pattern names per request
+      ctx.fillText(`${p.name}`.replace(/^\s*\d+\.?\s*/, ''), x + maxWidth / 2, startY + used + 18);
+      used += 26;
+      // Pattern grid centered and scaled 1.5x via wider cell width
+      const usedHeight = drawStandaloneStrummingPattern(
+        ctx,
+        p,
+        x,
+        startY + used,
+        maxWidth
+      );
+      used += usedHeight;
+      used += 10;
+    });
+    return used;
   };
 
   // Draw chord diagram on canvas
@@ -1662,6 +2015,30 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             Reset
           </button>
         </div>
+        {/* Independent vertical position controls */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-300 w-40">Legends position:</span>
+            <button onClick={() => setLegendOffset(v => v - 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+            <span className="w-16 text-center text-gray-200">{legendOffset}px</span>
+            <button onClick={() => setLegendOffset(v => v + 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+            <button onClick={() => setLegendOffset(0)} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-300 w-40">Global patterns position:</span>
+            <button onClick={() => setGlobalPatternsOffset(v => v - 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+            <span className="w-16 text-center text-gray-200">{globalPatternsOffset}px</span>
+            <button onClick={() => setGlobalPatternsOffset(v => v + 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+            <button onClick={() => setGlobalPatternsOffset(0)} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-300 w-40">Custom text position:</span>
+            <button onClick={() => setCustomTextOffset(v => v - 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+            <span className="w-16 text-center text-gray-200">{customTextOffset}px</span>
+            <button onClick={() => setCustomTextOffset(v => v + 10)} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+            <button onClick={() => setCustomTextOffset(0)} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+          </div>
+        </div>
         {/* Pluck mode toggle */}
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2">
@@ -1671,10 +2048,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         </div>
         {/* Branding alignment */}
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={brandAlignRight} onChange={(e) => setBrandAlignRight(e.target.checked)} />
-            <span className="text-sm">Align branding (logo + URL) to right</span>
-          </label>
+          <div className="flex items-center gap-2">
+            <span className="text-sm">Branding alignment:</span>
+            <div className="inline-flex bg-gray-700 rounded overflow-hidden">
+              {(['left','center','right'] as const).map(opt => (
+                <button
+                  key={opt}
+                  onClick={() => setBrandAlign(opt)}
+                  className={`px-3 py-1 ${brandAlign === opt ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </div>
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={brandUnderTitle} onChange={(e) => setBrandUnderTitle(e.target.checked)} />
             <span className="text-sm">Place branding under title</span>
@@ -1691,12 +2078,24 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             <span className="text-sm">Show strumming legend</span>
           </label>
           <label className="flex items-center gap-2">
+            <input type="checkbox" checked={centerLegendText} onChange={(e) => setCenterLegendText(e.target.checked)} />
+            <span className="text-sm">Center legend text</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={legendsSideBySide}
+              onChange={(e) => setLegendsSideBySide(e.target.checked)}
+            />
+            <span className="text-sm">Place strumming legend to right of chord legend</span>
+          </label>
+          <label className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={!showStrumDirections}
               onChange={(e) => setShowStrumDirections(!e.target.checked)}
             />
-            <span className="text-sm">Hide D/U directions line</span>
+            <span className="text-sm">Hide D/U directions line (legacy - use legend text editor above)</span>
           </label>
         </div>
         <div>
@@ -1724,14 +2123,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
             placeholder="Add descriptive text to your chord progression (e.g., 'A gentle progression perfect for ballads'). Use **text** for bold."
             rows={3}
-            maxLength={500}
+            maxLength={600}
           />
           <div className="flex justify-between items-center mt-1">
             <span className="text-xs text-gray-500">
               Appears below the chord diagrams in exported image. Use **bold** for emphasis.
             </span>
-            <span className={`text-xs ${customText.length > 450 ? 'text-amber-400' : 'text-gray-500'}`}>
-              {customText.length}/500
+            <span className={`text-xs ${customText.length > 540 ? 'text-amber-400' : 'text-gray-500'}`}>
+              {customText.length}/600
             </span>
           </div>
         </div>
@@ -1774,6 +2173,35 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                 </button>
               ))}
             </div>
+            {/* Manual row offset controls (normal mode) */}
+            <div className="mt-2 space-y-2">
+              {(() => {
+                const layouts = (() => {
+                  switch (gridSize) {
+                    case 2: return [2];
+                    case 3: return [3];
+                    case 4: return [4];
+                    case 5: return [3, 2];
+                    case 6: return [3, 3];
+                    case 7: return [4, 3];
+                    case 8: return [4, 4];
+                    case 9: return [3, 3, 3];
+                    case 10: return [4, 3, 3];
+                    default: return [4];
+                  }
+                })();
+                const rows = layouts.length;
+                return Array.from({ length: rows }).map((_, i) => (
+                  <div key={`norm-off-${i}`} className="flex items-center gap-2">
+                    <span className="text-sm text-gray-300 w-40">Row {i + 1} offset:</span>
+                    <button onClick={() => setNormalRowOffsets(v => ({...v, [i]: (v[i] ?? 0) - 10}))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+                    <span className="w-16 text-center text-gray-200">{(normalRowOffsets[i] ?? 0)}px</span>
+                    <button onClick={() => setNormalRowOffsets(v => ({...v, [i]: (v[i] ?? 0) + 10}))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+                    <button onClick={() => setNormalRowOffsets(v => ({...v, [i]: 0}))} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+                  </div>
+                ));
+              })()}
+            </div>
           </div>
         )}
         
@@ -1791,8 +2219,71 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                 Add Row
               </button>
             </div>
+            {/* Manual row offset controls (compare mode) */}
+            <div className="mt-2 space-y-2">
+              {compareRows.map((_, i) => (
+                <div key={`cmp-off-${i}`} className="flex items-center gap-2">
+                  <span className="text-sm text-gray-300 w-40">Row {i + 1} offset:</span>
+                  <button onClick={() => setCompareRowOffsets(v => ({...v, [i]: (v[i] ?? 0) - 10}))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+                  <span className="w-16 text-center text-gray-200">{(compareRowOffsets[i] ?? 0)}px</span>
+                  <button onClick={() => setCompareRowOffsets(v => ({...v, [i]: (v[i] ?? 0) + 10}))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+                  <button onClick={() => setCompareRowOffsets(v => ({...v, [i]: 0}))} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+                </div>
+              ))}
+            </div>
           </div>
         )}
+      </div>
+
+      {/* Global Strumming Patterns (1 bar) */}
+      <div className="mb-8 bg-gray-800 border border-gray-700 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xl font-semibold">Global Strumming Patterns (1 bar, 16th notes)</h2>
+          <button onClick={addGlobalPattern} className="px-3 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white">Add Pattern</button>
+        </div>
+        {globalStrummingPatterns.length === 0 && (
+          <p className="text-sm text-gray-400">No patterns yet. Click "Add Pattern" to create one.</p>
+        )}
+        <div className="space-y-4">
+          {globalStrummingPatterns.map((patt) => (
+            <div key={patt.id} className="bg-gray-900 rounded-lg p-3 border border-gray-700">
+              <div className="flex items-center gap-3 mb-2">
+                <input
+                  value={patt.name}
+                  onChange={(e) => updateGlobalPatternName(patt.id, e.target.value)}
+                  className="px-2 py-1 bg-gray-800 border border-gray-600 rounded text-sm"
+                />
+                <div className="ml-auto flex items-center gap-2">
+                  <button onClick={() => duplicateGlobalPattern(patt.id)} className="px-2 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600">Duplicate</button>
+                  <button onClick={() => clearGlobalPattern(patt.id)} className="px-2 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600">Clear</button>
+                  <button onClick={() => removeGlobalPattern(patt.id)} className="px-2 py-1 text-xs rounded bg-red-700 hover:bg-red-600">Remove</button>
+                </div>
+              </div>
+              {/* 16-step grid */}
+              <div className="flex items-stretch border border-amber-700 rounded overflow-hidden">
+                {Array.from({ length: 16 }).map((_, i) => {
+                  const isBeat = i % 4 === 0; // main beats at 0,4,8,12
+                  const beatNumber = Math.floor(i / 4) + 1; // 1..4
+                  const sub = i % 4;
+                  const label = sub === 0 ? String(beatNumber) : sub === 1 ? 'e' : sub === 2 ? '&' : 'a';
+                  const active = patt.beats[i];
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => toggleGlobalPatternBeat(patt.id, i)}
+                      className={`flex flex-col items-center justify-center w-8 sm:w-9 md:w-10 py-2 border-l border-amber-700 ${i===0?'border-l-0':''} ${active ? 'bg-amber-800 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+                      title={`Step ${i+1}`}
+                    >
+                      <span className={`text-[10px] ${isBeat ? 'font-bold text-amber-300' : 'text-gray-400'}`}>{label}</span>
+                      <span className="text-xs leading-none mt-1">{active ?? ''}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Click to cycle: empty → D → U → X (muted) → empty. Labels show 16th subdivision (1 e & a).</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Compare Mode UI */}
@@ -2227,29 +2718,63 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         dangerouslySetInnerHTML={{ __html: `window.__MNGL_PLUCK_MODE__ = ${pluckMode ? 'true' : 'false'};` }}
       />
 
+      {/* Custom Chord Legend Text */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-2">
+          <span className="flex items-center gap-2">
+            <span>Chord Legend Text</span>
+            <span className="text-amber-400 text-xs">(optional)</span>
+          </span>
+        </label>
+        <textarea
+          value={customChordLegendText}
+          onChange={(e) => setCustomChordLegendText(e.target.value)}
+          className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
+          placeholder="● = Finger numbers (1,2,3,4) • O = Open string • X = Unplayed or muted string"
+          rows={3}
+          maxLength={200}
+        />
+        <div className="flex justify-between items-center mt-1">
+          <span className="text-xs text-gray-500">
+            Custom text for chord diagram legend. Use line breaks for multiple lines. Leave empty for default.
+          </span>
+          <span className={`text-xs ${customChordLegendText.length > 160 ? 'text-amber-400' : 'text-gray-500'}`}>
+            {customChordLegendText.length}/200
+          </span>
+        </div>
+      </div>
+
       {/* Custom Strumming Legend Text */}
       <div>
         <label className="block text-sm font-medium mb-2">
           <span className="flex items-center gap-2">
             <span>Strumming Legend Text</span>
-            <span className="text-amber-400 text-xs">(optional)</span>
+            <span className="text-amber-400 text-xs">(complete legend)</span>
           </span>
         </label>
-        <input
-          type="text"
+        <textarea
           value={customStrummingLegendText}
           onChange={(e) => setCustomStrummingLegendText(e.target.value)}
-          className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
-          placeholder="Chords marked as 2 bars use strumming pattern twice"
-          maxLength={100}
+          className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors resize-none"
+          placeholder="Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing"
+          rows={5}
+          maxLength={300}
         />
         <div className="flex justify-between items-center mt-1">
           <span className="text-xs text-gray-500">
-            Additional text for strumming pattern legend. Leave empty to hide.
+            Complete text for strumming pattern legend. Use line breaks for multiple lines. Edit to customize the entire legend.
           </span>
-          <span className={`text-xs ${customStrummingLegendText.length > 80 ? 'text-amber-400' : 'text-gray-500'}`}>
-            {customStrummingLegendText.length}/100
+          <span className={`text-xs ${customStrummingLegendText.length > 240 ? 'text-amber-400' : 'text-gray-500'}`}>
+            {customStrummingLegendText.length}/300
           </span>
+        </div>
+        <div className="mt-2">
+          <button
+            onClick={() => setCustomStrummingLegendText('Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing')}
+            className="px-3 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600 text-gray-300"
+          >
+            Reset to Default Legend
+          </button>
         </div>
       </div>
     </div>
@@ -2487,7 +3012,7 @@ const ChordEditor: React.FC<{
           <div className="text-sm font-medium mb-2">Click to place fingers, click above strings to set Open(O)/Muted(X):</div>
           <div className="bg-gray-900 p-4 rounded">
       <svg width="240" height="170" viewBox="0 0 240 170" className="mx-auto">
-        {/* String state buttons */}
+              {/* String state buttons */}
               {Array.from({ length: 6 }, (_, i) => {
                 const string = i + 1;
                 const x = 30 + i * 30;
@@ -2521,7 +3046,7 @@ const ChordEditor: React.FC<{
                 );
               })}
               
-        {/* Fret lines */}
+              {/* Fret lines */}
         {Array.from({ length: (editChord.showFiveFrets ? 6 : 5) }, (_, i) => (
                 <line
                   key={`fret-${i}`}
@@ -2535,12 +3060,12 @@ const ChordEditor: React.FC<{
               ))}
               
               {/* String lines */}
-        {Array.from({ length: 6 }, (_, i) => (
+              {Array.from({ length: 6 }, (_, i) => (
                 <line
                   key={`string-${i}`}
                   x1={30 + i * 30}
                   y1="50"
-            x2={30 + i * 30}
+                  x2={30 + i * 30}
             y2={50 + (editChord.showFiveFrets ? 5 : 4) * 20}
                   stroke="#666"
                   strokeWidth="1"
@@ -2565,7 +3090,7 @@ const ChordEditor: React.FC<{
                 </text>
               )}
               
-        {/* Clickable fret areas */}
+              {/* Clickable fret areas */}
         {Array.from({ length: (editChord.showFiveFrets ? 5 : 4) }, (_, fret) =>
                 Array.from({ length: 6 }, (_, string) => (
                   <rect
@@ -2703,7 +3228,7 @@ const StrummingPatternEditor: React.FC<{
     setIsPluckMode((window as any).__MNGL_PLUCK_MODE__ ?? false);
   }, []);
   const [editPattern, setEditPattern] = useState<{
-    beats: Array<'D' | 'U' | null>;
+    beats: Array<'D' | 'U' | 'X' | null>;
     displayMode: 'full' | 'beats-1-2' | 'beats-3-4' | 'custom' | 'full-bar';
     customRange?: { start: number; end: number }; // e.g., { start: 0, end: 3 } for beats 1-1.5
     symbolSet: 'strum' | 'pluck';
@@ -2738,8 +3263,11 @@ const StrummingPatternEditor: React.FC<{
     } else if (currentBeat === defaultStroke) {
       // 2nd click: Toggle to opposite stroke
       newBeats[index] = oppositeStroke;
+    } else if (currentBeat === oppositeStroke) {
+      // 3rd click: Set to muted (X)
+      newBeats[index] = 'X';
     } else {
-      // 3rd click: Remove stroke (back to null)
+      // 4th click: Remove stroke (back to null)
       newBeats[index] = null;
     }
     
@@ -2886,7 +3414,7 @@ const StrummingPatternEditor: React.FC<{
           </div>
           
           <p className="text-xs text-gray-400 mt-2">
-            Click beats: 1st = Default pattern, 2nd = Toggle D↔U, 3rd = Remove stroke
+            Click beats: 1st = Default pattern, 2nd = Toggle D↔U, 3rd = Muted (X), 4th = Remove stroke
           </p>
           
           {/* D/U Toggle Button */}
