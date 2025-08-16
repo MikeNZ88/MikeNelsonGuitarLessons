@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState, useRef } from 'react';
+import CarouselMode, { CarouselSlide } from './CarouselMode';
+import { amberDarkTheme, plainLightTheme, darkTheme, cardAmberTheme, IChordRenderTheme } from '@/theme/chordRenderTheme';
 
 interface ChordData {
   name: string;
@@ -39,6 +41,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   // Clipboard for copy/paste of full chords
   const [copiedChord, setCopiedChord] = useState<ChordData | null>(null);
   const [compareMode, setCompareMode] = useState(false);
+  const [carouselMode, setCarouselMode] = useState(false);
   // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
   const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing');
@@ -52,6 +55,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [strictPortrait, setStrictPortrait] = useState<boolean>(false); // Enforce exact 2:3 by padding height
   const [adaptivePortrait, setAdaptivePortrait] = useState<boolean>(false); // Enforce exact 2:3 by expanding (or scaling) width
   const [pluckMode, setPluckMode] = useState<boolean>(false); // When on, show P/X instead of D/U
+  const [showNoteNames, setShowNoteNames] = useState<boolean>(false); // Show note names on dots instead of finger numbers
   const [compareSubtitles, setCompareSubtitles] = useState<{[rowIndex: number]: string[]}>({
     0: ['', '', '', ''],
     1: ['', '', '', '']
@@ -68,6 +72,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [normalRowOffsets, setNormalRowOffsets] = useState<{[rowIndex: number]: number}>({});
   const [compareRowOffsets, setCompareRowOffsets] = useState<{[rowIndex: number]: number}>({});
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [theme, setTheme] = useState<IChordRenderTheme>(amberDarkTheme);
+  const THEME = theme;
 
   // Global strumming patterns (separate section)
   const [globalStrummingPatterns, setGlobalStrummingPatterns] = useState<GlobalStrumPattern[]>([]);
@@ -106,6 +112,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   type BrandAlign = 'left' | 'center' | 'right';
   const [brandAlign, setBrandAlign] = useState<BrandAlign>('left');
   const [brandUnderTitle, setBrandUnderTitle] = useState<boolean>(false);
+  // Carousel slides state
+  const [carouselSlides, setCarouselSlides] = useState<CarouselSlide[]>([]);
+  const [carouselTitle, setCarouselTitle] = useState<string>("");
 
   // Initialize empty chord
   const createEmptyChord = (): ChordData => ({
@@ -280,6 +289,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       normalRowOffsets,
       compareRowOffsets,
       brandAlign,
+      showNoteNames,
+      carouselTitle,
+      carouselSlides,
       savedAt: new Date().toISOString()
     };
     
@@ -363,6 +375,9 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.normalRowOffsets) setNormalRowOffsets(progressionData.normalRowOffsets);
           if (progressionData.compareRowOffsets) setCompareRowOffsets(progressionData.compareRowOffsets);
           if (progressionData.brandAlign) setBrandAlign(progressionData.brandAlign);
+          if (progressionData.carouselSlides) setCarouselSlides(progressionData.carouselSlides);
+          if (progressionData.showNoteNames !== undefined) setShowNoteNames(progressionData.showNoteNames);
+          if (progressionData.carouselTitle !== undefined) setCarouselTitle(progressionData.carouselTitle);
           
           // Update chord array size if needed
           const newSize = progressionData.gridSize;
@@ -562,7 +577,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const lineSpacing = Math.round(fontSize * 1.33);
     
     ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
-    ctx.fillStyle = '#7C2D12'; // Dark amber
+    ctx.fillStyle = THEME.colors.chordName; // Dark amber
     ctx.textAlign = align;
     
     // Check if progression uses thumb (T finger)
@@ -670,7 +685,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const fontSize = scaleSize(bumpedLegend2);
     const lineSpacing = Math.round(fontSize * 1.33);
     
-    ctx.fillStyle = '#92400E';
+    ctx.fillStyle = THEME.colors.gridStroke;
     ctx.textAlign = align;
     
     // Use custom legend text (now contains complete legend)
@@ -830,7 +845,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     // Draw text with formatting
     // Note: textAlign is set by the caller, don't override it here
-    ctx.fillStyle = '#7C2D12'; // Dark amber text to match chord names
+    ctx.fillStyle = THEME.colors.chordName; // Dark amber text to match chord names
     
     finalLines.forEach((line, lineIndex) => {
       if (line.length === 0) return; // Skip empty lines
@@ -1045,8 +1060,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-    gradient.addColorStop(0, '#F59E0B'); // Amber
-    gradient.addColorStop(1, '#D97706'); // Dark amber
+    gradient.addColorStop(0, THEME.background.start); // Amber
+    gradient.addColorStop(1, THEME.background.end); // Dark amber
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
@@ -1059,7 +1074,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Draw title with dynamic sizing to prevent cut-off
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.title;
     
     // Start with base font size and reduce if text is too wide
     let titleFontSize = scaleSize(42);
@@ -1089,7 +1104,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         }
         // Draw row title
         ctx.font = `bold italic ${scaleSize(28)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = '#FEF3C7';
+        ctx.fillStyle = THEME.colors.subtitle;
         ctx.fillText(row.title, canvasWidth / 2, currentSubRowY + rowLift - 45);
         
         // Draw row subtitle if it exists
@@ -1098,7 +1113,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           const filledSubtitle = rowSubtitle.filter(chord => chord.trim() !== '');
           if (filledSubtitle.length > 0) {
             ctx.font = `italic ${scaleSize(20)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-            ctx.fillStyle = '#FEF3C7';
+            ctx.fillStyle = THEME.colors.subtitle;
             const subtitleText = filledSubtitle.join(' → ');
             ctx.fillText(subtitleText, canvasWidth / 2, currentSubRowY + rowLift - 20);
           }
@@ -1323,7 +1338,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const filledChords = chords.filter(chord => chord !== null) as ChordData[];
       if (filledChords.length > 0) {
         ctx.font = 'italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-        ctx.fillStyle = '#FEF3C7';
+        ctx.fillStyle = THEME.colors.subtitle;
         const chordNames = filledChords.map(c => c.name).join(' → ');
         
         // Check if text fits on one line
@@ -1516,11 +1531,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const drawBranding = (x: number, y: number, align: CanvasTextAlign) => {
       ctx.font = 'bold italic 22px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = align;
-    ctx.fillStyle = 'white';
+      ctx.fillStyle = THEME.colors.footerTitle;
       ctx.fillText('Mike Nelson Guitar Lessons', x, y);
       ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = align;
-    ctx.fillStyle = '#FEF3C7';
+      ctx.fillStyle = THEME.colors.footerSubtitle;
       ctx.fillText('mikenelsonguitarlessons.co.nz', x, y + 25);
     };
 
@@ -1680,14 +1695,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const patternStartX = diagramCenterX - totalWidth / 2;
     
     // Draw border around the pattern
-    ctx.strokeStyle = '#92400E';
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 2;
     ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
     
     // Draw beat labels row
     ctx.font = `bold ${scaleSize(12)}px "Poppins", sans-serif`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.chordName;
     
     for (let i = 0; i < visibleLabels.length; i++) {
       const cellX = patternStartX + i * cellWidth;
@@ -1713,7 +1728,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     // Draw strumming row
     ctx.font = `bold ${scaleSize(16)}px "Poppins", sans-serif`;
-    ctx.fillStyle = '#FEF3C7'; // Light amber for strums
+    ctx.fillStyle = THEME.colors.subtitle; // Light amber for strums
     
     for (let i = 0; i < visibleBeats.length; i++) {
       const beat = visibleBeats[i];
@@ -1750,7 +1765,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const patternStartY = y;
 
     // Border
-    ctx.strokeStyle = '#92400E';
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 2;
     ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
 
@@ -1758,7 +1773,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.font = `bold ${scaleSize(18)}px "Poppins", sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.chordName;
     for (let i = 0; i < visibleLabels.length; i++) {
       const cellX = patternStartX + i * cellWidth;
       const labelY = patternStartY + labelRowHeight / 2;
@@ -1779,7 +1794,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Strums
     ctx.font = `bold ${scaleSize(24)}px "Poppins", sans-serif`;
-    ctx.fillStyle = '#FEF3C7';
+    ctx.fillStyle = THEME.colors.subtitle;
     for (let i = 0; i < visibleBeats.length; i++) {
       const beat = visibleBeats[i];
       if (beat) {
@@ -1806,7 +1821,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Skip section title per request
     globalStrummingPatterns.forEach((p, idx) => {
       // Name centered
-      ctx.fillStyle = '#FEF3C7';
+      ctx.fillStyle = THEME.colors.subtitle;
       ctx.font = `bold ${scaleSize(22)}px "Poppins", sans-serif`;
       ctx.textAlign = 'center';
       // Remove numeric prefix from pattern names per request
@@ -1857,7 +1872,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     }
     ctx.textAlign = 'center';
     const diagramCenterX = diagramStartX + (5 * stringSpacing) / 2; // Center of the 6-string diagram
-    ctx.fillStyle = '#7C2D12'; // Same color as finger positions
+    ctx.fillStyle = THEME.colors.chordName; // Same color as finger positions
     ctx.fillText(chord.name, diagramCenterX, y + 20); // Moved higher to avoid overlap with open/muted strings
 
     // Draw fret number (only if greater than 1) to the left of first fret
@@ -1865,17 +1880,17 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       ctx.font = 'italic 22px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = 'right';
       // Draw stroke first (thicker and darker amber)
-      ctx.strokeStyle = '#D97706';
+      ctx.strokeStyle = THEME.colors.accentStroke;
       ctx.lineWidth = 3;
       ctx.strokeText(chord.fretNumber.toString(), diagramStartX - 15, diagramStartY + fretSpacing * 0.5);
       // Draw fill on top
-      ctx.fillStyle = '#7C2D12';
+      ctx.fillStyle = THEME.colors.chordName;
       ctx.fillText(chord.fretNumber.toString(), diagramStartX - 15, diagramStartY + fretSpacing * 0.5);
       ctx.textAlign = 'center'; // Reset text align
     }
 
     // Draw fret lines
-    ctx.strokeStyle = '#92400E';
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 3;
     for (let fret = 0; fret <= fretCount; fret++) {
       const fretY = diagramStartY + fret * fretSpacing;
@@ -1898,7 +1913,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Draw barre lines first (behind finger circles)
     if (globalShowFingering) {
       const barreLines = getBarreLinesForChord(chord);
-      ctx.strokeStyle = '#7C2D12';
+      ctx.strokeStyle = THEME.colors.fingerFill;
       ctx.lineWidth = 8;
       ctx.lineCap = 'round';
       
@@ -1915,7 +1930,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     }
 
     // Draw finger positions
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.fingerFill;
+    // Optional note-name rendering support (EADGBE; 1 = low E)
+    const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    const stringBaseSemitones = [4, 9, 2, 7, 11, 4];
+    const getNoteName = (stringIndex1based: number, absoluteFret: number): string => {
+      const idx = Math.min(6, Math.max(1, stringIndex1based)) - 1;
+      const base = stringBaseSemitones[idx];
+      const note = (base + absoluteFret) % 12;
+      return NOTE_NAMES[note];
+    };
     chord.fingerPositions.forEach(pos => {
       const fingerX = diagramStartX + (pos.string - 1) * stringSpacing;
       const fingerY = diagramStartY + (pos.fret - chord.fretNumber + 0.5) * fretSpacing; // Centered between fret lines
@@ -1924,13 +1948,20 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       ctx.arc(fingerX, fingerY, 12, 0, 2 * Math.PI); // Increased from 8 to 12
       ctx.fill();
       
-      // Draw finger number if fingering is enabled
-      if (globalShowFingering && pos.finger) {
-        ctx.fillStyle = 'white';
+      // Draw label inside dot: note names (if enabled) else finger number (if enabled)
+      if (showNoteNames) {
+        const note = getNoteName(pos.string, pos.fret);
+        ctx.fillStyle = THEME.colors.fingerInnerTextSecondary;
+        ctx.font = 'bold 13px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(note, fingerX, fingerY + 4);
+        ctx.fillStyle = THEME.colors.chordName;
+      } else if (globalShowFingering && pos.finger) {
+        ctx.fillStyle = THEME.colors.fingerInnerTextSecondary;
         ctx.font = 'bold 14px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(pos.finger.toString(), fingerX, fingerY + 4);
-        ctx.fillStyle = '#7C2D12'; // Reset color for next circle
+        ctx.fillStyle = THEME.colors.chordName; // Reset color for next circle
       }
     });
 
@@ -1942,10 +1973,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const stringY = diagramStartY - 15;
       
       if (chord.openStrings.includes(string)) {
-        ctx.fillStyle = '#7C2D12'; // Same color as finger positions
+        ctx.fillStyle = THEME.colors.openMutedText; // Use open/muted color
         ctx.fillText('O', stringX, stringY);
       } else if (chord.mutedStrings.includes(string)) {
-        ctx.fillStyle = '#7F1D1D';
+        ctx.fillStyle = THEME.colors.mutedX;
         ctx.fillText('X', stringX, stringY);
       }
     }
@@ -1959,14 +1990,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const diagramStartY = y + 60;
 
     // Draw placeholder text (centered above the diagram)
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.placeholderText;
     ctx.font = 'italic 24px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'center';
     const diagramCenterX = diagramStartX + (5 * stringSpacing) / 2; // Center of the 6-string diagram
     ctx.fillText(placeholder, diagramCenterX, y + 20); // Moved higher to match chord names
 
     // Draw light fret lines
-    ctx.strokeStyle = '#FEF3C7';
+    ctx.strokeStyle = THEME.colors.subtitle;
     ctx.lineWidth = 1;
     for (let fret = 0; fret <= 4; fret++) {
       const fretY = diagramStartY + fret * fretSpacing;
@@ -2015,6 +2046,36 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             Reset
           </button>
         </div>
+        {/* Theme selector */}
+        <div className="flex items-center gap-3">
+          <span className="text-sm">Theme:</span>
+          <div className="inline-flex bg-gray-700 rounded overflow-hidden">
+            <button
+              onClick={() => setTheme(amberDarkTheme)}
+              className={`px-3 py-1 ${theme === amberDarkTheme ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}
+            >
+              Amber Gradient
+            </button>
+            <button
+              onClick={() => setTheme(plainLightTheme)}
+              className={`px-3 py-1 ${theme === plainLightTheme ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}
+            >
+              Light
+            </button>
+            <button
+              onClick={() => setTheme(cardAmberTheme)}
+              className={`px-3 py-1 ${theme === cardAmberTheme ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}
+            >
+              Card Amber
+            </button>
+            <button
+              onClick={() => setTheme(darkTheme)}
+              className={`px-3 py-1 ${theme === darkTheme ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}
+            >
+              Dark
+            </button>
+          </div>
+        </div>
         {/* Independent vertical position controls */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
@@ -2044,6 +2105,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           <label className="flex items-center gap-2">
             <input type="checkbox" checked={pluckMode} onChange={(e) => setPluckMode(e.target.checked)} />
             <span className="text-sm">Pluck mode (use P/X instead of D/U)</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <input type="checkbox" checked={showNoteNames} onChange={(e) => setShowNoteNames(e.target.checked)} />
+            <span className="text-sm">Show note names on chord diagrams</span>
           </label>
         </div>
         {/* Branding alignment */}
@@ -2147,15 +2212,25 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           >
             {compareMode ? 'Switch to Normal Mode' : 'Switch to Compare Mode'}
           </button>
+          <button
+            onClick={() => { setCarouselMode((v) => !v); if (compareMode) setCompareMode(false); }}
+            className={`ml-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
+              carouselMode 
+                ? 'bg-amber-600 hover:bg-amber-700 text-white' 
+                : 'bg-gray-700 hover:bg-gray-600 text-white'
+            }`}
+          >
+            {carouselMode ? 'Switch to Builder Mode' : 'Switch to Carousel Mode'}
+          </button>
           <p className="text-gray-400 text-sm mt-2">
             {compareMode 
               ? 'Compare mode: Show multiple variations with custom row titles' 
-              : 'Normal mode: Single chord progression with arrows'
+              : (carouselMode ? 'Carousel mode: Create 1:1 slides for social media' : 'Normal mode: Single chord progression with arrows')
             }
           </p>
         </div>
         
-        {!compareMode && (
+        {!compareMode && !carouselMode && (
                   <div>
             <label className="block text-sm font-medium mb-2">Number of Chords (2-10):</label>
             <div className="flex gap-2 flex-wrap">
@@ -2205,7 +2280,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           </div>
         )}
         
-        {compareMode && (
+        {compareMode && !carouselMode && (
           <div>
             <div className="flex justify-between items-center mb-4">
               <div>
@@ -2235,7 +2310,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         )}
       </div>
 
-      {/* Global Strumming Patterns (1 bar) */}
+      {!carouselMode && (
       <div className="mb-8 bg-gray-800 border border-gray-700 rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-semibold">Global Strumming Patterns (1 bar, 16th notes)</h2>
@@ -2285,6 +2360,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           ))}
         </div>
       </div>
+      )}
 
       {/* Compare Mode UI */}
       {compareMode && (
@@ -2505,7 +2581,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
                           onDragEnd={handleDragEnd}
                           style={{ cursor: chord ? 'grab' : 'pointer' }}
                         >
-                          <ChordDiagramPreview chord={chord} index={index + 1} />
+                          <ChordDiagramPreview chord={chord} index={index + 1} theme={theme} />
                         </div>
                         {chord && (
                           <div className="mt-2 flex gap-1 justify-center">
@@ -2572,6 +2648,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           onClose={() => setEditingIndex(null)}
           globalShowFingering={globalShowFingering}
           setGlobalShowFingering={setGlobalShowFingering}
+          theme={theme}
         />
       )}
 
@@ -2696,6 +2773,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           </p>
         </div>
 
+      {!carouselMode && (
+        <>
       {/* Export */}
       <div className="text-center">
         <button
@@ -2713,6 +2792,23 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
       {/* Hidden canvas for export */}
       <canvas ref={canvasRef} style={{ display: 'none' }} />
+        </>
+      )}
+
+      {carouselMode && (
+        <div className="mt-6">
+          <CarouselMode
+            slides={carouselSlides}
+            setSlides={setCarouselSlides}
+            textScale={textScale}
+            externalCopiedChord={copiedChord}
+            setExternalCopiedChord={setCopiedChord}
+            globalTitle={carouselTitle || progressionTitle}
+            showNoteNames={showNoteNames}
+            theme={theme}
+          />
+        </div>
+      )}
       {/* Expose pluck mode for child editor to read */}
       <script
         dangerouslySetInnerHTML={{ __html: `window.__MNGL_PLUCK_MODE__ = ${pluckMode ? 'true' : 'false'};` }}
@@ -2782,7 +2878,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 };
 
 // Chord diagram preview component
-const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number }> = ({ chord, index }) => {
+const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number; theme: IChordRenderTheme }> = ({ chord, index, theme }) => {
   if (!chord) {
     return (
       <div className="h-32 flex flex-col items-center justify-center text-gray-400">
@@ -2827,7 +2923,7 @@ const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number }> 
         
         {/* Fret number (if > 1) */}
         {chord.fretNumber > 1 && (
-          <text x="-2" y="21" textAnchor="start" fontSize="6" fill="white" stroke="#F59E0B" strokeWidth="0.3" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">
+          <text x="-2" y="21" textAnchor="start" fontSize="6" fill={theme.colors.fingerInnerTextSecondary} stroke={theme.colors.accentStroke} strokeWidth="0.3" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">
             {chord.fretNumber}
           </text>
         )}
@@ -2839,7 +2935,7 @@ const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number }> 
             cx={10 + (pos.string - 1) * 12}
             cy={15 + (pos.fret - chord.fretNumber + 0.5) * 12}
             r="4"
-            fill="#F59E0B"
+            fill={theme.colors.fingerFill}
           />
         ))}
         
@@ -2848,9 +2944,9 @@ const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number }> 
           const string = i + 1;
           const x = 10 + i * 12;
           if (chord.openStrings.includes(string)) {
-            return <text key={`open-${i}`} x={x} y="10" textAnchor="middle" fontSize="8" fill="#F59E0B" stroke="white" strokeWidth="0.5" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">O</text>;
+            return <text key={`open-${i}`} x={x} y="10" textAnchor="middle" fontSize="8" fill={theme.colors.fingerFill} stroke={theme.colors.fingerInnerTextSecondary} strokeWidth="0.5" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">O</text>;
           } else if (chord.mutedStrings.includes(string)) {
-            return <text key={`muted-${i}`} x={x} y="10" textAnchor="middle" fontSize="8" fill="#EF4444" stroke="white" strokeWidth="0.5" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">X</text>;
+            return <text key={`muted-${i}`} x={x} y="10" textAnchor="middle" fontSize="8" fill="#EF4444" stroke={theme.colors.fingerInnerTextSecondary} strokeWidth="0.5" fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" fontWeight="bold" fontStyle="italic">X</text>;
           }
           return null;
         })}
@@ -2866,7 +2962,8 @@ const ChordEditor: React.FC<{
   onClose: () => void;
   globalShowFingering: boolean;
   setGlobalShowFingering: (show: boolean) => void;
-}> = ({ chord, onUpdate, onClose, globalShowFingering, setGlobalShowFingering }) => {
+  theme: IChordRenderTheme;
+}> = ({ chord, onUpdate, onClose, globalShowFingering, setGlobalShowFingering, theme }) => {
   const [editChord, setEditChord] = useState<ChordData>({ ...chord });
   const [selectedFinger, setSelectedFinger] = useState<number | 'T'>(1);
   
@@ -3079,8 +3176,8 @@ const ChordEditor: React.FC<{
                   y="60" 
                   textAnchor="end" 
                   fontSize="12" 
-                  fill="white" 
-                  stroke="#F59E0B" 
+                  fill={theme.colors.fingerInnerTextSecondary} 
+                  stroke={theme.colors.accentStroke} 
                   strokeWidth="0.5"
                   fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
                   fontWeight="bold"
@@ -3119,7 +3216,7 @@ const ChordEditor: React.FC<{
                     y1={y}
                     x2={endX}
                     y2={y}
-                    stroke="#F59E0B"
+                    stroke={theme.colors.fingerFill}
                     strokeWidth="6"
                   />
                 );
@@ -3132,7 +3229,7 @@ const ChordEditor: React.FC<{
                     cx={30 + (pos.string - 1) * 30}
                     cy={50 + (pos.fret - editChord.fretNumber + 0.5) * 20}
                     r="8"
-                    fill="#F59E0B"
+                    fill={theme.colors.fingerFill}
                   />
                   {/* Finger number */}
                   {showFingering && pos.finger && (
@@ -3141,7 +3238,7 @@ const ChordEditor: React.FC<{
                       y={50 + (pos.fret - editChord.fretNumber + 0.5) * 20 + 3}
                       textAnchor="middle"
                       fontSize="10"
-                      fill="black"
+                      fill={theme.colors.fingerInnerTextSecondary}
                       fontWeight="bold"
                     >
                       {pos.finger}

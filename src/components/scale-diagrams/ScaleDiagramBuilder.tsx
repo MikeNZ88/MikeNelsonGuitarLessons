@@ -21,6 +21,7 @@ interface ScaleData {
   arrows?: Array<{ from: { string: number; fret: number }; to: { string: number; fret: number }; text?: string }>; // optional connections with text
   labels?: Array<{ notes: Array<{ string: number; fret: number }>; text: string }>; // grouped note labels
   caption?: string; // per-scale custom text
+  arrowYOffset?: number; // perpendicular offset for arrows (px)
 }
 
 // Scale Editor Component Props
@@ -62,6 +63,7 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
   const [labels, setLabels] = useState<Array<{ notes: Array<{ string: number; fret: number }>; text: string }>>([]);
   const [labelSelection, setLabelSelection] = useState<Array<{ string: number; fret: number }>>([]);
   const [caption, setCaption] = useState<string>('');
+  const [arrowYOffset, setArrowYOffset] = useState<number>(0);
   useEffect(() => {
     // Track colors used in diagrams so the legend editor can load them
     const collectColors = () => {
@@ -96,6 +98,7 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
       setLabels(currentScale.labels || []);
       setLabelSelection([]);
       setCaption(currentScale.caption || '');
+      setArrowYOffset(currentScale.arrowYOffset || 0);
     } else {
       setScaleName('Scale');
       setRootFret(3);
@@ -104,6 +107,7 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
       setLabels([]);
       setLabelSelection([]);
       setCaption('');
+      setArrowYOffset(0);
     }
   }, [editingIndex]);
 
@@ -193,7 +197,8 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
       fretRange,
       arrows,
       labels,
-      caption
+      caption,
+      arrowYOffset
     };
 
     if (typeof editingIndex === 'number') {
@@ -515,6 +520,13 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
           >
             Clear Arrows
           </button>
+          <div className="inline-flex items-center gap-2 ml-2">
+            <span className="text-sm text-gray-300">Arrows Y offset:</span>
+            <button onClick={() => setArrowYOffset(v => v - 5)} className="px-2 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600">-</button>
+            <span className="text-xs text-gray-400 w-10 text-center">{arrowYOffset}px</span>
+            <button onClick={() => setArrowYOffset(v => v + 5)} className="px-2 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600">+</button>
+            <button onClick={() => setArrowYOffset(0)} className="px-2 py-1 text-xs rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+          </div>
         </div>
         
         <div className="space-x-3">
@@ -583,6 +595,8 @@ const ScaleDiagramBuilder: React.FC = () => {
   const [customTextYOffset, setCustomTextYOffset] = useState<number>(0);
   // Bold toggle for custom text
   const [customTextBold, setCustomTextBold] = useState<boolean>(false);
+  // Horizontal offset for all grouped labels (px)
+  const [labelsXOffset, setLabelsXOffset] = useState<number>(0);
 
   // Initialize empty scale
   const createEmptyScale = (): ScaleData => ({
@@ -705,6 +719,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       textScale,
       customTextYOffset,
       customTextBold,
+      labelsXOffset,
       legend: (() => {
         try {
           const raw = localStorage.getItem('scaleLegend');
@@ -762,6 +777,7 @@ const ScaleDiagramBuilder: React.FC = () => {
           if (typeof progressionData.textScale === 'number') setTextScale(progressionData.textScale);
           if (typeof progressionData.customTextYOffset === 'number') setCustomTextYOffset(progressionData.customTextYOffset);
           if (typeof progressionData.customTextBold === 'boolean') setCustomTextBold(progressionData.customTextBold);
+          if (typeof progressionData.labelsXOffset === 'number') setLabelsXOffset(progressionData.labelsXOffset);
           if (progressionData.compareSubtitle) {
             setCompareSubtitle(progressionData.compareSubtitle);
           }
@@ -1078,14 +1094,20 @@ const ScaleDiagramBuilder: React.FC = () => {
         const toY = startY + a.to.string * stringSpacing;
         const toX = startX + (a.to.fret - startFret + 0.5) * (diagramWidth / numColumns);
         const dx = toX - fromX;
-        const dy = toY - fromY;
+        let dy = toY - fromY;
         const len = Math.hypot(dx, dy) || 1;
         const ux = dx / len;
         const uy = dy / len;
-        const startPX = fromX + ux * radius;
-        const startPY = fromY + uy * radius;
-        const endPX = toX - ux * radius;
-        const endPY = toY - uy * radius;
+        // Per-scale perpendicular offset
+        const off = scale.arrowYOffset || 0;
+        const perpX = -uy;
+        const perpY = ux;
+        const offsetX = perpX * off;
+        const offsetY = perpY * off;
+        const startPX = fromX + ux * radius + offsetX;
+        const startPY = fromY + uy * radius + offsetY;
+        const endPX = toX - ux * radius + offsetX;
+        const endPY = toY - uy * radius + offsetY;
         // line
         ctx.beginPath();
         ctx.moveTo(startPX, startPY);
@@ -1093,8 +1115,6 @@ const ScaleDiagramBuilder: React.FC = () => {
         ctx.stroke();
         // arrowhead
         const arrowSize = 10;
-        const perpX = -uy;
-        const perpY = ux;
         const tipX = endPX;
         const tipY = endPY;
         const baseX = tipX - ux * arrowSize;
@@ -1127,21 +1147,53 @@ const ScaleDiagramBuilder: React.FC = () => {
       });
     }
 
-    // Draw labels under grouped notes if provided
+    // Draw labels under grouped notes if provided (with simple collision avoidance)
     if (scale.labels && scale.labels.length > 0) {
       ctx.textAlign = 'center';
       ctx.fillStyle = 'white';
-      ctx.font = `${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-      scale.labels.forEach(l => {
-        if (!l.notes || l.notes.length === 0 || !l.text) return;
-        const minFret = Math.min(...l.notes.map(n => n.fret));
-        const maxFret = Math.max(...l.notes.map(n => n.fret));
-        const maxString = Math.max(...l.notes.map(n => n.string));
-        const centerFret = (minFret + maxFret) / 2;
-        const centerX = startX + (centerFret - startFret + 0.5) * (diagramWidth / numColumns);
-        const baseY = startY + maxString * stringSpacing;
-        const labelY = baseY + 35; // moved lower below the lowest note
-        ctx.fillText(l.text, centerX, labelY);
+      const fontDecl = `${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+      ctx.font = fontDecl;
+      const minGap = 8;
+      const lineHeight = scaleSize(18);
+      // Build label metrics
+      const candidates = scale.labels
+        .filter(l => l && l.notes && l.notes.length > 0 && l.text && l.text.trim())
+        .map(l => {
+          const minFret = Math.min(...l.notes.map(n => n.fret));
+          const maxFret = Math.max(...l.notes.map(n => n.fret));
+          const maxString = Math.max(...l.notes.map(n => n.string));
+          const centerFret = (minFret + maxFret) / 2;
+          const centerX = startX + (centerFret - startFret + 0.5) * (diagramWidth / numColumns) + labelsXOffset;
+          const baseY = startY + maxString * stringSpacing;
+          const text = l.text.trim();
+          const width = ctx.measureText(text).width;
+          return { centerX, baseY, text, width };
+        })
+        .sort((a, b) => a.centerX - b.centerX);
+
+      // Place labels into rows, greedily avoiding horizontal overlaps
+      const rowRight: number[] = []; // per-row rightmost x
+      candidates.forEach(item => {
+        let row = 0;
+        const left = (x: number, w: number) => x - w / 2;
+        const right = (x: number, w: number) => x + w / 2;
+        while (true) {
+          const rEdge = rowRight[row] ?? -Infinity;
+          if (left(item.centerX, item.width) > rEdge + minGap) {
+            // place here
+            rowRight[row] = right(item.centerX, item.width);
+            const y = item.baseY + 35 + row * lineHeight;
+            ctx.fillText(item.text, item.centerX, y);
+            break;
+          }
+          row += 1;
+          // safety: cap rows to 3
+          if (row > 2) {
+            const y = item.baseY + 35 + 2 * lineHeight;
+            ctx.fillText(item.text, item.centerX, y);
+            break;
+          }
+        }
       });
     }
 
@@ -1663,6 +1715,30 @@ const ScaleDiagramBuilder: React.FC = () => {
           </button>
           <button
             onClick={() => setCustomTextYOffset(0)}
+            className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600"
+          >
+            Reset
+          </button>
+        </div>
+
+        {/* Labels horizontal offset */}
+        <div className="mt-3 flex items-center justify-center gap-2">
+          <span className="text-sm text-gray-300">Labels X offset:</span>
+          <button
+            onClick={() => setLabelsXOffset(v => v - 5)}
+            className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600"
+          >
+            -
+          </button>
+          <span className="w-16 text-center text-gray-200">{labelsXOffset}px</span>
+          <button
+            onClick={() => setLabelsXOffset(v => v + 5)}
+            className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600"
+          >
+            +
+          </button>
+          <button
+            onClick={() => setLabelsXOffset(0)}
             className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600"
           >
             Reset
