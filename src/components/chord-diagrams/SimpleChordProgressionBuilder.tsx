@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import CarouselMode, { CarouselSlide } from './CarouselMode';
 import { amberDarkTheme, plainLightTheme, darkTheme, cardAmberTheme, IChordRenderTheme } from '@/theme/chordRenderTheme';
 
@@ -74,6 +74,56 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [theme, setTheme] = useState<IChordRenderTheme>(amberDarkTheme);
   const THEME = theme;
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Draw current state onto the hidden export canvas, then mirror to preview canvas without triggering download
+  const renderLivePreview = () => {
+    const baseCanvas = canvasRef.current;
+    const preview = previewCanvasRef.current;
+    if (!baseCanvas || !preview) return;
+    const originalToBlob = baseCanvas.toBlob.bind(baseCanvas);
+    // Suppress download side-effect during preview
+    // @ts-ignore
+    baseCanvas.toBlob = () => {};
+    try {
+      exportAsImage();
+    } finally {
+      // Restore
+      // @ts-ignore
+      baseCanvas.toBlob = originalToBlob;
+    }
+    const srcW = baseCanvas.width;
+    const srcH = baseCanvas.height;
+    const ctx = preview.getContext('2d');
+    if (!ctx || srcW === 0 || srcH === 0) return;
+    // Set preview canvas backing size to match CSS size
+    const cssW = Math.max(256, Math.min(512, srcW));
+    const cssH = Math.max(256, Math.min(512, srcH));
+    preview.width = cssW;
+    preview.height = cssH;
+    ctx.clearRect(0, 0, cssW, cssH);
+    ctx.drawImage(baseCanvas, 0, 0, srcW, srcH, 0, 0, cssW, cssH);
+  };
+
+  // Keep live preview in sync with key changes
+  useEffect(() => {
+    const id = requestAnimationFrame(renderLivePreview);
+    return () => cancelAnimationFrame(id);
+  }, [
+    JSON.stringify(chords),
+    JSON.stringify(compareRows),
+    gridSize,
+    compareMode,
+    showNoteNames,
+    theme,
+    progressionTitle,
+    customText,
+    aspectRatio,
+    adaptivePortrait,
+    strictPortrait,
+    showLegends,
+    showStrummingLegend,
+  ]);
 
   // Global strumming patterns (separate section)
   const [globalStrummingPatterns, setGlobalStrummingPatterns] = useState<GlobalStrumPattern[]>([]);
@@ -2023,6 +2073,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       {/* Controls */}
       <div className="mb-8 space-y-4">
+        {/* Live Preview (matches export; read-only) */}
+        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+          <div className="text-sm text-gray-400 mb-2">Live Preview</div>
+          <div className="flex justify-center">
+            <canvas ref={previewCanvasRef} style={{ width: 512, height: 512, maxWidth: '100%' }} />
+          </div>
+        </div>
         {/* Text size controls */}
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-300">Text size:</span>
