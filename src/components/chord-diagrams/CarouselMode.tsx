@@ -20,6 +20,7 @@ export type CarouselSlide = {
   rowSizes: number[]; // length === numRows, each 2..10
   chords: (ChordData | null)[]; // length === sum(rowSizes)
   chordTexts?: string[]; // optional per-chord labels
+  labelXOffset?: number;
   customText: string;
   showLegends: boolean;
   centerLegendText: boolean;
@@ -59,6 +60,7 @@ const createSlide = (): CarouselSlide => ({
   rowSizes: [4],
   chords: Array(4).fill(null),
   chordTexts: Array(4).fill(''),
+  labelXOffset: 0,
   customText: '',
   showLegends: true,
   centerLegendText: true,
@@ -323,7 +325,8 @@ export const CarouselMode: React.FC<Props> = ({ slides, setSlides, textScale = 1
           ctx.fillStyle = THEME.colors.subtitle;
           ctx.font = `italic ${scale(18)}px "Poppins", sans-serif`;
           const labelY = rowY + 60 + ((chord && chord.showFiveFrets) ? 5 : 4) * (diagramSizeRow / 6) + 28;
-          const labelX = x + diagramSizeRow / 2 + (slide as any).labelXOffset ?? (x + diagramSizeRow / 2) - 8;
+          const labelOffsetX: number = (slide as any).labelXOffset ?? 0;
+          const labelX = x + diagramSizeRow / 2 + labelOffsetX - 8;
           ctx.fillText(label, labelX, labelY);
         }
       }
