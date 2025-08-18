@@ -27,6 +27,9 @@ export type CarouselSlide = {
   patternsOffset: number;
   customTextOffset: number;
   brandAlign?: 'left' | 'center' | 'right';
+  brandOffsetX?: number;
+  brandOffsetY?: number;
+  brandScale?: number;
 };
 
 type Props = {
@@ -62,7 +65,10 @@ const createSlide = (): CarouselSlide => ({
   legendOffset: 0,
   patternsOffset: 0,
   customTextOffset: 0,
-  brandAlign: 'center'
+  brandAlign: 'center',
+  brandOffsetX: 0,
+  brandOffsetY: 0,
+  brandScale: 1.0,
 });
 
 export const CarouselMode: React.FC<Props> = ({ slides, setSlides, textScale = 1.0, externalCopiedChord, setExternalCopiedChord, globalTitle, showNoteNames = false, theme }) => {
@@ -352,6 +358,21 @@ export const CarouselMode: React.FC<Props> = ({ slides, setSlides, textScale = 1
       const lineHeight = 34;
       lines.forEach((ln, i) => ctx.fillText(ln, size / 2, baseY + i * lineHeight));
     }
+
+    // Branding (logo + URL)
+    const brandAlign = slide.brandAlign || 'center';
+    const brandScale = slide.brandScale || 1.0;
+    const brandOffsetX = slide.brandOffsetX || 0;
+    const brandOffsetY = slide.brandOffsetY || 0;
+    const footerY = size - 40;
+    const brandX = brandAlign === 'center' ? size / 2 : brandAlign === 'right' ? size - 60 : 60;
+    ctx.textAlign = brandAlign;
+    ctx.fillStyle = THEME.colors.footerTitle;
+    ctx.font = `bold italic ${Math.round(scale(22) * brandScale)}px "Poppins", sans-serif`;
+    ctx.fillText('Mike Nelson Guitar Lessons', brandX + brandOffsetX, footerY + brandOffsetY);
+    ctx.fillStyle = THEME.colors.footerSubtitle;
+    ctx.font = `italic ${Math.round(scale(20) * brandScale)}px "Poppins", sans-serif`;
+    ctx.fillText('mikenelsonguitarlessons.co.nz', brandX + brandOffsetX, footerY + 22 + brandOffsetY);
   }, [slides, selected, textScale]);
 
   const exportSlide = (s: CarouselSlide, index: number) => {

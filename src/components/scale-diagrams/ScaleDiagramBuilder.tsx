@@ -1,6 +1,12 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
+import {
+  amberDarkTheme,
+  plainLightTheme,
+  cardAmberTheme,
+  darkTheme,
+} from '../../theme/chordRenderTheme';
 
 // Utility: get note name for a given string index (0 = high E, 5 = low E)
 // and absolute fret number (0 = open). Uses sharps by default.
@@ -452,14 +458,39 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
           </label>
           <div className="flex flex-wrap gap-2">
             {[
+              // Ambers
               { color: '#7C2D12', name: 'Dark Amber' },
-              { color: '#A16207', name: 'Light Amber' },
-              { color: '#92400E', name: 'Medium Amber' },
-              { color: '#DC2626', name: 'Red' },
-              { color: '#2563EB', name: 'Blue' },
-              { color: '#16A34A', name: 'Green' },
-              { color: '#9333EA', name: 'Purple' },
-              { color: '#EA580C', name: 'Orange' }
+              { color: '#92400E', name: 'Amber 800' },
+              { color: '#A16207', name: 'Amber 600' },
+              { color: '#F59E0B', name: 'Amber 500' },
+              // Reds/Pinks
+              { color: '#DC2626', name: 'Red 600' },
+              { color: '#EF4444', name: 'Red 500' },
+              { color: '#DB2777', name: 'Pink 600' },
+              { color: '#EC4899', name: 'Pink 500' },
+              // Oranges/Yellows
+              { color: '#EA580C', name: 'Orange 600' },
+              { color: '#F97316', name: 'Orange 500' },
+              { color: '#CA8A04', name: 'Yellow 600' },
+              { color: '#EAB308', name: 'Yellow 500' },
+              // Greens
+              { color: '#16A34A', name: 'Green 600' },
+              { color: '#22C55E', name: 'Green 500' },
+              { color: '#059669', name: 'Emerald 600' },
+              { color: '#10B981', name: 'Emerald 500' },
+              // Blues/Teals
+              { color: '#0EA5E9', name: 'Sky 500' },
+              { color: '#06B6D4', name: 'Cyan 500' },
+              { color: '#2563EB', name: 'Blue 600' },
+              { color: '#3B82F6', name: 'Blue 500' },
+              // Purples
+              { color: '#7C3AED', name: 'Violet 600' },
+              { color: '#8B5CF6', name: 'Violet 500' },
+              { color: '#9333EA', name: 'Purple 600' },
+              { color: '#A855F7', name: 'Purple 500' },
+              // Neutrals (dark only for contrast with white labels)
+              { color: '#111827', name: 'Gray 900' },
+              { color: '#374151', name: 'Gray 700' },
             ].map(({ color, name }) => (
               <button
                 key={color}
@@ -473,6 +504,16 @@ const ScaleEditor: React.FC<ScaleEditorProps> = ({
                 title={name}
               />
             ))}
+            <label className="ml-2 inline-flex items-center gap-2 text-xs text-gray-300">
+              <span>Custom:</span>
+              <input
+                type="color"
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(e.target.value)}
+                className="w-8 h-8 p-0 bg-transparent border border-gray-500 rounded"
+                title="Pick any color"
+              />
+            </label>
           </div>
         </div>
 
@@ -587,6 +628,22 @@ const ScaleDiagramBuilder: React.FC = () => {
   const [copiedScale, setCopiedScale] = useState<ScaleData | null>(null);
   const [stackedLayout, setStackedLayout] = useState<boolean>(false);
   const [squareExport, setSquareExport] = useState<boolean>(false);
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+  type ThemeKey = 'amber' | 'light' | 'cardAmber' | 'dark';
+  const [theme, setTheme] = useState<ThemeKey>('amber');
+  const THEME = (() => {
+    switch (theme) {
+      case 'light':
+        return plainLightTheme;
+      case 'cardAmber':
+        return cardAmberTheme;
+      case 'dark':
+        return darkTheme;
+      case 'amber':
+      default:
+        return amberDarkTheme;
+    }
+  })();
   
   // Global shrink/scale factor for all text (user-controlled)
   const [textScale, setTextScale] = useState<number>(1.0); // 1.0 = 100%
@@ -716,6 +773,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       showNoteNames,
       stackedLayout,
       squareExport,
+      theme,
       textScale,
       customTextYOffset,
       customTextBold,
@@ -774,6 +832,7 @@ const ScaleDiagramBuilder: React.FC = () => {
           if (typeof progressionData.showNoteNames === 'boolean') setShowNoteNames(progressionData.showNoteNames);
           if (typeof progressionData.stackedLayout === 'boolean') setStackedLayout(progressionData.stackedLayout);
           if (typeof progressionData.squareExport === 'boolean') setSquareExport(progressionData.squareExport);
+          if (typeof progressionData.theme === 'string') setTheme(progressionData.theme as ThemeKey);
           if (typeof progressionData.textScale === 'number') setTextScale(progressionData.textScale);
           if (typeof progressionData.customTextYOffset === 'number') setCustomTextYOffset(progressionData.customTextYOffset);
           if (typeof progressionData.customTextBold === 'boolean') setCustomTextBold(progressionData.customTextBold);
@@ -996,13 +1055,13 @@ const ScaleDiagramBuilder: React.FC = () => {
     
     // Draw scale name closer to its own diagram to avoid overlapping the diagram above
     ctx.font = `bold italic ${scaleSize(24)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.title;
     ctx.textAlign = 'center';
     ctx.fillText(scale.name, x + width / 2, y - 2);
     
     // Draw fret numbers
     ctx.font = `bold ${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.title;
     ctx.textAlign = 'center';
     frets.forEach((fret, fretIndex) => {
       const fretX = startX + (fretIndex + 0.5) * (diagramWidth / numColumns); // Center in fret space
@@ -1011,7 +1070,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     
     // Draw string labels
     ctx.font = `bold ${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.title;
     ctx.textAlign = 'center';
     strings.forEach((string, stringIndex) => {
       const stringY = startY + stringIndex * stringSpacing;
@@ -1019,7 +1078,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     });
     
     // Draw strings (horizontal lines)
-    ctx.strokeStyle = '#7C2D12'; // Dark amber strings
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 2;
     strings.forEach((_, stringIndex) => {
       const stringY = startY + stringIndex * stringSpacing;
@@ -1034,7 +1093,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     });
     
     // Draw frets (vertical lines)
-    ctx.strokeStyle = '#7C2D12'; // Dark amber frets
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 1;
     for (let i = 0; i <= numColumns; i++) {
       const fretX = startX + i * (diagramWidth / numColumns);
@@ -1058,13 +1117,11 @@ const ScaleDiagramBuilder: React.FC = () => {
       
       // Set color - use custom color if specified, otherwise default based on note type
       if (note.color) {
-        ctx.fillStyle = note.color; // Use custom color
-      } else if (note.noteType === 'root') {
-        ctx.fillStyle = '#7C2D12'; // Dark amber for root notes (same as chord diagrams)
+        ctx.fillStyle = note.color; // Use custom color if provided
       } else if (note.noteType === 'blues') {
-        ctx.fillStyle = '#92400E'; // Medium amber for blues notes
+        ctx.fillStyle = THEME.colors.accentStroke;
       } else {
-        ctx.fillStyle = '#A16207'; // Light amber for scale notes
+        ctx.fillStyle = THEME.colors.fingerFill;
       }
       
       // Draw note circle (bigger)
@@ -1073,7 +1130,8 @@ const ScaleDiagramBuilder: React.FC = () => {
       ctx.fill();
       
       // Draw note symbol or name
-      ctx.fillStyle = 'white';
+      // Always draw note names/symbols in white for clarity
+      ctx.fillStyle = '#FFFFFF';
       ctx.font = `bold ${scaleSize(12)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
       ctx.textAlign = 'center';
       const label = showNoteNames
@@ -1084,8 +1142,8 @@ const ScaleDiagramBuilder: React.FC = () => {
 
     // Draw arrows between notes if provided
     if (scale.arrows && scale.arrows.length > 0) {
-      ctx.strokeStyle = '#FEF3C7'; // light amber for contrast
-      ctx.fillStyle = '#FEF3C7';
+      ctx.strokeStyle = THEME.colors.accentStroke;
+      ctx.fillStyle = THEME.colors.accentStroke;
       ctx.lineWidth = 2;
       const radius = 13;
       scale.arrows.forEach(a => {
@@ -1140,7 +1198,7 @@ const ScaleDiagramBuilder: React.FC = () => {
           const textY = midY + perpY * textOffset;
           
           ctx.font = `${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-          ctx.fillStyle = 'white'; // White for better visibility
+          ctx.fillStyle = THEME.colors.subtitle;
           ctx.textAlign = 'center';
           ctx.fillText(a.text.trim(), textX, textY);
         }
@@ -1150,7 +1208,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     // Draw labels under grouped notes if provided (with simple collision avoidance)
     if (scale.labels && scale.labels.length > 0) {
       ctx.textAlign = 'center';
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = THEME.colors.subtitle;
       const fontDecl = `${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
       ctx.font = fontDecl;
       const minGap = 8;
@@ -1200,7 +1258,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     // Draw per-scale caption under the diagram frame if provided
     if (scale.caption && scale.caption.trim()) {
       ctx.textAlign = 'center';
-      ctx.fillStyle = '#7C2D12';
+      ctx.fillStyle = THEME.colors.subtitle;
       ctx.font = `${scaleSize(16)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
       const captionY = y + height - 8; // near bottom of diagram box
       ctx.fillText(scale.caption.trim(), x + width / 2, captionY);
@@ -1210,7 +1268,7 @@ const ScaleDiagramBuilder: React.FC = () => {
   // Draw empty scale diagram placeholder
   const drawEmptyScaleDiagram = (ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, placeholder: string) => {
     // Draw border
-    ctx.strokeStyle = '#6B7280';
+    ctx.strokeStyle = THEME.colors.gridStroke;
     ctx.lineWidth = 2;
     ctx.setLineDash([5, 5]);
     ctx.strokeRect(x + 10, y + 10, width - 20, height - 20);
@@ -1218,7 +1276,7 @@ const ScaleDiagramBuilder: React.FC = () => {
     
     // Draw placeholder text
     ctx.font = `italic ${scaleSize(20)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-    ctx.fillStyle = '#9CA3AF';
+    ctx.fillStyle = THEME.colors.placeholderText;
     ctx.textAlign = 'center';
     ctx.fillText(placeholder, x + width / 2, y + height / 2);
   };
@@ -1273,7 +1331,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + legendEstimatedHeight + brandingHeight + paddingHeight;
     } else {
       // Calculate required width for normal mode
-       const rowLayouts = (() => {
+      const rowLayouts = (() => {
         switch (gridSize) {
            case 1: return [1];
            case 2: return isDoubleStack ? [1, 1] : [2];
@@ -1311,18 +1369,26 @@ const ScaleDiagramBuilder: React.FC = () => {
       canvasHeight = side;
     } else {
       // Default behavior: avoid landscape by ensuring height >= width
-      canvasHeight = Math.max(canvasHeight, canvasWidth);
+    canvasHeight = Math.max(canvasHeight, canvasWidth);
     }
     
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
+    // Ensure CSS size matches intrinsic pixel size to avoid aspect skewing
+    canvas.style.width = `${canvasWidth}px`;
+    canvas.style.height = `${canvasHeight}px`;
 
     // Create gradient background - same as chord builder
+    if (THEME.background.start === THEME.background.end) {
+      ctx.fillStyle = THEME.background.start;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    } else {
     const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-    gradient.addColorStop(0, '#F59E0B'); // Amber
-    gradient.addColorStop(1, '#D97706'); // Dark amber
+      gradient.addColorStop(0, THEME.background.start);
+      gradient.addColorStop(1, THEME.background.end);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    }
 
     // Calculate positioning - same as chord builder
     const upOffset = 25; // previously 10; +15 more as requested
@@ -1333,7 +1399,7 @@ const ScaleDiagramBuilder: React.FC = () => {
 
     // Draw title with dynamic sizing to prevent cut-off - same as chord builder
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#7C2D12';
+    ctx.fillStyle = THEME.colors.title;
     
     // Start with base font size and reduce if text is too wide
     let titleFontSize = scaleSize(42);
@@ -1354,7 +1420,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       const filledSubtitle = compareSubtitle.filter(scale => scale.trim() !== '');
       if (filledSubtitle.length > 0) {
         ctx.font = `italic ${scaleSize(28)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = '#FEF3C7';
+        ctx.fillStyle = THEME.colors.subtitle;
         const subtitleText = filledSubtitle.join(' → ');
         ctx.fillText(subtitleText, canvasWidth / 2, subtitleY);
       }
@@ -1367,7 +1433,7 @@ const ScaleDiagramBuilder: React.FC = () => {
         
         // Draw row title
         ctx.font = `bold italic ${scaleSize(32)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = '#FEF3C7';
+        ctx.fillStyle = THEME.colors.subtitle;
         ctx.fillText(row.title, canvasWidth / 2, rowY - 20);
         
         // Draw scale diagrams in this row
@@ -1388,7 +1454,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       });
 
       // Below-diagram Y baseline
-      const textY = diagramsStartY + compareRows.length * (diagramHeight + 80) + 20;
+        const textY = diagramsStartY + compareRows.length * (diagramHeight + 80) + 20;
       
       // Draw colour legend (key) on the left below the diagrams (no shading)
       try {
@@ -1406,13 +1472,13 @@ const ScaleDiagramBuilder: React.FC = () => {
             let yCursor = legendY;
             ctx.textAlign = 'left';
             ctx.font = `${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-            ctx.fillStyle = '#7C2D12'; // Match custom text colour
+            ctx.fillStyle = THEME.colors.title;
             items.forEach((it) => {
               // swatch
               ctx.fillStyle = it.color || '#FFFFFF';
               ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
               // label
-              ctx.fillStyle = '#7C2D12'; // Match custom text colour
+              ctx.fillStyle = THEME.colors.title;
               const labelX = xLeft + swatchSize + 10;
               const text = (it.label || '').toString();
               const maxWidth = legendLabelMaxWidth; // left column width
@@ -1432,7 +1498,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       if (customText.trim()) {
         const customTextY = textY + 120 + customTextYOffset; // Increased spacing + user offset
         ctx.font = `${customTextBold ? 'bold ' : ''}${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = '#7C2D12';
+        ctx.fillStyle = THEME.colors.title;
         ctx.textAlign = 'center';
         drawCustomText(ctx, customText, canvasWidth / 2, customTextY, canvasWidth * 0.9, 24);
       }
@@ -1463,8 +1529,8 @@ const ScaleDiagramBuilder: React.FC = () => {
         (scales[i] as ScaleData | null) ?? createEmptyScale()
       );
       rowLayouts.forEach((rowCount, rowIndex) => {
-      const rowWidth = rowCount * diagramWidth + (rowCount - 1) * spacing;
-      const rowStartX = (canvasWidth - rowWidth) / 2;
+        const rowWidth = rowCount * diagramWidth + (rowCount - 1) * spacing;
+        const rowStartX = (canvasWidth - rowWidth) / 2;
         // Add extra intra-row spacer between the diagram and the next heading without changing canvas size
         const headingSpacer = 18; // extra space reserved between diagram bottom and next heading
         const rowY = diagramsStartY + rowIndex * (diagramHeight + rowGap + headingSpacer);
@@ -1499,11 +1565,11 @@ const ScaleDiagramBuilder: React.FC = () => {
             let yCursor = legendY;
             ctx.textAlign = 'left';
             ctx.font = `${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-            ctx.fillStyle = '#7C2D12'; // Match custom text colour
+            ctx.fillStyle = THEME.colors.title;
             items.forEach((it) => {
               ctx.fillStyle = it.color || '#FFFFFF';
               ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
-              ctx.fillStyle = '#7C2D12'; // Match custom text colour
+              ctx.fillStyle = THEME.colors.title;
               const labelX = xLeft + swatchSize + 10;
               const text = (it.label || '').toString();
               const maxWidth = legendLabelMaxWidth;
@@ -1523,7 +1589,7 @@ const ScaleDiagramBuilder: React.FC = () => {
       if (customText.trim()) {
         const customTextY = textY + 120 + customTextYOffset; // Increased spacing + user offset
         ctx.font = `${customTextBold ? 'bold ' : ''}${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = '#7C2D12';
+        ctx.fillStyle = THEME.colors.title;
         ctx.textAlign = 'center';
         drawCustomText(ctx, customText, canvasWidth / 2, customTextY, canvasWidth * 0.9, 24);
       }
@@ -1535,12 +1601,12 @@ const ScaleDiagramBuilder: React.FC = () => {
     // Draw "Mike Nelson Guitar Lessons"
     ctx.font = `bold italic ${scaleSize(24)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = THEME.colors.footerTitle;
     ctx.fillText('Mike Nelson Guitar Lessons', canvasWidth / 2, footerY);
     
     // Draw website URL
     ctx.font = `italic ${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-    ctx.fillStyle = '#FEF3C7';
+    ctx.fillStyle = THEME.colors.footerSubtitle;
     ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth / 2, footerY + 30);
 
     // (legend drawing moved into branches above; no shaded panel)
@@ -1558,9 +1624,324 @@ const ScaleDiagramBuilder: React.FC = () => {
     }, 'image/png');
   };
 
+  // Live preview renderer (mirrors export rendering without downloading)
+  useEffect(() => {
+    const canvas = previewCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Clone of export size logic with smaller target width
+    const maxCanvasWidth = 560; // Preview target width
+    const isSingleScale = !compareMode && gridSize === 1;
+    const isDoubleStack = !compareMode && stackedLayout && gridSize === 2;
+    const isTripleStack = !compareMode && stackedLayout && gridSize === 3;
+    const isQuadStack = !compareMode && stackedLayout && gridSize === 4;
+    const isStacked = isDoubleStack || isTripleStack || isQuadStack;
+    const diagramWidth = (isSingleScale || isDoubleStack || isTripleStack || isQuadStack) ? Math.floor(maxCanvasWidth * (isQuadStack ? 0.78 : isTripleStack ? 0.82 : 0.88)) : (compareMode ? 200 : 230);
+    const diagramHeight = isSingleScale ? 330 : isDoubleStack ? 300 : isTripleStack ? 210 : isQuadStack ? 170 : (compareMode ? 140 : 160);
+    const spacing = compareMode ? 12 : 18;
+    const rowGap = (isQuadStack ? 22 : isTripleStack ? 30 : ((isSingleScale || isDoubleStack) ? 40 : 100));
+
+    let canvasWidth: number;
+    let canvasHeight: number;
+
+    if (compareMode) {
+      const maxRowScales = Math.max(...compareRows.map(row => row.scales.length));
+      const requiredWidth = maxRowScales * diagramWidth + (maxRowScales - 1) * spacing + 80;
+      canvasWidth = Math.min(maxCanvasWidth, Math.max(400, requiredWidth));
+      const titleAreaHeight = 210;
+      const rowHeight = diagramHeight + 80;
+      const diagramsHeight = compareRows.length * rowHeight;
+      const customTextHeight = customText.trim() ? 80 : 0;
+      const brandingHeight = 110;
+      const paddingHeight = 80;
+      // Estimate legend height from localStorage
+      let legendItemsCount = 0;
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items)) legendItemsCount = items.length;
+        }
+      } catch {}
+      const legendEstimatedHeight = legendItemsCount > 0 ? legendItemsCount * (16 + 10) + 30 : 0;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + legendEstimatedHeight + brandingHeight + paddingHeight;
+    } else {
+      const rowLayouts = (() => {
+        switch (gridSize) {
+          case 1: return [1];
+          case 2: return isDoubleStack ? [1, 1] : [2];
+          case 3: return isTripleStack ? [1, 1, 1] : [3];
+          case 4: return isQuadStack ? [1, 1, 1, 1] : [4];
+          case 5: return [3, 2];
+          case 6: return [3, 3];
+          case 7: return [4, 3];
+          case 8: return [4, 4];
+          case 9: return [3, 3, 3];
+          case 10: return [4, 3, 3];
+          default: return [4];
+        }
+      })();
+      const maxRowScales = Math.max(...rowLayouts);
+      const requiredWidth = maxRowScales * diagramWidth + (maxRowScales - 1) * spacing + 80;
+      const targetWidth = isStacked ? diagramWidth + 80 : requiredWidth;
+      canvasWidth = Math.min(maxCanvasWidth, Math.max(400, targetWidth));
+      const titleAreaHeight = (isSingleScale || isStacked) ? 140 : 200;
+      const maxRows = Math.max(1, rowLayouts.length);
+      const diagramsHeight = maxRows * (diagramHeight + rowGap);
+      const customTextHeight = customText.trim() ? 80 : 0;
+      const brandingHeight = 110;
+      const paddingHeight = 80;
+      // Estimate legend height from localStorage
+      let legendItemsCount = 0;
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items)) legendItemsCount = items.length;
+        }
+      } catch {}
+      const legendEstimatedHeight = legendItemsCount > 0 ? legendItemsCount * (16 + 10) + 30 : 0;
+      canvasHeight = titleAreaHeight + diagramsHeight + customTextHeight + legendEstimatedHeight + brandingHeight + paddingHeight;
+    }
+
+    // Enforce aspect ratio
+    const targetRatio = squareExport ? 1 : (3 / 2);
+    canvasHeight = Math.round(canvasWidth * targetRatio);
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    // Ensure CSS size matches intrinsic pixel size to avoid aspect skewing
+    canvas.style.width = `${canvasWidth}px`;
+    canvas.style.height = `${canvasHeight}px`;
+
+    // Background
+    if (THEME.background.start === THEME.background.end) {
+      ctx.fillStyle = THEME.background.start;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    } else {
+      const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
+      gradient.addColorStop(0, THEME.background.start);
+      gradient.addColorStop(1, THEME.background.end);
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    }
+
+    // Positioning
+    const upOffset = 25;
+    const titleY = (compareMode ? 70 : 85) - upOffset;
+    const subtitleY = titleY + 60;
+    const diagramsStartY = (compareMode ? 200 : (isQuadStack ? 140 : (isTripleStack ? 150 : ((isSingleScale || isDoubleStack) ? 185 : 260)))) - upOffset;
+
+    // Title
+    ctx.textAlign = 'center';
+    ctx.fillStyle = THEME.colors.title;
+    let titleFontSize = scaleSize(42);
+    let titleFont = `bold italic ${titleFontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    ctx.font = titleFont;
+    const maxTitleWidth = canvasWidth * 0.9;
+    while (ctx.measureText(progressionTitle).width > maxTitleWidth && titleFontSize > scaleSize(24)) {
+      titleFontSize -= 2;
+      titleFont = `bold italic ${titleFontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+      ctx.font = titleFont;
+    }
+    ctx.fillText(progressionTitle, canvasWidth / 2, titleY);
+
+    // Subtitle in compare mode
+    if (compareMode) {
+      const filledSubtitle = compareSubtitle.filter(scale => scale.trim() !== '');
+      if (filledSubtitle.length > 0) {
+        ctx.font = `italic ${scaleSize(28)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillStyle = THEME.colors.subtitle;
+        const subtitleText = filledSubtitle.join(' → ');
+        ctx.fillText(subtitleText, canvasWidth / 2, subtitleY);
+      }
+    }
+
+    if (compareMode) {
+      compareRows.forEach((row, rowIndex) => {
+        const rowY = diagramsStartY + rowIndex * (diagramHeight + 80);
+        ctx.font = `bold italic ${scaleSize(32)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillStyle = THEME.colors.subtitle;
+        ctx.fillText(row.title, canvasWidth / 2, rowY - 20);
+        const rowWidth = compareRowSize * diagramWidth + (compareRowSize - 1) * spacing;
+        const rowStartX = (canvasWidth - rowWidth) / 2;
+        for (let scaleIndex = 0; scaleIndex < compareRowSize; scaleIndex++) {
+          const scale = row.scales[scaleIndex];
+          const x = rowStartX + scaleIndex * (diagramWidth + spacing);
+          const y = rowY;
+          if (scale) {
+            drawScaleDiagram(ctx, scale, x, y, diagramWidth, diagramHeight);
+          } else {
+            drawEmptyScaleDiagram(ctx, x, y, diagramWidth, diagramHeight, `Scale ${scaleIndex + 1}`);
+          }
+        }
+      });
+      const textY = diagramsStartY + compareRows.length * (diagramHeight + 80) + 20;
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items) && items.length > 0) {
+            const swatchSize = 16;
+            const gap = 10;
+            const legendLabelMaxWidth = canvasWidth * 0.35;
+            const legendBlockWidth = swatchSize + 10 + legendLabelMaxWidth;
+            const xLeft = (canvasWidth - legendBlockWidth) / 2;
+            const legendY = textY - 20;
+            let yCursor = legendY;
+            ctx.textAlign = 'left';
+            ctx.font = `${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+            ctx.fillStyle = THEME.colors.title;
+            items.forEach((it) => {
+              ctx.fillStyle = it.color || '#FFFFFF';
+              ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
+              ctx.fillStyle = THEME.colors.title;
+              const labelX = xLeft + swatchSize + 10;
+              const text = (it.label || '').toString();
+              const maxWidth = legendLabelMaxWidth;
+              let display = text;
+              while (ctx.measureText(display).width > maxWidth && display.length > 3) {
+                display = display.slice(0, -2);
+              }
+              if (display !== text) display += '…';
+              ctx.fillText(display, labelX, yCursor + swatchSize - 4);
+              yCursor += swatchSize + gap;
+            });
+          }
+        }
+      } catch {}
+
+      if (customText.trim()) {
+        const customTextY = textY + 120 + customTextYOffset;
+        ctx.font = `${customTextBold ? 'bold ' : ''}${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillStyle = THEME.colors.title;
+        ctx.textAlign = 'center';
+        drawCustomText(ctx, customText, canvasWidth / 2, customTextY, canvasWidth * 0.9, 24);
+      }
+    } else {
+      const rowLayouts = (() => {
+        switch (gridSize) {
+          case 1: return [1];
+          case 2: return isDoubleStack ? [1, 1] : [2];
+          case 3: return isTripleStack ? [1, 1, 1] : [3];
+          case 4: return isQuadStack ? [1, 1, 1, 1] : [4];
+          case 5: return [3, 2];
+          case 6: return [3, 3];
+          case 7: return [4, 3];
+          case 8: return [4, 4];
+          case 9: return [3, 3, 3];
+          case 10: return [4, 3, 3];
+          default: return [4];
+        }
+      })();
+      let currentIndex = 0;
+      const totalSlots = Math.max(1, gridSize);
+      const scalesToRender: (ScaleData | null)[] = Array.from({ length: totalSlots }, (_, i) =>
+        (scales[i] as ScaleData | null) ?? createEmptyScale()
+      );
+      rowLayouts.forEach((rowCount, rowIndex) => {
+        const rowWidth = rowCount * diagramWidth + (rowCount - 1) * spacing;
+        const rowStartX = (canvasWidth - rowWidth) / 2;
+        const headingSpacer = 18;
+        const rowY = diagramsStartY + rowIndex * (diagramHeight + rowGap + headingSpacer);
+        for (let col = 0; col < rowCount && currentIndex < totalSlots; col++) {
+          const scale = scalesToRender[currentIndex];
+          const x = rowStartX + col * (diagramWidth + spacing);
+          const y = rowY;
+          drawScaleDiagram(ctx, scale || createEmptyScale(), x, y, diagramWidth, diagramHeight);
+          currentIndex++;
+        }
+      });
+      const headingSpacer = 18;
+      const textY = diagramsStartY + rowLayouts.length * (diagramHeight + rowGap + headingSpacer) + 20;
+      try {
+        const rawLegend = localStorage.getItem('scaleLegend');
+        if (rawLegend) {
+          const items: Array<{ label: string; color: string }> = JSON.parse(rawLegend);
+          if (Array.isArray(items) && items.length > 0) {
+            const swatchSize = 16;
+            const gap = 10;
+            const legendLabelMaxWidth = canvasWidth * 0.35;
+            const legendBlockWidth = swatchSize + 10 + legendLabelMaxWidth;
+            const xLeft = (canvasWidth - legendBlockWidth) / 2;
+            const legendY = textY - 20;
+            let yCursor = legendY;
+            ctx.textAlign = 'left';
+            ctx.font = `${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+            ctx.fillStyle = THEME.colors.title;
+            items.forEach((it) => {
+              ctx.fillStyle = it.color || '#FFFFFF';
+              ctx.fillRect(xLeft, yCursor, swatchSize, swatchSize);
+              ctx.fillStyle = THEME.colors.title;
+              const labelX = xLeft + swatchSize + 10;
+              const text = (it.label || '').toString();
+              const maxWidth = legendLabelMaxWidth;
+              let display = text;
+              while (ctx.measureText(display).width > maxWidth && display.length > 3) {
+                display = display.slice(0, -2);
+              }
+              if (display !== text) display += '…';
+              ctx.fillText(display, labelX, yCursor + swatchSize - 4);
+              yCursor += swatchSize + gap;
+            });
+          }
+        }
+      } catch {}
+
+      if (customText.trim()) {
+        const customTextY = textY + 120 + customTextYOffset;
+        ctx.font = `${customTextBold ? 'bold ' : ''}${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillStyle = THEME.colors.title;
+        ctx.textAlign = 'center';
+        drawCustomText(ctx, customText, canvasWidth / 2, customTextY, canvasWidth * 0.9, 24);
+      }
+    }
+
+    // Branding footer
+    const footerY = canvasHeight - 50;
+    ctx.font = `bold italic ${scaleSize(24)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = THEME.colors.footerTitle;
+    ctx.fillText('Mike Nelson Guitar Lessons', canvasWidth / 2, footerY);
+    ctx.font = `italic ${scaleSize(18)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+    ctx.fillStyle = THEME.colors.footerSubtitle;
+    ctx.fillText('mikenelsonguitarlessons.co.nz', canvasWidth / 2, footerY + 30);
+  }, [
+    theme,
+    compareMode,
+    gridSize,
+    scales,
+    compareRows,
+    compareRowSize,
+    progressionTitle,
+    compareSubtitle,
+    includeOpenStrings,
+    fretSpan,
+    showNoteNames,
+    stackedLayout,
+    squareExport,
+    textScale,
+    customText,
+    customTextYOffset,
+    customTextBold,
+    labelsXOffset,
+  ]);
+
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       <canvas ref={canvasRef} style={{ display: 'none' }} />
+      {/* Live Preview Panel */}
+      <div className="bg-gray-900 border border-gray-700 rounded-lg p-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-sm text-gray-300">Live Preview</div>
+          <div className="text-xs text-gray-500">{squareExport ? '1:1' : '2:3'} aspect</div>
+        </div>
+        <div className="flex justify-center">
+          <canvas ref={previewCanvasRef} className="block" />
+        </div>
+      </div>
       
       {/* Title */}
       <div>
@@ -1611,6 +1992,20 @@ const ScaleDiagramBuilder: React.FC = () => {
 
       {/* Mode Toggle */}
       <div className="text-center">
+        {/* Theme selector */}
+        <div className="mb-4 flex items-center justify-center gap-2">
+          <span className="text-sm text-gray-300">Theme:</span>
+          <select
+            className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-white"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as ThemeKey)}
+          >
+            <option value="amber">Amber Gradient</option>
+            <option value="light">Light</option>
+            <option value="cardAmber">Card Amber</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
         <button
           onClick={toggleCompareMode}
           className="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition-colors"
@@ -1876,14 +2271,14 @@ const ScaleDiagramBuilder: React.FC = () => {
                         >
                           Paste
                         </button>
-                        {scale && (
-                          <button
-                            onClick={() => clearCompareScale(rowIndex, scaleIndex)}
+                      {scale && (
+                        <button
+                          onClick={() => clearCompareScale(rowIndex, scaleIndex)}
                             className="px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
-                          >
-                            Clear
-                          </button>
-                        )}
+                        >
+                          Clear
+                        </button>
+                      )}
                       </div>
                     </div>
                   );
@@ -1910,7 +2305,7 @@ const ScaleDiagramBuilder: React.FC = () => {
               onDrop={(e) => handleDrop(e, index)}
               onDragEnd={handleDragEnd}
             >
-               <div
+              <div
                 className="bg-gray-800 border-2 border-gray-600 rounded-lg p-4 cursor-pointer hover:border-amber-500 transition-colors h-32 flex items-center justify-center"
                 onClick={() => startEditing(index)}
               >
@@ -1937,14 +2332,14 @@ const ScaleDiagramBuilder: React.FC = () => {
                 >
                   Paste
                 </button>
-                {scale && (
-                  <button
-                    onClick={() => clearScale(index)}
+              {scale && (
+                <button
+                  onClick={() => clearScale(index)}
                     className="px-2 py-1 text-xs bg-red-600 hover:bg-red-700 rounded text-white"
-                  >
-                    Clear
-                  </button>
-                )}
+                >
+                  Clear
+                </button>
+              )}
               </div>
             </div>
           ))}
@@ -2016,4 +2411,4 @@ const ScaleDiagramBuilder: React.FC = () => {
   );
 };
 
-export default ScaleDiagramBuilder;
+export default ScaleDiagramBuilder; 

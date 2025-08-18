@@ -21,18 +21,18 @@ export const amberDarkTheme: ChordRenderTheme = {
   background: { start: '#F59E0B', end: '#D97706' },
   colors: {
     title: '#7C2D12',
-    subtitle: '#FEF3C7',
+    subtitle: '#7C2D12',
     chordName: '#7C2D12',
     fingerFill: '#7C2D12',
     fingerInnerTextPrimary: '#FEF3C7',
     fingerInnerTextSecondary: '#FEF3C7',
-    openMutedText: '#FEF3C7',
+    openMutedText: '#7C2D12',
     mutedX: '#7F1D1D',
     gridStroke: '#92400E',
     accentStroke: '#D97706',
     placeholderText: '#FEF3C7',
-    footerTitle: '#FEF3C7',
-    footerSubtitle: '#FEF3C7',
+    footerTitle: '#7C2D12',
+    footerSubtitle: '#7C2D12',
   },
 };
 

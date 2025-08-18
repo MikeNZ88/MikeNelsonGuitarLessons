@@ -28,13 +28,10 @@ const Footer = () => {
             <h3 className="text-xl font-bold mb-4 font-playfair">Quick Links</h3>
             <div className="space-y-2">
               <Link href="/lessons" className="block hover:text-amber-200 transition-colors">
-                Book a Lesson
+                Lessons & Pricing
               </Link>
               <Link href="/blog" className="block hover:text-amber-200 transition-colors">
-                Guitar Blog
-              </Link>
-              <Link href="/tools" className="block hover:text-amber-200 transition-colors">
-                Tools
+                Free Resources
               </Link>
               <Link href="/about" className="block hover:text-amber-200 transition-colors">
                 About Mike

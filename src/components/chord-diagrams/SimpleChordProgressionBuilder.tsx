@@ -44,10 +44,37 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   const [carouselMode, setCarouselMode] = useState(false);
   // Removed compareRowSize - now using per-row chordsPerRow
   const [customText, setCustomText] = useState('');
+  const [customTextScale, setCustomTextScale] = useState<number>(1.0);
   const [customStrummingLegendText, setCustomStrummingLegendText] = useState('Strumming Pattern Guide:\nA bar lasts for 4 beats\n1 & 2 & 3 & 4 & = Beat counting\nD = Downstroke  •  U = Upstroke\nD/U symbols show strum timing');
   const [customChordLegendText, setCustomChordLegendText] = useState('● = Finger numbers (1,2,3,4) • O = Open string • X = Unplayed or muted string');
   const [showLegends, setShowLegends] = useState<boolean>(true);
   const [showStrummingLegend, setShowStrummingLegend] = useState<boolean>(true);
+  const [legendTextScale, setLegendTextScale] = useState<number>(1.0);
+  // Unified text positioning controls
+  type TextTarget = 'legend' | 'customText' | 'branding' | 'title' | 'subtitle' | 'rowHeadings';
+  const [selectedTextTarget, setSelectedTextTarget] = useState<TextTarget>('legend');
+  // Per-target offsets (X,Y)
+  const [legendOffsetX, setLegendOffsetX] = useState<number>(0);
+  const [customTextOffsetX, setCustomTextOffsetX] = useState<number>(0);
+  const [brandOffsetX, setBrandOffsetX] = useState<number>(0);
+  const [brandOffsetY, setBrandOffsetY] = useState<number>(0);
+  const [brandTextScale, setBrandTextScale] = useState<number>(1.0);
+  const [titleOffsetX, setTitleOffsetX] = useState<number>(0);
+  const [titleOffsetY, setTitleOffsetY] = useState<number>(0);
+  const [titleScale, setTitleScale] = useState<number>(1.0);
+  const [subtitleOffsetX, setSubtitleOffsetX] = useState<number>(0);
+  const [subtitleOffsetY, setSubtitleOffsetY] = useState<number>(0);
+  const [subtitleScale, setSubtitleScale] = useState<number>(1.0);
+  const [rowHeadingOffsetX, setRowHeadingOffsetX] = useState<number>(0);
+  const [rowHeadingOffsetY, setRowHeadingOffsetY] = useState<number>(0);
+  const [rowHeadingScale, setRowHeadingScale] = useState<number>(1.0);
+  // Alignments
+  type Align = CanvasTextAlign;
+  const [titleAlign, setTitleAlign] = useState<Align>('center');
+  const [subtitleAlign, setSubtitleAlign] = useState<Align>('center');
+  const [rowHeadingAlign, setRowHeadingAlign] = useState<Align>('center');
+  const [customTextAlign, setCustomTextAlign] = useState<Align>('center');
+  const [legendAlign, setLegendAlign] = useState<Align>('left');
   const [showStrumDirections, setShowStrumDirections] = useState<boolean>(true);
   const [centerLegendText, setCenterLegendText] = useState<boolean>(false);
   const [legendsSideBySide, setLegendsSideBySide] = useState<boolean>(false); // Place strumming legend to right of chord legend
@@ -96,13 +123,17 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const srcH = baseCanvas.height;
     const ctx = preview.getContext('2d');
     if (!ctx || srcW === 0 || srcH === 0) return;
-    // Set preview canvas backing size to match CSS size
-    const cssW = Math.max(256, Math.min(512, srcW));
-    const cssH = Math.max(256, Math.min(512, srcH));
+    // Fixed preview size that preserves aspect ratio (do not auto-resize)
+    const cssW = 512;
+    const cssH = (aspectRatio === 'portrait') ? Math.round((cssW * 3) / 2) : cssW;
+    // Set backing pixel size to match CSS for crisp scaling
     preview.width = cssW;
     preview.height = cssH;
     ctx.clearRect(0, 0, cssW, cssH);
     ctx.drawImage(baseCanvas, 0, 0, srcW, srcH, 0, 0, cssW, cssH);
+    // Sync CSS size so layout matches the aspect ratio
+    preview.style.width = `${cssW}px`;
+    preview.style.height = `${cssH}px`;
   };
 
   // Keep live preview in sync with key changes
@@ -333,12 +364,35 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       globalStrummingPatterns,
       // Persist independent offsets; keep legacy field for backward compat when loading
       legendOffset,
+      legendOffsetX,
       globalPatternsOffset,
       customTextOffset,
+      customTextOffsetX,
       legendsSideBySide,
       normalRowOffsets,
       compareRowOffsets,
       brandAlign,
+      brandUnderTitle,
+      brandOffsetX,
+      brandOffsetY,
+      brandTextScale,
+      legendTextScale,
+      textScale,
+      customTextScale,
+      titleOffsetX,
+      titleOffsetY,
+      titleScale,
+      subtitleOffsetX,
+      subtitleOffsetY,
+      subtitleScale,
+      rowHeadingOffsetX,
+      rowHeadingOffsetY,
+      rowHeadingScale,
+      titleAlign,
+      subtitleAlign,
+      rowHeadingAlign,
+      customTextAlign,
+      legendAlign,
       showNoteNames,
       carouselTitle,
       carouselSlides,
@@ -387,6 +441,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.customChordLegendText) {
             setCustomChordLegendText(progressionData.customChordLegendText);
           }
+          if (progressionData.legendOffsetX !== undefined) setLegendOffsetX(progressionData.legendOffsetX);
           if (progressionData.centerLegendText !== undefined) {
             setCenterLegendText(progressionData.centerLegendText);
           }
@@ -410,6 +465,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.legendOffset !== undefined) setLegendOffset(progressionData.legendOffset);
           if (progressionData.globalPatternsOffset !== undefined) setGlobalPatternsOffset(progressionData.globalPatternsOffset);
           if (progressionData.customTextOffset !== undefined) setCustomTextOffset(progressionData.customTextOffset);
+          if (progressionData.customTextOffsetX !== undefined) setCustomTextOffsetX(progressionData.customTextOffsetX);
           // Back-compat: old single offset applied to all three
           if (progressionData.strummingTextOffset !== undefined) {
             setLegendOffset(progressionData.strummingTextOffset);
@@ -425,7 +481,28 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.normalRowOffsets) setNormalRowOffsets(progressionData.normalRowOffsets);
           if (progressionData.compareRowOffsets) setCompareRowOffsets(progressionData.compareRowOffsets);
           if (progressionData.brandAlign) setBrandAlign(progressionData.brandAlign);
+          if (progressionData.brandUnderTitle !== undefined) setBrandUnderTitle(progressionData.brandUnderTitle);
+          if (progressionData.brandOffsetX !== undefined) setBrandOffsetX(progressionData.brandOffsetX);
+          if (progressionData.brandOffsetY !== undefined) setBrandOffsetY(progressionData.brandOffsetY);
+          if (progressionData.brandTextScale !== undefined) setBrandTextScale(progressionData.brandTextScale);
+          if (progressionData.legendTextScale !== undefined) setLegendTextScale(progressionData.legendTextScale);
+          if (progressionData.titleOffsetX !== undefined) setTitleOffsetX(progressionData.titleOffsetX);
+          if (progressionData.titleOffsetY !== undefined) setTitleOffsetY(progressionData.titleOffsetY);
+          if (progressionData.titleScale !== undefined) setTitleScale(progressionData.titleScale);
+          if (progressionData.subtitleOffsetX !== undefined) setSubtitleOffsetX(progressionData.subtitleOffsetX);
+          if (progressionData.subtitleOffsetY !== undefined) setSubtitleOffsetY(progressionData.subtitleOffsetY);
+          if (progressionData.subtitleScale !== undefined) setSubtitleScale(progressionData.subtitleScale);
+          if (progressionData.rowHeadingOffsetX !== undefined) setRowHeadingOffsetX(progressionData.rowHeadingOffsetX);
+          if (progressionData.rowHeadingOffsetY !== undefined) setRowHeadingOffsetY(progressionData.rowHeadingOffsetY);
+          if (progressionData.rowHeadingScale !== undefined) setRowHeadingScale(progressionData.rowHeadingScale);
+          if (progressionData.titleAlign) setTitleAlign(progressionData.titleAlign as CanvasTextAlign);
+          if (progressionData.subtitleAlign) setSubtitleAlign(progressionData.subtitleAlign as CanvasTextAlign);
+          if (progressionData.rowHeadingAlign) setRowHeadingAlign(progressionData.rowHeadingAlign as CanvasTextAlign);
+          if (progressionData.customTextAlign) setCustomTextAlign(progressionData.customTextAlign as CanvasTextAlign);
+          if (progressionData.legendAlign) setLegendAlign(progressionData.legendAlign as CanvasTextAlign);
           if (progressionData.carouselSlides) setCarouselSlides(progressionData.carouselSlides);
+          if (progressionData.textScale !== undefined) setTextScale(progressionData.textScale);
+          if (progressionData.customTextScale !== undefined) setCustomTextScale(progressionData.customTextScale);
           if (progressionData.showNoteNames !== undefined) setShowNoteNames(progressionData.showNoteNames);
           if (progressionData.carouselTitle !== undefined) setCarouselTitle(progressionData.carouselTitle);
           
@@ -621,13 +698,13 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   // Draw chord diagram legend
   const drawChordLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, maxWidth?: number, hideHeading?: boolean, align: CanvasTextAlign = 'left') => {
     // Legend sizing (respect textScale and Adaptive 2:3 bump)
-    const baseLegend = aspectRatio === 'portrait' ? 18 : 14;
+    const baseLegend = (aspectRatio === 'portrait' ? 18 : 14) * legendTextScale;
     const bumpedLegend = adaptivePortrait ? Math.round(baseLegend * 1.15) : baseLegend;
     const fontSize = scaleSize(bumpedLegend);
     const lineSpacing = Math.round(fontSize * 1.33);
     
     ctx.font = `italic ${fontSize}px "Poppins", sans-serif`;
-    ctx.fillStyle = THEME.colors.chordName; // Dark amber
+    ctx.fillStyle = theme.colors.chordName; // Dark amber
     ctx.textAlign = align;
     
     // Check if progression uses thumb (T finger)
@@ -730,12 +807,12 @@ const SimpleChordProgressionBuilder: React.FC = () => {
   // Draw strumming pattern legend
   const drawStrummingLegend = (ctx: CanvasRenderingContext2D, x: number, y: number, customTwoBarsText?: string, maxWidth?: number, hideHeading?: boolean, align: CanvasTextAlign = 'left') => {
     // Legend sizing (respect textScale and Adaptive 2:3 bump)
-    const baseLegend2 = aspectRatio === 'portrait' ? 18 : 14;
+    const baseLegend2 = (aspectRatio === 'portrait' ? 18 : 14) * legendTextScale;
     const bumpedLegend2 = adaptivePortrait ? Math.round(baseLegend2 * 1.15) : baseLegend2;
     const fontSize = scaleSize(bumpedLegend2);
     const lineSpacing = Math.round(fontSize * 1.33);
     
-    ctx.fillStyle = THEME.colors.gridStroke;
+    ctx.fillStyle = theme.colors.gridStroke;
     ctx.textAlign = align;
     
     // Use custom legend text (now contains complete legend)
@@ -800,7 +877,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Custom text uses same scheme as legends
     const baseLegend3 = aspectRatio === 'portrait' ? 18 : 14;
     const bumpedLegend3 = adaptivePortrait ? Math.round(baseLegend3 * 1.15) : baseLegend3;
-    const fontSize = scaleSize(bumpedLegend3);
+    const fontSize = scaleSize(Math.round(bumpedLegend3 * (customTextScale ?? 1)));
     
     // Define font styles
     const regularFont = `italic ${fontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
@@ -895,7 +972,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     // Draw text with formatting
     // Note: textAlign is set by the caller, don't override it here
-    ctx.fillStyle = THEME.colors.chordName; // Dark amber text to match chord names
+    ctx.fillStyle = theme.colors.chordName; // Dark amber text to match chord names
     
     finalLines.forEach((line, lineIndex) => {
       if (line.length === 0) return; // Skip empty lines
@@ -1110,8 +1187,8 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Create gradient background
     const gradient = ctx.createLinearGradient(0, 0, 0, canvasHeight);
-    gradient.addColorStop(0, THEME.background.start); // Amber
-    gradient.addColorStop(1, THEME.background.end); // Dark amber
+    gradient.addColorStop(0, theme.background.start); // Amber
+    gradient.addColorStop(1, theme.background.end); // Dark amber
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
@@ -1123,11 +1200,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const diagramsStartY = compareMode ? (aspectRatio === 'portrait' ? 200 : 160) : (aspectRatio === 'portrait' ? 220 : 180); // More space in portrait
 
     // Draw title with dynamic sizing to prevent cut-off
-    ctx.textAlign = 'center';
-    ctx.fillStyle = THEME.colors.title;
+    ctx.textAlign = titleAlign;
+    ctx.fillStyle = theme.colors.title;
     
     // Start with base font size and reduce if text is too wide
-    let titleFontSize = scaleSize(42);
+    let titleFontSize = Math.round(scaleSize(42) * titleScale);
     let titleFont = `bold italic ${titleFontSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
     ctx.font = titleFont;
     
@@ -1138,7 +1215,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       ctx.font = titleFont;
     }
     
-    ctx.fillText(progressionTitle, canvasWidth / 2, titleY);
+    ctx.fillText(progressionTitle, canvasWidth / 2 + titleOffsetX, titleY + titleOffsetY);
 
     // Per-row subtitles are now drawn within each row section
 
@@ -1153,19 +1230,19 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           currentSubRowY += 30;
         }
         // Draw row title
-        ctx.font = `bold italic ${scaleSize(28)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-        ctx.fillStyle = THEME.colors.subtitle;
-        ctx.fillText(row.title, canvasWidth / 2, currentSubRowY + rowLift - 45);
+        ctx.font = `bold italic ${Math.round(scaleSize(28) * rowHeadingScale)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.fillStyle = theme.colors.subtitle;
+        ctx.fillText(row.title, canvasWidth / 2 + rowHeadingOffsetX, currentSubRowY + rowLift - 45 + rowHeadingOffsetY);
         
         // Draw row subtitle if it exists
         const rowSubtitle = compareSubtitles[rowIndex];
         if (rowSubtitle) {
           const filledSubtitle = rowSubtitle.filter(chord => chord.trim() !== '');
           if (filledSubtitle.length > 0) {
-            ctx.font = `italic ${scaleSize(20)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
-            ctx.fillStyle = THEME.colors.subtitle;
+            ctx.font = `italic ${Math.round(scaleSize(20) * subtitleScale)}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+            ctx.fillStyle = theme.colors.subtitle;
             const subtitleText = filledSubtitle.join(' → ');
-            ctx.fillText(subtitleText, canvasWidth / 2, currentSubRowY + rowLift - 20);
+            ctx.fillText(subtitleText, canvasWidth / 2 + subtitleOffsetX, currentSubRowY + rowLift - 20 + subtitleOffsetY);
           }
         }
         
@@ -1306,11 +1383,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       // Draw legends if enabled
       if (showLegends && hasAnyChords()) {
         const isCentered = legendsSideBySide || centerLegendText;
-        const legendX = centerLegendText && !legendsSideBySide
+        const legendX = (centerLegendText && !legendsSideBySide
           ? canvasWidth / 2
           : legendsSideBySide
             ? leftColumnX + leftColumnWidth / 2
-            : leftColumnX;
+            : leftColumnX) + legendOffsetX;
         const legendWidth = centerLegendText && !legendsSideBySide
           ? Math.floor(canvasWidth * 0.8)
           : leftColumnWidth;
@@ -1331,7 +1408,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           // Draw strumming legend to the right of chord legend
           drawStrummingLegend(
             ctx,
-            rightColumnX + rightColumnWidth / 2,
+            rightColumnX + rightColumnWidth / 2 + legendOffsetX,
             textAreaY + legendOffset,
             customStrummingLegendText,
             rightColumnWidth,
@@ -1342,7 +1419,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         } else {
           // Draw strumming legend below chord legend
           const isCentered = centerLegendText;
-          const legendX = isCentered ? canvasWidth / 2 : leftColumnX;
+          const legendX = (legendAlign==='center' ? canvasWidth / 2 : legendAlign==='right' ? canvasWidth - leftColumnX : leftColumnX) + legendOffsetX;
           const legendWidth = isCentered ? Math.floor(canvasWidth * 0.8) : leftColumnWidth;
           drawStrummingLegend(
             ctx,
@@ -1351,7 +1428,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             customStrummingLegendText,
             legendWidth,
             true,
-            isCentered ? 'center' : 'left'
+            legendAlign
           );
           currentY += 70; // reserve space below legend
         }
@@ -1372,11 +1449,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       // Draw custom text: always center it for better layout
       if (customText.trim()) {
-        ctx.textAlign = 'center';
+        ctx.textAlign = customTextAlign;
         drawCustomText(
           ctx,
           customText,
-          canvasWidth / 2,
+          (customTextAlign==='center' ? canvasWidth/2 : customTextAlign==='right' ? canvasWidth - leftColumnX : leftColumnX) + customTextOffsetX,
           currentY + 6 + customTextOffset,
           Math.floor(canvasWidth * 0.8),
           27
@@ -1388,7 +1465,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const filledChords = chords.filter(chord => chord !== null) as ChordData[];
       if (filledChords.length > 0) {
         ctx.font = 'italic 32px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-        ctx.fillStyle = THEME.colors.subtitle;
+        ctx.fillStyle = theme.colors.subtitle;
         const chordNames = filledChords.map(c => c.name).join(' → ');
         
         // Check if text fits on one line
@@ -1498,11 +1575,11 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       
       if (hasAnyChords()) {
         const isCentered = legendsSideBySide || centerLegendText;
-        const legendX = centerLegendText && !legendsSideBySide
+        const legendX = (centerLegendText && !legendsSideBySide
           ? canvasWidth / 2
           : legendsSideBySide
             ? leftColumnX + leftColumnWidth / 2
-            : leftColumnX;
+            : leftColumnX) + legendOffsetX;
         const legendWidth = centerLegendText && !legendsSideBySide
           ? Math.floor(canvasWidth * 0.8)
           : leftColumnWidth;
@@ -1523,7 +1600,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           // Draw strumming legend to the right of chord legend
           drawStrummingLegend(
             ctx,
-            rightColumnX + rightColumnWidth / 2,
+            rightColumnX + rightColumnWidth / 2 + legendOffsetX,
             textAreaY + legendOffset,
             customStrummingLegendText,
             rightColumnWidth,
@@ -1534,7 +1611,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         } else {
           // Draw strumming legend below chord legend
           const isCentered = centerLegendText;
-          const legendX = isCentered ? canvasWidth / 2 : leftColumnX;
+          const legendX = (isCentered ? canvasWidth / 2 : leftColumnX) + legendOffsetX;
           const legendWidth = isCentered ? Math.floor(canvasWidth * 0.8) : leftColumnWidth;
           drawStrummingLegend(
             ctx,
@@ -1568,7 +1645,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         drawCustomText(
           ctx,
           customText,
-          canvasWidth / 2,
+          canvasWidth / 2 + customTextOffsetX,
           currentY + 6 + customTextOffset,
           Math.floor(canvasWidth * 0.8),
           27
@@ -1579,14 +1656,16 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Branding placement: either under title or as footer
     const drawBranding = (x: number, y: number, align: CanvasTextAlign) => {
-      ctx.font = 'bold italic 22px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+      const titleSize = Math.round(22 * brandTextScale);
+      const subSize = Math.round(20 * brandTextScale);
+      ctx.font = `bold italic ${titleSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
       ctx.textAlign = align;
-      ctx.fillStyle = THEME.colors.footerTitle;
-      ctx.fillText('Mike Nelson Guitar Lessons', x, y);
-      ctx.font = 'italic 20px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+      ctx.fillStyle = theme.colors.footerTitle;
+      ctx.fillText('Mike Nelson Guitar Lessons', x + brandOffsetX, y + brandOffsetY);
+      ctx.font = `italic ${subSize}px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
       ctx.textAlign = align;
-      ctx.fillStyle = THEME.colors.footerSubtitle;
-      ctx.fillText('mikenelsonguitarlessons.co.nz', x, y + 25);
+      ctx.fillStyle = theme.colors.footerSubtitle;
+      ctx.fillText('mikenelsonguitarlessons.co.nz', x + brandOffsetX, y + 25 + brandOffsetY);
     };
 
     if (brandUnderTitle) {
@@ -1745,14 +1824,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const patternStartX = diagramCenterX - totalWidth / 2;
     
     // Draw border around the pattern
-    ctx.strokeStyle = THEME.colors.gridStroke;
+    ctx.strokeStyle = theme.colors.gridStroke;
     ctx.lineWidth = 2;
     ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
     
     // Draw beat labels row
     ctx.font = `bold ${scaleSize(12)}px "Poppins", sans-serif`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = THEME.colors.chordName;
+    ctx.fillStyle = theme.colors.chordName;
     
     for (let i = 0; i < visibleLabels.length; i++) {
       const cellX = patternStartX + i * cellWidth;
@@ -1778,7 +1857,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     
     // Draw strumming row
     ctx.font = `bold ${scaleSize(16)}px "Poppins", sans-serif`;
-    ctx.fillStyle = THEME.colors.subtitle; // Light amber for strums
+    ctx.fillStyle = theme.colors.subtitle; // Light amber for strums
     
     for (let i = 0; i < visibleBeats.length; i++) {
       const beat = visibleBeats[i];
@@ -1815,7 +1894,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const patternStartY = y;
 
     // Border
-    ctx.strokeStyle = THEME.colors.gridStroke;
+    ctx.strokeStyle = theme.colors.gridStroke;
     ctx.lineWidth = 2;
     ctx.strokeRect(patternStartX, patternStartY, totalWidth, patternHeight);
 
@@ -1823,7 +1902,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     ctx.font = `bold ${scaleSize(18)}px "Poppins", sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = THEME.colors.chordName;
+    ctx.fillStyle = theme.colors.chordName;
     for (let i = 0; i < visibleLabels.length; i++) {
       const cellX = patternStartX + i * cellWidth;
       const labelY = patternStartY + labelRowHeight / 2;
@@ -1844,7 +1923,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
 
     // Strums
     ctx.font = `bold ${scaleSize(24)}px "Poppins", sans-serif`;
-    ctx.fillStyle = THEME.colors.subtitle;
+    ctx.fillStyle = theme.colors.subtitle;
     for (let i = 0; i < visibleBeats.length; i++) {
       const beat = visibleBeats[i];
       if (beat) {
@@ -1871,7 +1950,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Skip section title per request
     globalStrummingPatterns.forEach((p, idx) => {
       // Name centered
-      ctx.fillStyle = THEME.colors.subtitle;
+      ctx.fillStyle = theme.colors.subtitle;
       ctx.font = `bold ${scaleSize(22)}px "Poppins", sans-serif`;
       ctx.textAlign = 'center';
       // Remove numeric prefix from pattern names per request
@@ -1922,7 +2001,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     }
     ctx.textAlign = 'center';
     const diagramCenterX = diagramStartX + (5 * stringSpacing) / 2; // Center of the 6-string diagram
-    ctx.fillStyle = THEME.colors.chordName; // Same color as finger positions
+    ctx.fillStyle = theme.colors.chordName; // Same color as finger positions
     ctx.fillText(chord.name, diagramCenterX, y + 20); // Moved higher to avoid overlap with open/muted strings
 
     // Draw fret number (only if greater than 1) to the left of first fret
@@ -1930,17 +2009,17 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       ctx.font = 'italic 22px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
       ctx.textAlign = 'right';
       // Draw stroke first (thicker and darker amber)
-      ctx.strokeStyle = THEME.colors.accentStroke;
+      ctx.strokeStyle = theme.colors.accentStroke;
       ctx.lineWidth = 3;
       ctx.strokeText(chord.fretNumber.toString(), diagramStartX - 15, diagramStartY + fretSpacing * 0.5);
       // Draw fill on top
-      ctx.fillStyle = THEME.colors.chordName;
+      ctx.fillStyle = theme.colors.chordName;
       ctx.fillText(chord.fretNumber.toString(), diagramStartX - 15, diagramStartY + fretSpacing * 0.5);
       ctx.textAlign = 'center'; // Reset text align
     }
 
     // Draw fret lines
-    ctx.strokeStyle = THEME.colors.gridStroke;
+    ctx.strokeStyle = theme.colors.gridStroke;
     ctx.lineWidth = 3;
     for (let fret = 0; fret <= fretCount; fret++) {
       const fretY = diagramStartY + fret * fretSpacing;
@@ -1963,7 +2042,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     // Draw barre lines first (behind finger circles)
     if (globalShowFingering) {
       const barreLines = getBarreLinesForChord(chord);
-      ctx.strokeStyle = THEME.colors.fingerFill;
+      ctx.strokeStyle = theme.colors.fingerFill;
       ctx.lineWidth = 8;
       ctx.lineCap = 'round';
       
@@ -1980,7 +2059,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     }
 
     // Draw finger positions
-    ctx.fillStyle = THEME.colors.fingerFill;
+    ctx.fillStyle = theme.colors.fingerFill;
     // Optional note-name rendering support (EADGBE; 1 = low E)
     const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
     const stringBaseSemitones = [4, 9, 2, 7, 11, 4];
@@ -2001,17 +2080,17 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       // Draw label inside dot: note names (if enabled) else finger number (if enabled)
       if (showNoteNames) {
         const note = getNoteName(pos.string, pos.fret);
-        ctx.fillStyle = THEME.colors.fingerInnerTextSecondary;
+        ctx.fillStyle = theme.colors.fingerInnerTextSecondary;
         ctx.font = 'bold 13px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(note, fingerX, fingerY + 4);
-        ctx.fillStyle = THEME.colors.chordName;
+        ctx.fillStyle = theme.colors.chordName;
       } else if (globalShowFingering && pos.finger) {
-        ctx.fillStyle = THEME.colors.fingerInnerTextSecondary;
+        ctx.fillStyle = theme.colors.fingerInnerTextSecondary;
         ctx.font = 'bold 14px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(pos.finger.toString(), fingerX, fingerY + 4);
-        ctx.fillStyle = THEME.colors.chordName; // Reset color for next circle
+        ctx.fillStyle = theme.colors.chordName; // Reset color for next circle
       }
     });
 
@@ -2023,10 +2102,10 @@ const SimpleChordProgressionBuilder: React.FC = () => {
       const stringY = diagramStartY - 15;
       
       if (chord.openStrings.includes(string)) {
-        ctx.fillStyle = THEME.colors.openMutedText; // Use open/muted color
+        ctx.fillStyle = theme.colors.openMutedText; // Use open/muted color
         ctx.fillText('O', stringX, stringY);
       } else if (chord.mutedStrings.includes(string)) {
-        ctx.fillStyle = THEME.colors.mutedX;
+        ctx.fillStyle = theme.colors.mutedX;
         ctx.fillText('X', stringX, stringY);
       }
     }
@@ -2040,14 +2119,14 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     const diagramStartY = y + 60;
 
     // Draw placeholder text (centered above the diagram)
-    ctx.fillStyle = THEME.colors.placeholderText;
+    ctx.fillStyle = theme.colors.placeholderText;
     ctx.font = 'italic 24px "Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
     ctx.textAlign = 'center';
     const diagramCenterX = diagramStartX + (5 * stringSpacing) / 2; // Center of the 6-string diagram
     ctx.fillText(placeholder, diagramCenterX, y + 20); // Moved higher to match chord names
 
     // Draw light fret lines
-    ctx.strokeStyle = THEME.colors.subtitle;
+    ctx.strokeStyle = theme.colors.subtitle;
     ctx.lineWidth = 1;
     for (let fret = 0; fret <= 4; fret++) {
       const fretY = diagramStartY + fret * fretSpacing;
@@ -2071,15 +2150,155 @@ const SimpleChordProgressionBuilder: React.FC = () => {
     <div className="max-w-6xl mx-auto p-6 bg-gray-900 text-white font-sans">
       <h1 className="text-3xl font-bold italic text-center mb-8" style={{ fontFamily: '"Poppins", "Nunito", "Circular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>Simple Chord Progression Builder</h1>
       
-      {/* Controls */}
-      <div className="mb-8 space-y-4">
-        {/* Live Preview (matches export; read-only) */}
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-          <div className="text-sm text-gray-400 mb-2">Live Preview</div>
-          <div className="flex justify-center">
-            <canvas ref={previewCanvasRef} style={{ width: 512, height: 512, maxWidth: '100%' }} />
+      {/* Three-column quick panel: controls → live preview → controls (desktop), stacks on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_560px_1fr] gap-6 mb-8 items-start">
+        {/* Left quick controls */}
+        <div className="space-y-4">
+          {/* (Removed duplicate Text size and Theme controls) */}
+          {/* Toggles */}
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2"><input type="checkbox" checked={pluckMode} onChange={(e) => setPluckMode(e.target.checked)} /><span className="text-sm">Pluck mode</span></label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={showNoteNames} onChange={(e) => setShowNoteNames(e.target.checked)} /><span className="text-sm">Show note names</span></label>
+          </div>
+          {/* Branding alignment */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">Branding:</span>
+              <div className="inline-flex bg-gray-700 rounded overflow-hidden">
+                {(['left','center','right'] as const).map(opt => (
+                  <button key={opt} onClick={() => setBrandAlign(opt)} className={`px-3 py-1 ${brandAlign === opt ? 'bg-amber-600 text-white' : 'text-gray-200 hover:bg-gray-600'}`}>{opt}</button>
+                ))}
+              </div>
+            </div>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={brandUnderTitle} onChange={(e) => setBrandUnderTitle(e.target.checked)} /><span className="text-sm">Under title</span></label>
           </div>
         </div>
+
+        {/* Center: Live preview */}
+        <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 overflow-hidden">
+          <div className="text-sm text-gray-400 mb-2">Live Preview</div>
+          <div className="flex justify-center">
+            <canvas ref={previewCanvasRef} style={{ width: 512, height: 'auto', display: 'block' }} />
+          </div>
+        </div>
+
+        {/* Right quick controls */}
+        <div className="space-y-4">
+          {/* Show/Hide legends (single source of truth) */}
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2"><input type="checkbox" checked={showLegends} onChange={(e) => setShowLegends(e.target.checked)} /><span className="text-sm">Show legends</span></label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={showStrummingLegend} onChange={(e) => setShowStrummingLegend(e.target.checked)} /><span className="text-sm">Strumming legend</span></label>
+          </div>
+          {/* Unified text controls */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-300 w-40">Selected text:</span>
+              <select value={selectedTextTarget} onChange={(e)=>setSelectedTextTarget(e.target.value as TextTarget)} className="px-2 py-1 bg-gray-800 border border-gray-600 rounded text-sm">
+                <option value="legend">Legend text</option>
+                <option value="customText">Custom text</option>
+                <option value="branding">Logo + URL</option>
+                <option value="title">Main title</option>
+                <option value="subtitle">Subtitle</option>
+                <option value="rowHeadings">Row headings</option>
+              </select>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-300 w-40">Alignment:</span>
+              {(['left','center','right'] as const).map(al => (
+                <button key={al} onClick={()=>{
+                  if (selectedTextTarget==='title') setTitleAlign(al);
+                  else if (selectedTextTarget==='subtitle') setSubtitleAlign(al);
+                  else if (selectedTextTarget==='rowHeadings') setRowHeadingAlign(al);
+                  else if (selectedTextTarget==='customText') setCustomTextAlign(al);
+                  else setLegendAlign(al);
+                }} className={`px-3 py-1 rounded ${(
+                  selectedTextTarget==='title' ? titleAlign===al : selectedTextTarget==='subtitle' ? subtitleAlign===al : selectedTextTarget==='rowHeadings' ? rowHeadingAlign===al : selectedTextTarget==='customText' ? customTextAlign===al : legendAlign===al
+                ) ? 'bg-amber-600 text-white':'bg-gray-700 hover:bg-gray-600'}`}>{al}</button>
+              ))}
+            </div>
+            {/* Joystick-like position controls */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-300 w-40">Position:</span>
+              <div className="flex items-center gap-2">
+                <button onClick={()=>{
+                  if (selectedTextTarget==='legend') setLegendOffsetX(v=>v-10);
+                  else if (selectedTextTarget==='customText') setCustomTextOffsetX(v=>v-10);
+                  else if (selectedTextTarget==='branding') setBrandOffsetX(v=>v-10);
+                  else if (selectedTextTarget==='title') setTitleOffsetX(v=>v-10);
+                  else if (selectedTextTarget==='subtitle') setSubtitleOffsetX(v=>v-10);
+                  else setRowHeadingOffsetX(v=>v-10);
+                }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">◀</button>
+                <button onClick={()=>{
+                  if (selectedTextTarget==='legend') setLegendOffset(v=>v-10);
+                  else if (selectedTextTarget==='customText') setCustomTextOffset(v=>v-10);
+                  else if (selectedTextTarget==='branding') setBrandOffsetY(v=>v-10);
+                  else if (selectedTextTarget==='title') setTitleOffsetY(v=>v-10);
+                  else if (selectedTextTarget==='subtitle') setSubtitleOffsetY(v=>v-10);
+                  else setRowHeadingOffsetY(v=>v-10);
+                }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">▲</button>
+                <button onClick={()=>{
+                  if (selectedTextTarget==='legend') setLegendOffset(v=>v+10);
+                  else if (selectedTextTarget==='customText') setCustomTextOffset(v=>v+10);
+                  else if (selectedTextTarget==='branding') setBrandOffsetY(v=>v+10);
+                  else if (selectedTextTarget==='title') setTitleOffsetY(v=>v+10);
+                  else if (selectedTextTarget==='subtitle') setSubtitleOffsetY(v=>v+10);
+                  else setRowHeadingOffsetY(v=>v+10);
+                }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">▼</button>
+                <button onClick={()=>{
+                  if (selectedTextTarget==='legend') setLegendOffsetX(v=>v+10);
+                  else if (selectedTextTarget==='customText') setCustomTextOffsetX(v=>v+10);
+                  else if (selectedTextTarget==='branding') setBrandOffsetX(v=>v+10);
+                  else if (selectedTextTarget==='title') setTitleOffsetX(v=>v+10);
+                  else if (selectedTextTarget==='subtitle') setSubtitleOffsetX(v=>v+10);
+                  else setRowHeadingOffsetX(v=>v+10);
+                }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">▶</button>
+                <button onClick={()=>{
+                  if (selectedTextTarget==='legend'){ setLegendOffset(0); setLegendOffsetX(0); }
+                  else if (selectedTextTarget==='customText'){ setCustomTextOffset(0); setCustomTextOffsetX(0); }
+                  else if (selectedTextTarget==='branding'){ setBrandOffsetX(0); setBrandOffsetY(0); }
+                  else if (selectedTextTarget==='title'){ setTitleOffsetX(0); setTitleOffsetY(0); setTitleScale(1.0); }
+                  else if (selectedTextTarget==='subtitle'){ setSubtitleOffsetX(0); setSubtitleOffsetY(0); setSubtitleScale(1.0); }
+                  else { setRowHeadingOffsetX(0); setRowHeadingOffsetY(0); setRowHeadingScale(1.0); }
+                }} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+              </div>
+            </div>
+            {/* Unified size control */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-300 w-40">Text size:</span>
+              <button onClick={()=>{
+                if (selectedTextTarget==='legend') setLegendTextScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+                else if (selectedTextTarget==='customText') setCustomTextScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+                else if (selectedTextTarget==='branding') setBrandTextScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+                else if (selectedTextTarget==='title') setTitleScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+                else if (selectedTextTarget==='subtitle') setSubtitleScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+                else setRowHeadingScale(s=>Math.max(0.6, parseFloat((s-0.05).toFixed(2))));
+              }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+              <span className="w-16 text-center text-gray-200">{
+                Math.round((selectedTextTarget==='legend' ? legendTextScale : selectedTextTarget==='customText' ? customTextScale : selectedTextTarget==='branding' ? brandTextScale : selectedTextTarget==='title' ? titleScale : selectedTextTarget==='subtitle' ? subtitleScale : rowHeadingScale) * 100)
+              }%</span>
+              <button onClick={()=>{
+                if (selectedTextTarget==='legend') setLegendTextScale(s=>Math.min(1.8, parseFloat((s+0.05).toFixed(2))));
+                else if (selectedTextTarget==='customText') setCustomTextScale(s=>Math.min(2.0, parseFloat((s+0.05).toFixed(2))));
+                else if (selectedTextTarget==='branding') setBrandTextScale(s=>Math.min(1.8, parseFloat((s+0.05).toFixed(2))));
+                else if (selectedTextTarget==='title') setTitleScale(s=>Math.min(2.0, parseFloat((s+0.05).toFixed(2))));
+                else if (selectedTextTarget==='subtitle') setSubtitleScale(s=>Math.min(2.0, parseFloat((s+0.05).toFixed(2))));
+                else setRowHeadingScale(s=>Math.min(2.0, parseFloat((s+0.05).toFixed(2))));
+              }} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+              <button onClick={()=>{
+                if (selectedTextTarget==='legend') setLegendTextScale(1.0);
+                else if (selectedTextTarget==='customText') setCustomTextScale(1.0);
+                else if (selectedTextTarget==='branding') setBrandTextScale(1.0);
+                else if (selectedTextTarget==='title') setTitleScale(1.0);
+                else if (selectedTextTarget==='subtitle') setSubtitleScale(1.0);
+                else setRowHeadingScale(1.0);
+              }} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Controls */}
+      <div className="mb-8 space-y-4">
         {/* Text size controls */}
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-300">Text size:</span>
@@ -2103,7 +2322,7 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             Reset
           </button>
         </div>
-        {/* Theme selector */}
+        {/* Theme selector moved here (top) */}
         <div className="flex items-center gap-3">
           <span className="text-sm">Theme:</span>
           <div className="inline-flex bg-gray-700 rounded overflow-hidden">
@@ -2132,6 +2351,33 @@ const SimpleChordProgressionBuilder: React.FC = () => {
               Dark
             </button>
           </div>
+        </div>
+        {/* Mode toggle moved up */}
+        <div className="text-center">
+          <button
+            onClick={toggleCompareMode}
+            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+              compareMode ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
+            }`}
+          >
+            {compareMode ? 'Switch to Normal Mode' : 'Switch to Compare Mode'}
+          </button>
+          <button
+            onClick={() => { setCarouselMode((v) => !v); if (compareMode) setCompareMode(false); }}
+            className={`ml-2 px-6 py-3 rounded-lg font-semibold transition-colors ${
+              carouselMode ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
+            }`}
+          >
+            {carouselMode ? 'Switch to Builder Mode' : 'Switch to Carousel Mode'}
+          </button>
+        </div>
+        {/* Custom text size */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-300 w-40">Custom text size:</span>
+          <button onClick={() => setCustomTextScale(s => Math.max(0.6, parseFloat((s - 0.05).toFixed(2))))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+          <span className="w-16 text-center text-gray-200">{Math.round(customTextScale * 100)}%</span>
+          <button onClick={() => setCustomTextScale(s => Math.min(2.0, parseFloat((s + 0.05).toFixed(2))))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+          <button onClick={() => setCustomTextScale(1.0)} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
         </div>
         {/* Independent vertical position controls */}
         <div className="flex flex-col gap-2">
@@ -2189,36 +2435,18 @@ const SimpleChordProgressionBuilder: React.FC = () => {
             <span className="text-sm">Place branding under title</span>
           </label>
         </div>
-        {/* Show/Hide Legends */}
+        {/* Legends Controls */}
         <div className="flex items-center gap-3">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={showLegends} onChange={(e) => setShowLegends(e.target.checked)} />
-            <span className="text-sm">Show legends (Chord + Strumming)</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={showStrummingLegend} onChange={(e) => setShowStrummingLegend(e.target.checked)} />
-            <span className="text-sm">Show strumming legend</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input type="checkbox" checked={centerLegendText} onChange={(e) => setCenterLegendText(e.target.checked)} />
-            <span className="text-sm">Center legend text</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={legendsSideBySide}
-              onChange={(e) => setLegendsSideBySide(e.target.checked)}
-            />
-            <span className="text-sm">Place strumming legend to right of chord legend</span>
-          </label>
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={!showStrumDirections}
-              onChange={(e) => setShowStrumDirections(!e.target.checked)}
-            />
-            <span className="text-sm">Hide D/U directions line (legacy - use legend text editor above)</span>
-          </label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={centerLegendText} onChange={(e) => setCenterLegendText(e.target.checked)} /><span className="text-sm">Center legend text</span></label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={legendsSideBySide} onChange={(e) => setLegendsSideBySide(e.target.checked)} /><span className="text-sm">Place strumming legend to right of chord legend</span></label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={!showStrumDirections} onChange={(e) => setShowStrumDirections(!e.target.checked)} /><span className="text-sm">Hide D/U directions line (legacy - use legend text editor above)</span></label>
+        </div>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-sm text-gray-300 w-40">Legend text size:</span>
+          <button onClick={() => setLegendTextScale(s => Math.max(0.6, parseFloat((s - 0.05).toFixed(2))))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">-</button>
+          <span className="w-16 text-center text-gray-200">{Math.round(legendTextScale * 100)}%</span>
+          <button onClick={() => setLegendTextScale(s => Math.min(1.8, parseFloat((s + 0.05).toFixed(2))))} className="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">+</button>
+          <button onClick={() => setLegendTextScale(1.0)} className="ml-2 px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">Reset</button>
         </div>
         <div>
           <label className="block text-sm font-medium mb-2">Progression Title:</label>
@@ -2949,7 +3177,7 @@ const ChordDiagramPreview: React.FC<{ chord: ChordData | null; index: number; th
     <div className="h-32">
       <div className="text-sm font-semibold italic mb-1" style={{ 
         textShadow: '0 0 3px #F59E0B, 0 0 6px #F59E0B', 
-        color: 'white' 
+        color: theme.colors.subtitle 
       }}>{chord.name}</div>
       <svg width="80" height="80" viewBox="0 0 80 80" className="mx-auto">
         {/* Fret lines */}
@@ -3188,7 +3416,7 @@ const ChordEditor: React.FC<{
                       y="25"
                       textAnchor="middle"
                       fontSize="12"
-                      fill="white"
+                      fill={theme.colors.chordName}
                       fontFamily="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
                       fontWeight="bold"
                       fontStyle="italic"

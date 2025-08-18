@@ -24,10 +24,10 @@ export default function Tools() {
       <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white section-padding">
         <div className="container-max text-center">
           <h1 className="text-4xl md:text-6xl font-bold font-playfair mb-4">
-            Guitar Tools
+            Guitar Tools (Moving to Free Resources)
           </h1>
           <p className="text-xl text-amber-100 max-w-3xl mx-auto mb-8">
-            Interactive tools to accelerate your guitar learning and practice
+            This page will be retired. Access all tools from their respective write-ups in Free Resources.
           </p>
           
           {/* Navigation Buttons */}

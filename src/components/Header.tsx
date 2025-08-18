@@ -9,11 +9,10 @@ const Header = () => {
 
   const navigation = [
     { name: 'Home', href: '/' },
+    { name: 'Lessons & Pricing', href: '/lessons' },
     { name: 'About', href: '/about' },
-    { name: 'Guitar Lessons', href: '/lessons' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Tools', href: '/tools' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Free Resources', href: '/blog' },
+    { name: 'Book Now', href: '/contact' },
   ];
 
   return (
