@@ -420,17 +420,24 @@ const SimpleChordProgressionBuilder: React.FC = () => {
         const result = e.target?.result as string;
         const progressionData = JSON.parse(result);
         
-        // Validate the data structure
-        if (progressionData.title && progressionData.chords && progressionData.gridSize) {
+        // Validate the data structure (support older/newer saves)
+        const hasTitle = typeof progressionData.title === 'string' && progressionData.title.length >= 0;
+        const hasGridSize = typeof progressionData.gridSize === 'number' && progressionData.gridSize > 0;
+        const hasChords = Array.isArray(progressionData.chords);
+        const hasCompareRows = Array.isArray(progressionData.compareRows);
+        if (hasTitle && hasGridSize && (hasChords || hasCompareRows)) {
           setProgressionTitle(progressionData.title);
           setGridSize(progressionData.gridSize);
-          setChords(progressionData.chords);
+          // If chords missing, synthesize an empty chords array using gridSize
+          if (hasChords) {
+            setChords(progressionData.chords as (ChordData | null)[]);
+          } else {
+            setChords(Array(progressionData.gridSize).fill(null));
+          }
           if (progressionData.compareMode !== undefined) {
             setCompareMode(progressionData.compareMode);
           }
-          if (progressionData.compareRows) {
-            setCompareRows(progressionData.compareRows);
-          }
+          if (hasCompareRows) setCompareRows(progressionData.compareRows);
           // compareRowSize no longer used - using per-row chordsPerRow
           if (progressionData.showFingering !== undefined) {
             setGlobalShowFingering(progressionData.showFingering);
@@ -506,11 +513,12 @@ const SimpleChordProgressionBuilder: React.FC = () => {
           if (progressionData.showNoteNames !== undefined) setShowNoteNames(progressionData.showNoteNames);
           if (progressionData.carouselTitle !== undefined) setCarouselTitle(progressionData.carouselTitle);
           
-          // Update chord array size if needed
+          // Update chord array size if needed (guard when chords were synthesized)
           const newSize = progressionData.gridSize;
-          if (progressionData.chords.length !== newSize) {
+          const currentChords = hasChords ? progressionData.chords : Array(newSize).fill(null);
+          if (currentChords.length !== newSize) {
             const newChords = Array(newSize).fill(null);
-            progressionData.chords.forEach((chord: ChordData | null, index: number) => {
+            currentChords.forEach((chord: ChordData | null, index: number) => {
               if (index < newSize) {
                 newChords[index] = chord;
               }
