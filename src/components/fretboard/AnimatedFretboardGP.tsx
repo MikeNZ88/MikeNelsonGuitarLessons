@@ -11,7 +11,13 @@ export interface AnimatedFretboardGPProps {
   useTabStringOrder?: boolean; // true => high E at bottom (TAB style)
   showIntervals?: boolean;
   hideNotation?: boolean; // if true, hide the AlphaTab visual surface but keep audio/events
+  showTransport?: boolean; // if false, hide play/stop/status UI
   useKeySignatureForNames?: boolean; // when showing note names, prefer flats/sharps based on key signature
+  syncId?: string; // synchronize transport with other diagrams having the same id
+  isSilent?: boolean; // if true, mute audio output but keep events
+  loadOnlySelectedTrack?: boolean; // if true, load only the selected track into this instance
+  stepMode?: boolean; // if true, expose prev/next note stepping and hide transport
+  onRegisterStepApi?: (api: { next: () => void; prev: () => void; goto: (idx: number) => void; getIndex: () => number; length: number; }) => void;
   barToRoot?: BarToRootMap; // map bar index -> interval root
   // Optional finer-grain mapping: key as `${barIndex}:${beatIndex}` → root
   beatToRoot?: Record<string, string>;
@@ -20,6 +26,7 @@ export interface AnimatedFretboardGPProps {
   autoRootFromChordTrackIndex?: number; // if set, derive roots from chord names on this track index
   onRootChange?: (root: string | null, barIndex: number) => void;
   onTracksDetected?: (tracks: { index: number; name: string }[]) => void;
+  onBarCountDetected?: (barCount: number) => void;
 }
 
 interface ActiveNote {
@@ -30,9 +37,18 @@ interface ActiveNote {
     hasPrebend: boolean;
     hasRelease: boolean;
   };
+  slide?: {
+    direction: 'up' | 'down' | 'bi';
+  };
+  hp?: 'H' | 'P';
 }
 
 const STANDARD_TUNING_FROM_HIGH_E = ['E', 'B', 'G', 'D', 'A', 'E'];
+const STANDARD_4_STRING_BASS_FROM_HIGH_G = ['G', 'D', 'A', 'E'];
+const STANDARD_5_STRING_BASS_HIGH_TO_LOW = ['G', 'D', 'A', 'E', 'B'];
+const STANDARD_6_STRING_BASS_HIGH_TO_LOW = ['C', 'G', 'D', 'A', 'E', 'B'];
+const STANDARD_7_STRING_GUITAR_HIGH_TO_LOW = ['E', 'B', 'G', 'D', 'A', 'E', 'B'];
+const STANDARD_8_STRING_GUITAR_HIGH_TO_LOW = ['E', 'B', 'G', 'D', 'A', 'E', 'B', 'F#'];
 // AlphaTab observation: note.string appears to be 1 = low E, 6 = high E in our environment
 // Set this flag to true to adapt mappings accordingly
 const ALPHATAB_STRING1_IS_LOW_E = true;
@@ -57,21 +73,38 @@ function addSemitones(noteIndex: number, semitones: number): number {
   return (noteIndex + ((semitones % 12) + 12)) % 12;
 }
 
-function mapAlphaTabStringToHighEOrder(alphaTabStringNumber: number): number {
-  // Convert AlphaTab string number to 1..6 in high-E-first order
-  // If AlphaTab uses 1=lowE, 6=highE, then highEOrder = 7 - s
-  return ALPHATAB_STRING1_IS_LOW_E ? (7 - alphaTabStringNumber) : alphaTabStringNumber;
+function mapAlphaTabStringToHighOrder(alphaTabStringNumber: number, numStrings: number): number {
+  // Convert AlphaTab string number to 1..numStrings in high-string-first order
+  // If AlphaTab uses 1=lowest, then highOrder = (numStrings + 1) - s
+  return ALPHATAB_STRING1_IS_LOW_E ? ((numStrings + 1) - alphaTabStringNumber) : alphaTabStringNumber;
 }
 
-function getOpenStringNoteIndex(alphaTabStringNumber: number): number {
-  const highEOrderString = mapAlphaTabStringToHighEOrder(alphaTabStringNumber);
-  const name = STANDARD_TUNING_FROM_HIGH_E[highEOrderString - 1];
+function getOpenStringNoteIndexFrom(tuningHighToLow: string[], alphaTabStringNumber: number, numStrings: number): number {
+  const highOrderString = mapAlphaTabStringToHighOrder(alphaTabStringNumber, numStrings);
+  const name = tuningHighToLow[highOrderString - 1];
   return NOTE_TO_INDEX[name];
 }
 
-function getNoteIndexForStringFret(alphaTabStringNumber: number, fret: number): number {
-  const openIdx = getOpenStringNoteIndex(alphaTabStringNumber);
+function getNoteIndexForStringFretFrom(tuningHighToLow: string[], alphaTabStringNumber: number, fret: number, numStrings: number): number {
+  const openIdx = getOpenStringNoteIndexFrom(tuningHighToLow, alphaTabStringNumber, numStrings);
   return addSemitones(openIdx, fret);
+}
+
+function deriveStringsAndTuningFromName(trackNameRaw: string): { numStrings?: number; tuningHighToLow?: string[] } {
+  const name = (trackNameRaw || '').toLowerCase();
+  const m = name.match(/(\d+)\s*string/);
+  const n = m ? parseInt(m[1], 10) : undefined;
+  if (name.includes('bass')) {
+    if (n === 5) return { numStrings: 5, tuningHighToLow: STANDARD_5_STRING_BASS_HIGH_TO_LOW };
+    if (n === 6) return { numStrings: 6, tuningHighToLow: STANDARD_6_STRING_BASS_HIGH_TO_LOW };
+    // default 4-string bass
+    return { numStrings: 4, tuningHighToLow: STANDARD_4_STRING_BASS_FROM_HIGH_G };
+  }
+  if (name.includes('guitar')) {
+    if (n === 7) return { numStrings: 7, tuningHighToLow: STANDARD_7_STRING_GUITAR_HIGH_TO_LOW };
+    if (n === 8) return { numStrings: 8, tuningHighToLow: STANDARD_8_STRING_GUITAR_HIGH_TO_LOW };
+  }
+  return {};
 }
 
 type ChordQuality = 'major' | 'maj7' | 'minor' | 'min7' | 'dominant' | 'dim' | 'aug' | 'sus2' | 'sus4' | 'unknown';
@@ -112,6 +145,12 @@ export default function AnimatedFretboardGP({
   useTabStringOrder = true,
   showIntervals = true,
   hideNotation = false,
+  showTransport = true,
+  syncId = 'global',
+  isSilent = false,
+  loadOnlySelectedTrack = false,
+  stepMode = false,
+  onRegisterStepApi,
   useKeySignatureForNames = false,
   barToRoot,
   beatToRoot,
@@ -132,18 +171,29 @@ export default function AnimatedFretboardGP({
   const [status, setStatus] = useState<string>('Loading...');
   const debugPrintCountRef = useRef<number>(0);
   const clearNotesTimerRef = useRef<number | null>(null);
+  const stepBeatsRef = useRef<Array<{ bar: number; beat: number; tick: number }>>([]);
+  const stepIndexRef = useRef<number>(0);
   const autoBarToRootRef = useRef<Record<number, string> | null>(null);
   const autoBarToQualityRef = useRef<Record<number, ChordQuality> | null>(null);
   const [currentQuality, setCurrentQuality] = useState<ChordQuality>('unknown');
   const keySigPrefRef = useRef<Record<number, 'flat' | 'sharp'>>({});
   const [currentKeyPref, setCurrentKeyPref] = useState<'flat' | 'sharp'>('sharp');
+  const [numStrings, setNumStrings] = useState<number>(6);
+  const [tuningHighToLow, setTuningHighToLow] = useState<string[]>(STANDARD_TUNING_FROM_HIGH_E);
+  const lastScoreRef = useRef<any>(null);
+  const tuningLockedRef = useRef<boolean>(false);
   const appliedTrackRef = useRef<number | null>(null);
+  const totalTicksRef = useRef<number>(0);
+  const barFirstTickRef = useRef<Record<number, number>>({});
+  const totalBarsRef = useRef<number>(0);
 
   const displayedStrings = useMemo(() => {
     const stringsHighToLow = STANDARD_TUNING_FROM_HIGH_E.slice();
     // When TAB order is requested, show Low E at top → High E at bottom
     return useTabStringOrder ? stringsHighToLow.slice().reverse() : stringsHighToLow;
   }, [useTabStringOrder]);
+
+  const lastKnownRootRef = useRef<string | null>(null);
 
   const getCurrentRoot = useCallback((): string | null => {
     // Beat-level mapping has priority if provided
@@ -153,19 +203,28 @@ export default function AnimatedFretboardGP({
     // Try beat map first
     const beatKey = `${currentBarIndex}:${currentBeatInBar}`;
     const beatRoot = apiRootFromBeat(beatKey);
-    if (beatRoot) return beatRoot;
+    if (beatRoot) {
+      lastKnownRootRef.current = beatRoot;
+      return lastKnownRootRef.current;
+    }
 
     // Next prefer automatic chord-track derived map
     if (autoBarToRootRef.current) {
       const root = autoBarToRootRef.current[currentBarIndex];
-      if (root) return root;
+      if (root) {
+        lastKnownRootRef.current = root;
+        return lastKnownRootRef.current;
+      }
     }
     // Finally, fallback to manual bar map
     if (barToRoot) {
       const root = barToRoot[currentBarIndex];
-      if (root) return root;
+      if (root) {
+        lastKnownRootRef.current = root;
+        return lastKnownRootRef.current;
+      }
     }
-    return null;
+    return lastKnownRootRef.current;
   }, [barToRoot, beatToRoot, currentBarIndex, currentBeatInBar]);
 
   useEffect(() => {
@@ -188,6 +247,7 @@ export default function AnimatedFretboardGP({
             script.src = 'https://cdn.jsdelivr.net/npm/@coderline/alphatab@latest/dist/alphaTab.js';
             document.head.appendChild(script);
           }
+          // do not reference score here (not available yet)
           let tries = 0;
           while (!(window as any).alphaTab && tries < 200) {
             await new Promise(r => setTimeout(r, 50));
@@ -232,7 +292,101 @@ export default function AnimatedFretboardGP({
         api.playerReady.on(() => {
           setStatus('Ready');
           setIsReady(true);
+          // Register step API once player is ready
+          try {
+            if (stepMode && onRegisterStepApi) {
+              onRegisterStepApi({
+                next: () => {
+                  const steps = stepBeatsRef.current;
+                  const apiAny = apiRef.current as any;
+                  if (!apiAny || steps.length === 0) return;
+                  stepIndexRef.current = Math.min(steps.length - 1, stepIndexRef.current + 1);
+                  const s = steps[stepIndexRef.current];
+                  if (apiAny?.cursor?.moveTo) apiAny.cursor.moveTo(s.bar, s.beat);
+                  else if (apiAny?.seek) apiAny.seek(s.tick ?? 0);
+                  else {
+                    try { apiAny.pause?.(); apiAny.stop?.(); } catch {}
+                  }
+                },
+                prev: () => {
+                  const steps = stepBeatsRef.current;
+                  const apiAny = apiRef.current as any;
+                  if (!apiAny || steps.length === 0) return;
+                  stepIndexRef.current = Math.max(0, stepIndexRef.current - 1);
+                  const s = steps[stepIndexRef.current];
+                  if (apiAny?.cursor?.moveTo) apiAny.cursor.moveTo(s.bar, s.beat);
+                  else if (apiAny?.seek) apiAny.seek(s.tick ?? 0);
+                  else {
+                    try { apiAny.pause?.(); apiAny.stop?.(); } catch {}
+                  }
+                },
+                goto: (idx: number) => {
+                  const steps = stepBeatsRef.current;
+                  const apiAny = apiRef.current as any;
+                  if (!apiAny || steps.length === 0) return;
+                  stepIndexRef.current = Math.max(0, Math.min(steps.length - 1, idx));
+                  const s = steps[stepIndexRef.current];
+                  if (apiAny?.cursor?.moveTo) apiAny.cursor.moveTo(s.bar, s.beat);
+                  else if (apiAny?.seek) apiAny.seek(s.tick ?? 0);
+                  else {
+                    try { apiAny.pause?.(); apiAny.stop?.(); } catch {}
+                  }
+                },
+                getIndex: () => stepIndexRef.current,
+                length: stepBeatsRef.current.length,
+              });
+            }
+          } catch {}
         });
+
+        // Sync listeners
+        const onSyncTransport = (evt: any) => {
+          try {
+            if (evt?.detail?.id !== syncId) return;
+            const shouldPlay = !!evt?.detail?.playing;
+            if (shouldPlay) (apiRef.current as any)?.play?.();
+            else (apiRef.current as any)?.pause?.();
+          } catch {}
+        };
+        const onSyncStop = (evt: any) => {
+          try {
+            if (evt?.detail?.id !== syncId) return;
+            (apiRef.current as any)?.stop?.();
+            setActiveNotes([]);
+          } catch {}
+        };
+        const onSyncSeek = (evt: any) => {
+          try {
+            if (evt?.detail?.id !== syncId) return;
+            const apiAny = apiRef.current as any;
+            if (!apiAny) return;
+            const d = evt.detail || {};
+            if (typeof d.tick === 'number') {
+              apiAny.seek?.(Math.max(0, Math.floor(d.tick)));
+              return;
+            }
+            if (typeof d.bar === 'number') {
+              // Prefer seeking by tick at the start of the requested bar for reliable playback
+              const bt = barFirstTickRef.current[d.bar];
+              if (typeof bt === 'number' && apiAny?.seek) {
+                apiAny.seek(Math.max(0, Math.floor(bt)));
+              } else if (apiAny?.cursor?.moveTo) {
+                apiAny.cursor.moveTo(d.bar, d.beat ?? 0);
+              }
+              return;
+            }
+            if (typeof d.percent === 'number') {
+              const total = totalTicksRef.current || 0;
+              if (total > 0 && apiAny.seek) {
+                const tick = Math.max(0, Math.min(total, Math.floor(total * d.percent)));
+                apiAny.seek(tick);
+              }
+            }
+          } catch {}
+        };
+        window.addEventListener('af-sync-transport' as any, onSyncTransport);
+        window.addEventListener('af-sync-stop' as any, onSyncStop);
+        window.addEventListener('af-sync-seek' as any, onSyncSeek);
 
         api.error.on((e: any) => {
           console.error('[AnimatedFretboardGP] AlphaTab error:', e);
@@ -243,6 +397,63 @@ export default function AnimatedFretboardGP({
         api.scoreLoaded.on((score: any) => {
           setStatus('Score loaded');
           setIsReady(true);
+          lastScoreRef.current = score;
+          // try to compute total ticks for seeking
+          try {
+            let maxTick = 0;
+            const tracks = score?.tracks || [];
+            const t = tracks[trackIndex] || tracks[0];
+            const staves = t?.staves || [];
+            const bars = staves[0]?.bars || [];
+            const barTick: Record<number, number> = {};
+            for (const bar of bars) {
+              const voices = bar?.voices || [];
+              for (const v of voices) {
+                const beats = v?.beats || [];
+                for (const b of beats) {
+                  const tick = b?.start ?? b?.startTick ?? 0;
+                  if (typeof tick === 'number') maxTick = Math.max(maxTick, tick);
+                  const barIdx = bar?.index ?? 0;
+                  if (typeof barIdx === 'number') {
+                    if (!(barIdx in barTick)) barTick[barIdx] = tick;
+                    else barTick[barIdx] = Math.min(barTick[barIdx], tick);
+                  }
+                }
+              }
+            }
+            totalTicksRef.current = maxTick;
+            barFirstTickRef.current = barTick;
+          } catch {}
+          // compute bar count for parent
+          try {
+            const tracks = score?.tracks || [];
+            const tSel = tracks[trackIndex] || tracks[0];
+            const bars = tSel?.staves?.[0]?.bars || [];
+            totalBarsRef.current = Array.isArray(bars) ? bars.length : 0;
+            if (typeof onBarCountDetected === 'function') onBarCountDetected(totalBarsRef.current);
+          } catch {}
+          // Build step list (bar, beat, tick) for step mode
+          try {
+            const steps: Array<{ bar: number; beat: number; tick: number }> = [];
+            const tracks = score?.tracks || [];
+            const t = tracks[trackIndex] || tracks[0];
+            const staves = t?.staves || [];
+            const bars = staves[0]?.bars || [];
+            for (const bar of bars) {
+              const barIdx = bar?.index ?? steps.length;
+              const voices = bar?.voices || [];
+              for (const v of voices) {
+                const beats = v?.beats || [];
+                for (const b of beats) {
+                  const beatIdx = b?.index ?? 0;
+                  const tick = b?.start ?? b?.startTick ?? 0;
+                  steps.push({ bar: barIdx, beat: beatIdx, tick });
+                }
+              }
+            }
+            stepBeatsRef.current = steps;
+            stepIndexRef.current = 0;
+          } catch {}
           // eslint-disable-next-line no-console
           if (debugPrintCountRef.current < 10) {
             debugPrintCountRef.current++;
@@ -341,12 +552,36 @@ export default function AnimatedFretboardGP({
           try {
             if (
               typeof trackIndex === 'number' &&
-              score?.tracks?.[trackIndex] &&
+              (score?.tracks?.[trackIndex] || score?.tracks?.[0]) &&
               appliedTrackRef.current !== trackIndex
             ) {
-              setStatus('Selecting track...');
-              appliedTrackRef.current = trackIndex;
-              apiRef.current?.renderTracks?.([trackIndex]);
+              if (!loadOnlySelectedTrack) {
+                setStatus('Selecting track...');
+                appliedTrackRef.current = trackIndex;
+                apiRef.current?.renderTracks?.([trackIndex]);
+              }
+              // Update string count / tuning based on track detection
+              try {
+                const t = score.tracks?.[trackIndex] ?? score.tracks?.[0];
+                const trackName: string = (t?.name || '').toString();
+                const fromName = deriveStringsAndTuningFromName(trackName);
+                if (!tuningLockedRef.current && fromName.numStrings && fromName.tuningHighToLow) {
+                  setNumStrings(fromName.numStrings);
+                  setTuningHighToLow(fromName.tuningHighToLow);
+                  tuningLockedRef.current = true;
+                } else {
+                  const strings = t?.staves?.[0]?.strings || t?.strings || t?.stringTunings || [];
+                  if (!tuningLockedRef.current && Array.isArray(strings) && strings.length > 0) {
+                    setNumStrings(strings.length);
+                    if (strings.length === 4) setTuningHighToLow(STANDARD_4_STRING_BASS_FROM_HIGH_G);
+                    else if (strings.length === 5) setTuningHighToLow(STANDARD_5_STRING_BASS_HIGH_TO_LOW);
+                    else if (strings.length === 7) setTuningHighToLow(STANDARD_7_STRING_GUITAR_HIGH_TO_LOW);
+                    else if (strings.length === 8) setTuningHighToLow(STANDARD_8_STRING_GUITAR_HIGH_TO_LOW);
+                    else setTuningHighToLow(STANDARD_TUNING_FROM_HIGH_E);
+                    tuningLockedRef.current = true;
+                  }
+                }
+              } catch {}
             }
           } catch (e) {
             console.warn('Track select failed, staying on default track', e);
@@ -357,6 +592,27 @@ export default function AnimatedFretboardGP({
           setStatus('Rendered');
           // eslint-disable-next-line no-console
           console.log('[AnimatedFretboardGP] renderFinished');
+          // Safety: ensure string count reflects selected track even for first diagram
+          try {
+            const score = lastScoreRef.current;
+            const t = score?.tracks?.[trackIndex];
+            if (t) {
+              const trackName: string = (t?.name || '').toString();
+              const fromName = deriveStringsAndTuningFromName(trackName);
+              const strings = t?.staves?.[0]?.strings || t?.strings || t?.stringTunings || [];
+              if (fromName.numStrings && fromName.tuningHighToLow) {
+                setNumStrings(fromName.numStrings);
+                setTuningHighToLow(fromName.tuningHighToLow);
+              } else if (Array.isArray(strings) && strings.length > 0) {
+                setNumStrings(strings.length);
+                if (strings.length === 4) setTuningHighToLow(STANDARD_4_STRING_BASS_FROM_HIGH_G);
+                else if (strings.length === 5) setTuningHighToLow(STANDARD_5_STRING_BASS_HIGH_TO_LOW);
+                else if (strings.length === 7) setTuningHighToLow(STANDARD_7_STRING_GUITAR_HIGH_TO_LOW);
+                else if (strings.length === 8) setTuningHighToLow(STANDARD_8_STRING_GUITAR_HIGH_TO_LOW);
+                else setTuningHighToLow(STANDARD_TUNING_FROM_HIGH_E);
+              }
+            }
+          } catch {}
         });
 
         api.playerStateChanged.on((e: any) => {
@@ -371,6 +627,26 @@ export default function AnimatedFretboardGP({
             const cursor = apiRef.current?.cursor || (api as any).cursor;
             const beat = cursor?.beat;
             if (beat) {
+              // Infer tuning/strings if not yet locked from first observed note events
+              if (!tuningLockedRef.current) {
+                try {
+                  const bn = beat?.notes || [];
+                  let maxString = 0;
+                  for (const n of bn) {
+                    if (typeof n?.string === 'number') maxString = Math.max(maxString, n.string);
+                  }
+                  if (maxString > 0) {
+                    if (maxString <= 4) {
+                      setNumStrings(4);
+                      setTuningHighToLow(STANDARD_4_STRING_BASS_FROM_HIGH_G);
+                    } else {
+                      setNumStrings(6);
+                      setTuningHighToLow(STANDARD_TUNING_FROM_HIGH_E);
+                    }
+                    tuningLockedRef.current = true;
+                  }
+                } catch {}
+              }
               const barIndex = beat?.voice?.bar?.index ?? currentBarIndex;
               setCurrentBarIndex(typeof barIndex === 'number' ? barIndex : 0);
               const beatIndex = typeof beat?.index === 'number' ? beat.index : currentBeatInBar;
@@ -382,9 +658,14 @@ export default function AnimatedFretboardGP({
                 const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? (n.stringIndex + 1) : undefined);
                 const f = n?.fret;
                 const bend = extractBendFromNote(n);
-                if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend });
+                const slide = extractSlideFromNote(n);
+                const hp = extractHPFromNote(n);
+                if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend, slide, hp });
               }
               setActiveNotes(notes);
+              if (notes.some(nn => !!nn.bend)) {
+                try { console.log('[AnimatedFretboardGP] bend detected', notes.filter(nn => !!nn.bend)); } catch {}
+              }
               if (debugPrintCountRef.current < 20) {
                 debugPrintCountRef.current++;
                 // eslint-disable-next-line no-console
@@ -424,7 +705,9 @@ export default function AnimatedFretboardGP({
               const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? n.stringIndex : undefined);
               const f = n?.fret;
               const bend = extractBendFromNote(n);
-              if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend });
+              const slide = extractSlideFromNote(n);
+              const hp = extractHPFromNote(n);
+              if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend, slide, hp });
             }
             setActiveNotes(notes);
             if (debugPrintCountRef.current < 20) {
@@ -448,11 +731,13 @@ export default function AnimatedFretboardGP({
               if (typeof beatIndex === 'number') setCurrentBeatInBar(beatIndex);
               const bn = b?.notes || [];
               for (const n of bn) {
-                const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? n.stringIndex : undefined); // AlphaTab: 1..6 (1 = high E)
+                const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number') ? n.stringIndex : undefined; // AlphaTab: 1..6 (1 = high E)
                 const f = n?.fret;
                 const bend = extractBendFromNote(n);
+                const slide = extractSlideFromNote(n);
+                const hp = extractHPFromNote(n);
                 if (typeof s === 'number' && typeof f === 'number') {
-                  notes.push({ stringNumber: s, fret: f, bend });
+                  notes.push({ stringNumber: s, fret: f, bend, slide, hp });
                 }
               }
             }
@@ -510,8 +795,11 @@ export default function AnimatedFretboardGP({
           setStatus('Loading file...');
           const buffer = await fetchArrayBuffer(filePath);
           lastBufferRef.current = buffer;
-          // Always load without preselecting tracks first to avoid silent failures
-          api.load(buffer);
+          if (loadOnlySelectedTrack && typeof trackIndex === 'number') {
+            api.load(buffer, [trackIndex]);
+          } else {
+            api.load(buffer);
+          }
           setStatus('File loaded, parsing...');
         } catch (loadErr) {
           setStatus(`Failed to load file: ${String(loadErr)}`);
@@ -522,6 +810,14 @@ export default function AnimatedFretboardGP({
           try {
             if (apiRef.current && typeof apiRef.current.playbackSpeed !== 'undefined') {
               apiRef.current.playbackSpeed = (initialTempoPercent || 100) / 100;
+            }
+            // Mute if silent diagram
+            if (apiRef.current && isSilent) {
+              try {
+                (apiRef.current as any).masterVolume = 0;
+                const audio = (apiRef.current as any).audio;
+                if (audio && typeof audio.masterVolume !== 'undefined') audio.masterVolume = 0;
+              } catch {}
             }
           } catch {
             // ignore
@@ -541,6 +837,12 @@ export default function AnimatedFretboardGP({
       } catch {
         // ignore
       }
+      // remove using the same references
+      try {
+        window.removeEventListener('af-sync-transport' as any, onSyncTransport as any);
+        window.removeEventListener('af-sync-stop' as any, onSyncStop as any);
+        window.removeEventListener('af-sync-seek' as any, onSyncSeek as any);
+      } catch {}
     };
   }, [filePath, trackIndex, initialTempoPercent]);
 
@@ -548,7 +850,32 @@ export default function AnimatedFretboardGP({
   useEffect(() => {
     try {
       if (apiRef.current && typeof trackIndex === 'number' && Number.isInteger(trackIndex)) {
+        // Reset tuning lock when track changes so we can re-detect string count/tuning
+        tuningLockedRef.current = false;
         apiRef.current.renderTracks?.([trackIndex]);
+        // Update tuning/strings for current track
+        try {
+          const score = lastScoreRef.current;
+          const t = score?.tracks?.[trackIndex];
+          if (t && !tuningLockedRef.current) {
+            const trackName: string = (t?.name || '').toString();
+            const fromName = deriveStringsAndTuningFromName(trackName);
+            const strings = t?.staves?.[0]?.strings || t?.strings || t?.stringTunings || [];
+            if (fromName.numStrings && fromName.tuningHighToLow) {
+              setNumStrings(fromName.numStrings);
+              setTuningHighToLow(fromName.tuningHighToLow);
+              tuningLockedRef.current = true;
+            } else if (Array.isArray(strings) && strings.length > 0) {
+              setNumStrings(strings.length);
+              if (strings.length === 4) setTuningHighToLow(STANDARD_4_STRING_BASS_FROM_HIGH_G);
+              else if (strings.length === 5) setTuningHighToLow(STANDARD_5_STRING_BASS_HIGH_TO_LOW);
+              else if (strings.length === 7) setTuningHighToLow(STANDARD_7_STRING_GUITAR_HIGH_TO_LOW);
+              else if (strings.length === 8) setTuningHighToLow(STANDARD_8_STRING_GUITAR_HIGH_TO_LOW);
+              else setTuningHighToLow(STANDARD_TUNING_FROM_HIGH_E);
+              tuningLockedRef.current = true;
+            }
+          }
+        } catch {}
       }
     } catch {}
   }, [trackIndex]);
@@ -581,6 +908,8 @@ export default function AnimatedFretboardGP({
       const playing = (api as any).isPlaying ?? isPlaying;
       if (playing) (api as any).pause?.();
       else (api as any).play?.();
+      // Broadcast to synced peers
+      window.dispatchEvent(new CustomEvent('af-sync-transport', { detail: { id: syncId, playing: !playing } }));
     } catch {}
   }, []);
 
@@ -590,17 +919,18 @@ export default function AnimatedFretboardGP({
     try {
       api.stop();
       setActiveNotes([]);
+      window.dispatchEvent(new CustomEvent('af-sync-stop', { detail: { id: syncId } }));
     } catch {
       // ignore
     }
   }, []);
 
-  // Map AlphaTab stringNumber (1 = high E) to display row index
+  // Map AlphaTab stringNumber (1-based) to display row index
   const mapStringToDisplayRow = useCallback((stringNumber: number): number => {
-    // Display rows: 0..5 from top to bottom
-    const alphaTabIndexFromTopWhenTabOrder = 6 - stringNumber; // 0..5
-    return useTabStringOrder ? alphaTabIndexFromTopWhenTabOrder : stringNumber - 1;
-  }, [useTabStringOrder]);
+    // Display rows: 0..(n-1) from top to bottom
+    const idxFromTop = (numStrings - stringNumber);
+    return useTabStringOrder ? idxFromTop : (stringNumber - 1);
+  }, [useTabStringOrder, numStrings]);
 
   const currentRoot = getCurrentRoot();
 
@@ -608,10 +938,16 @@ export default function AnimatedFretboardGP({
     try {
       const points = n?.bendPoints || n?.bend?.points || n?.bend?.bendPoints || null;
       if (Array.isArray(points) && points.length > 0) {
-        const values = points.map((p: any) => (typeof p?.value === 'number' ? p.value : (typeof p?.y === 'number' ? p.y : 0)));
-        const start = values[0] || 0;
-        const end = values[values.length - 1] || 0;
-        const maxVal = Math.max(...values);
+        const raw = points.map((p: any) => (typeof p?.value === 'number' ? p.value : (typeof p?.y === 'number' ? p.y : 0)));
+        const rawStart = raw[0] || 0;
+        const rawEnd = raw[raw.length - 1] || 0;
+        const rawMax = Math.max(...raw);
+        // AlphaTab/GP files may encode bend values in quarter-steps (4 = full step) or semitones (2 = full step).
+        // If we see values > 2.1, assume quarter-steps and scale by 0.5 to semitones.
+        const unitScale = rawMax > 2.1 ? 0.5 : 1;
+        const start = rawStart * unitScale;
+        const end = rawEnd * unitScale;
+        const maxVal = rawMax * unitScale;
         const hasPrebend = start > 0.01;
         const hasRelease = maxVal > 0.01 && end < maxVal - 0.01;
         const upSemitones = Math.max(0, end - start, maxVal - start);
@@ -626,19 +962,48 @@ export default function AnimatedFretboardGP({
     return undefined;
   }
 
-  function formatBendAmount(amount: number): string {
-    const a = Math.round(amount * 2) / 2;
-    if (Math.abs(a - 0.5) < 0.01) return '1/4';
-    if (Math.abs(a - 1) < 0.01) return '1/2';
-    if (Math.abs(a - 1.5) < 0.01) return '1 1/2';
-    if (Math.abs(a - 2) < 0.01) return 'Full';
-    if (a > 2) return `${a} st`;
-    return a > 0 ? `${a} st` : '';
+  function extractSlideFromNote(n: any): ActiveNote['slide'] | undefined {
+    try {
+      const slideAny = n?.slide ?? n?.Slide ?? null;
+      const isSlide = !!(n?.isSlide || n?.isSlideOut || n?.isSlideIn || slideAny);
+      const slideType = n?.slideType ?? n?.slideOutType ?? n?.slideInType ?? (slideAny ? (slideAny.type ?? slideAny.slideType) : undefined);
+      if (!isSlide && (slideType == null || slideType === 0)) return undefined;
+      let dir: 'up' | 'down' | 'bi' = 'bi';
+      const typeStr = typeof slideType === 'string' ? slideType.toLowerCase() : '';
+      if (typeStr.includes('up')) dir = 'up';
+      else if (typeStr.includes('down')) dir = 'down';
+      else if (typeof slideType === 'number') {
+        if (slideType === 1 || slideType === 3 || slideType === 5) dir = 'up';
+        if (slideType === 2 || slideType === 4 || slideType === 6) dir = 'down';
+      }
+      return { direction: dir };
+    } catch {}
+    return undefined;
+  }
+
+  function extractHPFromNote(n: any): ActiveNote['hp'] | undefined {
+    try {
+      if (n?.isHammerOn || n?.hammerOn) return 'H';
+      if (n?.isPullOff || n?.pullOff) return 'P';
+      if (n?.isLegato && !n?.isSlide && !n?.slide && !n?.bend) return 'H';
+    } catch {}
+    return undefined;
+  }
+
+  function formatBendAmount(semitones: number): string {
+    // Convert semitones to steps (whole steps) and round to nearest 0.5
+    const steps = Math.round((semitones / 2) * 2) / 2;
+    if (Math.abs(steps - 0.25) < 0.01) return '1/4';
+    if (Math.abs(steps - 0.5) < 0.01) return '1/2';
+    if (Math.abs(steps - 1.0) < 0.01) return 'Full';
+    if (Math.abs(steps - 1.5) < 0.01) return '1 1/2';
+    if (steps > 1.5) return `${steps} st`;
+    return steps > 0 ? `${steps} st` : '';
   }
 
   // SVG-based fretboard for stable layout
   const renderSvgFretboard = () => {
-    const numStrings = 6;
+    const nStrings = numStrings;
     const numFrets = Math.max(1, fretCount);
     const cellWidth = 34;
     const stringGap = 26;
@@ -646,18 +1011,18 @@ export default function AnimatedFretboardGP({
     const topPadding = 18;
     const fretNumberYOffset = -8; // nudge fret numbers up a bit for clarity
     const width = leftPadding + numFrets * cellWidth + 16;
-    const height = topPadding + (numStrings - 1) * stringGap + 16;
+    const height = topPadding + (nStrings - 1) * stringGap + 16;
 
     // Enforce standard orientation: top = high E (row 0), bottom = low E (row 5)
     // Translate AlphaTab string numbering if needed
-    const stringNumberToRow = (alphaTabStringNumber: number) => mapAlphaTabStringToHighEOrder(alphaTabStringNumber) - 1;
+    const stringNumberToRow = (alphaTabStringNumber: number) => mapAlphaTabStringToHighOrder(alphaTabStringNumber, nStrings) - 1;
 
     const circles = activeNotes.map((n, idx) => {
       const row = stringNumberToRow(n.stringNumber);
-      if (row < 0 || row > 5) return null;
+      if (row < 0 || row > (nStrings - 1)) return null;
       const cx = leftPadding + ((n.fret === 0 ? -0.5 : (n.fret - 0.5)) * cellWidth);
       const cy = topPadding + row * stringGap;
-      const noteIndex = getNoteIndexForStringFret(n.stringNumber, n.fret);
+      const noteIndex = getNoteIndexForStringFretFrom(tuningHighToLow, n.stringNumber, n.fret, nStrings);
       let label: string;
       if (showIntervals && currentRoot) {
         label = computeIntervalLabel(currentRoot, noteIndex, accidentalStyle, currentQuality);
@@ -669,6 +1034,26 @@ export default function AnimatedFretboardGP({
           label = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
         }
       }
+      const bend = n.bend;
+      const bendLen = bend ? Math.min(26, 8 + (bend.upSemitones || 0) * 8) : 0;
+      const bendLabel = bend ? formatBendAmount(bend.upSemitones || 0) : '';
+      // Decide arrow direction per string count and tuning
+      const stringName = tuningHighToLow[row];
+      let bendUp: boolean;
+      if (nStrings >= 6) {
+        // Guitar (6+): top three strings (E,B,G) up; lower three (D,A,E) down
+        bendUp = row <= 2;
+      } else if (nStrings === 4 || nStrings === 5) {
+        // Bass (4/5): only top G goes up; others down
+        bendUp = stringName === 'G';
+      } else {
+        // Fallback heuristic
+        bendUp = row <= Math.min(2, nStrings - 1);
+      }
+      // Invert per user request: make arrows point opposite to current mapping
+      bendUp = !bendUp;
+      const bendY1 = bendUp ? (cy - 12) : (cy + 12);
+      const bendY2 = bendUp ? (bendY1 - bendLen) : (bendY1 + bendLen);
       return (
         <g key={`note-${idx}`}>
           <circle cx={cx} cy={cy} r={9} fill="#d97706" stroke="#fbbf24" strokeWidth={2} />
@@ -676,6 +1061,76 @@ export default function AnimatedFretboardGP({
             <text x={cx} y={cy + 3} textAnchor="middle" fontSize={10} fill="#ffffff" fontWeight={700}>
               {label}
             </text>
+          )}
+          {n.hp && (
+            <text x={cx + 12} y={cy - 10} textAnchor="middle" fontSize={10} fill="#0f172a" fontWeight={700}>{n.hp}</text>
+          )}
+          {/* Slide arrows */}
+          {n.slide && (
+            n.slide.direction === 'up' ? (
+              <g>
+                <line x1={cx + 10} y1={cy} x2={cx + 30} y2={cy} stroke="#0f172a" strokeWidth={1.6} />
+                <polygon points={`${cx+30},${cy} ${cx+24},${cy-4} ${cx+24},${cy+4}`} fill="#0f172a" />
+              </g>
+            ) : n.slide.direction === 'down' ? (
+              <g>
+                <line x1={cx - 10} y1={cy} x2={cx - 30} y2={cy} stroke="#0f172a" strokeWidth={1.6} />
+                <polygon points={`${cx-30},${cy} ${cx-24},${cy-4} ${cx-24},${cy+4}`} fill="#0f172a" />
+              </g>
+            ) : (
+              <g>
+                <line x1={cx + 10} y1={cy} x2={cx + 30} y2={cy} stroke="#0f172a" strokeWidth={1.6} />
+                <polygon points={`${cx+30},${cy} ${cx+24},${cy-4} ${cx+24},${cy+4}`} fill="#0f172a" />
+                <line x1={cx - 10} y1={cy} x2={cx - 30} y2={cy} stroke="#0f172a" strokeWidth={1.6} />
+                <polygon points={`${cx-30},${cy} ${cx-24},${cy-4} ${cx-24},${cy+4}`} fill="#0f172a" />
+              </g>
+            )
+          )}
+          {bend && (
+            <g>
+              <line
+                x1={cx}
+                y1={bendY1}
+                x2={cx}
+                y2={bendY2}
+                stroke="#1f2937"
+                strokeWidth={1.6}
+                strokeDasharray={bend.hasRelease ? '4 3' : undefined}
+              />
+              {bendUp ? (
+                <>
+                  <polygon points={`${cx-4},${bendY2} ${cx+4},${bendY2} ${cx},${bendY2-6}`} fill="#1f2937" />
+                  {bendLabel && (
+                    <text x={cx} y={bendY2 - 8} textAnchor="middle" fontSize={9} fill="#374151" fontWeight={600}>
+                      {bendLabel}
+                    </text>
+                  )}
+                </>
+              ) : (
+                <>
+                  <polygon points={`${cx-4},${bendY2} ${cx+4},${bendY2} ${cx},${bendY2+6}`} fill="#1f2937" />
+                  {bendLabel && (
+                    <text x={cx} y={bendY2 + 14} textAnchor="middle" fontSize={9} fill="#374151" fontWeight={600}>
+                      {bendLabel}
+                    </text>
+                  )}
+                </>
+              )}
+              {/* Show release with a small opposite arrow from the tip */}
+              {bend.hasRelease && (
+                bendUp ? (
+                  <>
+                    <line x1={cx} y1={bendY2} x2={cx} y2={bendY2 + Math.min(16, bendLen)} stroke="#64748b" strokeWidth={1.2} strokeDasharray="3 3" />
+                    <polygon points={`${cx-3},${bendY2 + Math.min(16, bendLen)} ${cx+3},${bendY2 + Math.min(16, bendLen)} ${cx},${bendY2 + Math.min(16, bendLen) + 5}`} fill="#64748b" />
+                  </>
+                ) : (
+                  <>
+                    <line x1={cx} y1={bendY2} x2={cx} y2={bendY2 - Math.min(16, bendLen)} stroke="#64748b" strokeWidth={1.2} strokeDasharray="3 3" />
+                    <polygon points={`${cx-3},${bendY2 - Math.min(16, bendLen)} ${cx+3},${bendY2 - Math.min(16, bendLen)} ${cx},${bendY2 - Math.min(16, bendLen) - 5}`} fill="#64748b" />
+                  </>
+                )
+              )}
+            </g>
           )}
         </g>
       );
@@ -710,7 +1165,7 @@ export default function AnimatedFretboardGP({
         <rect x="0" y="0" width={width} height={height} rx="8" ry="8" fill="url(#fretboardGrad)" stroke="#f59e0b" strokeWidth="1" />
 
         {/* Strings (high contrast) */}
-        {Array.from({ length: numStrings }, (_, i) => {
+        {Array.from({ length: nStrings }, (_, i) => {
           const y = topPadding + i * stringGap;
           const w = i === 0 ? 1.6 : i === 1 ? 1.8 : i === 2 ? 2 : i === 3 ? 2.3 : i === 4 ? 2.6 : 2.9;
           return (
@@ -738,12 +1193,12 @@ export default function AnimatedFretboardGP({
                   x1={x}
                   y1={topPadding - 4}
                   x2={x}
-                  y2={topPadding + (numStrings - 1) * stringGap + 4}
+                  y2={topPadding + (nStrings - 1) * stringGap + 4}
                   stroke="#334155"
                   strokeWidth={4}
                 />
               ) : (
-                <line x1={x} y1={topPadding} x2={x} y2={topPadding + (numStrings - 1) * stringGap} stroke="#6b7280" strokeWidth={2} />
+                <line x1={x} y1={topPadding} x2={x} y2={topPadding + (nStrings - 1) * stringGap} stroke="#6b7280" strokeWidth={2} />
               )}
               <text x={x - cellWidth / 2} y={topPadding + fretNumberYOffset} textAnchor="middle" fontSize={10} fill="#374151">{f}</text>
             </g>
@@ -753,7 +1208,7 @@ export default function AnimatedFretboardGP({
         {Array.from({ length: numFrets + 1 }, (_, f) => {
           if (!inlays.has(f)) return null;
           const x = leftPadding + (f - 0.5) * cellWidth;
-          const midY = topPadding + ((numStrings - 1) * stringGap) / 2;
+          const midY = topPadding + ((nStrings - 1) * stringGap) / 2;
           if (f === 12) {
             return (
               <g key={`inlay-${f}`} opacity="0.35">
@@ -766,8 +1221,8 @@ export default function AnimatedFretboardGP({
         })}
 
         {/* Labels */}
-        {Array.from({ length: numStrings }, (_, row) => {
-          const label = STANDARD_TUNING_FROM_HIGH_E[row];
+        {Array.from({ length: nStrings }, (_, row) => {
+          const label = tuningHighToLow[row];
           return (
             <text key={`lab-${row}`} x={leftPadding - 14} y={topPadding + row * stringGap + 4} textAnchor="end" fontSize={11} fill="#92400e" fontWeight={600}>{label}</text>
           );
@@ -780,6 +1235,7 @@ export default function AnimatedFretboardGP({
 
   return (
     <div className="w-full">
+      {showTransport && (
       <div className="flex items-center gap-2 mb-3">
         <button
           disabled={!isReady}
@@ -802,6 +1258,7 @@ export default function AnimatedFretboardGP({
           </div>
         )}
       </div>
+      )}
 
       {/* Fretboard visualization (SVG for stable geometry) */}
       <div className="rounded-lg border border-amber-200 p-3 shadow-sm bg-white mb-4">

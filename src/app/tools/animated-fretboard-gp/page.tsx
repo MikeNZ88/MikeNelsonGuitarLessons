@@ -12,7 +12,16 @@ export default function AnimatedFretboardGPPage() {
   const [hideNotation, setHideNotation] = useState(false);
   const [availableTracks, setAvailableTracks] = useState<{ index: number; name: string }[]>([]);
   const [trackIndex, setTrackIndex] = useState<number>(0);
+  const [diagramCount, setDiagramCount] = useState<number>(1);
+  const [secondaryTracks, setSecondaryTracks] = useState<number[]>([1,2]);
   const [useKeySigNames, setUseKeySigNames] = useState(true);
+  const trackNameByIndex = (idx: number) => availableTracks.find(t => t.index === idx)?.name ?? `Track ${idx}`;
+  const [framePreset, setFramePreset] = useState<'none' | 'square' | 'reel'>('none');
+  const [showControls, setShowControls] = useState(false);
+  const [videoSpaceMode, setVideoSpaceMode] = useState(false);
+  const [seekBar, setSeekBar] = useState<number>(0);
+  const [fretCount, setFretCount] = useState<number>(15);
+  const [barCount, setBarCount] = useState<number>(0);
 
   const pentatonicExercises = useMemo(
     () => [
@@ -42,7 +51,9 @@ export default function AnimatedFretboardGPPage() {
 
   const miscSongs = useMemo(
     () => [
-      { id: 'opeth-drapery-falls', name: 'Opeth - The Drapery Falls (ver 2)', file: '/GP Files/Scale Exercises/BLOG TABS/Opeth - The Drapery Falls (ver 2).gp' }
+      { id: 'opeth-drapery-falls', name: 'Opeth - The Drapery Falls (ver 2)', file: '/GP Files/Scale Exercises/BLOG TABS/Opeth - The Drapery Falls (ver 2).gp' },
+      { id: 'bends-ex1', name: 'String Bending Exercise 1', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp' },
+      { id: 'meshuggah-dancers', name: 'Meshuggah - Dancers To A Discordant System (ver 3)', file: '/GP Files/Scale Exercises/BLOG TABS/Meshuggah - Dancers To A Discordant System (ver 3 by Stuart XIV).gp' }
     ],
     []
   );
@@ -117,7 +128,50 @@ export default function AnimatedFretboardGPPage() {
         <div className="text-sm text-gray-700 w-12 text-right">{tempoPercent}%</div>
       </div>
 
-      <div className="mb-4 flex items-center gap-4">
+      {/* Global transport and position controls ABOVE the framed area */}
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-4 gap-3 items-center">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('af-sync-transport', { detail: { id: 'global', playing: true } }))}
+            className="px-3 py-1.5 rounded-md text-white text-sm bg-amber-700 hover:bg-amber-800"
+          >Play</button>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('af-sync-transport', { detail: { id: 'global', playing: false } }))}
+            className="px-3 py-1.5 rounded-md text-white text-sm bg-amber-500 hover:bg-amber-600"
+          >Pause</button>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('af-sync-stop', { detail: { id: 'global' } }))}
+            className="px-3 py-1.5 rounded-md text-white text-sm bg-red-600 hover:bg-red-700"
+          >Stop</button>
+        </div>
+        <div className="md:col-span-2 flex items-center gap-3">
+          <label className="text-sm text-gray-700 whitespace-nowrap">Bar</label>
+          <input
+            type="range"
+            min={0}
+            max={Math.max(0, barCount - 1)}
+            value={seekBar}
+            onChange={(e) => {
+              const b = Number(e.target.value);
+              setSeekBar(b);
+              window.dispatchEvent(new CustomEvent('af-sync-seek', { detail: { id: 'global', bar: b, beat: 0 } }));
+              window.dispatchEvent(new CustomEvent('af-sync-transport', { detail: { id: 'global', playing: true } }));
+            }}
+            className="flex-1"
+          />
+          <div className="text-sm text-gray-700 w-16 text-right">{seekBar + 1} / {Math.max(1, barCount)}</div>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-700">Frets</label>
+          <select value={fretCount} onChange={(e) => setFretCount(parseInt(e.target.value, 10))} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+            <option value={12}>12</option>
+            <option value={15}>15</option>
+            <option value={24}>24</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
         <label className="flex items-center gap-2 text-sm text-gray-700">
           <input type="checkbox" checked={showIntervals} onChange={(e) => setShowIntervals(e.target.checked)} />
           Show intervals (off = note names)
@@ -128,9 +182,27 @@ export default function AnimatedFretboardGPPage() {
             Use key signature for note names
           </label>
         )}
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={hideNotation} onChange={(e) => setHideNotation(e.target.checked)} />
+            Hide tab/notation
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={showControls} onChange={(e) => setShowControls(e.target.checked)} />
+            Show play controls
+          </label>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-700">Frame</label>
+          <select value={framePreset} onChange={(e) => setFramePreset(e.target.value as any)} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+            <option value="none">None (responsive)</option>
+            <option value="square">1:1 (Square)</option>
+            <option value="reel">2:3 (Portrait)</option>
+          </select>
+        </div>
         <label className="flex items-center gap-2 text-sm text-gray-700">
-          <input type="checkbox" checked={hideNotation} onChange={(e) => setHideNotation(e.target.checked)} />
-          Hide tab/notation
+          <input type="checkbox" checked={videoSpaceMode} onChange={(e) => setVideoSpaceMode(e.target.checked)} />
+          Video space mode (1 diagram: top half diagram, lower half blank)
         </label>
         {currentAutoRoot && (
           <span className="text-xs bg-amber-50 border border-amber-200 text-amber-800 px-2 py-1 rounded">
@@ -138,6 +210,124 @@ export default function AnimatedFretboardGPPage() {
           </span>
         )}
       </div>
+
+      {(() => {
+        const bg = '#92400E';
+        const style: React.CSSProperties = framePreset === 'square'
+          ? { aspectRatio: '1 / 1', background: bg }
+          : framePreset === 'reel'
+          ? { aspectRatio: '2 / 3', background: bg }
+          : { background: 'transparent' };
+        const frameClass = framePreset === 'none' ? '' : 'max-w-[900px] mx-auto rounded-lg p-4 flex flex-col';
+        return (
+          <div className={frameClass} style={style}>
+            {videoSpaceMode && diagramCount === 1 ? (
+              <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="w-full">
+                    <div className="text-sm text-amber-100 mb-1">Diagram 1 — {trackIndex}: {trackNameByIndex(trackIndex)}</div>
+                    <AnimatedFretboardGP
+                      filePath={selectedFile}
+                      trackIndex={trackIndex}
+                      fretCount={fretCount}
+                      useTabStringOrder={false}
+                      showIntervals={showIntervals}
+                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                      initialTempoPercent={tempoPercent}
+                      accidentalStyle="mixed"
+                      autoRootFromChordTrackIndex={1}
+                      onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
+                      hideNotation={hideNotation}
+                      showTransport={false}
+                      useKeySignatureForNames={useKeySigNames}
+                      onTracksDetected={(tracks) => {
+                        setAvailableTracks(tracks);
+                        setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
+                        setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
+                      }}
+                      onBarCountDetected={(count) => setBarCount(count)}
+                    />
+                  </div>
+                </div>
+                <div className="flex-1" />
+              </div>
+            ) : (
+              <>
+                <div className="text-sm text-amber-100 mb-1">Diagram 1 — {trackIndex}: {trackNameByIndex(trackIndex)}</div>
+                <AnimatedFretboardGP
+                  filePath={selectedFile}
+                  trackIndex={trackIndex}
+                  fretCount={fretCount}
+                  useTabStringOrder={false}
+                  showIntervals={showIntervals}
+                  barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                  initialTempoPercent={tempoPercent}
+                  accidentalStyle="mixed"
+                  autoRootFromChordTrackIndex={1}
+                  onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
+                  hideNotation={hideNotation || diagramCount > 1}
+                  showTransport={false}
+                  useKeySignatureForNames={useKeySigNames}
+                  onTracksDetected={(tracks) => {
+                    setAvailableTracks(tracks);
+                    setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
+                    setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
+                  }}
+                  onBarCountDetected={(count) => setBarCount(count)}
+                />
+
+                {diagramCount > 1 && (
+                  <div className="mt-4">
+                    <div className="text-sm text-amber-100 mb-1">Diagram 2 — {secondaryTracks[0] ?? 1}: {trackNameByIndex(secondaryTracks[0] ?? 1)}</div>
+                    <AnimatedFretboardGP
+                      filePath={selectedFile}
+                      trackIndex={secondaryTracks[0] ?? 1}
+                      fretCount={fretCount}
+                      useTabStringOrder={false}
+                      showIntervals={showIntervals}
+                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                      initialTempoPercent={tempoPercent}
+                      accidentalStyle="mixed"
+                      autoRootFromChordTrackIndex={1}
+                      hideNotation={true}
+                      showTransport={false}
+                      isSilent={true}
+                      loadOnlySelectedTrack={true}
+                      useKeySignatureForNames={useKeySigNames}
+                      onBarCountDetected={(count) => setBarCount(count)}
+                    />
+                  </div>
+                )}
+
+                {diagramCount > 2 && (
+                  <div className="mt-4">
+                    <div className="text-sm text-amber-100 mb-1">Diagram 3 — {secondaryTracks[1] ?? 2}: {trackNameByIndex(secondaryTracks[1] ?? 2)}</div>
+                    <AnimatedFretboardGP
+                      filePath={selectedFile}
+                      trackIndex={secondaryTracks[1] ?? 2}
+                      fretCount={fretCount}
+                      useTabStringOrder={false}
+                      showIntervals={showIntervals}
+                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                      initialTempoPercent={tempoPercent}
+                      accidentalStyle="mixed"
+                      autoRootFromChordTrackIndex={1}
+                      hideNotation={true}
+                      showTransport={false}
+                      isSilent={true}
+                      loadOnlySelectedTrack={true}
+                      useKeySignatureForNames={useKeySigNames}
+                      onBarCountDetected={(count) => setBarCount(count)}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+            {/* Footer logo inside the frame */}
+            <div className="mt-3 text-center text-amber-100 text-sm opacity-90">Mike Nelson Guitar Lessons</div>
+          </div>
+        );
+      })()}
 
       {availableTracks.length > 0 && (
         <div className="mb-4">
@@ -151,6 +341,52 @@ export default function AnimatedFretboardGPPage() {
               <option key={t.index} value={t.index}>{t.index}: {t.name}</option>
             ))}
           </select>
+        </div>
+      )}
+
+      {/* Multi-diagram controls */}
+      {availableTracks.length > 0 && (
+        <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Number of diagrams</label>
+            <select
+              value={diagramCount}
+              onChange={(e) => setDiagramCount(parseInt(e.target.value, 10))}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+            >
+              <option value={1}>1</option>
+              <option value={2}>2</option>
+              <option value={3}>3</option>
+            </select>
+          </div>
+          {diagramCount > 1 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Diagram 2 Track</label>
+              <select
+                value={secondaryTracks[0] ?? 1}
+                onChange={(e) => setSecondaryTracks([parseInt(e.target.value, 10), secondaryTracks[1] ?? 2])}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              >
+                {availableTracks.map(t => (
+                  <option key={t.index} value={t.index}>{t.index}: {t.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {diagramCount > 2 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Diagram 3 Track</label>
+              <select
+                value={secondaryTracks[1] ?? 2}
+                onChange={(e) => setSecondaryTracks([secondaryTracks[0] ?? 1, parseInt(e.target.value, 10)])}
+                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+              >
+                {availableTracks.map(t => (
+                  <option key={t.index} value={t.index}>{t.index}: {t.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       )}
 
@@ -204,25 +440,7 @@ export default function AnimatedFretboardGPPage() {
         </div>
       </div>
 
-      <AnimatedFretboardGP
-        filePath={selectedFile}
-        trackIndex={trackIndex}
-        fretCount={15}
-        useTabStringOrder={false}
-        showIntervals={showIntervals}
-        barToRoot={useBarRoots ? parsedBarToRoot : undefined}
-        initialTempoPercent={tempoPercent}
-        accidentalStyle="mixed"
-        autoRootFromChordTrackIndex={1}
-        onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
-        hideNotation={hideNotation}
-        useKeySignatureForNames={useKeySigNames}
-        onTracksDetected={(tracks) => {
-          setAvailableTracks(tracks);
-          // keep selection if valid; otherwise default to 0
-          setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
-        }}
-      />
+      
     </div>
   );
 }

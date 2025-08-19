@@ -1,0 +1,23 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Direct color without gradient -->
+  </defs>
+  
+  <!-- Background using direct color -->
+  <rect width="1200" height="630" fill="#92400e"/>
+  
+  <defs>
+    
+    <!-- Text shadow filter -->
+    <filter id="textShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="3" dy="3" stdDeviation="4" flood-color="rgba(0,0,0,0.5)"/>
+    </filter>
+  </defs>
+  
+
+  
+  <!-- Main text using exact site styling: Playfair Display, bold weight -->
+  <text x="600" y="315" text-anchor="middle" font-family="'Playfair Display', serif" font-size="72" font-weight="bold" fill="white" filter="url(#textShadow)">
+    Mike Nelson Guitar Lessons
+  </text>
+</svg>
