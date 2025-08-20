@@ -10,6 +10,9 @@ export interface AnimatedFretboardGPProps {
   fretCount?: number; // number of frets to display (from 0)
   useTabStringOrder?: boolean; // true => high E at bottom (TAB style)
   showIntervals?: boolean;
+  hideLabels?: boolean; // if true, render blank circles (no text)
+  showChordNames?: boolean; // if true, show chord names next to active notes
+  trackChordNames?: Record<number, boolean>; // per-track chord name visibility
   hideNotation?: boolean; // if true, hide the AlphaTab visual surface but keep audio/events
   showTransport?: boolean; // if false, hide play/stop/status UI
   useKeySignatureForNames?: boolean; // when showing note names, prefer flats/sharps based on key signature
@@ -27,6 +30,35 @@ export interface AnimatedFretboardGPProps {
   onRootChange?: (root: string | null, barIndex: number) => void;
   onTracksDetected?: (tracks: { index: number; name: string }[]) => void;
   onBarCountDetected?: (barCount: number) => void;
+  // Scale overlay
+  overlayEnabled?: boolean;
+  overlayMode?: 'notes' | 'intervals' | 'blank';
+  overlayRoot?: string; // e.g., 'A', 'Bb', 'C#'
+  overlayScale?: 'major' | 'naturalMinor' | 'dorian' | 'mixolydian' | 'majorPentatonic' | 'minorPentatonic' | 'bluesMinor' | 'harmonicMinor' | 'melodicMinor' | 'custom';
+  overlayCustomIntervals?: number[]; // semitones from root for custom overlays
+  overlayName?: string; // optional display name for the overlay
+  // GP text labels (e.g., "Shape 1")
+  showTextLabels?: boolean;
+  textLabelTrackIndex?: number; // defaults to selected track
+  // Segmented overlays & fret-range controls
+  overlayModeType?: 'global' | 'segments';
+  overlaySegments?: Array<{
+    startBar: number;
+    endBar: number;
+    name?: string;
+    root: string;
+    scale: 'major' | 'naturalMinor' | 'dorian' | 'mixolydian' | 'majorPentatonic' | 'minorPentatonic' | 'bluesMinor' | 'harmonicMinor' | 'melodicMinor' | 'custom';
+    customIntervals?: number[];
+    mode?: 'notes' | 'intervals' | 'blank';
+    fretStart?: number;
+    fretEnd?: number;
+    diagramFretStart?: number;
+    diagramFretEnd?: number;
+  }>;
+  diagramGlobalFretStart?: number;
+  diagramGlobalFretEnd?: number;
+  overlayGlobalFretStart?: number;
+  overlayGlobalFretEnd?: number;
 }
 
 interface ActiveNote {
@@ -67,6 +99,18 @@ const NOTE_TO_INDEX: Record<string, number> = {
   'A': 9,
   'A#': 10, 'Bb': 10,
   'B': 11, 'Cb': 11
+};
+
+const SCALE_INTERVALS: Record<string, number[]> = {
+  major: [0,2,4,5,7,9,11],
+  naturalMinor: [0,2,3,5,7,8,10],
+  dorian: [0,2,3,5,7,9,10],
+  mixolydian: [0,2,4,5,7,9,10],
+  majorPentatonic: [0,2,4,7,9],
+  minorPentatonic: [0,3,5,7,10],
+  bluesMinor: [0,3,5,6,7,10],
+  harmonicMinor: [0,2,3,5,7,8,11],
+  melodicMinor: [0,2,3,5,7,9,11],
 };
 
 function addSemitones(noteIndex: number, semitones: number): number {
@@ -144,6 +188,9 @@ export default function AnimatedFretboardGP({
   fretCount = 15,
   useTabStringOrder = true,
   showIntervals = true,
+  hideLabels = false,
+  showChordNames = false,
+  trackChordNames = {},
   hideNotation = false,
   showTransport = true,
   syncId = 'global',
@@ -158,7 +205,22 @@ export default function AnimatedFretboardGP({
   accidentalStyle = 'flat',
   autoRootFromChordTrackIndex,
   onRootChange,
-  onTracksDetected
+  onTracksDetected,
+  onBarCountDetected,
+  overlayEnabled = false,
+  overlayMode = 'intervals',
+  overlayRoot = 'A',
+  overlayScale = 'minorPentatonic',
+  overlayCustomIntervals,
+  overlayName,
+  showTextLabels = true,
+  textLabelTrackIndex,
+  overlayModeType = 'global',
+  overlaySegments,
+  diagramGlobalFretStart,
+  diagramGlobalFretEnd,
+  overlayGlobalFretStart,
+  overlayGlobalFretEnd
 }: AnimatedFretboardGPProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
@@ -175,7 +237,11 @@ export default function AnimatedFretboardGP({
   const stepIndexRef = useRef<number>(0);
   const autoBarToRootRef = useRef<Record<number, string> | null>(null);
   const autoBarToQualityRef = useRef<Record<number, ChordQuality> | null>(null);
+  const autoBarToChordNameRef = useRef<Record<number, string> | null>(null);
+  const autoBarToTextLabelRef = useRef<Record<number, string> | null>(null);
   const [currentQuality, setCurrentQuality] = useState<ChordQuality>('unknown');
+  const [currentChordName, setCurrentChordName] = useState<string>('');
+  const [currentTextLabel, setCurrentTextLabel] = useState<string>('');
   const keySigPrefRef = useRef<Record<number, 'flat' | 'sharp'>>({});
   const [currentKeyPref, setCurrentKeyPref] = useState<'flat' | 'sharp'>('sharp');
   const [numStrings, setNumStrings] = useState<number>(6);
@@ -226,6 +292,91 @@ export default function AnimatedFretboardGP({
     }
     return lastKnownRootRef.current;
   }, [barToRoot, beatToRoot, currentBarIndex, currentBeatInBar]);
+
+  // Sync listeners defined outside useEffect for cleanup access
+  const onSyncTransport = useCallback((evt: any) => {
+    try {
+      if (evt?.detail?.id !== syncId) return;
+      const shouldPlay = !!evt?.detail?.playing;
+      if (shouldPlay) (apiRef.current as any)?.play?.();
+      else (apiRef.current as any)?.pause?.();
+    } catch {}
+  }, [syncId]);
+
+  const onSyncStop = useCallback((evt: any) => {
+    try {
+      if (evt?.detail?.id !== syncId) return;
+      (apiRef.current as any)?.stop?.();
+      setActiveNotes([]);
+    } catch {}
+  }, [syncId]);
+
+  const onSyncSeek = useCallback(async (evt: any) => {
+    try {
+      if (evt?.detail?.id !== syncId) return;
+      const apiAny = apiRef.current as any;
+      if (!apiAny) return;
+      const d = evt.detail || {};
+
+      if (typeof d.bar === 'number') {
+        // Stop current playback before seeking
+        try { apiAny.stop?.(); } catch {}
+
+        // Prefer seeking by tick at the start of the requested bar for reliable playback
+        const bt = barFirstTickRef.current[d.bar];
+        if (typeof bt === 'number' && apiAny?.seek) {
+          apiAny.seek(Math.max(0, Math.floor(bt)));
+        } else if (apiAny?.cursor?.moveTo) {
+          apiAny.cursor.moveTo(d.bar, d.beat ?? 0);
+        }
+
+        if (d.autoplay) {
+          try {
+            const AC: any = (window as any).AudioContext || (window as any).webkitAudioContext;
+            if (AC) {
+              if (!(window as any)._sharedAudioCtx) (window as any)._sharedAudioCtx = new AC();
+              if ((window as any)._sharedAudioCtx.state === 'suspended') await (window as any)._sharedAudioCtx.resume();
+            }
+            const internalCtx = apiAny?.audio?.context || apiAny?._audioContext;
+            if (internalCtx && internalCtx.state === 'suspended') await internalCtx.resume();
+          } catch {}
+          try { apiAny.play?.(); } catch {}
+        }
+        return;
+      }
+
+      if (typeof d.tick === 'number') {
+        const targetTick = Math.max(0, Math.floor(d.tick));
+        // Try all known ways to reposition before playing
+        try { apiAny.cursor?.moveTo?.(d.bar ?? 0, d.beat ?? 0); } catch {}
+        try { apiAny.seekTick?.(targetTick); } catch {}
+        try { apiAny.seek?.(targetTick); } catch {}
+        if (d.autoplay) {
+          try {
+            const AC: any = (window as any).AudioContext || (window as any).webkitAudioContext;
+            if (AC) {
+              if (!(window as any)._sharedAudioCtx) (window as any)._sharedAudioCtx = new AC();
+              if ((window as any)._sharedAudioCtx.state === 'suspended') await (window as any)._sharedAudioCtx.resume();
+            }
+            const internalCtx = apiAny?.audio?.context || apiAny?._audioContext;
+            if (internalCtx && internalCtx.state === 'suspended') await internalCtx.resume();
+          } catch {}
+          try { apiAny.play?.(); } catch {}
+        }
+        return;
+      }
+      if (typeof d.percent === 'number') {
+        const total = totalTicksRef.current || 0;
+        if (total > 0 && apiAny.seek) {
+          const tick = Math.max(0, Math.min(total, Math.floor(total * d.percent)));
+          apiAny.seek(tick);
+          if (d.autoplay) {
+            try { apiAny.play?.(); } catch {}
+          }
+        }
+      }
+    } catch {}
+  }, [syncId]);
 
   useEffect(() => {
     let disposed = false;
@@ -339,51 +490,7 @@ export default function AnimatedFretboardGP({
           } catch {}
         });
 
-        // Sync listeners
-        const onSyncTransport = (evt: any) => {
-          try {
-            if (evt?.detail?.id !== syncId) return;
-            const shouldPlay = !!evt?.detail?.playing;
-            if (shouldPlay) (apiRef.current as any)?.play?.();
-            else (apiRef.current as any)?.pause?.();
-          } catch {}
-        };
-        const onSyncStop = (evt: any) => {
-          try {
-            if (evt?.detail?.id !== syncId) return;
-            (apiRef.current as any)?.stop?.();
-            setActiveNotes([]);
-          } catch {}
-        };
-        const onSyncSeek = (evt: any) => {
-          try {
-            if (evt?.detail?.id !== syncId) return;
-            const apiAny = apiRef.current as any;
-            if (!apiAny) return;
-            const d = evt.detail || {};
-            if (typeof d.tick === 'number') {
-              apiAny.seek?.(Math.max(0, Math.floor(d.tick)));
-              return;
-            }
-            if (typeof d.bar === 'number') {
-              // Prefer seeking by tick at the start of the requested bar for reliable playback
-              const bt = barFirstTickRef.current[d.bar];
-              if (typeof bt === 'number' && apiAny?.seek) {
-                apiAny.seek(Math.max(0, Math.floor(bt)));
-              } else if (apiAny?.cursor?.moveTo) {
-                apiAny.cursor.moveTo(d.bar, d.beat ?? 0);
-              }
-              return;
-            }
-            if (typeof d.percent === 'number') {
-              const total = totalTicksRef.current || 0;
-              if (total > 0 && apiAny.seek) {
-                const tick = Math.max(0, Math.min(total, Math.floor(total * d.percent)));
-                apiAny.seek(tick);
-              }
-            }
-          } catch {}
-        };
+        // Add event listeners for sync
         window.addEventListener('af-sync-transport' as any, onSyncTransport);
         window.addEventListener('af-sync-stop' as any, onSyncStop);
         window.addEventListener('af-sync-seek' as any, onSyncSeek);
@@ -415,8 +522,10 @@ export default function AnimatedFretboardGP({
                   if (typeof tick === 'number') maxTick = Math.max(maxTick, tick);
                   const barIdx = bar?.index ?? 0;
                   if (typeof barIdx === 'number') {
-                    if (!(barIdx in barTick)) barTick[barIdx] = tick;
-                    else barTick[barIdx] = Math.min(barTick[barIdx], tick);
+                    const barStartCandidate = (bar?.masterBar?.startTick ?? bar?.masterBar?.start ?? tick) as number;
+                    const firstTick = typeof barStartCandidate === 'number' ? barStartCandidate : tick;
+                    if (!(barIdx in barTick)) barTick[barIdx] = firstTick;
+                    else barTick[barIdx] = Math.min(barTick[barIdx], firstTick);
                   }
                 }
               }
@@ -424,12 +533,15 @@ export default function AnimatedFretboardGP({
             totalTicksRef.current = maxTick;
             barFirstTickRef.current = barTick;
           } catch {}
-          // compute bar count for parent
+          // compute bar count for parent (use masterBars as a robust fallback)
           try {
             const tracks = score?.tracks || [];
             const tSel = tracks[trackIndex] || tracks[0];
-            const bars = tSel?.staves?.[0]?.bars || [];
-            totalBarsRef.current = Array.isArray(bars) ? bars.length : 0;
+            const barsA = tSel?.staves?.[0]?.bars || [];
+            const masterBars = (score as any)?.masterBars || (score as any)?.bars || [];
+            const countA = Array.isArray(barsA) ? barsA.length : 0;
+            const countB = Array.isArray(masterBars) ? masterBars.length : 0;
+            totalBarsRef.current = Math.max(countA, countB);
             if (typeof onBarCountDetected === 'function') onBarCountDetected(totalBarsRef.current);
           } catch {}
           // Build step list (bar, beat, tick) for step mode
@@ -471,6 +583,8 @@ export default function AnimatedFretboardGP({
           // Build auto root & quality map from chord track if requested
           autoBarToRootRef.current = null;
           autoBarToQualityRef.current = null;
+          autoBarToChordNameRef.current = null;
+          autoBarToTextLabelRef.current = null;
           keySigPrefRef.current = {};
           if (typeof autoRootFromChordTrackIndex === 'number' && score?.tracks?.[autoRootFromChordTrackIndex]) {
             try {
@@ -479,6 +593,8 @@ export default function AnimatedFretboardGP({
               const bars = staves[0]?.bars || [];
               const map: Record<number, string> = {};
               const qmap: Record<number, ChordQuality> = {};
+              const chordNameMap: Record<number, string> = {};
+              const textMap: Record<number, string> = {};
               for (let b = 0; b < bars.length; b++) {
                 const bar = bars[b];
                 const voices = bar?.voices || [];
@@ -486,6 +602,11 @@ export default function AnimatedFretboardGP({
                   const beats = v?.beats || [];
                   for (const beat of beats) {
                     const chord = beat?.chord || beat?.Chord || beat?.harmony || null;
+                    // capture arbitrary text labels per bar (e.g., "Shape 1")
+                    if (beat?.text && typeof beat.text === 'string' && !textMap[b]) {
+                      const txt = beat.text.trim();
+                      if (txt) textMap[b] = txt;
+                    }
                     let name: string | null = null;
                     if (chord) {
                       name = chord.name || chord.displayName || chord.text || null;
@@ -497,6 +618,7 @@ export default function AnimatedFretboardGP({
                       if (m && m[1]) {
                         const root = m[1].toUpperCase().replace('B#', 'C').replace('E#', 'F');
                         map[b] = root;
+                        chordNameMap[b] = name.trim(); // Store full chord name
                         const qualRaw = (m[2] || '').toLowerCase();
                         let quality: ChordQuality = 'unknown';
                         if (/maj7|Δ7|maj/.test(qualRaw)) quality = 'maj7';
@@ -516,11 +638,24 @@ export default function AnimatedFretboardGP({
                   if (map[b]) break;
                 }
               }
+              // Forward-fill: make bars without explicit chords/text inherit the previous values
+              try {
+                const barCount = bars.length;
+                for (let b = 1; b < barCount; b++) {
+                  if (!map[b] && map[b - 1]) map[b] = map[b - 1];
+                  if (!qmap[b] && qmap[b - 1]) qmap[b] = qmap[b - 1];
+                  if (!chordNameMap[b] && chordNameMap[b - 1]) chordNameMap[b] = chordNameMap[b - 1];
+                  if (!textMap[b] && textMap[b - 1]) textMap[b] = textMap[b - 1];
+                }
+              } catch {}
+
               if (Object.keys(map).length > 0) {
                 autoBarToRootRef.current = map;
                 autoBarToQualityRef.current = qmap;
+                autoBarToChordNameRef.current = chordNameMap;
+                autoBarToTextLabelRef.current = textMap;
                 // eslint-disable-next-line no-console
-                console.log('[AnimatedFretboardGP] auto roots from chord track', map, qmap);
+                console.log('[AnimatedFretboardGP] auto roots from chord track', map, qmap, chordNameMap, textMap);
               }
             } catch (err) {
               console.warn('[AnimatedFretboardGP] chord-root extraction failed', err);
@@ -592,6 +727,18 @@ export default function AnimatedFretboardGP({
           setStatus('Rendered');
           // eslint-disable-next-line no-console
           console.log('[AnimatedFretboardGP] renderFinished');
+          // Re-emit bar count after render as a fallback
+          try {
+            const score = lastScoreRef.current;
+            const tracks = score?.tracks || [];
+            const tSel = tracks[trackIndex] || tracks[0];
+            const barsA = tSel?.staves?.[0]?.bars || [];
+            const masterBars = (score as any)?.masterBars || (score as any)?.bars || [];
+            const countA = Array.isArray(barsA) ? barsA.length : 0;
+            const countB = Array.isArray(masterBars) ? masterBars.length : 0;
+            totalBarsRef.current = Math.max(countA, countB);
+            if (typeof onBarCountDetected === 'function') onBarCountDetected(totalBarsRef.current);
+          } catch {}
           // Safety: ensure string count reflects selected track even for first diagram
           try {
             const score = lastScoreRef.current;
@@ -647,7 +794,7 @@ export default function AnimatedFretboardGP({
                   }
                 } catch {}
               }
-              const barIndex = beat?.voice?.bar?.index ?? currentBarIndex;
+              const barIndex = beat?.voice?.bar?.index ?? beat?.bar?.index ?? currentBarIndex;
               setCurrentBarIndex(typeof barIndex === 'number' ? barIndex : 0);
               const beatIndex = typeof beat?.index === 'number' ? beat.index : currentBeatInBar;
               setCurrentBeatInBar(beatIndex);
@@ -694,6 +841,12 @@ export default function AnimatedFretboardGP({
             }
             if (autoBarToQualityRef.current && typeof barIndex === 'number') {
               setCurrentQuality(autoBarToQualityRef.current[barIndex] || 'unknown');
+            }
+            if (autoBarToChordNameRef.current && typeof barIndex === 'number') {
+              setCurrentChordName(autoBarToChordNameRef.current[barIndex] || '');
+            }
+            if (autoBarToTextLabelRef.current && typeof barIndex === 'number') {
+              setCurrentTextLabel(autoBarToTextLabelRef.current[barIndex] || '');
             }
             if (typeof barIndex === 'number' && keySigPrefRef.current[barIndex]) {
               setCurrentKeyPref(keySigPrefRef.current[barIndex]);
@@ -1010,7 +1163,30 @@ export default function AnimatedFretboardGP({
     const leftPadding = 44;
     const topPadding = 18;
     const fretNumberYOffset = -8; // nudge fret numbers up a bit for clarity
-    const width = leftPadding + numFrets * cellWidth + 16;
+    // Determine visible fret window for diagram (clips full fretboard display)
+    let visibleStartFret = 0;
+    let visibleEndFret = numFrets; // inclusive end for frets rendering
+    try {
+      // Diagram range is independent of overlay scale range
+      if (overlayModeType === 'segments' && Array.isArray(overlaySegments) && overlaySegments.length > 0) {
+        const seg = overlaySegments.find(sg => currentBarIndex >= sg.startBar && currentBarIndex <= sg.endBar);
+        if (seg) {
+          // Segment diagram range completely overrides global diagram range
+          if (typeof seg.diagramFretStart === 'number') visibleStartFret = Math.max(0, seg.diagramFretStart);
+          if (typeof seg.diagramFretEnd === 'number') visibleEndFret = Math.max(visibleStartFret, seg.diagramFretEnd);
+        } else {
+          // No active segment, use global diagram range
+          if (typeof diagramGlobalFretStart === 'number') visibleStartFret = Math.max(0, Math.min(numFrets, diagramGlobalFretStart));
+          if (typeof diagramGlobalFretEnd === 'number') visibleEndFret = Math.max(visibleStartFret, Math.min(numFrets, diagramGlobalFretEnd));
+        }
+      } else {
+        // Global mode, use global diagram range
+        if (typeof diagramGlobalFretStart === 'number') visibleStartFret = Math.max(0, Math.min(numFrets, diagramGlobalFretStart));
+        if (typeof diagramGlobalFretEnd === 'number') visibleEndFret = Math.max(visibleStartFret, Math.min(numFrets, diagramGlobalFretEnd));
+      }
+    } catch {}
+    const visibleFretSpan = Math.max(1, (visibleEndFret - visibleStartFret));
+    const width = leftPadding + visibleFretSpan * cellWidth + 16;
     const height = topPadding + (nStrings - 1) * stringGap + 16;
 
     // Enforce standard orientation: top = high E (row 0), bottom = low E (row 5)
@@ -1020,18 +1196,26 @@ export default function AnimatedFretboardGP({
     const circles = activeNotes.map((n, idx) => {
       const row = stringNumberToRow(n.stringNumber);
       if (row < 0 || row > (nStrings - 1)) return null;
-      const cx = leftPadding + ((n.fret === 0 ? -0.5 : (n.fret - 0.5)) * cellWidth);
+      if (typeof n.fret !== 'number') return null;
+      // clip to visible fret window
+      if (n.fret < visibleStartFret || n.fret > visibleEndFret) return null;
+      const localCenter = (visibleStartFret === 0)
+        ? (n.fret === 0 ? -0.5 : (n.fret - 0.5))
+        : ((n.fret - visibleStartFret) + 0.5);
+      const cx = leftPadding + (localCenter * cellWidth);
       const cy = topPadding + row * stringGap;
       const noteIndex = getNoteIndexForStringFretFrom(tuningHighToLow, n.stringNumber, n.fret, nStrings);
-      let label: string;
-      if (showIntervals && currentRoot) {
-        label = computeIntervalLabel(currentRoot, noteIndex, accidentalStyle, currentQuality);
-      } else {
-        // Note names: choose flats/sharps by key signature if enabled
-        if (useKeySignatureForNames) {
-          label = (currentKeyPref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+      let label: string = '';
+      if (!hideLabels) {
+        if (showIntervals && currentRoot) {
+          label = computeIntervalLabel(currentRoot, noteIndex, accidentalStyle, currentQuality);
         } else {
-          label = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+          // Note names: choose flats/sharps by key signature if enabled
+          if (useKeySignatureForNames) {
+            label = (currentKeyPref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+          } else {
+            label = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+          }
         }
       }
       const bend = n.bend;
@@ -1065,6 +1249,7 @@ export default function AnimatedFretboardGP({
           {n.hp && (
             <text x={cx + 12} y={cy - 10} textAnchor="middle" fontSize={10} fill="#0f172a" fontWeight={700}>{n.hp}</text>
           )}
+
           {/* Slide arrows */}
           {n.slide && (
             n.slide.direction === 'up' ? (
@@ -1136,6 +1321,96 @@ export default function AnimatedFretboardGP({
       );
     });
 
+    // Scale overlay computation
+    const overlayElements: React.ReactElement[] = [];
+    let overlayNamePosition: { x: number; y: number; anchor: 'start' | 'end'; text: string } | null = null;
+    if (overlayEnabled) {
+      // Determine active overlay config (global vs segments)
+      let activeRoot = overlayRoot;
+      let activeScale = overlayScale;
+      let activeCustom = overlayCustomIntervals;
+      let activeMode = overlayMode;
+      let fretStart = overlayGlobalFretStart ?? 0;
+      let fretEnd = overlayGlobalFretEnd ?? numFrets;
+      let activeName = overlayName || '';
+
+      if (overlayModeType === 'segments' && Array.isArray(overlaySegments) && overlaySegments.length > 0) {
+        const seg = overlaySegments.find(sg => currentBarIndex >= sg.startBar && currentBarIndex <= sg.endBar);
+        if (seg) {
+          activeRoot = seg.root || activeRoot;
+          activeScale = seg.scale || activeScale;
+          activeCustom = seg.customIntervals || activeCustom;
+          activeMode = seg.mode || activeMode;
+          fretStart = typeof seg.fretStart === 'number' ? seg.fretStart : fretStart;
+          fretEnd = typeof seg.fretEnd === 'number' ? seg.fretEnd : fretEnd;
+          activeName = seg.name || activeName;
+        }
+      }
+
+      const rootIdx = NOTE_TO_INDEX[activeRoot] ?? 9; // default A
+      const allowed: number[] = (activeScale === 'custom' ? (activeCustom || [0,3,5,7,10]) : SCALE_INTERVALS[activeScale] || SCALE_INTERVALS.minorPentatonic).map(i => ((i % 12) + 12) % 12);
+      for (let s = 1; s <= nStrings; s++) {
+        const row = stringNumberToRow(s);
+        const cy = topPadding + row * stringGap;
+        for (let f = Math.max(0, fretStart); f <= Math.min(numFrets, fretEnd); f++) {
+          let cx: number;
+          if (visibleStartFret === 0) {
+            cx = leftPadding + ((f === 0 ? -0.5 : (f - 0.5)) * cellWidth);
+          } else {
+            cx = leftPadding + (((f - visibleStartFret) + 0.5) * cellWidth);
+          }
+          const noteIdx = getNoteIndexForStringFretFrom(tuningHighToLow, s, f, nStrings);
+          const interval = (noteIdx - rootIdx + 12) % 12;
+          if (allowed.includes(interval)) {
+            const radius = 7;
+            let text = '';
+            if (activeMode === 'intervals') {
+              text = computeIntervalLabel(activeRoot, noteIdx, accidentalStyle, 'unknown');
+            } else if (activeMode === 'notes') {
+              text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
+            }
+            overlayElements.push(
+              <g key={`ov-${s}-${f}`}>
+                <circle cx={cx} cy={cy} r={radius} fill="#fbbf24" opacity={0.6} />
+                {activeMode !== 'blank' && (
+                  <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill="#7c2d12" fontWeight={700}>{text}</text>
+                )}
+              </g>
+            );
+          }
+        }
+      }
+      // Overlay name positioned OUTSIDE the active fret range, left or right depending on available space
+      if (activeName) {
+        // Calculate the actual scale overlay range (not the diagram range)
+        const scaleStart = Math.max(0, fretStart);
+        const scaleEnd = Math.min(numFrets, fretEnd);
+        
+        const xFretLine = (f: number) => leftPadding + ((f - visibleStartFret) * cellWidth);
+        let anchor: 'start' | 'end' = 'start';
+        let cxName: number;
+        
+        // If scale uses frets 9 or above, place name to the left; otherwise to the right
+        if (scaleStart >= 9) {
+          // Place to the left of the scale overlay
+          anchor = 'end';
+          cxName = xFretLine(scaleStart) - cellWidth; // exactly one fret distance to the left
+        } else {
+          // Place to the right of the scale overlay
+          anchor = 'start';
+          cxName = xFretLine(scaleEnd) + cellWidth; // exactly one fret distance to the right
+        }
+        
+        // Clamp within SVG bounds
+        const minX = leftPadding - 8;
+        const maxX = leftPadding + (visibleFretSpan * cellWidth) + 8;
+        cxName = Math.max(minX, Math.min(maxX, cxName));
+        const cyName = topPadding + ((nStrings - 1) * stringGap) / 2;
+        // Store name position for separate rendering (outside the overlay elements group)
+        overlayNamePosition = { x: cxName, y: cyName, anchor, text: activeName };
+      }
+    }
+
     // Inlays
     const inlays = new Set([3,5,7,9,12,15,17,19,21]);
     return (
@@ -1164,6 +1439,8 @@ export default function AnimatedFretboardGP({
 
         <rect x="0" y="0" width={width} height={height} rx="8" ry="8" fill="url(#fretboardGrad)" stroke="#f59e0b" strokeWidth="1" />
 
+
+
         {/* Strings (high contrast) */}
         {Array.from({ length: nStrings }, (_, i) => {
           const y = topPadding + i * stringGap;
@@ -1173,7 +1450,7 @@ export default function AnimatedFretboardGP({
               key={`str-${i}`}
               x1={leftPadding}
               y1={y}
-              x2={leftPadding + numFrets * cellWidth}
+              x2={leftPadding + visibleFretSpan * cellWidth}
               y2={y}
               stroke="#475569"
               strokeWidth={w}
@@ -1183,11 +1460,12 @@ export default function AnimatedFretboardGP({
           );
         })}
         {/* Frets (high contrast) */}
-        {Array.from({ length: numFrets + 1 }, (_, f) => {
-          const x = leftPadding + f * cellWidth;
+        {Array.from({ length: (visibleEndFret - visibleStartFret) + 1 }, (_, idx) => {
+          const f = visibleStartFret + idx;
+          const x = leftPadding + (idx * cellWidth);
           return (
             <g key={`fret-${f}`}>
-              {f === 0 ? (
+              {f === 0 && visibleStartFret === 0 ? (
                 // Nut
                 <line
                   x1={x}
@@ -1205,9 +1483,10 @@ export default function AnimatedFretboardGP({
           );
         })}
         {/* Inlay markers */}
-        {Array.from({ length: numFrets + 1 }, (_, f) => {
+        {Array.from({ length: (visibleEndFret - visibleStartFret) + 1 }, (_, idx) => {
+          const f = visibleStartFret + idx;
           if (!inlays.has(f)) return null;
-          const x = leftPadding + (f - 0.5) * cellWidth;
+          const x = leftPadding + (idx - 0.5) * cellWidth;
           const midY = topPadding + ((nStrings - 1) * stringGap) / 2;
           if (f === 12) {
             return (
@@ -1228,7 +1507,53 @@ export default function AnimatedFretboardGP({
           );
         })}
 
+        <g filter="url(#noteGlow)">{overlayElements}</g>
         <g filter="url(#noteGlow)">{circles}</g>
+        
+        {/* Scale overlay name - rendered separately without glow filter */}
+        {overlayNamePosition && (
+          <text 
+            key="ov-name" 
+            x={overlayNamePosition.x} 
+            y={overlayNamePosition.y} 
+            textAnchor={overlayNamePosition.anchor} 
+            fontSize={16} 
+            fontWeight={700} 
+            fill="#92400e" 
+            style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.4))' }}
+          >
+            {overlayNamePosition.text}
+          </text>
+        )}
+        
+        {/* Chord name - rendered once per chord, positioned in the middle of the diagram to persist throughout chord duration */}
+        {showChordNames && currentChordName && (trackChordNames[trackIndex] ?? true) && (
+          <text 
+            x={leftPadding + (numFrets * cellWidth) / 2} 
+            y={topPadding + ((nStrings - 1) * stringGap) / 2} 
+            textAnchor="middle" 
+            fontSize={18} 
+            fill="#92400e" 
+            fontWeight={700}
+            style={{ filter: 'drop-shadow(2px 2px 3px rgba(0,0,0,0.5))' }}
+          >
+            {currentChordName}
+          </text>
+        )}
+        {/* GP Text label (e.g., Shape 1) – centered slightly below chord label */}
+        {showTextLabels && currentTextLabel && (
+          <text 
+            x={leftPadding + (numFrets * cellWidth) / 2} 
+            y={topPadding + ((nStrings - 1) * stringGap) / 2 + 18} 
+            textAnchor="middle" 
+            fontSize={14} 
+            fill="#1f2937" 
+            fontWeight={700}
+            style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.3))' }}
+          >
+            {currentTextLabel}
+          </text>
+        )}
       </svg>
     );
   };

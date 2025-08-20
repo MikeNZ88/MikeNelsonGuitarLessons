@@ -22,6 +22,45 @@ export default function AnimatedFretboardGPPage() {
   const [seekBar, setSeekBar] = useState<number>(0);
   const [fretCount, setFretCount] = useState<number>(15);
   const [barCount, setBarCount] = useState<number>(0);
+  const [blankCircles, setBlankCircles] = useState<boolean>(false);
+  const [showChordNames, setShowChordNames] = useState<boolean>(false);
+  const [trackChordNames, setTrackChordNames] = useState<Record<number, boolean>>({});
+  // Scale overlay
+  const [overlayEnabled, setOverlayEnabled] = useState<boolean>(false);
+  const [overlayMode, setOverlayMode] = useState<'notes' | 'intervals' | 'blank'>('intervals');
+  const [overlayRoot, setOverlayRoot] = useState<string>('A');
+  const [overlayScale, setOverlayScale] = useState<'major' | 'naturalMinor' | 'dorian' | 'mixolydian' | 'majorPentatonic' | 'minorPentatonic' | 'bluesMinor' | 'harmonicMinor' | 'melodicMinor' | 'custom'>('minorPentatonic');
+  const [overlayCustom, setOverlayCustom] = useState<string>('0,3,5,7,10');
+  const [overlayName, setOverlayName] = useState<string>('');
+  // Text labels from GP (e.g. Shape 1)
+  const [showTextLabels, setShowTextLabels] = useState<boolean>(true);
+  // Segmented overlay controls
+  const [overlayModeType, setOverlayModeType] = useState<'global'|'segments'>('global');
+  const [overlayGlobalFretStart, setOverlayGlobalFretStart] = useState<number>(0);
+  const [overlayGlobalFretEnd, setOverlayGlobalFretEnd] = useState<number>(fretCount);
+  const [overlaySegments, setOverlaySegments] = useState<Array<{
+    startBar: number; endBar: number; root: string;
+    scale: 'major'|'naturalMinor'|'dorian'|'mixolydian'|'majorPentatonic'|'minorPentatonic'|'bluesMinor'|'harmonicMinor'|'melodicMinor'|'custom';
+    customIntervals?: number[]; mode: 'notes'|'intervals'|'blank'; fretStart?: number; fretEnd?: number;
+    name?: string; diagramFretStart?: number; diagramFretEnd?: number;
+  }>>([]);
+  const [diagramGlobalFretStart, setDiagramGlobalFretStart] = useState<number>(0);
+  const [diagramGlobalFretEnd, setDiagramGlobalFretEnd] = useState<number>(fretCount);
+  // Presets (localStorage)
+  const [presetName, setPresetName] = useState<string>('');
+  const [selectedPresetIdx, setSelectedPresetIdx] = useState<number>(-1);
+  const [savedPresets, setSavedPresets] = useState<Array<{ name: string; data: any }>>(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? window.localStorage.getItem('af_scale_overlay_presets') : null;
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+  const persistPresets = (items: Array<{name:string; data:any}>) => {
+    setSavedPresets(items);
+    try { window.localStorage.setItem('af_scale_overlay_presets', JSON.stringify(items)); } catch {}
+  };
 
   const pentatonicExercises = useMemo(
     () => [
@@ -53,7 +92,9 @@ export default function AnimatedFretboardGPPage() {
     () => [
       { id: 'opeth-drapery-falls', name: 'Opeth - The Drapery Falls (ver 2)', file: '/GP Files/Scale Exercises/BLOG TABS/Opeth - The Drapery Falls (ver 2).gp' },
       { id: 'bends-ex1', name: 'String Bending Exercise 1', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp' },
-      { id: 'meshuggah-dancers', name: 'Meshuggah - Dancers To A Discordant System (ver 3)', file: '/GP Files/Scale Exercises/BLOG TABS/Meshuggah - Dancers To A Discordant System (ver 3 by Stuart XIV).gp' }
+      { id: 'meshuggah-dancers', name: 'Meshuggah - Dancers To A Discordant System (ver 3)', file: '/GP Files/Scale Exercises/BLOG TABS/Meshuggah - Dancers To A Discordant System (ver 3 by Stuart XIV).gp' },
+      { id: 'morbid-angel-god-emptiness', name: 'Morbid Angel - God of Emptiness', file: '/GP Files/Scale Exercises/BLOG TABS/Morbid Angel - God Of Emptiness.gp3' },
+      { id: 'am-pent-shapes', name: 'Am Pentatonic Shapes', file: '/GP Files/Scale Exercises/BLOG TABS/Am Pentatonic Shapes.gp' }
     ],
     []
   );
@@ -144,22 +185,21 @@ export default function AnimatedFretboardGPPage() {
             className="px-3 py-1.5 rounded-md text-white text-sm bg-red-600 hover:bg-red-700"
           >Stop</button>
         </div>
-        <div className="md:col-span-2 flex items-center gap-3">
+        <div className="md:col-span-2 flex items-center gap-3 select-none">
           <label className="text-sm text-gray-700 whitespace-nowrap">Bar</label>
           <input
             type="range"
             min={0}
-            max={Math.max(0, barCount - 1)}
+            max={Math.max(0, (barCount || 12) - 1)}
             value={seekBar}
             onChange={(e) => {
               const b = Number(e.target.value);
               setSeekBar(b);
-              window.dispatchEvent(new CustomEvent('af-sync-seek', { detail: { id: 'global', bar: b, beat: 0 } }));
-              window.dispatchEvent(new CustomEvent('af-sync-transport', { detail: { id: 'global', playing: true } }));
+              window.dispatchEvent(new CustomEvent('af-sync-seek', { detail: { id: 'global', bar: b, beat: 0, autoplay: true } }));
             }}
             className="flex-1"
           />
-          <div className="text-sm text-gray-700 w-16 text-right">{seekBar + 1} / {Math.max(1, barCount)}</div>
+          <div className="text-sm text-gray-700 w-16 text-right">{seekBar + 1} / {Math.max(1, barCount || 12)}</div>
         </div>
         <div className="flex items-center gap-2">
           <label className="text-sm text-gray-700">Frets</label>
@@ -182,6 +222,33 @@ export default function AnimatedFretboardGPPage() {
             Use key signature for note names
           </label>
         )}
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" checked={blankCircles} onChange={(e) => setBlankCircles(e.target.checked)} />
+          Blank circles (no labels)
+        </label>
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" checked={showChordNames} onChange={(e) => setShowChordNames(e.target.checked)} />
+          Show chord names next to notes
+        </label>
+        {showChordNames && (
+          <div className="ml-4 space-y-1">
+            <div className="text-xs text-gray-600 mb-1">Per-track chord names:</div>
+            {availableTracks.map((track) => (
+              <label key={track.index} className="flex items-center gap-2 text-xs text-gray-700">
+                <input 
+                  type="checkbox" 
+                  checked={trackChordNames[track.index] ?? true} 
+                  onChange={(e) => setTrackChordNames(prev => ({ ...prev, [track.index]: e.target.checked }))} 
+                />
+                Track {track.index}: {track.name}
+              </label>
+            ))}
+          </div>
+        )}
+        <label className="flex items-center gap-2 text-sm text-gray-700">
+          <input type="checkbox" checked={showTextLabels} onChange={(e)=>setShowTextLabels(e.target.checked)} />
+          Show GP text labels (e.g., Shape 1)
+        </label>
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 text-sm text-gray-700">
             <input type="checkbox" checked={hideNotation} onChange={(e) => setHideNotation(e.target.checked)} />
@@ -209,6 +276,299 @@ export default function AnimatedFretboardGPPage() {
             Auto Root: {currentAutoRoot} (bar {currentBar + 1})
           </span>
         )}
+        {/* Scale Overlay Controls */}
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-5 gap-2 items-center p-2 rounded border border-amber-200 bg-amber-50/40">
+          <label className="flex items-center gap-2 text-sm text-gray-800">
+            <input type="checkbox" checked={overlayEnabled} onChange={(e) => setOverlayEnabled(e.target.checked)} />
+            Enable scale overlay
+          </label>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Type</span>
+            <select className="border rounded px-2 py-1 text-sm" value={overlayModeType} onChange={(e)=>setOverlayModeType(e.target.value as any)}>
+              <option value="global">Global</option>
+              <option value="segments">Segments</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Mode</span>
+            <select className="border rounded px-2 py-1 text-sm" value={overlayMode} onChange={(e)=>setOverlayMode(e.target.value as any)}>
+              <option value="intervals">Intervals</option>
+              <option value="notes">Note names</option>
+              <option value="blank">Blank circles</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Root</span>
+            <input className="border rounded px-2 py-1 text-sm w-16" value={overlayRoot} onChange={(e)=>setOverlayRoot(e.target.value)} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Name</span>
+            <input className="border rounded px-2 py-1 text-sm w-40" value={overlayName} onChange={(e)=>setOverlayName(e.target.value)} placeholder="e.g. Am Pent Shape 1" />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Scale</span>
+            <select className="border rounded px-2 py-1 text-sm" value={overlayScale} onChange={(e)=>setOverlayScale(e.target.value as any)}>
+              <option value="major">Major</option>
+              <option value="naturalMinor">Natural Minor</option>
+              <option value="dorian">Dorian</option>
+              <option value="mixolydian">Mixolydian</option>
+              <option value="majorPentatonic">Major Pentatonic</option>
+              <option value="minorPentatonic">Minor Pentatonic</option>
+              <option value="bluesMinor">Blues (Minor)</option>
+              <option value="harmonicMinor">Harmonic Minor</option>
+              <option value="melodicMinor">Melodic Minor</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          {overlayScale === 'custom' && (
+            <div className="flex items-center gap-2 md:col-span-2">
+              <span className="text-sm text-gray-700">Intervals (semitones)</span>
+              <input className="border rounded px-2 py-1 text-sm flex-1" value={overlayCustom} onChange={(e)=>setOverlayCustom(e.target.value)} placeholder="e.g. 0,2,3,5,7,8,10" />
+            </div>
+          )}
+          {overlayModeType === 'global' && (
+            <div className="md:col-span-5 grid grid-cols-2 md:grid-cols-4 gap-2 items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Fret start</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={overlayGlobalFretStart}
+                  onChange={(e)=>setOverlayGlobalFretStart(Math.max(0, parseInt(e.target.value||'0',10)))} />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Fret end</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={overlayGlobalFretEnd}
+                  onChange={(e)=>setOverlayGlobalFretEnd(Math.max(0, parseInt(e.target.value||`${fretCount}`,10)))} />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Diagram start</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={diagramGlobalFretStart}
+                  onChange={(e)=>setDiagramGlobalFretStart(Math.max(0, parseInt(e.target.value||'0',10)))} />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Diagram end</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={diagramGlobalFretEnd}
+                  onChange={(e)=>setDiagramGlobalFretEnd(Math.max(0, parseInt(e.target.value||`${fretCount}`,10)))} />
+              </div>
+            </div>
+          )}
+          {overlayModeType === 'segments' && (
+            <div className="md:col-span-5">
+              <div className="text-sm font-medium text-gray-800 mb-1">Overlay segments</div>
+              <div className="space-y-2">
+                {overlaySegments.map((seg, idx) => (
+                  <div key={idx} className="grid grid-cols-2 md:grid-cols-12 gap-2 items-center border border-amber-200 rounded p-2 bg-white">
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Bars</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.startBar}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||'0',10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,startBar:Math.max(0,v)}:s));
+                        }} />
+                      <span className="text-xs">-</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.endBar}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||'0',10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,endBar:Math.max(0,v)}:s));
+                        }} />
+                    </div>
+                    <div className="col-span-1 md:col-span-3 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Name</span>
+                      <input className="border rounded px-1 py-0.5 text-xs w-full" value={(seg as any).name || ''}
+                        onChange={(e)=>setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s, name: e.target.value}:s))} />
+                    </div>
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Root</span>
+                      <input className="border rounded px-1 py-0.5 text-xs w-14" value={seg.root}
+                        onChange={(e)=>setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,root:e.target.value}:s))} />
+                    </div>
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Scale</span>
+                      <select className="border rounded px-1 py-0.5 text-xs" value={seg.scale}
+                        onChange={(e)=>setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,scale:e.target.value as any}:s))}>
+                        <option value="major">Major</option>
+                        <option value="naturalMinor">Natural Minor</option>
+                        <option value="dorian">Dorian</option>
+                        <option value="mixolydian">Mixolydian</option>
+                        <option value="majorPentatonic">Major Pentatonic</option>
+                        <option value="minorPentatonic">Minor Pentatonic</option>
+                        <option value="bluesMinor">Blues (Minor)</option>
+                        <option value="harmonicMinor">Harmonic Minor</option>
+                        <option value="melodicMinor">Melodic Minor</option>
+                        <option value="custom">Custom</option>
+                      </select>
+                    </div>
+                    {seg.scale === 'custom' && (
+                      <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                        <span className="text-xs text-gray-600">Intervals</span>
+                        <input className="border rounded px-1 py-0.5 text-xs w-32" value={(seg.customIntervals||[]).join(',')}
+                          onChange={(e)=>{
+                            const vals = e.target.value.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n));
+                            setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,customIntervals:vals}:s));
+                          }} />
+                      </div>
+                    )}
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Mode</span>
+                      <select className="border rounded px-1 py-0.5 text-xs" value={seg.mode}
+                        onChange={(e)=>setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,mode:e.target.value as any}:s))}>
+                        <option value="intervals">Intervals</option>
+                        <option value="notes">Notes</option>
+                        <option value="blank">Blank</option>
+                      </select>
+                    </div>
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Frets</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.fretStart ?? 0}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||'0',10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,fretStart:Math.max(0,v)}:s));
+                        }} />
+                      <span className="text-xs">-</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.fretEnd ?? fretCount}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||`${fretCount}`,10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,fretEnd:Math.max(0,v)}:s));
+                        }} />
+                    </div>
+                    <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                      <span className="text-xs text-gray-600">Diagram</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretStart ?? 0}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||'0',10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretStart:Math.max(0,v)}:s));
+                        }} />
+                      <span className="text-xs">-</span>
+                      <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretEnd ?? fretCount}
+                        onChange={(e)=>{
+                          const v = parseInt(e.target.value||`${fretCount}`,10); setOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretEnd:Math.max(0,v)}:s));
+                        }} />
+                    </div>
+                    <div className="col-span-1 md:col-span-2 flex justify-end">
+                      <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" onClick={()=>setOverlaySegments(prev=>prev.filter((_,i)=>i!==idx))}>Remove</button>
+                    </div>
+                  </div>
+                ))}
+                <button className="text-xs px-2 py-1 bg-amber-700 text-white rounded"
+                  onClick={()=>setOverlaySegments(prev=>[...prev, { startBar: 0, endBar: 3, root: overlayRoot, scale: overlayScale, customIntervals: overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n)), mode: overlayMode, fretStart: 0, fretEnd: fretCount, name: overlayName }])}
+                >Add segment</button>
+              </div>
+            </div>
+          )}
+          {/* Preset export/import + local save/load */}
+          <div className="md:col-span-5 grid grid-cols-1 md:grid-cols-5 gap-2 items-center">
+            <button
+              className="text-xs px-2 py-1 bg-amber-800 text-white rounded"
+              onClick={() => {
+                const preset = {
+                  gpFile: selectedFile,
+                  overlayEnabled,
+                  overlayMode,
+                  overlayRoot,
+                  overlayScale,
+                  overlayCustom,
+                  overlayName,
+                  overlayModeType,
+                  overlayGlobalFretStart,
+                  overlayGlobalFretEnd,
+                  diagramGlobalFretStart,
+                  diagramGlobalFretEnd,
+                  overlaySegments,
+                };
+                const blob = new Blob([JSON.stringify(preset, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'scale-overlay-preset.json';
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >Export preset</button>
+            <label className="text-xs px-2 py-1 bg-amber-600 text-white rounded cursor-pointer">
+              Load preset
+              <input type="file" accept="application/json" className="hidden" onChange={async (e) => {
+                try {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  const txt = await f.text();
+                  const data = JSON.parse(txt || '{}');
+                  if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
+                  if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
+                  if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
+                  if (typeof data.overlayScale === 'string') setOverlayScale(data.overlayScale);
+                  if (typeof data.overlayCustom === 'string') setOverlayCustom(data.overlayCustom);
+                  if (typeof data.overlayName === 'string') setOverlayName(data.overlayName);
+                  if (typeof data.overlayModeType === 'string') setOverlayModeType(data.overlayModeType);
+                  if (typeof data.overlayGlobalFretStart === 'number') setOverlayGlobalFretStart(data.overlayGlobalFretStart);
+                  if (typeof data.overlayGlobalFretEnd === 'number') setOverlayGlobalFretEnd(data.overlayGlobalFretEnd);
+                  if (typeof data.diagramGlobalFretStart === 'number') setDiagramGlobalFretStart(data.diagramGlobalFretStart);
+                  if (typeof data.diagramGlobalFretEnd === 'number') setDiagramGlobalFretEnd(data.diagramGlobalFretEnd);
+                  if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
+                  if (typeof data.gpFile === 'string') {
+                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs];
+                    const found = all.find(x => x.file === data.gpFile);
+                    if (found) setSelectedId(found.id);
+                  }
+                } catch {}
+                if (e.currentTarget) e.currentTarget.value = '';
+              }} />
+            </label>
+            <div className="flex items-center gap-2">
+              <input className="border rounded px-2 py-1 text-xs w-40" placeholder="Preset name" value={presetName} onChange={(e)=>setPresetName(e.target.value)} />
+              <button className="text-xs px-2 py-1 bg-emerald-600 text-white rounded" onClick={() => {
+                if (!presetName.trim()) return;
+                const data = {
+                  gpFile: selectedFile,
+                  overlayEnabled,
+                  overlayMode,
+                  overlayRoot,
+                  overlayScale,
+                  overlayCustom,
+                  overlayName,
+                  overlayModeType,
+                  overlayGlobalFretStart,
+                  overlayGlobalFretEnd,
+                  diagramGlobalFretStart,
+                  diagramGlobalFretEnd,
+                  overlaySegments,
+                };
+                const items = savedPresets.filter(p => p.name !== presetName.trim());
+                items.push({ name: presetName.trim(), data });
+                persistPresets(items);
+              }}>Save</button>
+            </div>
+            <div className="flex items-center gap-2 md:col-span-2">
+              <select className="border rounded px-2 py-1 text-xs flex-1" value={selectedPresetIdx}
+                onChange={(e)=>setSelectedPresetIdx(parseInt(e.target.value,10))}>
+                <option value={-1}>Select saved preset…</option>
+                {savedPresets.map((p, i) => (
+                  <option key={i} value={i}>{p.name}</option>
+                ))}
+              </select>
+              <button className="text-xs px-2 py-1 bg-blue-600 text-white rounded" disabled={selectedPresetIdx<0}
+                onClick={()=>{
+                  const p = savedPresets[selectedPresetIdx];
+                  if (!p) return;
+                  const data = p.data || {};
+                  if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
+                  if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
+                  if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
+                  if (typeof data.overlayScale === 'string') setOverlayScale(data.overlayScale);
+                  if (typeof data.overlayCustom === 'string') setOverlayCustom(data.overlayCustom);
+                  if (typeof data.overlayName === 'string') setOverlayName(data.overlayName);
+                  if (typeof data.overlayModeType === 'string') setOverlayModeType(data.overlayModeType);
+                  if (typeof data.overlayGlobalFretStart === 'number') setOverlayGlobalFretStart(data.overlayGlobalFretStart);
+                  if (typeof data.overlayGlobalFretEnd === 'number') setOverlayGlobalFretEnd(data.overlayGlobalFretEnd);
+                  if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
+                  if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
+                  if (typeof data.gpFile === 'string') {
+                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs];
+                    const found = all.find(x => x.file === data.gpFile);
+                    if (found) setSelectedId(found.id);
+                  }
+                }}>Load</button>
+              <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" disabled={selectedPresetIdx<0}
+                onClick={()=>{
+                  const items = savedPresets.filter((_,i)=>i!==selectedPresetIdx);
+                  persistPresets(items);
+                  setSelectedPresetIdx(-1);
+                }}>Delete</button>
+            </div>
+          </div>
+        </div>
       </div>
 
       {(() => {
@@ -232,6 +592,19 @@ export default function AnimatedFretboardGPPage() {
                       fretCount={fretCount}
                       useTabStringOrder={false}
                       showIntervals={showIntervals}
+                      hideLabels={blankCircles}
+                      showChordNames={showChordNames}
+                      overlayEnabled={overlayEnabled}
+                      overlayMode={overlayMode}
+                      overlayRoot={overlayRoot}
+                      overlayScale={overlayScale}
+                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                      overlayModeType={overlayModeType}
+                      overlayGlobalFretStart={overlayGlobalFretStart}
+                      overlayGlobalFretEnd={overlayGlobalFretEnd}
+                      diagramGlobalFretStart={diagramGlobalFretStart}
+                      diagramGlobalFretEnd={diagramGlobalFretEnd}
+                      overlaySegments={overlaySegments}
                       barToRoot={useBarRoots ? parsedBarToRoot : undefined}
                       initialTempoPercent={tempoPercent}
                       accidentalStyle="mixed"
@@ -246,6 +619,7 @@ export default function AnimatedFretboardGPPage() {
                         setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
                       }}
                       onBarCountDetected={(count) => setBarCount(count)}
+                      showTextLabels={showTextLabels}
                     />
                   </div>
                 </div>
@@ -260,6 +634,20 @@ export default function AnimatedFretboardGPPage() {
                   fretCount={fretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
+                  hideLabels={blankCircles}
+                  showChordNames={showChordNames}
+                  trackChordNames={trackChordNames}
+                  overlayEnabled={overlayEnabled}
+                  overlayMode={overlayMode}
+                  overlayRoot={overlayRoot}
+                  overlayScale={overlayScale}
+                  overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                  overlayModeType={overlayModeType}
+                  overlayGlobalFretStart={overlayGlobalFretStart}
+                  overlayGlobalFretEnd={overlayGlobalFretEnd}
+                  diagramGlobalFretStart={diagramGlobalFretStart}
+                  diagramGlobalFretEnd={diagramGlobalFretEnd}
+                  overlaySegments={overlaySegments}
                   barToRoot={useBarRoots ? parsedBarToRoot : undefined}
                   initialTempoPercent={tempoPercent}
                   accidentalStyle="mixed"
@@ -274,6 +662,7 @@ export default function AnimatedFretboardGPPage() {
                     setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
                   }}
                   onBarCountDetected={(count) => setBarCount(count)}
+                  showTextLabels={showTextLabels}
                 />
 
                 {diagramCount > 1 && (
@@ -285,6 +674,20 @@ export default function AnimatedFretboardGPPage() {
                       fretCount={fretCount}
                       useTabStringOrder={false}
                       showIntervals={showIntervals}
+                      hideLabels={blankCircles}
+                      showChordNames={showChordNames}
+                      trackChordNames={trackChordNames}
+                      overlayEnabled={overlayEnabled}
+                      overlayMode={overlayMode}
+                      overlayRoot={overlayRoot}
+                      overlayScale={overlayScale}
+                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                      overlayModeType={overlayModeType}
+                      overlayGlobalFretStart={overlayGlobalFretStart}
+                      overlayGlobalFretEnd={overlayGlobalFretEnd}
+                      diagramGlobalFretStart={diagramGlobalFretStart}
+                      diagramGlobalFretEnd={diagramGlobalFretEnd}
+                      overlaySegments={overlaySegments}
                       barToRoot={useBarRoots ? parsedBarToRoot : undefined}
                       initialTempoPercent={tempoPercent}
                       accidentalStyle="mixed"
@@ -295,6 +698,7 @@ export default function AnimatedFretboardGPPage() {
                       loadOnlySelectedTrack={true}
                       useKeySignatureForNames={useKeySigNames}
                       onBarCountDetected={(count) => setBarCount(count)}
+                      showTextLabels={showTextLabels}
                     />
                   </div>
                 )}
@@ -308,6 +712,20 @@ export default function AnimatedFretboardGPPage() {
                       fretCount={fretCount}
                       useTabStringOrder={false}
                       showIntervals={showIntervals}
+                      hideLabels={blankCircles}
+                      showChordNames={showChordNames}
+                      trackChordNames={trackChordNames}
+                      overlayEnabled={overlayEnabled}
+                      overlayMode={overlayMode}
+                      overlayRoot={overlayRoot}
+                      overlayScale={overlayScale}
+                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                      overlayModeType={overlayModeType}
+                      overlayGlobalFretStart={overlayGlobalFretStart}
+                      overlayGlobalFretEnd={overlayGlobalFretEnd}
+                      diagramGlobalFretStart={diagramGlobalFretStart}
+                      diagramGlobalFretEnd={diagramGlobalFretEnd}
+                      overlaySegments={overlaySegments}
                       barToRoot={useBarRoots ? parsedBarToRoot : undefined}
                       initialTempoPercent={tempoPercent}
                       accidentalStyle="mixed"
@@ -318,6 +736,7 @@ export default function AnimatedFretboardGPPage() {
                       loadOnlySelectedTrack={true}
                       useKeySignatureForNames={useKeySigNames}
                       onBarCountDetected={(count) => setBarCount(count)}
+                      showTextLabels={showTextLabels}
                     />
                   </div>
                 )}
