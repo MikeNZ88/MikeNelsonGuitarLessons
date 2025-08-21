@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import AnimatedFretboardGP from '@/components/fretboard/AnimatedFretboardGP';
 
 export default function AnimatedFretboardGPPage() {
@@ -32,6 +32,13 @@ export default function AnimatedFretboardGPPage() {
   const [overlayScale, setOverlayScale] = useState<'major' | 'naturalMinor' | 'dorian' | 'mixolydian' | 'majorPentatonic' | 'minorPentatonic' | 'bluesMinor' | 'harmonicMinor' | 'melodicMinor' | 'custom'>('minorPentatonic');
   const [overlayCustom, setOverlayCustom] = useState<string>('0,3,5,7,10');
   const [overlayName, setOverlayName] = useState<string>('');
+  // Enharmonic toggles
+  const [useSharp5, setUseSharp5] = useState<boolean>(false); // b6 vs #5
+  const [useSharp4, setUseSharp4] = useState<boolean>(false); // b5 vs #4
+  // Note footprint overlay
+  const [footprintEnabled, setFootprintEnabled] = useState<boolean>(false);
+  const [footprintMode, setFootprintMode] = useState<'notes' | 'intervals' | 'blank'>('intervals');
+  const [footprintName, setFootprintName] = useState<string>('Footprint');
   // Text labels from GP (e.g. Shape 1)
   const [showTextLabels, setShowTextLabels] = useState<boolean>(true);
   // Segmented overlay controls
@@ -57,6 +64,12 @@ export default function AnimatedFretboardGPPage() {
       return [];
     }
   });
+  
+  // Update diagram range when fretCount changes
+  useEffect(() => {
+    setDiagramGlobalFretEnd(fretCount);
+  }, [fretCount]);
+  
   const persistPresets = (items: Array<{name:string; data:any}>) => {
     setSavedPresets(items);
     try { window.localStorage.setItem('af_scale_overlay_presets', JSON.stringify(items)); } catch {}
@@ -99,12 +112,31 @@ export default function AnimatedFretboardGPPage() {
     []
   );
 
+  const arpeggioExercises = useMemo(
+    () => [
+      { id: 'c7-arpeggio', name: 'C7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C 7 Arpeggio.gp' },
+      { id: 'cm7-arpeggio', name: 'Cm7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7 Arpeggio.gp' },
+      { id: 'cmaj7-arpeggio', name: 'Cmaj7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C maj7 Arpeggio.gp' },
+      { id: 'cm7b5-arpeggio', name: 'Cm7b5 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C m7b5 Arpeggio.gp' },
+      { id: 'cdimj7-arpeggio', name: 'Cdimj7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cdimj7 Arpeggio.gp' },
+      { id: 'cmmaj7-arpeggio', name: 'CmMaj7 Arpeggio', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/CmMaj7 Arpeggio.gp' },
+      { id: 'c7-sweep-legato-tap', name: 'C7 Arpeggio Sweep with Legato and Tap', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'cm7-sweep-legato-tap', name: 'Cm7 Arpeggio Sweep with Legato and Tap', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'cmaj7-sweep-legato-tap', name: 'Cmaj7 Arpeggio Sweep with Legato and Tap', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cmaj7 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'cm7b5-sweep-legato-tap', name: 'Cm7b5 Arpeggio Sweep with Legato and Tap', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/Cm7b5 Arpeggio Sweep with Legato and Tap.gp' },
+      { id: 'c-major-scale-arpeggios-asc', name: 'C Major Scale Arpeggios Ascending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Ascending.gp' },
+      { id: 'c-major-scale-arpeggios-desc', name: 'C Major Scale Arpeggios Descending', file: '/GP Files/Scale Exercises/BLOG TABS/Arpeggios/C Major Scale Arpeggios Descending.gp' }
+    ],
+    []
+  );
+
   const selectedFile = useMemo(() => {
     const p = pentatonicExercises.find(e => e.id === selectedId)?.file;
     const b = bluesExercises.find(e => e.id === selectedId)?.file;
     const m = miscSongs.find(e => e.id === selectedId)?.file;
-    return m || b || p || bluesExercises[0].file;
-  }, [pentatonicExercises, bluesExercises, miscSongs, selectedId]);
+    const a = arpeggioExercises.find(e => e.id === selectedId)?.file;
+    return a || m || b || p || bluesExercises[0].file;
+  }, [pentatonicExercises, bluesExercises, miscSongs, arpeggioExercises, selectedId]);
 
   // Example: 12 Bar Blues in A with per-bar roots
   // Map bar index -> root for interval calculation
@@ -148,6 +180,267 @@ export default function AnimatedFretboardGPPage() {
     return map;
   }, [barToRoot, barRootInput, rangeRootInput]);
 
+  // Backing track (external audio)
+  const backingAudioRef = React.useRef<HTMLAudioElement | null>(null);
+  const [backingEnabled, setBackingEnabled] = useState<boolean>(false);
+  const [backingVolume, setBackingVolume] = useState<number>(0.8);
+  const [backingUrl, setBackingUrl] = useState<string>('');
+  const [backingFileName, setBackingFileName] = useState<string>('');
+  const [muteAlphaTab, setMuteAlphaTab] = useState<boolean>(false);
+
+  // Keep audio element in sync with controls
+  useEffect(() => {
+    if (!backingAudioRef.current) return;
+    backingAudioRef.current.volume = Math.min(1, Math.max(0, backingVolume));
+  }, [backingVolume]);
+
+  // Listen to global transport events to control backing audio
+  useEffect(() => {
+    function onTransport(e: any) {
+      if (!backingEnabled || !backingAudioRef.current) return;
+      const playing = !!e?.detail?.playing;
+      try {
+        if (playing) {
+          void backingAudioRef.current.play();
+        } else {
+          backingAudioRef.current.pause();
+        }
+      } catch {}
+    }
+    function onStop() {
+      if (!backingEnabled || !backingAudioRef.current) return;
+      try {
+        backingAudioRef.current.pause();
+        backingAudioRef.current.currentTime = 0;
+      } catch {}
+    }
+    function onSeek(e: any) {
+      if (!backingEnabled || !backingAudioRef.current) return;
+      // For now, we simply restart from 0 on seek to avoid drift; precise bar-time mapping can be added later
+      try {
+        backingAudioRef.current.currentTime = 0;
+        void backingAudioRef.current.play();
+      } catch {}
+    }
+    window.addEventListener('af-sync-transport' as any, onTransport);
+    window.addEventListener('af-sync-stop' as any, onStop);
+    window.addEventListener('af-sync-seek' as any, onSeek);
+    return () => {
+      window.removeEventListener('af-sync-transport' as any, onTransport);
+      window.removeEventListener('af-sync-stop' as any, onStop);
+      window.removeEventListener('af-sync-seek' as any, onSeek);
+    };
+  }, [backingEnabled]);
+
+  // Cleanup object URLs
+  useEffect(() => {
+    return () => {
+      if (backingUrl?.startsWith('blob:')) {
+        try { URL.revokeObjectURL(backingUrl); } catch {}
+      }
+    };
+  }, [backingUrl]);
+
+  // Helper to render framed diagram area at top
+  const renderDiagrams = () => {
+    const bg = '#92400E';
+    const style: React.CSSProperties = framePreset === 'square'
+      ? { aspectRatio: '1 / 1', background: bg }
+      : framePreset === 'reel'
+      ? { aspectRatio: '2 / 3', background: bg }
+      : { background: 'transparent' };
+    const frameClass = framePreset === 'none' ? '' : 'max-w-[900px] mx-auto rounded-lg p-4 flex flex-col';
+    return (
+      <div className={frameClass} style={style}>
+        {videoSpaceMode && diagramCount === 1 ? (
+          <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-full">
+                <div className="text-lg text-amber-100 mb-2 text-center font-semibold">{trackNameByIndex(trackIndex)}</div>
+                <AnimatedFretboardGP
+                  filePath={selectedFile}
+                  trackIndex={trackIndex}
+                  fretCount={fretCount}
+                  useTabStringOrder={false}
+                  showIntervals={showIntervals}
+                  hideLabels={blankCircles}
+                  showChordNames={showChordNames}
+                  overlayEnabled={overlayEnabled}
+                  overlayMode={overlayMode}
+                  overlayRoot={overlayRoot}
+                  overlayScale={overlayScale}
+                  overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                  overlayModeType={overlayModeType}
+                  overlayGlobalFretStart={overlayGlobalFretStart}
+                  overlayGlobalFretEnd={overlayGlobalFretEnd}
+                  diagramGlobalFretStart={diagramGlobalFretStart}
+                  diagramGlobalFretEnd={diagramGlobalFretEnd}
+                  overlaySegments={overlaySegments}
+                  footprintEnabled={footprintEnabled}
+                  footprintMode={footprintMode}
+                  footprintName={footprintName}
+                  useSharp5={useSharp5}
+                  useSharp4={useSharp4}
+                  barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                  initialTempoPercent={tempoPercent}
+                  accidentalStyle="mixed"
+                  autoRootFromChordTrackIndex={1}
+                  onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
+                  hideNotation={hideNotation}
+                  showTransport={false}
+                  useKeySignatureForNames={useKeySigNames}
+                  isSilent={muteAlphaTab}
+                  onTracksDetected={(tracks) => {
+                    setAvailableTracks(tracks);
+                    setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
+                    setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
+                  }}
+                  onBarCountDetected={(count) => setBarCount(count)}
+                  showTextLabels={showTextLabels}
+                />
+              </div>
+            </div>
+            <div className="flex-1" />
+          </div>
+        ) : (
+          <>
+            <div className="text-lg text-amber-100 mb-2 text-center font-semibold">{trackNameByIndex(trackIndex)}</div>
+            <AnimatedFretboardGP
+              filePath={selectedFile}
+              trackIndex={trackIndex}
+              fretCount={fretCount}
+              useTabStringOrder={false}
+              showIntervals={showIntervals}
+              hideLabels={blankCircles}
+              showChordNames={showChordNames}
+              trackChordNames={trackChordNames}
+              overlayEnabled={overlayEnabled}
+              overlayMode={overlayMode}
+              overlayRoot={overlayRoot}
+              overlayScale={overlayScale}
+              overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+              overlayModeType={overlayModeType}
+              overlayGlobalFretStart={overlayGlobalFretStart}
+              overlayGlobalFretEnd={overlayGlobalFretEnd}
+              diagramGlobalFretStart={diagramGlobalFretStart}
+              diagramGlobalFretEnd={diagramGlobalFretEnd}
+              overlaySegments={overlaySegments}
+              footprintEnabled={footprintEnabled}
+              footprintMode={footprintMode}
+              footprintName={footprintName}
+              useSharp5={useSharp5}
+              useSharp4={useSharp4}
+              barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+              initialTempoPercent={tempoPercent}
+              accidentalStyle="mixed"
+              autoRootFromChordTrackIndex={1}
+              onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
+              hideNotation={hideNotation || diagramCount > 1}
+              showTransport={false}
+              useKeySignatureForNames={useKeySigNames}
+              isSilent={muteAlphaTab}
+              onTracksDetected={(tracks) => {
+                setAvailableTracks(tracks);
+                setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
+                setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
+              }}
+              onBarCountDetected={(count) => setBarCount(count)}
+              showTextLabels={showTextLabels}
+            />
+
+            {diagramCount > 1 && (
+              <div className="mt-4">
+                <div className="text-lg text-amber-100 mb-2 text-center font-semibold">{trackNameByIndex(secondaryTracks[0] ?? 1)}</div>
+                <AnimatedFretboardGP
+                  filePath={selectedFile}
+                  trackIndex={secondaryTracks[0] ?? 1}
+                  fretCount={fretCount}
+                  useTabStringOrder={false}
+                  showIntervals={showIntervals}
+                  hideLabels={blankCircles}
+                  showChordNames={showChordNames}
+                  trackChordNames={trackChordNames}
+                  overlayEnabled={overlayEnabled}
+                  overlayMode={overlayMode}
+                  overlayRoot={overlayRoot}
+                  overlayScale={overlayScale}
+                  overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                  overlayModeType={overlayModeType}
+                  overlayGlobalFretStart={overlayGlobalFretStart}
+                  overlayGlobalFretEnd={overlayGlobalFretEnd}
+                  diagramGlobalFretStart={diagramGlobalFretStart}
+                  diagramGlobalFretEnd={diagramGlobalFretEnd}
+                  overlaySegments={overlaySegments}
+                  footprintEnabled={footprintEnabled}
+                  footprintMode={footprintMode}
+                  footprintName={footprintName}
+                  useSharp5={useSharp5}
+                  useSharp4={useSharp4}
+                  barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                  initialTempoPercent={tempoPercent}
+                  accidentalStyle="mixed"
+                  autoRootFromChordTrackIndex={1}
+                  hideNotation={true}
+                  showTransport={false}
+                  isSilent={true}
+                  loadOnlySelectedTrack={true}
+                  useKeySignatureForNames={useKeySigNames}
+                  onBarCountDetected={(count) => setBarCount(count)}
+                  showTextLabels={showTextLabels}
+                />
+              </div>
+            )}
+
+            {diagramCount > 2 && (
+              <div className="mt-4">
+                <div className="text-lg text-amber-100 mb-2 text-center font-semibold">{trackNameByIndex(secondaryTracks[1] ?? 2)}</div>
+                <AnimatedFretboardGP
+                  filePath={selectedFile}
+                  trackIndex={secondaryTracks[1] ?? 2}
+                  fretCount={fretCount}
+                  useTabStringOrder={false}
+                  showIntervals={showIntervals}
+                  hideLabels={blankCircles}
+                  showChordNames={showChordNames}
+                  trackChordNames={trackChordNames}
+                  overlayEnabled={overlayEnabled}
+                  overlayMode={overlayMode}
+                  overlayRoot={overlayRoot}
+                  overlayScale={overlayScale}
+                  overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
+                  overlayModeType={overlayModeType}
+                  overlayGlobalFretStart={overlayGlobalFretStart}
+                  overlayGlobalFretEnd={overlayGlobalFretEnd}
+                  diagramGlobalFretStart={diagramGlobalFretStart}
+                  diagramGlobalFretEnd={diagramGlobalFretEnd}
+                  overlaySegments={overlaySegments}
+                  footprintEnabled={footprintEnabled}
+                  footprintMode={footprintMode}
+                  footprintName={footprintName}
+                  useSharp5={useSharp5}
+                  useSharp4={useSharp4}
+                  barToRoot={useBarRoots ? parsedBarToRoot : undefined}
+                  initialTempoPercent={tempoPercent}
+                  accidentalStyle="mixed"
+                  autoRootFromChordTrackIndex={1}
+                  hideNotation={true}
+                  showTransport={false}
+                  isSilent={true}
+                  loadOnlySelectedTrack={true}
+                  useKeySignatureForNames={useKeySigNames}
+                  onBarCountDetected={(count) => setBarCount(count)}
+                  showTextLabels={showTextLabels}
+                />
+              </div>
+            )}
+          </>
+        )}
+        {/* Footer logo inside the frame */}
+        <div className="mt-3 text-center text-amber-100 text-sm opacity-90">Mike Nelson Guitar Lessons</div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-2 text-gray-800">Animated Fretboard (Guitar Pro Driven)</h1>
@@ -156,6 +449,12 @@ export default function AnimatedFretboardGPPage() {
         change per bar based on a configurable root map.
       </p>
 
+      {/* Diagrams first */}
+      <div className="mb-6">
+        {renderDiagrams()}
+      </div>
+
+      {/* Controls below */}
       <div className="mb-4 flex items-center gap-3">
         <label className="text-sm text-gray-700">Tempo</label>
         <input
@@ -467,6 +766,11 @@ export default function AnimatedFretboardGPPage() {
                   diagramGlobalFretStart,
                   diagramGlobalFretEnd,
                   overlaySegments,
+                  footprintEnabled,
+                  footprintMode,
+                  footprintName,
+                  useSharp5,
+                  useSharp4,
                 };
                 const blob = new Blob([JSON.stringify(preset, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -497,8 +801,13 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.diagramGlobalFretStart === 'number') setDiagramGlobalFretStart(data.diagramGlobalFretStart);
                   if (typeof data.diagramGlobalFretEnd === 'number') setDiagramGlobalFretEnd(data.diagramGlobalFretEnd);
                   if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
+                  if (typeof data.footprintEnabled === 'boolean') setFootprintEnabled(data.footprintEnabled);
+                  if (typeof data.footprintMode === 'string') setFootprintMode(data.footprintMode);
+                  if (typeof data.footprintName === 'string') setFootprintName(data.footprintName);
+                  if (typeof data.useSharp5 === 'boolean') setUseSharp5(data.useSharp5);
+                  if (typeof data.useSharp4 === 'boolean') setUseSharp4(data.useSharp4);
                   if (typeof data.gpFile === 'string') {
-                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs];
+                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs, ...arpeggioExercises];
                     const found = all.find(x => x.file === data.gpFile);
                     if (found) setSelectedId(found.id);
                   }
@@ -524,6 +833,11 @@ export default function AnimatedFretboardGPPage() {
                   diagramGlobalFretStart,
                   diagramGlobalFretEnd,
                   overlaySegments,
+                  footprintEnabled,
+                  footprintMode,
+                  footprintName,
+                  useSharp5,
+                  useSharp4,
                 };
                 const items = savedPresets.filter(p => p.name !== presetName.trim());
                 items.push({ name: presetName.trim(), data });
@@ -552,10 +866,16 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.overlayModeType === 'string') setOverlayModeType(data.overlayModeType);
                   if (typeof data.overlayGlobalFretStart === 'number') setOverlayGlobalFretStart(data.overlayGlobalFretStart);
                   if (typeof data.overlayGlobalFretEnd === 'number') setOverlayGlobalFretEnd(data.overlayGlobalFretEnd);
+                  if (typeof data.diagramGlobalFretStart === 'number') setDiagramGlobalFretStart(data.diagramGlobalFretStart);
+                  if (typeof data.diagramGlobalFretEnd === 'number') setDiagramGlobalFretEnd(data.diagramGlobalFretEnd);
                   if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
-                  if (Array.isArray(data.overlaySegments)) setOverlaySegments(data.overlaySegments);
+                  if (typeof data.footprintEnabled === 'boolean') setFootprintEnabled(data.footprintEnabled);
+                  if (typeof data.footprintMode === 'string') setFootprintMode(data.footprintMode);
+                  if (typeof data.footprintName === 'string') setFootprintName(data.footprintName);
+                  if (typeof data.useSharp5 === 'boolean') setUseSharp5(data.useSharp5);
+                  if (typeof data.useSharp4 === 'boolean') setUseSharp4(data.useSharp4);
                   if (typeof data.gpFile === 'string') {
-                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs];
+                    const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs, ...arpeggioExercises];
                     const found = all.find(x => x.file === data.gpFile);
                     if (found) setSelectedId(found.id);
                   }
@@ -569,184 +889,77 @@ export default function AnimatedFretboardGPPage() {
             </div>
           </div>
         </div>
+        
+        {/* Enharmonic Toggle Controls */}
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-2 items-center p-2 rounded border border-blue-200 bg-blue-50/40">
+          <label className="flex items-center gap-2 text-sm text-gray-800">
+            <input type="checkbox" checked={useSharp5} onChange={(e) => setUseSharp5(e.target.checked)} />
+            Use b6 instead of #5
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-800">
+            <input type="checkbox" checked={useSharp4} onChange={(e) => setUseSharp4(e.target.checked)} />
+            Use b5 instead of #4
+          </label>
+        </div>
+        
+        {/* Note Footprint Overlay Controls */}
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-2 items-center p-2 rounded border border-amber-200 bg-amber-50/40">
+          <label className="flex items-center gap-2 text-sm text-gray-800">
+            <input type="checkbox" checked={footprintEnabled} onChange={(e) => setFootprintEnabled(e.target.checked)} />
+            Enable note footprint overlay
+          </label>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Mode</span>
+            <select className="border rounded px-2 py-1 text-sm" value={footprintMode} onChange={(e) => setFootprintMode(e.target.value as any)}>
+              <option value="intervals">Intervals</option>
+              <option value="notes">Note names</option>
+              <option value="blank">Blank circles</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-700">Name</span>
+            <input className="border rounded px-2 py-1 text-sm w-32" value={footprintName} onChange={(e) => setFootprintName(e.target.value)} placeholder="e.g. Footprint" />
+          </div>
+        </div>
       </div>
 
-      {(() => {
-        const bg = '#92400E';
-        const style: React.CSSProperties = framePreset === 'square'
-          ? { aspectRatio: '1 / 1', background: bg }
-          : framePreset === 'reel'
-          ? { aspectRatio: '2 / 3', background: bg }
-          : { background: 'transparent' };
-        const frameClass = framePreset === 'none' ? '' : 'max-w-[900px] mx-auto rounded-lg p-4 flex flex-col';
-        return (
-          <div className={frameClass} style={style}>
-            {videoSpaceMode && diagramCount === 1 ? (
-              <div className="flex-1 flex flex-col">
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="w-full">
-                    <div className="text-sm text-amber-100 mb-1">Diagram 1 — {trackIndex}: {trackNameByIndex(trackIndex)}</div>
-                    <AnimatedFretboardGP
-                      filePath={selectedFile}
-                      trackIndex={trackIndex}
-                      fretCount={fretCount}
-                      useTabStringOrder={false}
-                      showIntervals={showIntervals}
-                      hideLabels={blankCircles}
-                      showChordNames={showChordNames}
-                      overlayEnabled={overlayEnabled}
-                      overlayMode={overlayMode}
-                      overlayRoot={overlayRoot}
-                      overlayScale={overlayScale}
-                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
-                      overlayModeType={overlayModeType}
-                      overlayGlobalFretStart={overlayGlobalFretStart}
-                      overlayGlobalFretEnd={overlayGlobalFretEnd}
-                      diagramGlobalFretStart={diagramGlobalFretStart}
-                      diagramGlobalFretEnd={diagramGlobalFretEnd}
-                      overlaySegments={overlaySegments}
-                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
-                      initialTempoPercent={tempoPercent}
-                      accidentalStyle="mixed"
-                      autoRootFromChordTrackIndex={1}
-                      onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
-                      hideNotation={hideNotation}
-                      showTransport={false}
-                      useKeySignatureForNames={useKeySigNames}
-                      onTracksDetected={(tracks) => {
-                        setAvailableTracks(tracks);
-                        setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
-                        setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
-                      }}
-                      onBarCountDetected={(count) => setBarCount(count)}
-                      showTextLabels={showTextLabels}
-                    />
-                  </div>
-                </div>
-                <div className="flex-1" />
-              </div>
-            ) : (
-              <>
-                <div className="text-sm text-amber-100 mb-1">Diagram 1 — {trackIndex}: {trackNameByIndex(trackIndex)}</div>
-                <AnimatedFretboardGP
-                  filePath={selectedFile}
-                  trackIndex={trackIndex}
-                  fretCount={fretCount}
-                  useTabStringOrder={false}
-                  showIntervals={showIntervals}
-                  hideLabels={blankCircles}
-                  showChordNames={showChordNames}
-                  trackChordNames={trackChordNames}
-                  overlayEnabled={overlayEnabled}
-                  overlayMode={overlayMode}
-                  overlayRoot={overlayRoot}
-                  overlayScale={overlayScale}
-                  overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
-                  overlayModeType={overlayModeType}
-                  overlayGlobalFretStart={overlayGlobalFretStart}
-                  overlayGlobalFretEnd={overlayGlobalFretEnd}
-                  diagramGlobalFretStart={diagramGlobalFretStart}
-                  diagramGlobalFretEnd={diagramGlobalFretEnd}
-                  overlaySegments={overlaySegments}
-                  barToRoot={useBarRoots ? parsedBarToRoot : undefined}
-                  initialTempoPercent={tempoPercent}
-                  accidentalStyle="mixed"
-                  autoRootFromChordTrackIndex={1}
-                  onRootChange={(r, bar) => { setCurrentAutoRoot(r); setCurrentBar(bar); }}
-                  hideNotation={hideNotation || diagramCount > 1}
-                  showTransport={false}
-                  useKeySignatureForNames={useKeySigNames}
-                  onTracksDetected={(tracks) => {
-                    setAvailableTracks(tracks);
-                    setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
-                    setSecondaryTracks((prev) => [prev[0] ?? 1, prev[1] ?? 2]);
-                  }}
-                  onBarCountDetected={(count) => setBarCount(count)}
-                  showTextLabels={showTextLabels}
-                />
+      {/* Backing track controls */}
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-3 items-center p-3 rounded border border-slate-200 bg-slate-50">
+        <label className="flex items-center gap-2 text-sm text-gray-800">
+          <input type="checkbox" checked={backingEnabled} onChange={(e) => setBackingEnabled(e.target.checked)} />
+          Enable backing track (WAV/MP3) and mute AlphaTab audio
+        </label>
+        <div className="flex items-center gap-2">
+          <input
+            type="file"
+            accept="audio/*"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (!f) return;
+              const url = URL.createObjectURL(f);
+              setBackingUrl((prev) => { try { if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev); } catch {} return url; });
+              setBackingFileName(f.name);
+            }}
+          />
+          {backingFileName && (
+            <span className="text-xs text-gray-600">Loaded: {backingFileName}</span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Backing volume</span>
+          <input type="range" min={0} max={1} step={0.01} value={backingVolume} onChange={(e)=>setBackingVolume(parseFloat(e.target.value))} className="flex-1" />
+          <span className="text-sm text-gray-700 w-10 text-right">{Math.round(backingVolume*100)}%</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-sm text-gray-800">
+            <input type="checkbox" checked={muteAlphaTab} onChange={(e)=>setMuteAlphaTab(e.target.checked)} />
+            Mute AlphaTab playback
+          </label>
+        </div>
+      </div>
 
-                {diagramCount > 1 && (
-                  <div className="mt-4">
-                    <div className="text-sm text-amber-100 mb-1">Diagram 2 — {secondaryTracks[0] ?? 1}: {trackNameByIndex(secondaryTracks[0] ?? 1)}</div>
-                    <AnimatedFretboardGP
-                      filePath={selectedFile}
-                      trackIndex={secondaryTracks[0] ?? 1}
-                      fretCount={fretCount}
-                      useTabStringOrder={false}
-                      showIntervals={showIntervals}
-                      hideLabels={blankCircles}
-                      showChordNames={showChordNames}
-                      trackChordNames={trackChordNames}
-                      overlayEnabled={overlayEnabled}
-                      overlayMode={overlayMode}
-                      overlayRoot={overlayRoot}
-                      overlayScale={overlayScale}
-                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
-                      overlayModeType={overlayModeType}
-                      overlayGlobalFretStart={overlayGlobalFretStart}
-                      overlayGlobalFretEnd={overlayGlobalFretEnd}
-                      diagramGlobalFretStart={diagramGlobalFretStart}
-                      diagramGlobalFretEnd={diagramGlobalFretEnd}
-                      overlaySegments={overlaySegments}
-                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
-                      initialTempoPercent={tempoPercent}
-                      accidentalStyle="mixed"
-                      autoRootFromChordTrackIndex={1}
-                      hideNotation={true}
-                      showTransport={false}
-                      isSilent={true}
-                      loadOnlySelectedTrack={true}
-                      useKeySignatureForNames={useKeySigNames}
-                      onBarCountDetected={(count) => setBarCount(count)}
-                      showTextLabels={showTextLabels}
-                    />
-                  </div>
-                )}
-
-                {diagramCount > 2 && (
-                  <div className="mt-4">
-                    <div className="text-sm text-amber-100 mb-1">Diagram 3 — {secondaryTracks[1] ?? 2}: {trackNameByIndex(secondaryTracks[1] ?? 2)}</div>
-                    <AnimatedFretboardGP
-                      filePath={selectedFile}
-                      trackIndex={secondaryTracks[1] ?? 2}
-                      fretCount={fretCount}
-                      useTabStringOrder={false}
-                      showIntervals={showIntervals}
-                      hideLabels={blankCircles}
-                      showChordNames={showChordNames}
-                      trackChordNames={trackChordNames}
-                      overlayEnabled={overlayEnabled}
-                      overlayMode={overlayMode}
-                      overlayRoot={overlayRoot}
-                      overlayScale={overlayScale}
-                      overlayCustomIntervals={overlayCustom.split(',').map(s=>parseInt(s.trim(),10)).filter(n=>!isNaN(n))}
-                      overlayModeType={overlayModeType}
-                      overlayGlobalFretStart={overlayGlobalFretStart}
-                      overlayGlobalFretEnd={overlayGlobalFretEnd}
-                      diagramGlobalFretStart={diagramGlobalFretStart}
-                      diagramGlobalFretEnd={diagramGlobalFretEnd}
-                      overlaySegments={overlaySegments}
-                      barToRoot={useBarRoots ? parsedBarToRoot : undefined}
-                      initialTempoPercent={tempoPercent}
-                      accidentalStyle="mixed"
-                      autoRootFromChordTrackIndex={1}
-                      hideNotation={true}
-                      showTransport={false}
-                      isSilent={true}
-                      loadOnlySelectedTrack={true}
-                      useKeySignatureForNames={useKeySigNames}
-                      onBarCountDetected={(count) => setBarCount(count)}
-                      showTextLabels={showTextLabels}
-                    />
-                  </div>
-                )}
-              </>
-            )}
-            {/* Footer logo inside the frame */}
-            <div className="mt-3 text-center text-amber-100 text-sm opacity-90">Mike Nelson Guitar Lessons</div>
-          </div>
-        );
-      })()}
+      {/* Hidden audio element for backing track */}
+      <audio ref={backingAudioRef} src={backingEnabled ? backingUrl : undefined} preload="auto" />
 
       {availableTracks.length > 0 && (
         <div className="mb-4">
@@ -828,6 +1041,11 @@ export default function AnimatedFretboardGPPage() {
           </optgroup>
           <optgroup label="Pentatonic (Am)">
             {pentatonicExercises.map(ex => (
+              <option key={ex.id} value={ex.id}>{ex.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Arpeggios">
+            {arpeggioExercises.map(ex => (
               <option key={ex.id} value={ex.id}>{ex.name}</option>
             ))}
           </optgroup>
