@@ -4,11 +4,11 @@ import { ArrowLeft, Music, Award, Target, Zap, Heart } from 'lucide-react';
 import AlphaTabPlayerCDN from '@/components/AlphaTabPlayerCDN';
 
 export const metadata: Metadata = {
-  title: 'The Complete Guide to Guitar String Bending: Master the Art of Expressive Playing | Mike Nelson Guitar Lessons',
+  title: 'The Complete Guide to Guitar String Bending',
   description: 'Master guitar string bending with this comprehensive guide. Learn proper technique, build finger strength, develop pitch accuracy, and add emotion to your playing with interactive exercises and tab players.',
   keywords: "guitar string bending, bending technique, guitar bends, pitch accuracy, finger strength, blues bending, rock bending, guitar exercises, bending exercises, guitar technique, expressive playing",
   openGraph: {
-    title: 'The Complete Guide to Guitar String Bending: Master the Art of Expressive Playing',
+    title: 'The Complete Guide to Guitar String Bending',
     description: 'Master guitar string bending with this comprehensive guide. Learn proper technique, build finger strength, develop pitch accuracy, and add emotion to your playing with interactive exercises and tab players.',
     type: 'article',
     url: 'https://mikenelsonguitarlessons.co.nz/blog/complete-guide-guitar-string-bending',

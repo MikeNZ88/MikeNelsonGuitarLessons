@@ -81,12 +81,12 @@ export default function Home() {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/blog" className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800">
+                  Free Resources
+                </Link>
                 <Link href="/contact" className="btn-primary bg-white text-amber-800 hover:bg-amber-50 group">
                   Book Your First Lesson
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link href="/blog" className="btn-secondary bg-transparent text-white border-white hover:bg-white hover:text-amber-800">
-                  Free Resources
                 </Link>
               </div>
               

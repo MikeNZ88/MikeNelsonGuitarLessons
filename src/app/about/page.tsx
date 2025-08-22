@@ -62,61 +62,16 @@ export default function About() {
             </p>
             
             <p className="text-lg text-amber-700 mb-8 text-justify">
-              Before teaching, I worked as a risk consultant and auditor at a services firm before starting my teaching career in 2019. I hold a Bachelor of Commerce with a focus on Accounting and Commercial Law. My strong affinity for process and analysis enables me to break down complex musical concepts into manageable, step-by-step lessons.
+              Before teaching, I worked as a risk consultant and auditor at a professional services firm before starting my teaching career in 2019. I hold a Bachelor of Commerce with a focus on Accounting and Commercial Law. My strong affinity for process and analysis enables me to break down complex musical concepts into manageable, step-by-step lessons.
             </p>
 
-            {/* Lesson Types */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              {/* Pukerua Bay & Online */}
-              <div className="card">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-amber-100 rounded-lg mr-3">
-                    <MapPin className="h-6 w-6 text-amber-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-amber-800">Pukerua Bay & Online Lessons</h3>
-                </div>
-                <p className="text-amber-700 mb-4"><strong>Available Hours:</strong></p>
-                <ul className="space-y-1 text-amber-600">
-                  <li>Monday: 2:00 PM – 8:00 PM</li>
-                  <li>Tuesday: 2:00 PM – 5:30 PM</li>
-                  <li>Wednesday: 5:30 PM – 8:00 PM</li>
-                  <li>Thursday: 2:00 PM – 5:00 PM</li>
-                  <li>Friday: 2:00 PM – 6:30 PM</li>
-                </ul>
-              </div>
+            <p className="text-lg text-amber-700 mb-8 text-justify">
+              Alongside private lessons, I publish free guides, exercises, chord and scale diagrams, and tabs on my blog. These resources cover technique, rhythm, fretboard navigation, theory, and practice strategies—giving you structured material to use between lessons. Explore the latest posts on the <Link href="/blog" className="underline text-amber-800 hover:text-amber-900">Free Resources Blog</Link>.
+            </p>
 
-              {/* Lessons Away */}
-              <div className="card">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-amber-100 rounded-lg mr-3">
-                    <MapPin className="h-6 w-6 text-amber-600" />
-                  </div>
-                  <h3 className="text-xl font-bold text-amber-800">Lessons Away (Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby)</h3>
-                </div>
-                <p className="text-amber-700 mb-4"><strong>Available Hours:</strong></p>
-                <ul className="space-y-1 text-amber-600">
-                  <li>Tuesday: 6:00 PM – 8:30 PM</li>
-                  <li>Thursday: 6:00 PM – 8:30 PM</li>
-                  <li>Friday: 6:30 PM – 8:00 PM</li>
-                </ul>
-              </div>
-            </div>
+            
 
-            {/* Online Lessons Info */}
-            <div className="card">
-              <div className="flex items-center mb-4">
-                <div className="p-2 bg-amber-100 rounded-lg mr-3">
-                  <Monitor className="h-6 w-6 text-amber-600" />
-                </div>
-                <h3 className="text-xl font-bold text-amber-800">Online Lessons</h3>
-              </div>
-              <p className="text-amber-700 mb-4">
-                Can't make it in person? No problem! I also offer online lessons via Zoom or Skype.
-              </p>
-              <p className="text-amber-700">
-                Online lessons are suited for intermediate level players who are comfortable with basic guitar techniques and can maintain good posture and hand positioning independently.
-              </p>
-            </div>
+            {/* Removed lesson type/hour blocks per request */}
           </div>
         </div>
       </section>
@@ -134,45 +89,29 @@ export default function About() {
             </p>
 
             {/* Song Lessons */}
-            <div className="card mb-8">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
-                  <Music className="h-6 w-6 text-amber-600" />
+            <div className="relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-b from-amber-50 to-white shadow-sm hover:shadow-md mb-8">
+              <div className="absolute left-0 top-0 h-full w-1.5 bg-amber-600" />
+              <div className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
+                    <Music className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-800">Song Lessons</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-800">Song Lessons</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
+                
+                <div className="space-y-4">
                   <div>
                     <p className="text-amber-800"><strong>Quick Check-In:</strong> A brief chat to see how your song practice is going and identify any challenges.</p>
                   </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
                   <div>
                     <p className="text-amber-800"><strong>Song:</strong> We work on a specific section of your song where a key skill (like alternate picking or chord transitions) needs improvement. This helps with learning the song and developing your technical skills.</p>
                   </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
                   <div>
                     <p className="text-amber-800"><strong>Musical Ideas in Context:</strong> You'll learn how the musical ideas behind the song connect to underlying theory.</p>
                   </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
                   <div>
                     <p className="text-amber-800"><strong>Immediate Feedback:</strong> Targeted, hands-on corrections help you make quick progress.</p>
                   </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
                   <div>
                     <p className="text-amber-800"><strong>Practice Instructions:</strong> Dedicate focused time to practicing the song section, applying the techniques we worked on, and reviewing any theory concepts discussed.</p>
                   </div>
@@ -181,24 +120,20 @@ export default function About() {
             </div>
 
             {/* Theory-Focused Lessons */}
-            <div className="card mb-8">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
-                  <BookOpen className="h-6 w-6 text-amber-600" />
+            <div className="relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-b from-amber-50 to-white shadow-sm hover:shadow-md mb-8">
+              <div className="absolute left-0 top-0 h-full w-1.5 bg-amber-600" />
+              <div className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
+                    <BookOpen className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-800">Theory-Focused Lessons</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-800">Theory-Focused Lessons</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
+                
+                <div className="space-y-4">
                   <div>
                     <p className="text-amber-800"><strong>Music Theory Concepts:</strong> These sessions explore scales, chord structures, rhythmic concepts, and common forms (e.g., 12 bar blues) to build a solid foundation for your musical intuition.</p>
                   </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
                   <div>
                     <p className="text-amber-800"><strong>Application:</strong> Learn how to apply these concepts in your playing through songwriting and improvisation.</p>
                   </div>
@@ -207,17 +142,17 @@ export default function About() {
             </div>
 
             {/* Technique-Focused Lessons */}
-            <div className="card mb-8">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
-                  <Target className="h-6 w-6 text-amber-600" />
+            <div className="relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-b from-amber-50 to-white shadow-sm hover:shadow-md mb-8">
+              <div className="absolute left-0 top-0 h-full w-1.5 bg-amber-600" />
+              <div className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mr-4">
+                    <Target className="h-6 w-6 text-amber-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-amber-800">Technique-Focused Lessons</h3>
                 </div>
-                <h3 className="text-2xl font-bold text-amber-800">Technique-Focused Lessons</h3>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="h-5 w-5 bg-green-500 rounded-full mr-3 mt-1 flex-shrink-0"></div>
+                
+                <div className="space-y-4">
                   <div>
                     <p className="text-amber-800">These sessions concentrate on refining your technical skills through targeted exercises and drills. These may be new techniques or ones you are developing.</p>
                   </div>

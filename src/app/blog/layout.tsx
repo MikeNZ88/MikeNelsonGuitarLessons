@@ -18,6 +18,7 @@ export const metadata: Metadata = {
         alt: 'Mike Nelson Guitar Lessons Blog'
       }
     ],
+    url: 'https://mikenelsonguitarlessons.co.nz/blog'
   },
   twitter: {
     card: 'summary_large_image',

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Beginner\'s Guide to Pentatonic Scales | Mike Nelson Guitar Lessons',
+  title: 'Beginner’s Guide to Pentatonic Scales',
   description: 'Learn pentatonic scales with my step-by-step guide. Master the 5 essential pentatonic patterns with interactive diagrams and practice tips for guitar.',
   openGraph: {
     title: 'Beginner\'s Guide to Pentatonic Scales',

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, BarChart3, Music } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Learn Rhythm with the Interactive Rhythm Tool | Mike Nelson Guitar Lessons',
+  title: 'Learn Rhythm with the Interactive Rhythm Tool',
   description: 'Explore rhythm fundamentals, time signatures, and note values with interactive audio and notation. Try the free Rhythm Tool.',
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/rhythm-tool',

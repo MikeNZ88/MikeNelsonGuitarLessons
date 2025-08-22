@@ -123,7 +123,7 @@ export default function GuitarPickingExercisesPage() {
 } 
 
 export const metadata: Metadata = {
-  title: 'Pentatonic Scale Exercises | Mike Nelson Guitar Lessons',
+  title: 'Pentatonic Scale Exercises',
   description: 'Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs.',
   openGraph: {
     title: 'Pentatonic Scale Exercises',

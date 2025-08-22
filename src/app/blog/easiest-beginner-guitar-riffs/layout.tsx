@@ -1,14 +1,14 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '10 Easiest Beginner Guitar Riffs | Learn Classic Rock Songs',
+  title: '10 Easiest Beginner Guitar Riffs',
   description: 'Master 10 iconic beginner guitar riffs from Deep Purple, Black Sabbath, AC/DC, Nirvana & more. Step-by-step tutorials with interactive tabs for new guitarists.',
   keywords: 'beginner guitar riffs, easy guitar songs, guitar tabs, learn guitar, smoke on the water, enter sandman, come as you are, guitar lessons, rock riffs',
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/easiest-beginner-guitar-riffs',
   },
   openGraph: {
-    title: '10 Easiest Beginner Guitar Riffs | Learn Classic Rock Songs',
+    title: '10 Easiest Beginner Guitar Riffs',
     description: 'Master 10 iconic beginner guitar riffs from Deep Purple, Black Sabbath, AC/DC, Nirvana & more. Step-by-step tutorials with interactive tabs for new guitarists.',
     url: 'https://mikenelsonguitarlessons.co.nz/blog/easiest-beginner-guitar-riffs/',
     type: 'article',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '10 Easiest Beginner Guitar Riffs | Learn Classic Rock Songs',
+    title: '10 Easiest Beginner Guitar Riffs',
     description: 'Master 10 iconic beginner guitar riffs from Deep Purple, Black Sabbath, AC/DC, Nirvana & more. Step-by-step tutorials with interactive tabs for new guitarists.',
           images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },

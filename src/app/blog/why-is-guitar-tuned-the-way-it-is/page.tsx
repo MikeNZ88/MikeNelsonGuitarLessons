@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Why is Guitar Tuned This Way? | Mike Nelson',
-  description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard and how it affects your playing.',
+  title: 'Why is Guitar Tuned This Way?',
+  description: 'Discover the history and logic behind standard guitar tuning. Learn why EADGBE became the standard and how it affects your playing.',
   openGraph: {
     title: 'Why is Guitar Tuned This Way?',
-    description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard.',
+    description: 'Discover the history and logic behind standard guitar tuning. Learn why EADGBE became the standard.',
     type: 'article',
     images: [
       {
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Why is Guitar Tuned This Way?',
-    description: 'Discover the fascinating history and logic behind standard guitar tuning. Learn why EADGBE became the standard.',
+    description: 'Discover the history and logic behind standard guitar tuning. Learn why EADGBE became the standard.',
     images: ['/blog-thumbnail.svg'],
   },
   alternates: {

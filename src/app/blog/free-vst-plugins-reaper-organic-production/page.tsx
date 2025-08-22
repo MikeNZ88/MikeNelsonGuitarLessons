@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Music, Download, Award } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Beginner Guide to Recording Guitar: Complete Free Software Setup (2025) | Mike Nelson Guitar Lessons',
+  title: 'Beginner Guide to Recording Guitar: Complete Free Software Setup (2025)',
   description: 'Learn how to record guitar using completely free software. Step-by-step guide to Reaper DAW and essential free VST plugins for guitar recording.',
   keywords: "guitar recording, free DAW, Reaper tutorial, free VST plugins, guitar amp simulators, home recording, beginner guitar recording",
   openGraph: {

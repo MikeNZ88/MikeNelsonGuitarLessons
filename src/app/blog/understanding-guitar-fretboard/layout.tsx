@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Guitar Fretboard: String Tuning Guide',
+  title: 'Guitar Fretboard: String Tuning Explained',
   description: 'Learn why guitar strings are tuned the way they are. Understand the logic behind standard tuning and how it affects your playing.',
   openGraph: {
     title: 'Understanding the Guitar Fretboard: Why Strings Are Tuned This Way',

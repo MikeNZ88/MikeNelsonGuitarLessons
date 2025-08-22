@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Guitar, ShoppingCart, Zap, DollarSign, Star, CheckCircle, ArrowRight, Music, Volume2, Settings } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'Beginner Electric Guitar Guide - New Zealand 2025 | Mike Nelson Guitar Lessons',
+  title: 'Beginner Electric Guitar Guide - New Zealand 2025',
   description: 'Complete guide to buying your first electric guitar in New Zealand. Top recommendations, amp choices, pricing, and where to buy.',
   openGraph: {
     title: 'Beginner Electric Guitar Guide - New Zealand 2025',

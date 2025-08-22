@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Barre Chord Library: Complete Guide | Mike Nelson Guitar Lessons',
+  title: 'Barre Chord Library: Complete Guide',
   description: 'Master barre chords with comprehensive library. Interactive diagrams for E and A shape barre chords, major, minor, seventh chords.',
   openGraph: {
     title: 'Barre Chord Library: Complete Guide',

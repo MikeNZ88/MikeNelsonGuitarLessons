@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Moveable Guitar Chord Shapes Library | Mike Nelson Guitar Lessons',
+  title: 'Moveable Guitar Chord Shapes Library',
   description: 'Master moveable chord shapes for major, minor, diminished, seventh, extended, suspended, and altered chords.',
   openGraph: {
     title: 'Moveable Guitar Chord Shapes Library',

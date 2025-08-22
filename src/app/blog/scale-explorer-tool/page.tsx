@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft, Guitar, Music } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: "Scale Explorer - Interactive Guitar Learning Tool | Mike Nelson Guitar Lessons",
+  title: "Scale Explorer - Interactive Guitar Learning Tool",
   description: "Learn guitar scales with this free interactive Scale Explorer. Start with the major scale and understand how all other scales relate to it.",
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/scale-explorer-tool',

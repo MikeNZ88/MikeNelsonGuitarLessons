@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { ArrowLeft, Music, DollarSign, Zap, Monitor, Settings } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'My Kiesel A2 7-String | Mike Nelson Guitar Lessons',
+  title: 'My Kiesel A2 7-String',
   description: 'Complete guide to importing a Kiesel A2 7-String to New Zealand. Real import costs ($4,385 NZD), customs process, GST fees, and honest review.',
   openGraph: {
     title: 'My Kiesel A2 7-String - NZ Import Guide & Review',

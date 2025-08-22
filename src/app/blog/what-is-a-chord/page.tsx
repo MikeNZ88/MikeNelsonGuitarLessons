@@ -6,16 +6,16 @@ import FretDisplay from '@/components/FretDisplay';
 import QuickReferenceChromaticScale from '@/components/QuickReferenceChromaticScale';
 
 export const metadata: Metadata = {
-  title: "What is a Chord? Structure, Intervals, and Types | Mike Nelson",
-  description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
+  title: "What is a Chord? Structure, Intervals, and Types",
+  description: "Learn what guitar chords are, how they're built from intervals, and how major, minor and seventh chords work. Understand open vs moveable shapes with clear, beginner-friendly examples.",
   openGraph: {
     title: "What is a Chord? Structure, Intervals, and Types",
-    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
+    description: "Learn what guitar chords are, how they're built from intervals, and how major, minor and seventh chords work. Understand open vs moveable shapes with clear, beginner-friendly examples.",
     type: 'article',
     images: [{
         url: 'https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg',
-        width: 240,
-        height: 120,
+        width: 1200,
+        height: 630,
         alt: 'Chord Puzzle Thumbnail'
       }]
   },
@@ -23,13 +23,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: "What is a Chord? Structure, Intervals, and Types",
-    description: "Learn what guitar chords are, how they're built using intervals, and the difference between open chords and moveable shapes.",
-          images: [{
-        url: '/what-is-chord-thumbnail-social.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'What is a Chord Guitar Guide'
-      }]
+    description: "Learn what guitar chords are, how they're built from intervals, and how major, minor and seventh chords work. Understand open vs moveable shapes with clear, beginner-friendly examples.",
+    images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg']
   },
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/what-is-a-chord',

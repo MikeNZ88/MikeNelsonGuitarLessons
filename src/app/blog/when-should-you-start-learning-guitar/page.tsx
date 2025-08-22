@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'When Should You Start Learning Guitar? Research Insights | Mike Nelson',
+  title: 'When Should You Start Learning Guitar?',
   description: 'Discover the optimal age to start learning guitar based on research. Learn about neuroplasticity and adult learning advantages.',
   openGraph: {
-    title: 'When Should You Start Learning Guitar? Research Insights',
+    title: 'When Should You Start Learning Guitar?',
     description: 'Discover the optimal age to start learning guitar based on research.',
     images: [
       {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'When Should You Start Learning Guitar? Research Insights',
+    title: 'When Should You Start Learning Guitar?',
     description: 'Discover the optimal age to start learning guitar based on research.',
     images: ['/blog-thumbnail.svg'],
   },

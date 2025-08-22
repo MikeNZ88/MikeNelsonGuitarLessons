@@ -1204,7 +1204,10 @@ export default function AnimatedFretboardGP({
       }
     } catch {}
     const visibleFretSpan = Math.max(1, (visibleEndFret - visibleStartFret));
-    const width = leftPadding + visibleFretSpan * cellWidth + 16;
+    // When the diagram starts above fret 0, the rightmost note centers are at +0.5 cell from the last fret line.
+    // Extend the width (and strings) by half a cell in that case to avoid clipping the last fret's circles.
+    const extraCellsOnRight = visibleStartFret > 0 ? 0.5 : 0;
+    const width = leftPadding + (visibleFretSpan + extraCellsOnRight) * cellWidth + 16;
     const height = topPadding + (nStrings - 1) * stringGap + 16;
 
     // Enforce standard orientation: top = high E (row 0), bottom = low E (row 5)
@@ -1587,7 +1590,7 @@ export default function AnimatedFretboardGP({
               key={`str-${i}`}
               x1={leftPadding}
               y1={y}
-              x2={leftPadding + visibleFretSpan * cellWidth}
+              x2={leftPadding + (visibleFretSpan + extraCellsOnRight) * cellWidth}
               y2={y}
               stroke="#475569"
               strokeWidth={w}

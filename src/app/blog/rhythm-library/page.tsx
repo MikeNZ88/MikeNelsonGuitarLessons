@@ -4,7 +4,7 @@ import { ArrowLeft, Music, Target, Zap, Clock } from 'lucide-react';
 import AlphaTabPlayerCDN from '@/components/AlphaTabPlayerCDN';
 
 export const metadata: Metadata = {
-  title: 'Rhythm Library - Guitar Lesson | Mike Nelson Guitar Lessons',
+  title: 'Rhythm Library - Guitar Lesson',
   description: 'Learn different rhythm patterns and techniques on guitar with interactive tablature examples.',
   openGraph: {
     title: 'Rhythm Library - Guitar Lesson',

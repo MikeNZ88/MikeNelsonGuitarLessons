@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, Music } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: "Wellington Music Stores Disappearing | Mike Nelson",
-  description: "The closure of Kapiti Music marks the end of an era for local music stores. Exploring what's left for Wellington region musicians.",
+  title: "Wellington Music Stores Disappearing",
+  description: "The closure of Kapiti Music marks the end of an era for local music stores in the Wellington region.",
   alternates: {
     canonical: 'https://mikenelsonguitarlessons.co.nz/blog/wellington-music-stores',
   }

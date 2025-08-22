@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Blues Licks Exercises | Mike Nelson Guitar Lessons',
-  description: 'Master blues guitar licks with comprehensive exercise collection. Learn essential blues phrases, techniques, and improvisation skills.',
+  title: 'Blues Licks Exercises',
+  description: 'Master b3 - 3 - 1 and b3 - 3 - b7 licks, and apply major/minor pentatonic and other scales to a 12-bar blues progression with interactive tabs.',
   openGraph: {
     title: 'Blues Licks Exercises',
-    description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
+    description: 'Master b3 - 3 - 1 and b3 - 3 - b7 licks, and apply pentatonic and other scales to a 12-bar blues progression with interactive tabs.',
     images: [
       {
         url: 'https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Blues Licks Exercises',
-    description: 'Master blues guitar licks with comprehensive exercise collection and interactive tabs.',
+    description: 'Master b3 - 3 - 1 and b3 - 3 - b7 licks, and apply pentatonic and other scales to a 12-bar blues progression with interactive tabs.',
     images: ['https://mikenelsonguitarlessons.co.nz/mike-nelson-guitar-logo.jpg'],
   },
   alternates: {

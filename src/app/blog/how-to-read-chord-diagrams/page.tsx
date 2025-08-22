@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { Youtube, BookOpen, Music, ExternalLink } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'How to Read Guitar Chord Diagrams - Video Tutorial | Mike Nelson Guitar Lessons',
-  description: 'Learn to read guitar chord diagrams with this comprehensive video tutorial. Master finger placement and open strings.',
+  title: 'How to Read Guitar Chord Diagrams - Video Tutorial',
+  description: 'Learn to read guitar chord diagrams with this comprehensive video tutorial. Understand chord charts, symbols, and string/fret layouts.',
   openGraph: {
     title: 'How to Read Guitar Chord Diagrams - Video Tutorial',
-    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement and open strings.',
+    description: 'Comprehensive video tutorial covering how to read guitar chord diagrams, symbols, and layouts.',
     images: [
       {
         url: '/youtube-logo.svg',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'How to Read Guitar Chord Diagrams - Video Tutorial',
-    description: 'Master guitar chord diagrams with this comprehensive video tutorial covering finger placement and open strings.',
+    description: 'Comprehensive video tutorial on reading guitar chord diagrams, symbols, and layouts.',
     images: ['/youtube-logo.svg'],
   },
   alternates: {

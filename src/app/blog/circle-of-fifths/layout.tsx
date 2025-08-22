@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'The Circle of Fifths: A Complete Guide | Mike Nelson Guitar Lessons',
+  title: 'The Circle of Fifths: A Complete Guide',
   description: 'Master the circle of fifths with complete guide. Learn key signatures, chord progressions, and how to use this essential music theory tool.',
   openGraph: {
     title: 'The Circle of Fifths: A Complete Guide',

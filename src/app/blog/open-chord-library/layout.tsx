@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Open Chord Library: Essential Guitar Chords | Mike Nelson Guitar Lessons',
+  title: 'Open Chord Library: Essential Guitar Chords',
   description: 'Master essential open chords with comprehensive library. Interactive diagrams for major, minor, seventh, and suspended chords perfect for beginners.',
   openGraph: {
     title: 'Open Chord Library: Essential Guitar Chords',

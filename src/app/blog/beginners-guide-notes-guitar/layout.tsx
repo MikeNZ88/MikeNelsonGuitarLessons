@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Beginner\'s Guide to Guitar Notes | Mike Nelson Guitar Lessons',
+  title: 'Beginner’s Guide to Guitar Notes',
   description: 'Learn guitar notes on the fretboard with interactive diagrams. Understand sharps, flats, and how notes repeat across the guitar neck.',
   openGraph: {
     title: 'Beginner\'s Guide to Guitar Notes',

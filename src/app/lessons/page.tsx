@@ -39,9 +39,9 @@ export default function Lessons() {
       skills: [
         "Chord Fundamentals: Learn open major and minor chords (A, Am, C, D, Dm, E, Em, and G).",
         "Melodic/Single Note Playing: Use simple melodies on one or two strings to build finger strength and accuracy.",
-        "Rhythmic Development: Use basic strumming patterns (quarter notes and simple eighth notes) while tapping your foot to maintain a steady internal pulse.",
-        "Music Theory: Learn note names and understand how the third interval differentiates major from minor chords.",
-        "Fretboard & Reading Skills: Use targeted exercises and basic fretboard diagrams to identify note names along the E string, and develop the ability to interpret chord charts and lyric sheets.",
+        "Rhythmic Development: Use basic strumming patterns (quarter notes and eighth notes) while tapping your foot to maintain a steady internal pulse.",
+        "Music Theory: Learn the musical alphabet (A – G), string names, and the difference between major and minor chord shapes.",
+        "Fretboard & Reading Skills: Understand how to read chord diagrams, lyric sheets and basic guitar tablature.",
         "Technique: Develop an effective, comfortable pick grip and incorporate proper hand placement."
       ],
       color: "bg-white border-amber-300 text-amber-800"
@@ -55,7 +55,7 @@ export default function Lessons() {
         "Melodic/Single Note Playing: Refine single‑note melodies and begin integrating simple multi‑string riffs. Develop clarity and precision in your playing.",
         "Rhythmic Development: Explore varied strumming patterns that incorporate subtle syncopation and develop your rhythmic feel.",
         "Music Theory: Expand your understanding of chord construction using chord charts and fretboard diagrams. Begin exploring foundational forms like the 12‑bar blues.",
-        "Fretboard & Reading Skills: Reinforce note identification along the E string, extend familiarity to other strings, and develop your ability to read chord and lyric sheets.",
+        "Fretboard & Reading Skills: Use targeted exercises and basic fretboard diagrams to identify note names along the E string; extend familiarity to other strings, and develop your ability to read chord and lyric sheets.",
         "Technique: Continue developing a comfortable pick grip and incorporate proper hand placement."
       ],
       color: "bg-white border-amber-300 text-amber-800"
@@ -66,7 +66,7 @@ export default function Lessons() {
       description: "You've mastered barre chords and are now integrating scales into your playing.",
       skills: [
         "Chord Fundamentals: Use barre chords (with E string and A string roots) while refining overall chord transitions.",
-        "Melodic/Single Note Playing: Develop scale proficiency by using single‑note patterns covering the Pentatonic, Major, and relative Minor scales.",
+        "Melodic/Single Note Playing: Develop scale proficiency by using the Pentatonic, Major, and relative Minor scales.",
         "Rhythmic Development: Use varied rhythmic patterns—eighth notes, sixteenth notes, and triplets—and use a metronome to improve timing and precision.",
         "Music Theory: Explore the concepts of intervals and diatonic harmony with hands-on, tab-based activities and written guides to deepen your comprehension of chord progressions, scales, and harmony.",
         "Fretboard & Reading Skills: Develop your skills in reading chord, lyric, and tablature sheets.",
@@ -119,11 +119,7 @@ export default function Lessons() {
         "Immediate hands-on corrections"
       ],
       hours: [
-        "Monday: 2:00 PM – 8:00 PM",
-        "Tuesday: 2:00 PM – 5:30 PM",
-        "Wednesday: 5:30 PM – 8:00 PM",
-        "Thursday: 2:00 PM – 7:00 PM",
-        "Friday: 2:00 PM – 5:00 PM"
+        "Monday – Friday: 1:00 PM – 8:30 PM"
       ]
     },
     {
@@ -139,10 +135,7 @@ export default function Lessons() {
         "Personalized setup advice"
       ],
       hours: [
-        "Tuesday: 6:00 PM – 8:30 PM",
-        "Wednesday: 2:00 PM – 5:00 PM",
-        "Thursday: 7:30 PM – 9:30 PM",
-        "Friday: 5:00 PM – 8:00 PM"
+        "Monday – Friday: 1:00 PM – 8:30 PM"
       ]
     },
     {
@@ -158,11 +151,7 @@ export default function Lessons() {
         "Recorded sessions available"
       ],
       hours: [
-        "Monday: 2:00 PM – 8:00 PM",
-        "Tuesday: 2:00 PM – 5:30 PM",
-        "Wednesday: 5:30 PM – 8:00 PM",
-        "Thursday: 2:00 PM – 7:00 PM",
-        "Friday: 2:00 PM – 5:00 PM"
+        "Monday – Friday: 1:00 PM – 8:30 PM"
       ],
       note: "Suited for intermediate level players comfortable with basic techniques"
     }
@@ -200,37 +189,41 @@ export default function Lessons() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {lessonTypes.map((type, index) => (
-              <div key={index} className="card h-full">
-                <div className="flex items-center mb-4">
-                  <div className="p-2 bg-amber-100 rounded-lg mr-3">
-                    {type.icon}
+              <div key={index} className="h-full overflow-hidden text-center rounded-xl border border-amber-900 bg-amber-800 text-white shadow">
+                {/* Thin header bar to echo brand cover */}
+                <div className="h-1.5 w-full bg-amber-900" />
+                <div className="p-6 flex flex-col items-center">
+                  {/* Standardized icon container for consistent vertical alignment */}
+                  <div className="h-12 w-12 rounded-full bg-amber-700 text-white flex items-center justify-center mb-3">
+                    {/* Ensure consistent icon sizing */}
+                    <span className="[&>*]:h-6 [&>*]:w-6 [&>*]:text-white">{type.icon}</span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-amber-800">{type.title}</h3>
-                    <p className="text-amber-600">{type.location}</p>
+                  <h3 className="text-xl font-bold text-white">{type.title}</h3>
+                  <p className="text-white mb-3">{type.location}</p>
+
+                  <div className="flex items-baseline justify-center gap-2 mb-4">
+                    <span className="text-2xl font-bold text-white">{type.price}</span>
+                    <span className="text-white">/ {type.duration}</span>
                   </div>
-                </div>
-                
-                <div className="flex items-center mb-4">
-                  <span className="text-2xl font-bold text-amber-800">{type.price}</span>
-                  <span className="text-amber-600 ml-2">/ {type.duration}</span>
-                </div>
 
-                <div className="mb-4">
-                  <h4 className="font-semibold text-amber-800 mb-2 flex items-center">
-                    <Clock className="h-4 w-4 mr-2" />
-                    Available Hours:
-                  </h4>
-                  <ul className="space-y-1">
-                    {type.hours.map((hour, hourIndex) => (
-                      <li key={hourIndex} className="text-amber-600 text-sm">{hour}</li>
-                    ))}
-                  </ul>
-                </div>
+                  <div className="w-full border-t border-amber-700 my-2" />
 
-                {type.note && (
-                  <p className="text-amber-500 text-sm italic">{type.note}</p>
-                )}
+                  <div className="mb-2">
+                    <h4 className="font-semibold text-white mb-2 flex items-center justify-center">
+                      <Clock className="h-4 w-4 mr-2 text-white" />
+                      Available Hours
+                    </h4>
+                    <ul className="space-y-1 text-center">
+                      {type.hours.map((hour, hourIndex) => (
+                        <li key={hourIndex} className="text-white text-sm">{hour}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {type.note && (
+                    <p className="text-white text-sm italic mt-1">{type.note}</p>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -251,41 +244,41 @@ export default function Lessons() {
       {/* Curriculum Section */}
       <section className="section-padding bg-amber-50">
         <div className="container-max">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-playfair text-amber-800 mb-4">
+          <div className="text-center mb-10">
+            <h2 className="text-4xl md:text-5xl font-extrabold font-playfair text-amber-900 mb-2">
               Guitar Curriculum
             </h2>
-            <p className="text-lg text-amber-700 max-w-3xl mx-auto">
+            <p className="text-base md:text-lg text-slate-700 max-w-3xl mx-auto">
               A structured progression from beginner to advanced, with clear milestones 
               and skill development at each level.
             </p>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-10">
             {curriculumLevels.map((level, index) => (
-              <div key={index} className={`card border-l-4 ${level.color}`}>
-                <div className="flex items-start justify-between mb-4">
+              <div key={index} className={`relative overflow-hidden rounded-xl border border-amber-200 bg-gradient-to-b from-amber-50 to-white shadow-sm hover:shadow-md transition-shadow ${level.color}`}>
+                {/* Left accent bar */}
+                <div className="absolute left-0 top-0 h-full w-1.5 bg-amber-600" />
+                <div className="p-6 md:p-7">
+                <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="text-3xl font-black font-playfair mb-1">{level.level}: "{level.title}"</h3>
-                    <p className="text-lg">{level.description}</p>
+                    <h3 className="text-2xl md:text-3xl font-black font-playfair text-amber-900 mb-1">{level.level}: "{level.title}"</h3>
+                    <p className="text-slate-700">{level.description}</p>
                   </div>
-                  <div className="flex">
-                    {[...Array(index + 1)].map((_, i) => (
-                      <Guitar key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-200">Level {index + 1}</span>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-3">Key Skills:</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <h4 className="font-semibold text-amber-800 tracking-wide mb-4">Key Skills</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     {level.skills.map((skill, skillIndex) => (
                       <div key={skillIndex} className="flex items-start">
-                        <CheckCircle className="h-5 w-5 text-amber-600 mr-3 mt-1 flex-shrink-0" />
-                        <span className="text-lg leading-relaxed">{skill}</span>
+                        <CheckCircle className="h-4 w-4 text-amber-600 mr-3 mt-1 flex-shrink-0" />
+                        <span className="text-slate-700 leading-7">{skill}</span>
                       </div>
                     ))}
                   </div>
+                </div>
                 </div>
               </div>
             ))}
