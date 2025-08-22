@@ -177,7 +177,7 @@ export default function Contact() {
             </div>
 
             {/* Contact Information (second) */}
-            <div className="space-y-8 order-2 lg:order-2">
+            <div className="card space-y-8 order-2 lg:order-2">
               <div>
                 <h2 className="text-3xl font-bold font-playfair text-amber-800 mb-6">
                   Contact Information
@@ -188,7 +188,7 @@ export default function Contact() {
                     <Phone className="h-6 w-6 text-amber-600" />
                     <div>
                       <p className="font-semibold text-amber-800">Phone</p>
-                      <a href="tel:022-127-2154" className="text-amber-600 hover:text-amber-800">
+                      <a href="tel:022-127-2154" className="text-slate-800 hover:text-amber-800">
                         022 127 2154
                       </a>
                       <div className="mt-2 flex items-center gap-2">
@@ -202,7 +202,7 @@ export default function Contact() {
                     <MapPin className="h-6 w-6 text-amber-600" />
                     <div>
                       <p className="font-semibold text-amber-800">Location</p>
-                      <p className="text-amber-600">Pukerua Bay, Wellington</p>
+                      <p className="text-slate-700">Pukerua Bay, Wellington</p>
                     </div>
                   </div>
                   
@@ -210,7 +210,7 @@ export default function Contact() {
                     <Mail className="h-6 w-6 text-amber-600" />
                     <div>
                       <p className="font-semibold text-amber-800">Lessons Available</p>
-                      <p className="text-amber-600">In-person & Online</p>
+                      <p className="text-slate-700">In-person & Online</p>
                     </div>
                   </div>
                 </div>
@@ -223,7 +223,7 @@ export default function Contact() {
                   Available Hours
                 </h3>
                 
-                <div className="space-y-2 text-amber-600">
+                <div className="space-y-2 text-slate-700">
                   <p>Monday – Friday: 1:00 PM – 8:30 PM</p>
                 </div>
               </div>
@@ -231,10 +231,10 @@ export default function Contact() {
               {/* Pricing */}
               <div>
                 <h3 className="text-xl font-bold text-amber-800 mb-4">Pricing</h3>
-                <div className="space-y-2 text-amber-600">
+                <div className="space-y-2 text-slate-700">
                   <p><strong>Pukerua Bay & Online:</strong> $30 for 30 minutes</p>
                   <p><strong>Your Place:</strong> $45 for 30 minutes</p>
-                  <p className="text-sm text-amber-500 mt-2">
+                  <p className="text-sm text-slate-600 mt-2">
                     (Plimmerton, Cambourne, Mana, Paremata, Papakowhai, Whitby areas)
                   </p>
                 </div>
