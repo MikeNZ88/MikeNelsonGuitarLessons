@@ -68,6 +68,8 @@ export interface AnimatedFretboardGPProps {
   // Enharmonic toggles
   useSharp5?: boolean; // b6 vs #5
   useSharp4?: boolean; // b5 vs #4
+  // Overlay root highlight
+  highlightOverlayRoot?: boolean;
 }
 
 interface ActiveNote {
@@ -234,7 +236,9 @@ export default function AnimatedFretboardGP({
   footprintMode,
   footprintName,
   useSharp5,
-  useSharp4
+  useSharp4,
+  // Overlay root highlight
+  highlightOverlayRoot
 }: AnimatedFretboardGPProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
@@ -1389,6 +1393,7 @@ export default function AnimatedFretboardGP({
             } else if (activeMode === 'notes') {
               text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
             }
+            const isRoot = interval === 0;
             overlayElements.push(
               <g key={`ov-${s}-${f}`}>
                 {/* Check if this note is currently active */}
@@ -1396,11 +1401,12 @@ export default function AnimatedFretboardGP({
                   const isActive = activeNotes.some(n => 
                     stringNumberToRow(n.stringNumber) === row && n.fret === f
                   );
-                  const fillColor = isActive ? "#fbbf24" : "white";
-                  const textColor = isActive ? "#7c2d12" : "#92400e";
+                  const fillColor = isActive ? (isRoot && highlightOverlayRoot ? "#ef4444" : "#fbbf24") : (isRoot && highlightOverlayRoot ? "#ef4444" : "white");
+                  const strokeColor = isRoot && highlightOverlayRoot ? "#991b1b" : "#d97706";
+                  const textColor = isActive ? (isRoot && highlightOverlayRoot ? "#fee2e2" : "#7c2d12") : (isRoot && highlightOverlayRoot ? "#fee2e2" : "#92400e");
                   return (
                     <>
-                      <circle cx={cx} cy={cy} r={radius} fill={fillColor} opacity={0.95} stroke="#d97706" strokeWidth={2} />
+                      <circle cx={cx} cy={cy} r={radius} fill={fillColor} opacity={0.95} stroke={strokeColor} strokeWidth={2} />
                       {activeMode !== 'blank' && (
                         <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill={textColor} fontWeight={700}>{text}</text>
                       )}
@@ -1609,7 +1615,17 @@ export default function AnimatedFretboardGP({
               ) : (
                 <line x1={x} y1={topPadding} x2={x} y2={topPadding + (nStrings - 1) * stringGap} stroke="#6b7280" strokeWidth={2} />
               )}
-              <text x={x - cellWidth / 2} y={topPadding + fretNumberYOffset} textAnchor="middle" fontSize={10} fill="#374151">{f}</text>
+              {(() => {
+                // For diagrams starting at 0, place labels centered in the space immediately to the right of the fret line
+                // i.e., for f=1 it's between 0 and 1 (x - cellWidth/2).
+                // For non-zero starts, center in the visible space (idx + 0.5)
+                const labelX = (visibleStartFret === 0)
+                  ? (x - cellWidth / 2)
+                  : (leftPadding + ((f - visibleStartFret) + 0.5) * cellWidth);
+                return (
+                  <text x={labelX} y={topPadding + fretNumberYOffset} textAnchor="middle" fontSize={10} fill="#374151">{f}</text>
+                );
+              })()}
             </g>
           );
         })}
@@ -1617,7 +1633,8 @@ export default function AnimatedFretboardGP({
         {Array.from({ length: (visibleEndFret - visibleStartFret) + 1 }, (_, idx) => {
           const f = visibleStartFret + idx;
           if (!inlays.has(f)) return null;
-          const x = leftPadding + (idx - 0.5) * cellWidth;
+          // Inlays sit centered between fret lines f and f+1
+          const x = leftPadding + (idx + 0.5) * cellWidth;
           const midY = topPadding + ((nStrings - 1) * stringGap) / 2;
           if (f === 12) {
             return (

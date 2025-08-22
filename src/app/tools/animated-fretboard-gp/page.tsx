@@ -39,6 +39,7 @@ export default function AnimatedFretboardGPPage() {
   const [footprintEnabled, setFootprintEnabled] = useState<boolean>(false);
   const [footprintMode, setFootprintMode] = useState<'notes' | 'intervals' | 'blank'>('intervals');
   const [footprintName, setFootprintName] = useState<string>('Footprint');
+  const [highlightOverlayRoot, setHighlightOverlayRoot] = useState<boolean>(false);
   // Text labels from GP (e.g. Shape 1)
   const [showTextLabels, setShowTextLabels] = useState<boolean>(true);
   // Segmented overlay controls
@@ -290,6 +291,7 @@ export default function AnimatedFretboardGPPage() {
                   showTransport={false}
                   useKeySignatureForNames={useKeySigNames}
                   isSilent={muteAlphaTab}
+                  highlightOverlayRoot={highlightOverlayRoot}
                   onTracksDetected={(tracks) => {
                     setAvailableTracks(tracks);
                     setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
@@ -339,6 +341,7 @@ export default function AnimatedFretboardGPPage() {
               showTransport={false}
               useKeySignatureForNames={useKeySigNames}
               isSilent={muteAlphaTab}
+              highlightOverlayRoot={highlightOverlayRoot}
               onTracksDetected={(tracks) => {
                 setAvailableTracks(tracks);
                 setTrackIndex((prev) => (tracks.some(t => t.index === prev) ? prev : 0));
@@ -387,6 +390,7 @@ export default function AnimatedFretboardGPPage() {
                   useKeySignatureForNames={useKeySigNames}
                   onBarCountDetected={(count) => setBarCount(count)}
                   showTextLabels={showTextLabels}
+                  highlightOverlayRoot={highlightOverlayRoot}
                 />
               </div>
             )}
@@ -430,6 +434,7 @@ export default function AnimatedFretboardGPPage() {
                   useKeySignatureForNames={useKeySigNames}
                   onBarCountDetected={(count) => setBarCount(count)}
                   showTextLabels={showTextLabels}
+                  highlightOverlayRoot={highlightOverlayRoot}
                 />
               </div>
             )}
