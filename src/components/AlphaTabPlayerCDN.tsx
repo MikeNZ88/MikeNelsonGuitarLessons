@@ -242,6 +242,7 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const containerRef = useRef<HTMLDivElement>(null);
   const alphaTabRef = useRef<any>(null);
   const pathname = usePathname();
+  const scrollRafRef = useRef<number | null>(null);
   
   // Page detection logic - moved outside useMemo so it's available in component scope
   const pageDetection = {
@@ -738,10 +739,13 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         console.log('Initializing AlphaTab from CDN...');
         
         // Initialize AlphaTab with working audio configuration
+        const isProd = process.env.NODE_ENV === 'production';
+        const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+        const performanceMode = isMobile; // lighter rendering on phones
         alphaTabRef.current = new window.alphaTab.AlphaTabApi(containerRef.current, {
           core: {
             enableLazyLoading: false, // Ensure all elements are rendered for better cursor visibility
-            useWorkers: false // Disable workers for better debugging
+            useWorkers: isProd // Use web workers in production for smoother parsing/playback
           },
           player: {
             enablePlayer: true,
@@ -776,32 +780,32 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
             showMetronome: false,
             showBarNumbers: true, // Enable bar numbers for better navigation
             // Ensure all notation elements are shown
-            showEffects: true,
-            showFingering: true,
+            showEffects: !performanceMode,
+            showFingering: !performanceMode,
             showSlurs: true,
             showTiedNotes: true,
             showGraceNotes: true,
-            showArpeggios: true,
-            showTremolo: true,
-            showVibrato: true,
+            showArpeggios: !performanceMode,
+            showTremolo: !performanceMode,
+            showVibrato: !performanceMode,
             showBends: true,
             showSlides: true,
             showHammerOns: true,
             showPullOffs: true,
-            showTaps: true,
-            showPalmMute: true,
-            showLetRing: true,
-            showStaccato: true,
-            showAccent: true,
-            showMarcato: true,
-            showHarmonics: true,
-            showTrills: true,
-            showMordents: true,
-            showTurns: true,
-            showDynamics: true,
-            showLyrics: true,
-            showChordNames: true,
-            showChordDiagrams: true,
+            showTaps: !performanceMode,
+            showPalmMute: !performanceMode,
+            showLetRing: !performanceMode,
+            showStaccato: !performanceMode,
+            showAccent: !performanceMode,
+            showMarcato: !performanceMode,
+            showHarmonics: !performanceMode,
+            showTrills: !performanceMode,
+            showMordents: !performanceMode,
+            showTurns: !performanceMode,
+            showDynamics: !performanceMode,
+            showLyrics: !performanceMode,
+            showChordNames: !performanceMode,
+            showChordDiagrams: !performanceMode,
             showFretNumbers: true,
             showTuning: true,
             showRests: true,
@@ -1138,17 +1142,18 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
 
     api.playerPositionChanged.on((e: any) => {
       // Enhanced position tracking with debugging
-      console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Player position changed - Time:', e.currentTime, 'Tick:', e.currentTick);
+      }
       
       // Ensure cursor follows playback smoothly
       if (isPlaying && api.scrollToCursor) {
         try {
-          console.log('Calling scrollToCursor from position changed...');
-          api.scrollToCursor();
-          console.log('scrollToCursor from position changed called successfully');
-        } catch (scrollError) {
-          console.warn('Scroll to cursor failed:', scrollError);
-        }
+          if (scrollRafRef.current) cancelAnimationFrame(scrollRafRef.current);
+          scrollRafRef.current = requestAnimationFrame(() => {
+            try { api.scrollToCursor(); } catch {}
+          });
+        } catch {}
       }
     });
 
