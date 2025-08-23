@@ -110,6 +110,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="color-scheme" content="light" />
         {/* Google Analytics */}
         <script
           async

@@ -30,6 +30,7 @@
     font-family: var(--font-inter);
     line-height: 1.6;
     overflow-x: hidden;
+    color-scheme: light; /* opt out of forced-dark transforms */
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -41,6 +42,14 @@
 @layer components {
   .font-playfair {
     font-family: var(--font-playfair);
+  }
+
+  /* Opt-out of forced dark on heavy render surfaces */
+  .alphatab-cdn-container,
+  .fretboard-diagram,
+  .blog-diagram {
+    color-scheme: light;
+    background: #ffffff;
   }
   
   .btn-primary {
@@ -170,6 +179,14 @@ img {
   
   .overflow-x-auto::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
+  }
+}
+
+/* Reduce GPU-heavy SVG filters in dark environments */
+@media (prefers-color-scheme: dark) {
+  .fretboard-diagram svg [filter],
+  .alphatab-cdn-container svg [filter] {
+    filter: none !important;
   }
 }
 
