@@ -13,6 +13,10 @@ const GuitarChordReference = () => {
   const [currentBluesStroke, setCurrentBluesStroke] = useState(-1); // -1 = none, 0-7 = stroke index
   const [advancedSubTab, setAdvancedSubTab] = useState('diminished7'); // subtab for advanced chords
   const [useVOnBar12, setUseVOnBar12] = useState(false); // Optional V chord on bar 12 for blues
+  // Tabs for chord families
+  const [activeMajorRoot, setActiveMajorRoot] = useState<string>('');
+  const [activeMinorRoot, setActiveMinorRoot] = useState<string>('');
+  const [activeFamilyType, setActiveFamilyType] = useState<'major' | 'minor'>('major');
   
   const guitarEngineRef = useRef<GuitarStrumEngine | null>(null);
   const bluesTimeoutRefs = useRef<NodeJS.Timeout[]>([]);
@@ -25,6 +29,17 @@ const GuitarChordReference = () => {
       bluesTimeoutRefs.current.forEach(timeout => clearTimeout(timeout));
     };
   }, []);
+
+  // Initialize major/minor tab defaults based on available families
+  useEffect(() => {
+    try {
+      const entries = Object.entries(chordDatabase.open.chordFamilies);
+      const majorRoots = entries.filter(([, fam]) => 'major' in (fam as any)).map(([name]) => name);
+      const minorRoots = entries.filter(([, fam]) => 'minor' in (fam as any)).map(([name]) => name);
+      if (!activeMajorRoot && majorRoots.length) setActiveMajorRoot(majorRoots[0]);
+      if (!activeMinorRoot && minorRoots.length) setActiveMinorRoot(minorRoots[0]);
+    } catch {}
+  }, [activeMajorRoot, activeMinorRoot]);
 
   // Handle URL hash navigation
   useEffect(() => {
@@ -60,7 +75,7 @@ const GuitarChordReference = () => {
       minor: {
         'Am': { frets: [-1, 0, 2, 2, 1, 0], fingers: ['', '', '2', '3', '1', ''] },
         'Dm': { frets: [-1, -1, 0, 2, 3, 1], fingers: ['', '', '', '2', '3', '1'] },
-        'Em': { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '2', '3', '', '', ''] }
+        'Em': { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '1', '2', '', '', ''] }
       },
       chordFamilies: {
         'A': {
@@ -105,7 +120,7 @@ const GuitarChordReference = () => {
           mmaj7_lowered: { frets: [-1, -1, 0, 2, 2, 1], fingers: ['', '', '', '2', '3', '1'], changedFrets: [4], technique: 'Move finger down 1 fret' }
         },
         'Em': {
-          minor: { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '2', '3', '', '', ''] },
+          minor: { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '1', '2', '', '', ''] },
           m7_lowered: { frets: [0, 2, 0, 0, 0, 0], fingers: ['', '2', '', '', '', ''], changedFrets: [2], technique: 'Remove finger' },
           mmaj7_lowered: { frets: [0, 2, 1, 0, 0, 0], fingers: ['', '3', '1', '', '', ''], changedFrets: [2], technique: 'Move finger down 1 fret' },
           m7_added: { frets: [0, 2, 2, 0, 3, 0], fingers: ['', '2', '3', '', '4', ''], changedFrets: [4], technique: 'Add finger on 3rd fret' },
@@ -651,9 +666,8 @@ const GuitarChordReference = () => {
   const renderChordFamilies = () => {
     return (
       <div>
-        {/* Chord Families - Major */}
+        {/* Unified Chord Families (Major/Minor in one menu) */}
         <div className="mb-16">
-          <h3 className="text-xl font-bold text-gray-800 mb-8 text-center">Major Chord Families</h3>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-xl mb-8 max-w-6xl mx-auto border border-blue-100 shadow-sm">
             <h4 className="text-xl font-bold text-gray-800 mb-6 text-center">Understanding Chord Variations</h4>
             
@@ -701,36 +715,28 @@ const GuitarChordReference = () => {
                     <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">C Major Scale in Chromatic Context</h6>
                     <div className="overflow-x-auto">
                       <div className="flex justify-center mb-3 min-w-max">
-                        <div className="flex gap-1 text-center text-xs">
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">D<br/>2</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">E<br/>3</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">F<br/>4</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">G<br/>5</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">A<br/>6</div>
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">B<br/>7</div>
-                          <div className="text-gray-500 px-2 py-1">...</div>
-                        </div>
+                        {(() => {
+                          const chromatic = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+                          const deg: Record<string,string> = { C:'1', D:'2', E:'3', F:'4', G:'5', A:'6', B:'7' };
+                          const isScale = (n: string) => ['C','D','E','F','G','A','B'].includes(n);
+                          return (
+                            <div className="flex gap-1 text-center text-xs min-w-max">
+                              {chromatic.map((n, i) => {
+                                const base = isScale(n)
+                                  ? (n === 'B' ? 'bg-orange-200 border-orange-400 font-bold' : 'bg-blue-100 border-blue-300 font-semibold')
+                                  : 'bg-gray-100 border-gray-200 text-gray-400';
+                                return (
+                                  <div key={i} className={`w-10 px-2 py-1 rounded border ${base}`}>
+                                    {isScale(n) ? n : ''}<br/>{isScale(n) ? (deg[n] || '') : ''}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-600 text-center">Notice how 7 (B) comes right before 1 (C) repeats, and so on</p>
+                    <p className="text-xs text-gray-600 text-center">Notice how 7 (B) comes right before 1 (C) repeats.</p>
                   </div>
                    
                   {/* 7 vs b7 Comparison */}
@@ -738,16 +744,42 @@ const GuitarChordReference = () => {
                     <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">Major 7 vs Flat 7 (b7) Comparison</h6>
                     <div className="overflow-x-auto">
                       <div className="flex justify-center mb-3 min-w-max">
-                        <div className="flex gap-1 text-center text-xs">
-                          <div className="bg-gray-100 border border-gray-200 px-2 py-1 rounded text-gray-400">-</div>
-                          <div className="bg-red-200 border border-red-400 px-2 py-1 rounded font-bold">Bb<br/>b7</div>
-                          <div className="bg-orange-200 border border-orange-400 px-2 py-1 rounded font-bold">B<br/>7</div>
-                          <div className="bg-blue-100 border border-blue-300 px-2 py-1 rounded font-semibold">C<br/>1</div>
-                        </div>
+                        {(() => {
+                          const chromatic = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+                          return (
+                            <div className="flex gap-1 text-center text-xs min-w-max">
+                              {chromatic.map((n, i) => {
+                                let contentTop = '';
+                                let contentBottom = '';
+                                let classes = 'bg-gray-100 border border-gray-200 text-gray-400';
+                                if (i === 10) { // A# position rendered as Bb
+                                  contentTop = 'Bb';
+                                  contentBottom = 'b7';
+                                  classes = 'bg-red-200 border border-red-400 font-bold';
+                                } else if (i === 11) {
+                                  contentTop = 'B';
+                                  contentBottom = '7';
+                                  classes = 'bg-orange-200 border border-orange-400 font-bold';
+                                } else if (i === 12) {
+                                  contentTop = 'C';
+                                  contentBottom = '1';
+                                  classes = 'bg-blue-100 border border-blue-300 font-semibold';
+                                }
+                                return (
+                                  <div key={i} className={`w-10 px-2 py-1 rounded ${classes}`}>
+                                    {contentTop}<br/>{contentBottom}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
                       </div>
                     </div>
                     <p className="text-xs text-gray-600 text-center">b7 (Bb) is 2 semitones below root • 7 (B) is 1 semitone below root</p>
                   </div>
+                  
+                 
                  </div>
 
                 <p className="text-center">
@@ -771,17 +803,120 @@ const GuitarChordReference = () => {
                   <p>Minor 7 (m7) chords also have a flat 7. Dominant 7 chords (like A7) also have a flat 7. That's why A7 and Am7 can both use the open G string (moving down 2 from the root).</p>
                   <p className="text-xs text-gray-600 mt-2"><em>Minor 7th chord types are listed separately in the Minor Chord Families section below.</em></p>
                 </div>
+
+                {/* Cmaj7, C7, Cm7 chord tones on chromatic grid (moved below explanation) */}
+                <div className="bg-white border border-gray-300 p-3 rounded mt-4">
+                  <h6 className="text-xs font-semibold text-gray-600 mb-3 text-center">Comparison of Cmaj7, C7 (Dominant 7) and Cm7</h6>
+                  <div className="space-y-2">
+                    {/* Cmaj7: 1, 3, 5, 7 = C, E, G, B */}
+                    <div>
+                      <div className="text-[11px] text-gray-600 mb-1 text-center">Cmaj7 (1, 3, 5, 7)</div>
+                      <div className="flex justify-center min-w-max">
+                        {(() => {
+                          const chromatic = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+                          return (
+                            <div className="flex gap-1 text-center text-xs">
+                              {chromatic.map((n, i) => {
+                                let top = '';
+                                let bottom = '';
+                                let classes = 'bg-gray-100 border border-gray-200 text-gray-400';
+                                if (i === 0) { top = 'C'; bottom = '1'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 4) { top = 'E'; bottom = '3'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 7) { top = 'G'; bottom = '5'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 11) { top = 'B'; bottom = '7'; classes = 'bg-orange-200 border-orange-400 font-bold'; }
+                                return (
+                                  <div key={`cmaj7-${i}`} className={`w-10 px-2 py-1 rounded ${classes}`}>{top}<br/>{bottom}</div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                    {/* C7: 1, 3, 5, b7 = C, E, G, Bb */}
+                    <div>
+                      <div className="text-[11px] text-gray-600 mb-1 text-center">C7 (1, 3, 5, b7)</div>
+                      <div className="flex justify-center min-w-max">
+                        {(() => {
+                          const chromatic = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+                          return (
+                            <div className="flex gap-1 text-center text-xs">
+                              {chromatic.map((n, i) => {
+                                let top = '';
+                                let bottom = '';
+                                let classes = 'bg-gray-100 border border-gray-200 text-gray-400';
+                                if (i === 0) { top = 'C'; bottom = '1'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 4) { top = 'E'; bottom = '3'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 7) { top = 'G'; bottom = '5'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 10) { top = 'Bb'; bottom = 'b7'; classes = 'bg-red-200 border-red-400 font-bold'; }
+                                return (
+                                  <div key={`c7-${i}`} className={`w-10 px-2 py-1 rounded ${classes}`}>{top}<br/>{bottom}</div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                    {/* Cm7: 1, b3, 5, b7 = C, Eb, G, Bb */}
+                    <div>
+                      <div className="text-[11px] text-gray-600 mb-1 text-center">Cm7 (1, b3, 5, b7)</div>
+                      <div className="flex justify-center min-w-max">
+                        {(() => {
+                          const chromatic = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B','C'];
+                          return (
+                            <div className="flex gap-1 text-center text-xs">
+                              {chromatic.map((n, i) => {
+                                let top = '';
+                                let bottom = '';
+                                let classes = 'bg-gray-100 border border-gray-200 text-gray-400';
+                                if (i === 0) { top = 'C'; bottom = '1'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 3) { top = 'Eb'; bottom = 'b3'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 7) { top = 'G'; bottom = '5'; classes = 'bg-blue-100 border-blue-300 font-semibold'; }
+                                if (i === 10) { top = 'Bb'; bottom = 'b7'; classes = 'bg-red-200 border-red-400 font-bold'; }
+                                return (
+                                  <div key={`cm7-${i}`} className={`w-10 px-2 py-1 rounded ${classes}`}>{top}<br/>{bottom}</div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })()}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div className="space-y-16">
+          {/* Controls directly above the rendered diagrams */}
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <button onClick={() => setActiveFamilyType('major')} className={`px-3 py-1.5 rounded-md text-sm border ${activeFamilyType==='major' ? 'bg-amber-700 text-white border-amber-800' : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'}`}>Major chord families</button>
+            <button onClick={() => setActiveFamilyType('minor')} className={`px-3 py-1.5 rounded-md text-sm border ${activeFamilyType==='minor' ? 'bg-amber-700 text-white border-amber-800' : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'}`}>Minor chord families</button>
+          </div>
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
             {Object.entries(chordDatabase.open.chordFamilies)
-              .filter(([_, family]) => 'major' in family)
-              .map(([rootName, family]) => {
+              .filter(([_, family]) => activeFamilyType === 'major' ? ('major' in family) : ('minor' in family))
+              .map(([rootName]) => (
+                <button
+                  key={`fam2-tab-${rootName}`}
+                  onClick={() => activeFamilyType==='major' ? setActiveMajorRoot(rootName) : setActiveMinorRoot(rootName)}
+                  className={`px-3 py-1.5 rounded-md text-sm border ${(activeFamilyType==='major' ? activeMajorRoot : activeMinorRoot) === rootName ? 'bg-amber-600 text-white border-amber-700' : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'}`}
+                >
+                  {rootName}
+                </button>
+              ))}
+          </div>
+          {activeFamilyType === 'major' && (
+            <div className="space-y-16">
+              {Object.entries(chordDatabase.open.chordFamilies)
+                .filter(([_, family]) => 'major' in family)
+                .filter(([rootName]) => !activeMajorRoot || activeMajorRoot === rootName)
+                .map(([rootName, family]) => {
                 const majorFamily = family as any; // Type assertion for chord family with major
                 return (
                   <div key={rootName} className="border-b border-gray-200 pb-12">
-                    <h4 className="text-lg font-semibold text-gray-700 mb-8 text-center">{rootName} Family</h4>
+                    <h4 className="text-lg font-semibold text-gray-700 mb-2 text-center">{rootName} Family</h4>
+                    <h5 className="text-sm font-medium text-gray-600 mb-6 text-center">Major Chord Families</h5>
                     
                     {/* Base major chord */}
                     <div className="flex flex-col items-center mb-8">
@@ -859,12 +994,14 @@ const GuitarChordReference = () => {
                   </div>
                 );
               })}
-          </div>
+            </div>
+          )}
         </div>
 
-        {/* Chord Families - Minor */}
+        {/* Chord Families - Minor (rendered when minor is selected) */}
+        {activeFamilyType === 'minor' && (
         <div className="mb-16">
-          <h3 className="text-xl font-bold text-gray-800 mb-8 text-center">Minor Chord Families</h3>
+          <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">Minor Chord Families</h3>
           <div className="bg-amber-50 p-4 rounded-lg mb-8 max-w-4xl mx-auto">
             <p className="text-sm text-gray-700 text-center">
               <strong>Note about Minor Major 7 chords:</strong> These are shown below to give you the full set of 7th chord types. 
@@ -874,6 +1011,7 @@ const GuitarChordReference = () => {
           <div className="space-y-16">
             {Object.entries(chordDatabase.open.chordFamilies)
               .filter(([_, family]) => 'minor' in family)
+              .filter(([rootName]) => !activeMinorRoot || activeMinorRoot === rootName)
               .map(([rootName, family]) => {
                 const minorFamily = family as any; // Type assertion for chord family with minor
                 return (
@@ -958,6 +1096,7 @@ const GuitarChordReference = () => {
               })}
           </div>
         </div>
+        )}
 
 
       </div>
@@ -1117,7 +1256,8 @@ const GuitarChordReference = () => {
             
             {/* All 7th chords in a grid first */}
             <div className="mb-12 sm:mb-16">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 sm:mb-6 text-center">All 7th Chords</h3>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-1 text-center">All 7th Chords*</h3>
+              <p className="text-xs text-gray-600 text-center mb-4">* excludes Minor Major 7 chords – covered in Minor Chord Families below</p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8 mb-6 sm:mb-8">
                 {Object.entries(chordDatabase.open.seventh).map(([chordName, chordData]) => (
                   <ChordDiagram
@@ -2005,15 +2145,17 @@ const GuitarChordReference = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6">
-      {/* Header */}
-      <div className="text-center mb-6 sm:mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-          Open Chord Library
-        </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-          Complete visual guide to essential open guitar chords with finger positions, variations, and playing techniques.
-        </p>
-      </div>
+      {/* Header - compact variant styled like the Beginner Guide hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+        <div className="container-max">
+          <div className="max-w-4xl mx-auto text-center px-4">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Open Chord Library</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">
+              Complete visual guide to essential open guitar chords with finger positions, variations, and chord progressions.
+            </p>
+          </div>
+        </div>
+      </section>
       
       {/* Navigation - Make scrollable on mobile */}
       <div className="flex justify-center mb-6 sm:mb-8">
