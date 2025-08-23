@@ -111,6 +111,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="color-scheme" content="light" />
+        <meta name="supported-color-schemes" content="light" />
         {/* Google Analytics */}
         <script
           async
