@@ -443,16 +443,20 @@ function PentatonicScalesContent() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      {/* Header */}
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Beginner’s Guide to Pentatonic Scales</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Master five shapes, understand relative major/minor, and apply them musically.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
-          Beginner's Guide to Pentatonic Scales
-        </h1>
-        <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mb-6">
-          Master the 5 essential pentatonic scale shapes and learn how they connect across the fretboard. 
-          Interactive diagrams show you exactly where to place your fingers in any key.
-        </p>
-        
         <div className="bg-amber-50 rounded-lg p-6 border border-amber-200 max-w-4xl mx-auto mb-8">
           <h2 className="text-lg font-semibold text-amber-800 mb-4">What Are Pentatonic Scales?</h2>
           <div className="text-sm text-gray-700 space-y-3">
@@ -478,13 +482,13 @@ function PentatonicScalesContent() {
               <strong>Key insight:</strong> Major and minor pentatonic scales use the exact same notes! The difference is which note you treat as "home base" in your playing. <em>For example, using A minor pentatonic:</em>
             </p>
             <p>
-              <strong className="text-orange-700">A Minor Pentatonic (Shape 1):</strong> When you emphasize the note A as your starting and ending point, these notes create a minor, bluesy sound. This is the most common scale for rock and blues solos.
+              <strong className="text-orange-700">A Minor Pentatonic (Shape 1):</strong> When you emphasize the note A as your starting and ending point, these notes create a minor, bluesy sound.
             </p>
             <p>
               <strong className="text-orange-700">C Major Pentatonic (Shape 2):</strong> Using the same five notes but emphasizing C as your home base creates a brighter, more uplifting major sound. Perfect for country and pop music.
             </p>
             <p>
-              <strong className="text-orange-700">The Other Shapes:</strong> Shapes 3, 4, and 5 give you the same notes in different fretboard positions. Master all five shapes and you can play pentatonic scales anywhere on the neck without having to shift hand positions.
+              <strong className="text-orange-700">The Other Shapes:</strong> Shapes 3, 4, and 5 give you the same notes in different fretboard positions. Master all five shapes and you can play pentatonic scales anywhere on the neck.
             </p>
           </div>
         </div>
@@ -569,8 +573,8 @@ function PentatonicScalesContent() {
           })()} Major Pentatonic
         </h2>
         <p className="text-gray-600 text-center mb-8 max-w-3xl mx-auto">
-          These 5 shapes show the same {selectedKey} pentatonic scale in different positions. 
-          Notice how each shape connects to the ones next to it - they share notes at the boundaries.
+          These 5 shapes show the same {selectedKey} minor pentatonic scale in different positions. 
+          Notice how each shape connects to the ones next to it — they share notes at the boundaries.
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 lg:gap-6 shape-section">
