@@ -103,7 +103,7 @@ export default function GuitarPickingTechniquePage() {
 
                 <h3 className="text-xl font-semibold text-gray-700 mb-4">How to Hold the Pick</h3>
                 
-                <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+                <div className="pl-4 border-l-4 border-amber-500 mb-6">
                   <h4 className="font-semibold text-amber-800 mb-2">Basic Grip Setup:</h4>
                   <ol className="list-decimal list-inside space-y-2 text-amber-700">
                     <li><strong>Pick placement:</strong> Rest pick on the side pad of your index finger (not the fingertip)</li>
@@ -396,10 +396,10 @@ export default function GuitarPickingTechniquePage() {
                     <strong>Note:</strong> The pick slanting concepts and DWPS/UWPS terminology were developed by <a href="https://troygrady.com/" target="_blank" rel="noopener noreferrer" className="text-amber-700 underline hover:text-amber-900">Troy Grady</a> through his groundbreaking "Cracking the Code" research into guitar picking mechanics.
                   </div>
                   
-                  <div className="bg-white border-2 border-amber-300 rounded-lg p-4 mb-4">
+                  <div className="mb-4">
                     <h5 className="font-bold text-amber-800 mb-3">How to Describe It (Using Pick Tip Direction)</h5>
                     
-                    <div className="bg-gray-50 border border-gray-200 rounded p-3 mb-4">
+                    <div className="pl-4 border-l-2 border-gray-200 mb-4">
                       <div className="font-semibold text-gray-800 mb-1">Key Terms:</div>
                       <ul className="list-disc list-inside space-y-1 text-gray-700 text-sm">
                         <li><strong>Pick tip:</strong> The pointed end of the pick that you use to strike the strings</li>
@@ -416,27 +416,22 @@ export default function GuitarPickingTechniquePage() {
                         <p className="text-gray-600 text-sm italic">
                           <strong>Visual tip:</strong> Looking down at your picking hand, the pick tip points slightly toward you.
                         </p>
-                        <div className="bg-orange-50 border border-orange-200 rounded p-3">
-                          <div className="font-semibold text-orange-800 mb-2">What it does:</div>
-                          <ul className="list-disc list-inside space-y-1 text-orange-700 text-sm mb-3">
+                        <div className="mt-2 space-y-2 text-sm text-gray-700">
+                          <div className="font-semibold text-gray-800">What it does</div>
+                          <ul className="list-disc list-inside">
                             <li><strong>Upstrokes escape</strong> above the string plane</li>
                             <li><strong>Downstrokes stay trapped</strong> between strings</li>
                             <li>Great for phrases that <strong>change strings after an upstroke</strong></li>
                           </ul>
-                          <div className="font-semibold text-orange-800 mb-1">When you need DWPS:</div>
-                          <div className="text-orange-700 text-sm space-y-1">
+                          <div className="font-semibold text-gray-800 pt-1">When you need DWPS</div>
+                          <div className="space-y-1">
                             <div><strong>Example:</strong> Down-up on A string, moving to low E string</div>
-                            <div className="text-xs">• Without slanting: The pick may get caught on the string, making it hard to move cleanly</div>
-                            <div className="text-xs">• With DWPS: Upstroke escapes cleanly, you can play downstroke on low E</div>
+                            <div className="text-xs text-gray-600">• Without slanting: The pick may get caught on the string</div>
+                            <div className="text-xs text-gray-600">• With DWPS: Upstroke escapes cleanly; play downstroke on low E</div>
                           </div>
-                          <div className="bg-orange-100 border border-orange-300 rounded p-2 mt-2">
-                            <div className="font-semibold text-orange-800 text-xs mb-1">DWPS Rule:</div>
-                            <div className="text-orange-700 text-xs">
-                              <div>Use DWPS when <strong>you're changing strings after an upstroke</strong></div>
-                            </div>
-                          </div>
-                          <div className="text-xs text-orange-600 mt-2">
-                            <a href="https://www.youtube.com/watch?v=7TnddE2k598" target="_blank" rel="noopener noreferrer" className="underline hover:text-orange-800">Watch Troy Grady's DWPS video: "Get Down for the Upstroke" →</a>
+                          <div className="text-xs italic text-gray-600 pt-1">DWPS rule: use DWPS when you're changing strings after an upstroke.</div>
+                          <div className="text-xs text-orange-700 pt-1">
+                            <a href="https://www.youtube.com/watch?v=7TnddE2k598" target="_blank" rel="noopener noreferrer" className="underline hover:text-orange-800">Watch Troy Grady's DWPS video →</a>
                           </div>
                         </div>
                       </div>
@@ -449,32 +444,26 @@ export default function GuitarPickingTechniquePage() {
                         <p className="text-gray-600 text-sm italic">
                           <strong>Visual tip:</strong> Looking down at your picking hand, the pick tip points slightly away from you.
                         </p>
-                        <div className="bg-amber-50 border border-amber-200 rounded p-3">
-                          <div className="font-semibold text-amber-800 mb-2">What it does:</div>
-                          <ul className="list-disc list-inside space-y-1 text-amber-700 text-sm mb-3">
+                        <div className="mt-2 space-y-2 text-sm text-gray-700">
+                          <div className="font-semibold text-gray-800">What it does</div>
+                          <ul className="list-disc list-inside">
                             <li><strong>Downstrokes escape</strong> above the string plane</li>
                             <li><strong>Upstrokes stay trapped</strong> between strings</li>
                             <li>Great for phrases that <strong>change strings after a downstroke</strong></li>
                           </ul>
-                          <div className="font-semibold text-amber-800 mb-1">When you need UWPS:</div>
-                          <div className="text-amber-700 text-sm space-y-1">
-                            <div><strong>Example:</strong> Down-up on low E string, moving to A string</div>
-                            <div className="text-xs">• Without slanting: The pick may get caught on the string, making it hard to move cleanly</div>
-                            <div className="text-xs">• With UWPS: Downstroke escapes cleanly, you can play upstroke on A string</div>
+                          <div className="font-semibold text-gray-800 pt-1">When you need UWPS</div>
+                          <div className="space-y-1">
+                            <div><strong>Example:</strong> Up-down on low E string, moving to A string</div>
+                            <div className="text-xs text-gray-600">• Without slanting: The pick may get caught on the string</div>
+                            <div className="text-xs text-gray-600">• With UWPS: Downstroke escapes cleanly; play upstroke on A</div>
                           </div>
-                          <div className="bg-amber-100 border border-amber-300 rounded p-2 mt-2">
-                            <div className="font-semibold text-amber-800 text-xs mb-1">UWPS Rule:</div>
-                            <div className="text-amber-700 text-xs">
-                              <div>Use UWPS when <strong>you're changing strings after a downstroke</strong></div>
-                            </div>
-                          </div>
-
+                          <div className="text-xs italic text-gray-600 pt-1">UWPS rule: use UWPS when you're changing strings after a downstroke.</div>
                         </div>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-4">
+                  <div className="pl-4 border-l-2 border-yellow-400 mt-4">
                     <h5 className="font-bold text-yellow-800 mb-2">The Logic Behind Pick Slanting</h5>
                     <div className="text-yellow-700 text-sm space-y-2">
                       <div>If you're about to <strong>change strings after an upstroke</strong>, you need that upstroke to escape → <strong>DWPS</strong></div>
@@ -510,6 +499,11 @@ export default function GuitarPickingTechniquePage() {
                   <div className="bg-white border-2 border-orange-300 rounded p-3 mb-3">
                     <h5 className="font-semibold text-orange-800 mb-2">Example Pattern:</h5>
                     <div className="text-sm text-orange-700">
+                      <div className="flex items-center gap-3 mb-2 text-xs text-gray-600">
+                        <span className="inline-flex items-center gap-1"><span className="inline-flex items-center justify-center h-5 px-2 rounded-full bg-amber-600 text-white">D</span> Downstroke</span>
+                        <span className="inline-flex items-center gap-1"><span className="inline-flex items-center justify-center h-5 px-2 rounded-full bg-slate-700 text-white">U</span> Upstroke</span>
+                        <span className="inline-flex items-center gap-1"><span className="text-gray-500">→</span> Change string</span>
+                      </div>
                       <table className="w-full">
                         <tbody>
                           <tr>
@@ -524,27 +518,27 @@ export default function GuitarPickingTechniquePage() {
                           </tr>
                           <tr>
                             <td className="font-semibold pr-4">Alternate picking:</td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white">D</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2">↑ ↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white mr-1">U</span><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white">D</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2">↑ ↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white mr-1">U</span><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white">D</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white">U</span></td>
                           </tr>
                           <tr>
                             <td className="font-semibold pr-4">Economy picking:</td>
-                            <td className="text-center px-2"><span className="bg-amber-200 px-1 rounded text-amber-800">↓</span></td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2"><span className="bg-amber-200 px-1 rounded text-amber-800">↓</span> ↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300 mr-1">D</span><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white">U</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2">↓ ↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white mr-1">D</span><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white">U</span></td>
                             <td className="text-center px-1">|</td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white">D</span></td>
                           </tr>
                         </tbody>
                       </table>
-                      <div className="text-xs mt-2 italic">Economy picking: <span className="bg-amber-200 px-1 rounded text-amber-800">highlighted strokes</span> are from the same continuous downward motion</div>
+                      <div className="text-xs mt-2 italic">Economy picking: downstrokes during string changes continue in the same direction (highlighted with a ring).</div>
                     </div>
                   </div>
 
@@ -564,6 +558,11 @@ export default function GuitarPickingTechniquePage() {
                   <div className="bg-white border-2 border-amber-300 rounded p-3 mb-3">
                     <h5 className="font-semibold text-amber-800 mb-2">Example Pattern:</h5>
                     <div className="text-sm text-amber-700">
+                      <div className="flex items-center gap-3 mb-2 text-xs text-gray-600">
+                        <span className="inline-flex items-center gap-1"><span className="inline-flex items-center justify-center h-5 px-2 rounded-full bg-amber-600 text-white">D</span> Downstroke</span>
+                        <span className="inline-flex items-center gap-1"><span className="inline-flex items-center justify-center h-5 px-2 rounded-full bg-slate-700 text-white">U</span> Upstroke</span>
+                        <span className="inline-flex items-center gap-1"><span className="text-gray-500">→</span> Change string</span>
+                      </div>
                       <table className="w-full">
                         <tbody>
                           <tr>
@@ -580,15 +579,15 @@ export default function GuitarPickingTechniquePage() {
                           </tr>
                           <tr>
                             <td className="font-semibold pr-4">Pick pattern:</td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↓</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-amber-600 text-white ring-2 ring-amber-300">D</span></td>
                           </tr>
                           <tr>
                             <td className="font-semibold pr-4">Return sweep:</td>
@@ -604,19 +603,19 @@ export default function GuitarPickingTechniquePage() {
                           </tr>
                           <tr>
                             <td className="font-semibold pr-4">Pick pattern:</td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white ring-2 ring-slate-300">U</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white ring-2 ring-slate-300">U</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white ring-2 ring-slate-300">U</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white ring-2 ring-slate-300">U</span></td>
                             <td className="text-center px-1"></td>
-                            <td className="text-center px-2">↑</td>
+                            <td className="text-center px-2"><span className="inline-flex items-center justify-center h-6 px-2 rounded-full bg-slate-700 text-white ring-2 ring-slate-300">U</span></td>
                           </tr>
                         </tbody>
                       </table>
-                      <div className="text-xs mt-2 italic">Pick "sweeps" across strings like a brush stroke</div>
+                      <div className="text-xs mt-2 italic">Sweep: one continuous motion across strings in the same direction (highlighted with a ring).</div>
                     </div>
                   </div>
 
