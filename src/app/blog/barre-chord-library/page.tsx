@@ -399,15 +399,20 @@ function BarreChordLibraryContent() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Barre Chord Library</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Explore E- and A‑shape barre chords by root note and chord type. See how shapes transform up the neck.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Intermediate Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-amber-800 mb-4">
-          Barre Chord Library
-        </h1>
-        <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto mb-6">
-          Master essential barre chords and understand how they relate to open chord shapes. Select your root string, chord type, and fret position to see the complete chord diagram.
-        </p>
-        
         <div className="bg-amber-50 rounded-lg p-6 border border-amber-200 max-w-4xl mx-auto mb-8">
           <h2 className="text-lg font-semibold text-amber-800 mb-4">How to Find Any Barre Chord</h2>
           <div className="grid md:grid-cols-2 gap-6 text-sm text-gray-700">

@@ -25,7 +25,21 @@ export const metadata: Metadata = {
 
 export default function BeginnersGuideGuitarScales() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Beginner’s Guide to Guitar Scales – Start with One String</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Learn scales the simple way: master one string first, then map them across the fretboard.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm">
         <Link href="/" className="text-blue-600 hover:underline">Home</Link>
@@ -36,14 +50,6 @@ export default function BeginnersGuideGuitarScales() {
       </nav>
 
       <article className="prose prose-lg max-w-none">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-amber-600">
-            A Beginner's Guide to Guitar Scales: Start with One String
-          </h1>
-          <p className="text-xl text-gray-600 leading-relaxed">
-            Learn scales the simple way - start with one string and build from there
-          </p>
-        </header>
 
         {/* Introduction */}
         <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8">
@@ -598,5 +604,6 @@ export default function BeginnersGuideGuitarScales() {
         </section>
       </article>
     </div>
+    </>
   );
-} 
+}
