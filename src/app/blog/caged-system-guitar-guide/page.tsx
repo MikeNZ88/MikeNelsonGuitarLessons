@@ -652,30 +652,7 @@ export default function CAGEDSystemGuide() {
             </div>
           </section>
 
-          {/* Conclusion */}
-          <section className="mb-12">
-            <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-amber-800 mb-4">Key Takeaways</h2>
-              <ul className="space-y-3 text-gray-700">
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span>CAGED connects five familiar chord shapes across the entire fretboard</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span>Each shape transposes both the fingering pattern and the chord relationship</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span>The system works for minor, seventh, and extended chords using modified shapes</span>
-                </li>
-                <li className="flex items-start">
-                  <div className="w-2 h-2 bg-amber-600 rounded-full mr-3 mt-2 flex-shrink-0"></div>
-                  <span>Use CAGED as a helpful map, not a substitute for knowing where notes are</span>
-                </li>
-              </ul>
-            </div>
-          </section>
+          
 
         </article>
       </div>

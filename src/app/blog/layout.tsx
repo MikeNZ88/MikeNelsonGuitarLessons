@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import ScrollPager from '@/components/ScrollPager';
 
 export const metadata: Metadata = {
   title: 'Guitar Blog | Mike Nelson Guitar Lessons',
@@ -35,5 +36,10 @@ export default function BlogLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      {children}
+      <ScrollPager />
+    </>
+  );
 } 
