@@ -678,7 +678,7 @@ function PentatonicScalesContent() {
         <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg shadow-sm border border-amber-200 p-6 major-section">
           <h2 className="text-2xl font-bold text-amber-800 mb-4">Explore More Scales</h2>
           <p className="text-gray-600 mb-4 text-lg">
-            For full fretboard diagrams of pentatonic scales and many more types of scales, check out our interactive Scale Explorer tool.
+            For full fretboard diagrams of pentatonic scales and many more types of scales, check out my interactive Scale Explorer tool.
           </p>
           <a 
             href="/blog/scale-explorer-tool" 

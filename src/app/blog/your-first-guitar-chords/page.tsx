@@ -32,27 +32,31 @@ export const metadata: Metadata = {
 export default function YourFirstGuitarChords() {
   return (
     <div className="min-h-screen bg-amber-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <nav className="mb-8">
+      {/* Compact hero to match site style without pushing content too low */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="container-max">
+          <div className="max-w-4xl mx-auto text-center px-4">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Your First Guitar Chords: A Complete Beginner Guide</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Master the 8 essential open chords that form the foundation of thousands of songs.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>8 minute read</span>
+              <span>•</span>
+              <span>Beginner Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-4xl mx-auto px-4 pb-8">
+        <nav className="mb-6">
           <Link href="/blog" className="text-amber-600 hover:text-amber-800">
             ← Back to Blog
           </Link>
         </nav>
 
         <article className="bg-white rounded-lg shadow-lg p-8">
-          <header className="mb-8">
-            <h1 className="text-4xl font-bold text-amber-900 mb-4">
-              Your First Guitar Chords: A Complete Beginner Guide
-            </h1>
-            <p className="text-xl text-amber-700 mb-4">
-              Master the 8 essential open chords that form the foundation of thousands of songs
-            </p>
-            <div className="flex items-center text-amber-600 text-sm">
-              <span>8 minute read</span>
-              <span className="mx-2">•</span>
-              <span>Beginner Level</span>
-            </div>
-          </header>
+          
+          
 
           <div className="prose prose-amber max-w-none">
 
@@ -111,7 +115,7 @@ export default function YourFirstGuitarChords() {
                 chordName="G"
                 chordData={{
                   frets: [3, 2, 0, 0, 3, 3],
-                  fingers: ['4', '2', '', '', '3', '1']
+                  fingers: ['2', '1', '', '', '3', '4']
                 }}
               />
               <ChordDiagram 
@@ -139,7 +143,7 @@ export default function YourFirstGuitarChords() {
                 chordName="Am"
                 chordData={{
                   frets: [-1, 0, 2, 2, 1, 0],
-                  fingers: ['', '', '3', '2', '1', '']
+                  fingers: ['', '', '2', '3', '1', '']
                 }}
               />
               <ChordDiagram 
@@ -228,12 +232,12 @@ export default function YourFirstGuitarChords() {
                   chordName="G"
                   chordData={{
                     frets: [3, 2, 0, 0, 3, 3],
-                    fingers: ['4', '2', '', '', '3', '1']
+                    fingers: ['2', '1', '', '', '3', '4']
                   }}
                 />
                 <ul className="list-disc list-inside text-amber-700 space-y-2">
-                  <li>Place your 2nd finger on the 2nd fret of the A string</li>
-                  <li>Place your 1st finger on the 1st fret of the E string</li>
+                  <li>Place your 2nd finger on the 3rd fret of the low E string</li>
+                  <li>Place your 1st finger on the 2nd fret of the A string</li>
                   <li>Place your 3rd finger on the 3rd fret of the B string</li>
                   <li>Place your 4th finger on the 3rd fret of the high E string</li>
                   <li>Strum all six strings</li>
@@ -334,7 +338,7 @@ export default function YourFirstGuitarChords() {
                   chordName="Am"
                   chordData={{
                     frets: [-1, 0, 2, 2, 1, 0],
-                    fingers: ['', '', '3', '2', '1', '']
+                    fingers: ['', '', '2', '3', '1', '']
                   }}
                 />
                 <ul className="list-disc list-inside text-amber-700 space-y-2">
@@ -400,7 +404,7 @@ export default function YourFirstGuitarChords() {
                 practice these chords daily, even if just for 10-15 minutes.
               </p>
               <p className="text-amber-700 mb-4">
-                Want to explore more chords? Check out our{' '}
+                Want to explore more chords? Check out my{' '}
                 <Link href="/blog/open-chord-library" className="text-amber-600 hover:text-amber-800 underline">
                   Open Chord Library
                 </Link>

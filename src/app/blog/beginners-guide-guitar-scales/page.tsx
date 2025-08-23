@@ -561,7 +561,7 @@ export default function BeginnersGuideGuitarScales() {
                 <li>Master one scale on one string completely</li>
                 <li>Learn the same scale on different strings</li>
                 <li>Start connecting notes across strings</li>
-                <li>Explore our Scale Explorer tool for visual patterns</li>
+                <li>Explore my Scale Explorer tool for visual patterns</li>
                 <li>Practice improvising using just the notes you know</li>
               </ol>
             </div>
@@ -569,7 +569,7 @@ export default function BeginnersGuideGuitarScales() {
             <div className="bg-blue-50 p-4 rounded-lg mb-6">
               <h4 className="font-semibold mb-2">🔍 Try the Scale Explorer</h4>
               <p className="text-sm">
-                Ready to see these scales across the entire fretboard? Check out our <Link href="/scale-explorer/index.html" className="text-blue-600 hover:underline">Scale Explorer</Link> tool to visualize how the patterns connect across all strings.
+                Ready to see these scales across the entire fretboard? Check out my <Link href="/scale-explorer/index.html" className="text-blue-600 hover:underline">Scale Explorer</Link> tool to visualize how the patterns connect across all strings.
               </p>
             </div>
           </div>

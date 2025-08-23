@@ -106,7 +106,7 @@ export default function IntroducingPracticeTrack() {
                 <h3 className="text-xl font-semibold text-orange-800">Practice Timer</h3>
               </div>
               <p className="text-gray-700">
-                Track your practice time with our intuitive timer. Built-in metronome with multiple 
+                Track your practice time with my intuitive timer. Built-in metronome with multiple 
                 time signatures and sounds helps you stay on beat during focused practice sessions.
               </p>
             </div>

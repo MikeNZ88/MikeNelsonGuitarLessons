@@ -74,7 +74,7 @@ export default function WhatIsChord() {
           </p>
 
           <p className="mb-6">
-            But here's the key insight: chords aren't random combinations of notes. They follow specific <strong>mathematical relationships</strong> called intervals that create harmony. (If you're not familiar with musical notes, check out our <a href="/blog/beginners-guide-notes-guitar" className="text-amber-600 hover:text-amber-800 underline">Beginner's Guide to Notes on the Guitar</a>.)
+            But here's the key insight: chords aren't random combinations of notes. They follow specific <strong>mathematical relationships</strong> called intervals that create harmony. (If you're not familiar with musical notes, check out my <a href="/blog/beginners-guide-notes-guitar" className="text-amber-600 hover:text-amber-800 underline">Beginner's Guide to Notes on the Guitar</a>.)
           </p>
         </section>
 
@@ -604,7 +604,7 @@ export default function WhatIsChord() {
           <div id="open-chord-library" className="bg-amber-50 p-6 rounded-lg border border-amber-200 mt-8 scroll-mt-24">
             <h4 className="text-lg font-semibold mb-3 text-amber-800">Open Chord Library</h4>
             <p className="mb-4 text-amber-700">
-              Ready to see these chord structures in action? Check out the <Link href="/blog/open-chord-library" className="text-amber-600 hover:underline">Open Chord Library</Link> to visualize chord diagrams and see the interval patterns we've discussed.
+              Ready to see these chord structures in action? Check out my <Link href="/blog/open-chord-library" className="text-amber-600 hover:underline">Open Chord Library</Link> to visualize chord diagrams and see the interval patterns we've discussed.
             </p>
           </div>
         </section>
