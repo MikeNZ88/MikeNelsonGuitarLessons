@@ -34,6 +34,15 @@ export const metadata: Metadata = {
 export default function ChordTransitionsPost() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50">
+      {/* Compact gradient hero header */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Smoother Chord Changes: Common Fingers Between Chords</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">One of the most reliable wins for smoother chord changes is using common (anchor) fingers — fingers that can stay on the same string and fret across two chords. Keep those planted while the other fingers move.</p>
+          </div>
+        </div>
+      </section>
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-8">
           <Link 
@@ -43,18 +52,11 @@ export default function ChordTransitionsPost() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Blog
           </Link>
-          
-          <h1 className="text-4xl md:text-5xl font-bold text-amber-600 mb-4">
-            Smoother Chord Changes: Common Fingers Between Chords
-          </h1>
-          
 
         </div>
 
         <div className="prose prose-lg max-w-none">
-          <p className="text-xl text-gray-700 mb-8">
-            Making clean, smooth chord transitions is all about finding <strong>common fingers</strong> — fingers that stay on the same fret and string as you move between chords. These anchor fingers help you minimize movement and improve your timing.
-          </p>
+          
 
           <div className="bg-orange-50 border-l-4 border-orange-400 p-6 mb-8">
             <h3 className="text-lg font-semibold text-orange-900 mb-3">Finger Numbering Guide</h3>
