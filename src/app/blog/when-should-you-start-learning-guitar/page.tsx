@@ -31,6 +31,18 @@ export const metadata: Metadata = {
 export default function WhenShouldYouStartLearningGuitar() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50">
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">When Should You Start Learning Guitar?</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Research-backed guidance on optimal starting ages and how adults and seniors learn differently—plus what really matters most.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>All Ages</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Back to Blog */}
@@ -40,16 +52,6 @@ export default function WhenShouldYouStartLearningGuitar() {
           >
             ← Back to Blog
           </Link>
-
-          {/* Header */}
-          <header className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-amber-800 mb-4 leading-tight">
-              When Should You Start Learning Guitar? Research Insights
-            </h1>
-            <div className="flex items-center text-gray-600 text-sm">
-              <span>12 min read</span>
-            </div>
-          </header>
 
           {/* Article Content */}
           <article className="prose prose-lg max-w-none">

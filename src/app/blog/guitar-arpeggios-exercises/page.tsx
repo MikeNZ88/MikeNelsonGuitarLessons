@@ -5,19 +5,22 @@ export default function GuitarArpeggiosExercisesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="container mx-auto px-4 py-12">
-        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-          {/* Header */}
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-amber-900 mb-4">
-              Guitar Arpeggio Exercises
-            </h1>
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
-              Skill Level: Intermediate – Advanced
+
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Guitar Arpeggio Exercises</h1>
+              <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Master arpeggios across the fretboard with interactive tabs and focused practice tips.</p>
+              <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+                <span>Intermediate – Advanced</span>
+              </div>
             </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Master arpeggios across the fretboard with focused exercises for major, minor, dominant, diminished, and more. Practice with interactive tabs, audio playback, and clear practice tips—perfect for building fretboard knowledge, finger independence, and musical fluency.
-            </p>
-          </header>
+          </div>
+        </section>
+
+        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+          {/* Header moved to hero */}
 
           {/* Introduction */}
           <section className="mb-12">
@@ -114,11 +117,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Guitar Arpeggio Exercises',
     description: 'Master arpeggios across the fretboard with focused exercises for major, minor, dominant, and diminished chords. Practice with interactive tabs.',
-          images: [{
-        url: '/arpeggio-social.jpg',
-        width: 1200,
-        height: 662,
-        alt: 'Guitar Arpeggios Exercises'
-      }],
+    images: [{
+      url: '/arpeggio-social.jpg',
+      width: 1200,
+      height: 662,
+      alt: 'Guitar Arpeggios Exercises'
+    }],
   },
 }; 

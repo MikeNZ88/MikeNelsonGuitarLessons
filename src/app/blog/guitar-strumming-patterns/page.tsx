@@ -33,24 +33,31 @@ export default function GuitarStrummingPatternsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Master Guitar Strumming Patterns</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">The secret to solid timing and rhythm with 11 progressive patterns. Play along with interactive audio.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner–Intermediate</span>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-5">
+              <a href="#patterns" className="inline-block bg-white/10 text-white px-6 py-3 rounded-lg font-medium hover:bg-white/20 transition-colors">
+                Go Straight to Strumming Patterns
+              </a>
+              <a href="#pattern-builder" className="inline-block bg-white text-amber-800 border-2 border-white px-6 py-3 rounded-lg font-medium hover:bg-amber-50 hover:border-amber-100 transition-colors">
+                🎵 Go to Strumming Pattern Builder
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div className="max-w-4xl mx-auto px-4 py-12">
         
-        {/* Header */}
+        {/* Intro helper box */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-600 to-amber-800 bg-clip-text text-transparent mb-6">
-            Master Guitar Strumming Patterns
-          </h1>
-          <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-            The secret to solid timing and rhythm with 11 progressive patterns every guitarist needs
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a href="#patterns" className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-700 transition-colors">
-              Go Straight to Strumming Patterns
-            </a>
-            <a href="#pattern-builder" className="inline-block bg-white text-amber-800 border-2 border-amber-600 px-6 py-3 rounded-lg font-medium hover:bg-amber-50 hover:border-amber-700 transition-colors">
-              🎵 Go to Strumming Pattern Builder
-            </a>
-          </div>
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 max-w-2xl mx-auto">
             <p className="text-amber-800 text-sm mb-3">
               <strong>Interactive Audio Guide:</strong> Each pattern below includes playable audio examples.

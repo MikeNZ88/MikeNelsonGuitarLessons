@@ -6,28 +6,29 @@ export default function EasiestBeginnerGuitarRiffsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="container mx-auto px-4 py-8 sm:py-12">
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">10 Easiest Beginner Guitar Riffs</h1>
+              <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Learn 10 iconic riffs with interactive tabs to build timing, coordination, and expression.</p>
+              <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+                <span>Beginner</span>
+              </div>
+            </div>
+          </div>
+        </section>
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-4 sm:p-8">
-          {/* Header */}
-          <header className="mb-6 sm:mb-8 text-center">
-            <h1 className="text-2xl sm:text-4xl font-bold text-amber-900 mb-4">
-              10 Easiest Beginner Guitar Riffs
-            </h1>
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
-              Skill Level: Beginner
-            </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Master these 10 classic guitar riffs that every guitarist should know. These iconic riffs are perfect for beginners and will help you develop essential skills like timing, coordination, and musical expression.
-            </p>
-            {/* Album Covers Image */}
-            <div className="mt-6 mb-4">
-              <img 
-                src="/guitar-riff-blog.png" 
-                alt="Album covers of classic rock songs including Black Sabbath Paranoid, Aerosmith Toys in the Attic, Deep Purple Machine Head, Nirvana Nevermind, Metallica Black Album, Alice in Chains Facelift, AC/DC TNT, Red Hot Chili Peppers Californication, The Kingsmen Louie Louie, and Pearl Jam Ten"
-                className="max-w-full h-auto rounded-lg shadow-md mx-auto"
-                style={{ maxHeight: '300px' }}
-              />
-            </div>
-          </header>
+          {/* Header moved to hero */}
+          {/* Album Covers Image */}
+          <div className="mt-2 mb-6 text-center">
+            <img 
+              src="/guitar-riff-blog.png" 
+              alt="Album covers of classic rock songs including Black Sabbath Paranoid, Aerosmith Toys in the Attic, Deep Purple Machine Head, Nirvana Nevermind, Metallica Black Album, Alice in Chains Facelift, AC/DC TNT, Red Hot Chili Peppers Californication, The Kingsmen Louie Louie, and Pearl Jam Ten"
+              className="max-w-full h-auto rounded-lg shadow-md mx-auto"
+              style={{ maxHeight: '300px' }}
+            />
+          </div>
 
           {/* Introduction */}
           <section className="mb-12">

@@ -7,16 +7,20 @@ export default function GuitarPickingExercisesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="container mx-auto px-4 py-12">
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Pentatonic Scale Exercises</h1>
+              <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Unlock picking technique with focused pentatonic exercises and interactive tabs.</p>
+              <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+                <span>Beginner – Advanced</span>
+              </div>
+            </div>
+          </div>
+        </section>
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-          {/* Header */}
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-amber-900 mb-4">
-              Pentatonic Scale Exercises
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Unlock your picking technique with focused pentatonic scale exercises. Practice alternate picking, triplets, and legato patterns with interactive tabs, audio playback, and clear practice tips—perfect for building speed, accuracy, and fretboard mastery.
-            </p>
-          </header>
+          {/* Header moved to hero */}
 
           {/* Introduction */}
           <section className="mb-12">

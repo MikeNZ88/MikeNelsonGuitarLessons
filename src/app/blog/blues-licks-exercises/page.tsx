@@ -60,17 +60,20 @@ export default function BluesLicksExercises() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-amber-900 mb-4">Major 12 Bar Blues Scales and Licks</h1>
-        <p className="text-lg text-gray-700 mb-4">
-          Master essential blues licks with my interactive tab player. Practice classic blues phrases, bends, slides, and vibrato techniques.
-        </p>
-        <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
-          Skill Level: Beginner – Advanced
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Major 12 Bar Blues Scales and Licks</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Master essential blues licks with an interactive tab player. Practice classic phrases, bends, slides, and vibrato.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner – Advanced</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+    <div className="max-w-4xl mx-auto px-4 py-8">
 
       {/* Table of Contents */}
       <div className="mb-8 bg-amber-50 border border-amber-200 rounded-lg p-6">
@@ -971,5 +974,6 @@ export default function BluesLicksExercises() {
         </Link>
       </div>
     </div>
+    </>
   );
-} 
+}

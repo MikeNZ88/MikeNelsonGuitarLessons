@@ -6,19 +6,20 @@ export default function PickingFingerExercisesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
       <div className="container mx-auto px-4 py-12">
-        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
-          {/* Header */}
-          <header className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-amber-900 mb-4">
-              Picking and Finger Exercises
-            </h1>
-            <div className="inline-block mb-4 px-4 py-1 rounded-full bg-amber-100 text-amber-800 text-base font-semibold tracking-wide">
-              Skill Level: Beginner – Advanced
+        {/* Hero */}
+        <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Picking and Finger Exercises</h1>
+              <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Develop finger independence, string navigation, and alternate picking with interactive tabs.</p>
+              <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+                <span>Beginner – Advanced</span>
+              </div>
             </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Master finger independence, string navigation, and alternate picking with focused chromatic exercises. These exercises target non-sequential finger patterns, string skipping, and precise fret-hand coordination—essential skills for advanced guitar technique.
-            </p>
-          </header>
+          </div>
+        </section>
+        <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+          {/* Header moved to hero */}
 
           {/* Introduction */}
           <section className="mb-12">
