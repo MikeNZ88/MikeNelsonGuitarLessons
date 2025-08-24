@@ -33,28 +33,24 @@ export const metadata: Metadata = {
 export default function HowToReadChordDiagrams() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+      {/* Compact gradient hero header */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">How to Read Guitar Chord Diagrams</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">Video tutorial: learn to read guitar chord diagrams with clear examples.</p>
+          </div>
+        </div>
+      </section>
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold text-amber-800 mb-4">
-              How to Read Chord Diagrams
-            </h1>
-            <p className="text-xl text-amber-700 max-w-3xl mx-auto">
-              Learn the fundamentals of reading guitar chord diagrams with this comprehensive video tutorial.
-            </p>
-            <div className="mt-6 text-sm text-amber-600">
-              Reading time: 3 minutes
-            </div>
-          </div>
 
           {/* Main Content */}
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             
             {/* Introduction */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-amber-800 mb-6">
+              <h2 className="text-3xl font-bold text-amber-800 mb-6 text-center">
                 Master Chord Diagrams in Minutes
               </h2>
               

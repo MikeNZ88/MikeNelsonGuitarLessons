@@ -36,10 +36,7 @@ export default function WhenShouldYouStartLearningGuitar() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">When Should You Start Learning Guitar?</h1>
-            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Research-backed guidance on optimal starting ages and how adults and seniors learn differently—plus what really matters most.</p>
-            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
-              <span>All Ages</span>
-            </div>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">Research-backed guidance on when to begin—and what actually matters most.</p>
           </div>
         </div>
       </section>
