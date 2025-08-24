@@ -500,6 +500,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
   const [isMetronomeOn, setIsMetronomeOn] = useState(false); // Metronome state
   const [minWidth, setMinWidth] = useState(800);
   const [zoom, setZoom] = useState(1.2);
+  // Highlight mode for playback visuals
+  const [highlightMode, setHighlightMode] = useState<'fill' | 'outline' | 'glow' | 'bar-focus'>('fill');
   // User controls (layout/notation toggles removed — fixed layout + standard notation enabled)
   const [selectedTrack, setSelectedTrack] = useState(1); // Default to 1 (rhythm) since that's what's showing
   const [availableTracks, setAvailableTracks] = useState<number>(1);
@@ -587,6 +589,46 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
         stroke: orange !important;
         stroke-width: 1px !important;
       }
+
+      /* Highlight Mode: Fill (brand amber fill + brown outline) */
+      .highlight-mode-fill .at .at-highlight {
+        fill: #f59e0b !important; /* amber-500 */
+        opacity: 0.9 !important;
+        stroke: #7c2d12 !important; /* brand deep brown */
+        stroke-width: 1.2px !important;
+        filter: none !important;
+      }
+      /* Highlight Mode: Outline (no fill, strong amber outline) */
+      .highlight-mode-outline .at .at-highlight {
+        fill: none !important;
+        stroke: #f59e0b !important;
+        stroke-width: 2px !important;
+        opacity: 1 !important;
+        filter: none !important;
+      }
+      /* Highlight Mode: Glow (fill + soft drop shadow glow) */
+      .highlight-mode-glow .at .at-highlight {
+        fill: #f59e0b !important;
+        opacity: 0.95 !important;
+        stroke: #7c2d12 !important;
+        stroke-width: 1.2px !important;
+        filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.85)) !important;
+      }
+      /* Highlight Mode: Bar Focus (dim everything except cursor + highlights) */
+      .highlight-mode-bar-focus .at svg * {
+        opacity: 0.35 !important;
+      }
+      .highlight-mode-bar-focus .at .at-highlight,
+      .highlight-mode-bar-focus .at .at-cursor,
+      .highlight-mode-bar-focus .at .at-cursor-beat,
+      .highlight-mode-bar-focus .at .at-cursor-bar {
+        opacity: 1 !important;
+        filter: none !important;
+      }
+      .highlight-mode-bar-focus .at .at-bar-number,
+      .highlight-mode-bar-focus .at .at-chord-name {
+        opacity: 0.8 !important;
+      }
       
       /* Ensure cursor elements are above other content */
       .at .at-cursor,
@@ -669,6 +711,23 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
       }
     };
   }, []);
+
+  // Apply highlight mode class to container for CSS scoping
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const classes = ['highlight-mode-fill', 'highlight-mode-outline', 'highlight-mode-glow', 'highlight-mode-bar-focus'];
+    classes.forEach(c => el.classList.remove(c));
+    const selectedClass =
+      highlightMode === 'fill'
+        ? 'highlight-mode-fill'
+        : highlightMode === 'outline'
+        ? 'highlight-mode-outline'
+        : highlightMode === 'glow'
+        ? 'highlight-mode-glow'
+        : 'highlight-mode-bar-focus';
+    el.classList.add(selectedClass);
+  }, [highlightMode]);
 
   // Remove fill from all cursor elements using MutationObserver
   useEffect(() => {
@@ -1674,6 +1733,8 @@ export default function AlphaTabPlayerCDN({ containerId = 'alphatab-container', 
           </div>
         </div>
       )}
+
+      
 
       {/* Status and Controls */}
       {/* Remove the status and playback info section */}
