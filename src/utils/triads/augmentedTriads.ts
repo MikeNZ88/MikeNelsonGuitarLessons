@@ -34,9 +34,9 @@ const AUGMENTED_TRIADS_DATA = {
       { frets: [7, 7, 8], label: '2nd Inversion', fingers: ['1', '1', '2'] },
     ],
     '3_5': [
-      null,
+      { frets: [3, 4, 5], label: 'Root Position', fingers: ['1', '2', '3'] },
       { frets: [7, 8, 9], label: '1st Inversion', fingers: ['1', '2', '3'] },
-      null,
+      { frets: [11, 12, 13], label: '2nd Inversion', fingers: ['1', '2', '3'] },
     ],
     '4_6': [
       { frets: [8, 9, 10], label: 'Root Position', fingers: ['1', '2', '3'] },

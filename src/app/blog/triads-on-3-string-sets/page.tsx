@@ -239,7 +239,7 @@ const C_MAJOR_REFERENCE_3_5 = {
   // Shape 1: 2nd inversion (G on A string, 10th fret)
   shape1: {
     frets: [-1, 10, 10, 9, -1, -1],
-    fingers: ['', '3', '3', '1', '', ''], // Changed D string finger from '2' to '3'
+    fingers: ['', '2', '3', '1', '', ''], // Use 2 on A, 3 on D, 1 on G
     startFret: 9,
     notes: ['G', 'C', 'E'],
     cagedShape: 'E',
@@ -476,14 +476,12 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
         const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
         const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
         
-        // Adjust fingerings for octave-down shapes
-        const adjustedFingers = adjustFingersForOctaveDown(octaveDownFrets, diagram.fingers);
-        
+        // Preserve original fingering when shifting by an octave
         return {
           ...diagram,
           frets: octaveDownFrets,
           startFret: newStartFret,
-          fingers: adjustedFingers
+          fingers: diagram.fingers
         };
       }
       
@@ -784,14 +782,12 @@ function buildTriadDataForKey(key: string, triadType: TriadType, subType?: 'Dimi
          const newMinFret = newPlayedFrets.length ? Math.min(...newPlayedFrets) : 0;
          const newStartFret = newMinFret === 0 ? 0 : Math.max(1, newMinFret - 1);
          
-         // Adjust fingerings for octave-down shapes
-         const adjustedFingers = adjustFingersForOctaveDown(octaveDownFrets, (diagram as any).fingers || []);
-         
+         // Preserve original fingering when shifting by an octave
          return {
            ...diagram,
            frets: octaveDownFrets,
            startFret: newStartFret,
-           fingers: adjustedFingers
+           fingers: (diagram as any).fingers || []
          };
        }
     
@@ -923,7 +919,7 @@ const C_MINOR_REFERENCE_3_5 = {
   // Shape 3: 2nd inversion - G (A string 10), C (D string 10), Eb (G string 8)
   shape3: {
     frets: [-1, 10, 10, 8, -1, -1],
-    fingers: ['', '3', '4', '1', '', ''], // Swapped A and D string fingers (4,3 -> 3,4)
+    fingers: ['', '3', '4', '1', '', ''], // Restore minor 2nd inversion fingering (A:3, D:4, G:1)
     startFret: 8,
     notes: ['G', 'C', 'Eb'],
     cagedShape: 'Em',
@@ -1659,25 +1655,31 @@ export default function TriadsOn3StringSets() {
         
         {/* Add explanation about augmented triad names */}
         <div className="text-center text-gray-600 max-w-2xl mx-auto mb-4">
-          <p>Due to the symmetrical nature of augmented triads, each shape repeats every four frets. Any shape can be moved up or down by four frets to get the same chord with a different root. This makes augmented triads unique among triad types.</p>
+          <p>Augmented triads are symmetric (stacked major thirds). The “inversions” are the same set of notes with a different note named as root. For example, {selectedKey} Aug ≡ {transposeNote(selectedKey, 4)} Aug ≡ {transposeNote(selectedKey, 8)} Aug. The shape repeats every 4 frets.</p>
         </div>
         
         <div className="flex flex-col md:flex-row justify-center gap-8 mb-8">
           {triadData.map((shape: AugShape | null, idx: number) => shape ? (
             <div key={idx} className="bg-white rounded-lg shadow p-4 flex-1 flex flex-col items-center border-4" style={{borderColor: ['#ef4444', '#3b82f6', '#10b981'][idx]}}>
-              <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{shape.label}</div>
-              <div className="text-xs text-gray-600 mb-2">
-                {idx === 0 ? '' :
-                 `Also known as ${idx === 1 ? transposeNote(selectedKey, 4) : transposeNote(selectedKey, 8)} Augmented`}
-              </div>
+              {(() => {
+                const roots = [selectedKey, transposeNote(selectedKey, 4), transposeNote(selectedKey, 8)];
+                const root = roots[idx];
+                const n1 = root;
+                const n2 = transposeNote(root, 4);
+                const n3 = transposeNote(root, 8);
+                return (
+                  <div className="mb-2 text-xs font-semibold text-amber-700 text-center">{`${root} Aug (${n1}–${n2}–${n3})`}</div>
+                );
+              })()}
               {(() => {
                 const { sixFrets, sixFingers } = padTriadToSixStrings(shape.frets, shape.fingers?.map(f => f === '0' ? 0 : parseInt(f)) || [], selectedStringSet);
                 const playedFrets = sixFrets.filter(f => f >= 0);
                 const startFret = playedFrets.length > 0 ? Math.min(...playedFrets) : 1;
-                
+                const roots = [selectedKey, transposeNote(selectedKey, 4), transposeNote(selectedKey, 8)];
+                const rootName = roots[idx];
                 return (
                   <ChordDiagram
-                    chordName={`${selectedKey} Aug`}
+                    chordName={`${rootName} Aug`}
                     chordData={{
                       frets: sixFrets,
                       fingers: sixFingers,
@@ -1770,9 +1772,21 @@ export default function TriadsOn3StringSets() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6" id="chord-inversions-triads">
+    <>
+      {/* Compact gradient hero header */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Triads on 3-String Sets</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">Explore major, minor, diminished, and augmented triads mapped across adjacent three-string sets.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Strings 1–3 · 2–4 · 3–5 · 4–6</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <h2 className="text-2xl font-bold text-amber-700 mb-6 text-center">Triads on 3-String Sets</h2>
+      <div className="max-w-7xl mx-auto p-4 sm:p-6" id="chord-inversions-triads">
 
       {/* Triad Type Selector */}
       <div className="flex justify-center mb-6 px-4">
@@ -1907,6 +1921,7 @@ export default function TriadsOn3StringSets() {
           {renderTriadSection(selectedTriadType)}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 } 

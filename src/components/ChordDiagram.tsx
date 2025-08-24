@@ -53,6 +53,18 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
   const startFret = chordData.startFret || 0;
   const actualHighlights = highlightChanges || chordData.changedFrets || [];
 
+  // Helper: format ordinal suffix correctly (1st, 2nd, 3rd, 4th... with 11th/12th/13th special-case)
+  const formatOrdinal = (n: number): string => {
+    const mod100 = n % 100;
+    if (mod100 >= 11 && mod100 <= 13) return `${n}th`;
+    switch (n % 10) {
+      case 1: return `${n}st`;
+      case 2: return `${n}nd`;
+      case 3: return `${n}rd`;
+      default: return `${n}th`;
+    }
+  };
+
   return (
     <div className="flex flex-col items-center bg-white p-4 rounded-lg border border-gray-200 shadow-sm relative">
       {showArrow && (
@@ -66,8 +78,8 @@ const ChordDiagram: React.FC<ChordDiagramProps> = ({
         </div>
       )}
       <h3 className="text-lg font-bold text-gray-800 mb-2">{chordName}</h3>
-      {startFret > 0 && (
-        <div className="text-xs text-gray-600 mb-2">{startFret === 1 ? '1st' : `${startFret}th`}</div>
+      {startFret > 1 && (
+        <div className="text-xs text-gray-600 mb-2">{formatOrdinal(startFret)}</div>
       )}
       <svg width="140" height="140" className="bg-gray-50 rounded">
         {/* Frets */}
