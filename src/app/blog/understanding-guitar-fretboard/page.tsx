@@ -7,12 +7,21 @@ export default function UnderstandingGuitarFretboard() {
   const [showMathModal, setShowMathModal] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+      {/* Compact gradient hero header */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Understanding Guitar Fretboard: Why Strings Are Tuned This Way</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">The logic behind E–A–D–G–B–E and how tuning optimizes patterns, ergonomics, and harmony.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Part 1 · Theory & history · Foundations for navigation</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className="container mx-auto px-6 py-12">
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-8">
-            <h1 className="text-4xl font-bold text-amber-800 mb-6">
-              Understanding Guitar Fretboard: Why Strings Are Tuned This Way
-            </h1>
             
             <div className="prose prose-lg max-w-none">
               <p className="text-xl text-gray-700 mb-8 leading-relaxed">
@@ -365,7 +374,7 @@ export default function UnderstandingGuitarFretboard() {
 
               <ul className="list-disc list-inside mb-6 space-y-2">
                 <li><strong>Identical string relationships</strong>: E-A, A-D, and D-G all follow the same intervallic pattern</li>
-                <li><strong>Predictable note positions</strong>: Same fret shape gives you the same interval on 4 out of 6 string pairs</li>
+                <li><strong>Predictable note positions</strong>: Same fret shape gives you the same interval on 5 out of 6 string pairs</li>
                 <li><strong>Transferrable finger patterns</strong>: Scale and chord shapes repeat systematically across the neck</li>
                 <li><strong>Logical interval mapping</strong>: Consistent mathematics for finding notes across strings</li>
               </ul>
@@ -449,7 +458,6 @@ export default function UnderstandingGuitarFretboard() {
               </p>
 
               <ul className="list-disc list-inside mb-6 space-y-2">
-                <li><strong>The fifth relationship</strong>: The fifth of any chord appears on the adjacent higher string at the same fret</li>
                 <li><strong>Inversion advantage</strong>: Fourths invert to fifths, giving access to the two most harmonically fundamental intervals (after the octave) through the same finger positions</li>
                 <li><strong>Optimal chord tone access</strong>: Allows comfortable reach to most chord tones within a reasonable span</li>
               </ul>

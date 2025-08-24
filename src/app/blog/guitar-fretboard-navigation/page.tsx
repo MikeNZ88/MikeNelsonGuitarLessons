@@ -26,6 +26,18 @@ export const metadata: Metadata = {
 export default function GuitarFretboardNavigation() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100">
+      {/* Compact gradient hero header */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Guitar Fretboard Navigation: Cross-String Movement Formulas</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-1 leading-relaxed">Practical formulas and visuals for finding notes and intervals across adjacent strings.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Part 2 · Movement shortcuts · String-interval logic</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <div className="container mx-auto px-6 py-12">
         <article className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="p-8">
@@ -39,13 +51,6 @@ export default function GuitarFretboardNavigation() {
             </nav>
 
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-bold text-amber-800 mb-6">
-                Guitar Fretboard Navigation: Cross-String Movement Formulas
-              </h1>
-              
-              <p className="text-xl text-gray-700 mb-8 leading-relaxed">
-                Master practical techniques for finding notes and intervals across guitar strings using mathematical relationships
-              </p>
 
               {/* Link back to Part 1 */}
               <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6 mb-8 shadow-sm">
