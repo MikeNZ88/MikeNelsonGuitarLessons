@@ -43,6 +43,19 @@ export default function WhatIsChord() {
         <span className="text-gray-700">What is a Chord?</span>
       </nav>
 
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6 rounded-xl">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">What is a Chord? Structure, Intervals, and Types</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Understand intervals, chord formulas, and the difference between open and moveable shapes.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <article className="prose prose-lg max-w-none">
         {/* Section Menu */}
         <nav className="mb-8 flex flex-wrap gap-2">
@@ -55,15 +68,6 @@ export default function WhatIsChord() {
           <a href="#open-chord-library" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">Open Chord Library</a>
           <a href="#what-is-a-key" className="px-3 py-1 rounded bg-amber-100 text-amber-800 font-semibold hover:bg-amber-200 transition">What is a Key?</a>
         </nav>
-
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-4 text-amber-800">
-            What is a Chord? Structure, Intervals, and Types
-          </h1>
-          <p className="text-xl text-gray-600 leading-relaxed">
-            Learn the fundamental structure of guitar chords and why they work the way they do
-          </p>
-        </header>
 
         {/* Section 1: What Is A Chord? */}
         <section id="what-is-a-chord" className="mb-12 scroll-mt-24">

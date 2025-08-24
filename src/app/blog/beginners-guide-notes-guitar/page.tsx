@@ -297,6 +297,20 @@ export default function BeginnersGuideToNotes() {
   const highlightA = (notes: string[]) => notes.map((note, i) => (note === 'A' ? 'highlight' : '')); // for simple diagrams
 
   return (
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Beginner’s Guide to Notes on the Guitar</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Understand the musical alphabet, sharps and flats, and where notes live on your fretboard.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Beginner Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
     <div className="max-w-4xl mx-auto px-4 py-8" style={{ scrollBehavior: 'smooth' }}>
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm">
@@ -307,14 +321,7 @@ export default function BeginnersGuideToNotes() {
         <span className="text-gray-700">Beginner's Guide to Notes on the Guitar</span>
       </nav>
 
-      <header className="mb-8">
-        <h1 className="text-4xl font-bold mb-4 text-amber-600">
-          Beginner’s Guide to Notes on the Guitar
-        </h1>
-        <p className="text-xl text-gray-600 leading-relaxed">
-          Learn how notes work on the guitar, how the musical alphabet repeats, and how to find every note on your fretboard.
-        </p>
-      </header>
+      {/* Header removed; covered by hero above */}
 
       {/* Table of Contents */}
       <nav className="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8">
@@ -611,5 +618,6 @@ export default function BeginnersGuideToNotes() {
         </a>
       </section>
     </div>
+    </>
   );
 } 

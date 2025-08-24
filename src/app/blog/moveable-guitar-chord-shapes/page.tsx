@@ -1223,6 +1223,11 @@ function MoveableGuitarChordShapes() {
           <div key={sectionName} className="mb-12">
             <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{sectionName}</h3>
             {renderChordGrid(shapes)}
+            {sectionName === 'Essential Barre Chords' && (
+              <div className="text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded p-3 max-w-3xl mx-auto mt-4">
+                <span className="font-semibold text-amber-800">Alternative fingering:</span> bar the 3rd finger instead of using fingers 2, 3, and 4.
+              </div>
+            )}
           </div>
         ))}
         
@@ -1360,6 +1365,11 @@ function MoveableGuitarChordShapes() {
             <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedStringSet}</h3>
             
             {renderChordGrid(chordData[selectedStringSet])}
+            {selectedStringSet === 'Barre Chord Shapes' && (
+              <div className="text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded p-3 max-w-3xl mx-auto mt-4">
+                <span className="font-semibold text-amber-800">Alternative fingering:</span> bar the 3rd finger instead of using fingers 2, 3, and 4.
+              </div>
+            )}
           </div>
         )}
 
@@ -1439,6 +1449,11 @@ function MoveableGuitarChordShapes() {
                   CAGED: {shape.cagedShape} Shape
                 </p>
               )}
+              {shape.name === 'F (8th fret)' && shape.cagedShape?.startsWith('A') && (
+                <p className="text-xs mt-2 text-gray-600">
+                  <span className="font-semibold text-amber-700">Alternative fingering:</span> bar the 3rd finger instead of using fingers 2, 3, and 4.
+                </p>
+              )}
             </div>
           </div>
         );
@@ -1502,7 +1517,7 @@ function MoveableGuitarChordShapes() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8" id="chord-inversions-7th-chords">
 
-      <h2 className="text-2xl font-bold text-amber-700 mb-6 text-center">Moveable Chord Shapes Overview</h2>
+      <h2 className="text-2xl font-bold text-amber-700 mb-6 text-center">Moveable Chord Shapes Types</h2>
 
       {/* Category Navigation */}
       <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -1689,8 +1704,22 @@ function MoveableGuitarChordShapesContent() {
 
 export default function MoveableGuitarChordShapesPage() {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
-      <MoveableGuitarChordShapesContent />
-    </Suspense>
+    <>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-amber-800 via-amber-700 to-amber-600 text-white py-8 sm:py-10 mb-6">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">Moveable Guitar Chord Shapes</h1>
+            <p className="text-base sm:text-lg text-amber-100 mb-3 leading-relaxed">Learn E- and A‑shape barre chords, inversions, and extended voicings across the neck.</p>
+            <div className="flex items-center justify-center gap-3 text-amber-200 text-sm">
+              <span>Intermediate Level</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Suspense fallback={<div className="flex justify-center items-center min-h-screen">Loading...</div>}>
+        <MoveableGuitarChordShapesContent />
+      </Suspense>
+    </>
   );
 }
