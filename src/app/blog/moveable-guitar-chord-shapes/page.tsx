@@ -682,7 +682,7 @@ const SEVENTH_CHORDS: Record<SeventhChordType, ChordTypeData> = {
       },
       {
         name: 'Fm7♭5 First Inversion (♭3-♭7-1-♭5) - Strings 2-5',
-        frets: [-1, 11, 12, 10, 12, -1],
+        frets: [-1, 11, 13, 10, 12, -1],
         fingers: ['', '2', '4', '1', '3', ''],
         startFret: 10,
         rootString: 5,
@@ -783,7 +783,7 @@ const SEVENTH_CHORDS: Record<SeventhChordType, ChordTypeData> = {
       {
         name: 'F°7 (1-♭5-6-♭3) - Strings 3-6',
         frets: [13, 14, 12, 13, -1, -1],
-        fingers: ['2', '3', '1', '2', '', ''],
+        fingers: ['3', '4', '1', '2', '', ''],
         startFret: 12,
         rootString: 6,
         description: 'Symmetrical diminished 7th - F(1) B(♭5) D(6) A♭(♭3) on strings 3-6. Move this shape every 3 frets!',
@@ -1365,6 +1365,11 @@ function MoveableGuitarChordShapes() {
             <h3 className="text-xl font-bold text-amber-700 mb-6 text-center">{selectedStringSet}</h3>
             
             {renderChordGrid(chordData[selectedStringSet])}
+            {selectedSeventhType === 'Diminished 7th' && (
+              <div className="text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded p-3 max-w-3xl mx-auto mt-4">
+                <span className="font-semibold text-amber-800">Note:</span> Diminished 7th chords are symmetrical. The same shape repeats every 3 frets. All "inversions" are the identical shape moved up the neck.
+              </div>
+            )}
             {selectedStringSet === 'Barre Chord Shapes' && (
               <div className="text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded p-3 max-w-3xl mx-auto mt-4">
                 <span className="font-semibold text-amber-800">Alternative fingering:</span> bar the 3rd finger instead of using fingers 2, 3, and 4.

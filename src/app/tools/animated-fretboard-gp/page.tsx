@@ -5,7 +5,7 @@ import AnimatedFretboardGP from '@/components/fretboard/AnimatedFretboardGP';
 
 export default function AnimatedFretboardGPPage() {
   const [tempoPercent, setTempoPercent] = useState(100);
-  const [selectedId, setSelectedId] = useState('blues-v2');
+  const [selectedId, setSelectedId] = useState('seventh-chord-inversions');
   const [showIntervals, setShowIntervals] = useState(true);
   const [currentAutoRoot, setCurrentAutoRoot] = useState<string | null>(null);
   const [currentBar, setCurrentBar] = useState<number>(0);
@@ -42,6 +42,23 @@ export default function AnimatedFretboardGPPage() {
   const [highlightOverlayRoot, setHighlightOverlayRoot] = useState<boolean>(false);
   // Text labels from GP (e.g. Shape 1)
   const [showTextLabels, setShowTextLabels] = useState<boolean>(true);
+  // Chord overlay (independent from scale overlay)
+  const [chordOverlayEnabled, setChordOverlayEnabled] = useState<boolean>(false);
+  const [chordOverlayModeType, setChordOverlayModeType] = useState<'global'|'segments'>('global');
+  const [chordOverlayMode, setChordOverlayMode] = useState<'notes'|'intervals'|'blank'>('notes');
+  const [chordOverlayRoot, setChordOverlayRoot] = useState<string>('A');
+  const [chordOverlayName, setChordOverlayName] = useState<string>('');
+  const [chordOverlayNotesGlobal, setChordOverlayNotesGlobal] = useState<string>('A,C#,E,G');
+  const [chordOverlayGlobalFretStart, setChordOverlayGlobalFretStart] = useState<number>(0);
+  const [chordOverlayGlobalFretEnd, setChordOverlayGlobalFretEnd] = useState<number>(fretCount);
+  const [chordOverlaySegments, setChordOverlaySegments] = useState<Array<{ startBar: number; endBar: number; name?: string; notes: string[]; mode?: 'notes'|'intervals'|'blank'; fretStart?: number; fretEnd?: number; diagramFretStart?: number; diagramFretEnd?: number; }>>([]);
+  // Text overlay (segment-based)
+  const [textOverlayEnabled, setTextOverlayEnabled] = useState<boolean>(false);
+  const [textOverlaySegments, setTextOverlaySegments] = useState<Array<{ startBar: number; endBar: number; text: string; dx?: number; dy?: number; fontSize?: number; anchor?: 'start'|'middle'|'end'; }>>([]);
+  const [selectedTextSegIdx, setSelectedTextSegIdx] = useState<number>(-1);
+  // Note color overlay (per-bar pitch color)
+  const [noteColorEnabled, setNoteColorEnabled] = useState<boolean>(false);
+  const [noteColorSegments, setNoteColorSegments] = useState<Array<{ startBar: number; endBar: number; notes: string[]; color: string; target?: 'active'|'overlay'|'both'; }>>([]);
   // Segmented overlay controls
   const [overlayModeType, setOverlayModeType] = useState<'global'|'segments'>('global');
   const [overlayGlobalFretStart, setOverlayGlobalFretStart] = useState<number>(0);
@@ -54,6 +71,7 @@ export default function AnimatedFretboardGPPage() {
   }>>([]);
   const [diagramGlobalFretStart, setDiagramGlobalFretStart] = useState<number>(0);
   const [diagramGlobalFretEnd, setDiagramGlobalFretEnd] = useState<number>(fretCount);
+  const [useCustomFretRange, setUseCustomFretRange] = useState<boolean>(false);
   // Presets (localStorage)
   const [presetName, setPresetName] = useState<string>('');
   const [selectedPresetIdx, setSelectedPresetIdx] = useState<number>(-1);
@@ -66,15 +84,85 @@ export default function AnimatedFretboardGPPage() {
     }
   });
   
-  // Update diagram range when fretCount changes
+  // Update diagram range when preset fretCount changes (unless custom range is enabled)
   useEffect(() => {
-    setDiagramGlobalFretEnd(fretCount);
-  }, [fretCount]);
+    if (!useCustomFretRange) {
+      setDiagramGlobalFretStart(0);
+      setDiagramGlobalFretEnd(fretCount);
+    }
+  }, [fretCount, useCustomFretRange]);
+
+  // Effective fret count to pass to diagrams. When using a custom diagram range,
+  // ensure the underlying fretboard has enough frets (0..end) so diagram end isn't clipped.
+  const effectiveFretCount = useMemo(() => {
+    const end = Math.max(diagramGlobalFretStart, diagramGlobalFretEnd);
+    return useCustomFretRange ? Math.max(1, end) : fretCount;
+  }, [useCustomFretRange, diagramGlobalFretStart, diagramGlobalFretEnd, fretCount]);
   
   const persistPresets = (items: Array<{name:string; data:any}>) => {
     setSavedPresets(items);
     try { window.localStorage.setItem('af_scale_overlay_presets', JSON.stringify(items)); } catch {}
   };
+
+  // Keyboard nudging for text overlay segments (arrow keys, Shift = 5px)
+  useEffect(() => {
+    function isEditingTarget(t: EventTarget | null): boolean {
+      const el = t as HTMLElement | null;
+      if (!el) return false;
+      const tag = (el.tagName || '').toUpperCase();
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
+      if ((el as any).isContentEditable) return true;
+      return false;
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') { setSelectedTextSegIdx(-1); return; }
+      if (!textOverlayEnabled) return;
+      if (selectedTextSegIdx < 0) return;
+      if (isEditingTarget(e.target)) return;
+      if (!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) return;
+      e.preventDefault();
+      const delta = e.shiftKey ? 5 : 2;
+      setTextOverlaySegments(prev => prev.map((seg, i) => {
+        if (i !== selectedTextSegIdx) return seg;
+        const dx = seg.dx || 0;
+        const dy = seg.dy || 0;
+        if (e.key === 'ArrowUp') return { ...seg, dy: dy - delta };
+        if (e.key === 'ArrowDown') return { ...seg, dy: dy + delta };
+        if (e.key === 'ArrowLeft') return { ...seg, dx: dx - delta };
+        if (e.key === 'ArrowRight') return { ...seg, dx: dx + delta };
+        return seg;
+      }));
+    }
+    window.addEventListener('keydown', onKey as any);
+    return () => window.removeEventListener('keydown', onKey as any);
+  }, [textOverlayEnabled, selectedTextSegIdx]);
+
+  // Helpers for quick note color presets
+  const NOTE_NAMES_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const noteToIndex = (n: string) => {
+    const up = (n||'').toUpperCase().replace('B#','C').replace('E#','F').replace('DB','C#').replace('EB','D#').replace('GB','F#').replace('AB','G#').replace('BB','A#');
+    return NOTE_NAMES_SHARP.indexOf(up);
+  };
+  const transpose = (root: string, semitones: number) => {
+    const i = noteToIndex(root);
+    if (i < 0) return root || 'A';
+    const idx = (i + ((semitones%12)+12)) % 12;
+    return NOTE_NAMES_SHARP[idx];
+  };
+  const COLOR_PALETTE: string[] = [
+    '#ef4444', // red-500
+    '#f59e0b', // amber-500
+    '#d97706', // amber-600
+    '#10b981', // emerald-500
+    '#3b82f6', // blue-500
+    '#8b5cf6', // violet-500
+    '#f43f5e', // rose-500
+    '#22c55e', // green-500
+    '#eab308', // yellow-500
+    '#14b8a6', // teal-500
+    '#7c2d12', // brand deep brown
+    '#92400e', // brand amber text
+  ];
 
   const pentatonicExercises = useMemo(
     () => [
@@ -104,6 +192,7 @@ export default function AnimatedFretboardGPPage() {
 
   const miscSongs = useMemo(
     () => [
+      { id: 'seventh-chord-inversions', name: '7th Chord Inversions', file: '/GP Files/Scale Exercises/BLOG TABS/7th Chord Inversions .gp' },
       { id: 'opeth-drapery-falls', name: 'Opeth - The Drapery Falls (ver 2)', file: '/GP Files/Scale Exercises/BLOG TABS/Opeth - The Drapery Falls (ver 2).gp' },
       { id: 'bends-ex1', name: 'String Bending Exercise 1', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp' },
       { id: 'meshuggah-dancers', name: 'Meshuggah - Dancers To A Discordant System (ver 3)', file: '/GP Files/Scale Exercises/BLOG TABS/Meshuggah - Dancers To A Discordant System (ver 3 by Stuart XIV).gp' },
@@ -266,6 +355,10 @@ export default function AnimatedFretboardGPPage() {
                   showIntervals={showIntervals}
                   hideLabels={blankCircles}
                   showChordNames={showChordNames}
+                  textOverlayEnabled={textOverlayEnabled}
+                  textOverlaySegments={textOverlaySegments}
+                  noteColorEnabled={noteColorEnabled}
+                  noteColorSegments={noteColorSegments}
                   overlayEnabled={overlayEnabled}
                   overlayMode={overlayMode}
                   overlayRoot={overlayRoot}
@@ -277,6 +370,15 @@ export default function AnimatedFretboardGPPage() {
                   diagramGlobalFretStart={diagramGlobalFretStart}
                   diagramGlobalFretEnd={diagramGlobalFretEnd}
                   overlaySegments={overlaySegments}
+                  chordOverlayEnabled={chordOverlayEnabled}
+                  chordOverlayMode={chordOverlayMode}
+                  chordOverlayRoot={chordOverlayRoot}
+                  chordOverlayName={chordOverlayName}
+                  chordOverlayNotesGlobal={chordOverlayNotesGlobal.split(',').map(s=>s.trim()).filter(Boolean)}
+                  chordOverlayModeType={chordOverlayModeType}
+                  chordOverlayGlobalFretStart={chordOverlayGlobalFretStart}
+                  chordOverlayGlobalFretEnd={chordOverlayGlobalFretEnd}
+                  chordOverlaySegments={chordOverlaySegments}
                   footprintEnabled={footprintEnabled}
                   footprintMode={footprintMode}
                   footprintName={footprintName}
@@ -310,7 +412,7 @@ export default function AnimatedFretboardGPPage() {
             <AnimatedFretboardGP
               filePath={selectedFile}
               trackIndex={trackIndex}
-              fretCount={fretCount}
+              fretCount={effectiveFretCount}
               useTabStringOrder={false}
               showIntervals={showIntervals}
               hideLabels={blankCircles}
@@ -327,6 +429,19 @@ export default function AnimatedFretboardGPPage() {
               diagramGlobalFretStart={diagramGlobalFretStart}
               diagramGlobalFretEnd={diagramGlobalFretEnd}
               overlaySegments={overlaySegments}
+              noteColorEnabled={noteColorEnabled}
+              noteColorSegments={noteColorSegments}
+              textOverlayEnabled={textOverlayEnabled}
+              textOverlaySegments={textOverlaySegments}
+              chordOverlayEnabled={chordOverlayEnabled}
+              chordOverlayMode={chordOverlayMode}
+              chordOverlayRoot={chordOverlayRoot}
+              chordOverlayName={chordOverlayName}
+              chordOverlayNotesGlobal={chordOverlayNotesGlobal.split(',').map(s=>s.trim()).filter(Boolean)}
+              chordOverlayModeType={chordOverlayModeType}
+              chordOverlayGlobalFretStart={chordOverlayGlobalFretStart}
+              chordOverlayGlobalFretEnd={chordOverlayGlobalFretEnd}
+              chordOverlaySegments={chordOverlaySegments}
               footprintEnabled={footprintEnabled}
               footprintMode={footprintMode}
               footprintName={footprintName}
@@ -357,7 +472,7 @@ export default function AnimatedFretboardGPPage() {
                 <AnimatedFretboardGP
                   filePath={selectedFile}
                   trackIndex={secondaryTracks[0] ?? 1}
-                  fretCount={fretCount}
+                  fretCount={effectiveFretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
                   hideLabels={blankCircles}
@@ -374,6 +489,19 @@ export default function AnimatedFretboardGPPage() {
                   diagramGlobalFretStart={diagramGlobalFretStart}
                   diagramGlobalFretEnd={diagramGlobalFretEnd}
                   overlaySegments={overlaySegments}
+                  noteColorEnabled={noteColorEnabled}
+                  noteColorSegments={noteColorSegments}
+                  textOverlayEnabled={textOverlayEnabled}
+                  textOverlaySegments={textOverlaySegments}
+                  chordOverlayEnabled={chordOverlayEnabled}
+                  chordOverlayMode={chordOverlayMode}
+                  chordOverlayRoot={chordOverlayRoot}
+                  chordOverlayName={chordOverlayName}
+                  chordOverlayNotesGlobal={chordOverlayNotesGlobal.split(',').map(s=>s.trim()).filter(Boolean)}
+                  chordOverlayModeType={chordOverlayModeType}
+                  chordOverlayGlobalFretStart={chordOverlayGlobalFretStart}
+                  chordOverlayGlobalFretEnd={chordOverlayGlobalFretEnd}
+                  chordOverlaySegments={chordOverlaySegments}
                   footprintEnabled={footprintEnabled}
                   footprintMode={footprintMode}
                   footprintName={footprintName}
@@ -401,7 +529,7 @@ export default function AnimatedFretboardGPPage() {
                 <AnimatedFretboardGP
                   filePath={selectedFile}
                   trackIndex={secondaryTracks[1] ?? 2}
-                  fretCount={fretCount}
+                  fretCount={effectiveFretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
                   hideLabels={blankCircles}
@@ -418,6 +546,19 @@ export default function AnimatedFretboardGPPage() {
                   diagramGlobalFretStart={diagramGlobalFretStart}
                   diagramGlobalFretEnd={diagramGlobalFretEnd}
                   overlaySegments={overlaySegments}
+                  noteColorEnabled={noteColorEnabled}
+                  noteColorSegments={noteColorSegments}
+                  textOverlayEnabled={textOverlayEnabled}
+                  textOverlaySegments={textOverlaySegments}
+                  chordOverlayEnabled={chordOverlayEnabled}
+                  chordOverlayMode={chordOverlayMode}
+                  chordOverlayRoot={chordOverlayRoot}
+                  chordOverlayName={chordOverlayName}
+                  chordOverlayNotesGlobal={chordOverlayNotesGlobal.split(',').map(s=>s.trim()).filter(Boolean)}
+                  chordOverlayModeType={chordOverlayModeType}
+                  chordOverlayGlobalFretStart={chordOverlayGlobalFretStart}
+                  chordOverlayGlobalFretEnd={chordOverlayGlobalFretEnd}
+                  chordOverlaySegments={chordOverlaySegments}
                   footprintEnabled={footprintEnabled}
                   footprintMode={footprintMode}
                   footprintName={footprintName}
@@ -507,11 +648,21 @@ export default function AnimatedFretboardGPPage() {
         </div>
         <div className="flex items-center gap-2">
           <label className="text-sm text-gray-700">Frets</label>
-          <select value={fretCount} onChange={(e) => setFretCount(parseInt(e.target.value, 10))} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+          <select value={fretCount} onChange={(e) => setFretCount(parseInt(e.target.value, 10))} className="border border-gray-300 rounded-md px-2 py-1 text-sm" disabled={useCustomFretRange}>
             <option value={12}>12</option>
             <option value={15}>15</option>
             <option value={24}>24</option>
           </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={useCustomFretRange} onChange={(e)=>setUseCustomFretRange(e.target.checked)} />
+            Custom range
+          </label>
+          <span className="text-sm text-gray-700">Start</span>
+          <input type="number" className="border border-gray-300 rounded-md px-2 py-1 text-sm w-20" value={diagramGlobalFretStart} onChange={(e)=>setDiagramGlobalFretStart(Math.max(0, parseInt(e.target.value||'0',10)))} disabled={!useCustomFretRange} />
+          <span className="text-sm text-gray-700">End</span>
+          <input type="number" className="border border-gray-300 rounded-md px-2 py-1 text-sm w-20" value={diagramGlobalFretEnd} onChange={(e)=>setDiagramGlobalFretEnd(Math.max(0, parseInt(e.target.value||`${fretCount}`,10)))} disabled={!useCustomFretRange} />
         </div>
       </div>
 
@@ -759,6 +910,9 @@ export default function AnimatedFretboardGPPage() {
               onClick={() => {
                 const preset = {
                   gpFile: selectedFile,
+                  // diagram sizing
+                  fretCount,
+                  useCustomFretRange,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -776,6 +930,22 @@ export default function AnimatedFretboardGPPage() {
                   footprintName,
                   useSharp5,
                   useSharp4,
+                  // chord overlay
+                  chordOverlayEnabled,
+                  chordOverlayMode,
+                  chordOverlayRoot,
+                  chordOverlayName,
+                  chordOverlayNotesGlobal,
+                  chordOverlayModeType,
+                  chordOverlayGlobalFretStart,
+                  chordOverlayGlobalFretEnd,
+                  chordOverlaySegments,
+                  // text overlay
+                  textOverlayEnabled,
+                  textOverlaySegments,
+                  // note color overlay
+                  noteColorEnabled,
+                  noteColorSegments,
                 };
                 const blob = new Blob([JSON.stringify(preset, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -794,6 +964,8 @@ export default function AnimatedFretboardGPPage() {
                   if (!f) return;
                   const txt = await f.text();
                   const data = JSON.parse(txt || '{}');
+                  if (typeof data.fretCount === 'number') setFretCount(data.fretCount);
+                  if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
@@ -811,6 +983,22 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.footprintName === 'string') setFootprintName(data.footprintName);
                   if (typeof data.useSharp5 === 'boolean') setUseSharp5(data.useSharp5);
                   if (typeof data.useSharp4 === 'boolean') setUseSharp4(data.useSharp4);
+                  // chord overlay
+                  if (typeof data.chordOverlayEnabled === 'boolean') setChordOverlayEnabled(data.chordOverlayEnabled);
+                  if (typeof data.chordOverlayMode === 'string') setChordOverlayMode(data.chordOverlayMode);
+                  if (typeof data.chordOverlayRoot === 'string') setChordOverlayRoot(data.chordOverlayRoot);
+                  if (typeof data.chordOverlayName === 'string') setChordOverlayName(data.chordOverlayName);
+                  if (typeof data.chordOverlayNotesGlobal === 'string') setChordOverlayNotesGlobal(data.chordOverlayNotesGlobal);
+                  if (typeof data.chordOverlayModeType === 'string') setChordOverlayModeType(data.chordOverlayModeType);
+                  if (typeof data.chordOverlayGlobalFretStart === 'number') setChordOverlayGlobalFretStart(data.chordOverlayGlobalFretStart);
+                  if (typeof data.chordOverlayGlobalFretEnd === 'number') setChordOverlayGlobalFretEnd(data.chordOverlayGlobalFretEnd);
+                  if (Array.isArray(data.chordOverlaySegments)) setChordOverlaySegments(data.chordOverlaySegments);
+                  // text overlay
+                  if (typeof data.textOverlayEnabled === 'boolean') setTextOverlayEnabled(data.textOverlayEnabled);
+                  if (Array.isArray(data.textOverlaySegments)) setTextOverlaySegments(data.textOverlaySegments);
+                  // note color overlay
+                  if (typeof data.noteColorEnabled === 'boolean') setNoteColorEnabled(data.noteColorEnabled);
+                  if (Array.isArray(data.noteColorSegments)) setNoteColorSegments(data.noteColorSegments);
                   if (typeof data.gpFile === 'string') {
                     const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs, ...arpeggioExercises];
                     const found = all.find(x => x.file === data.gpFile);
@@ -826,6 +1014,8 @@ export default function AnimatedFretboardGPPage() {
                 if (!presetName.trim()) return;
                 const data = {
                   gpFile: selectedFile,
+                  fretCount,
+                  useCustomFretRange,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -843,6 +1033,19 @@ export default function AnimatedFretboardGPPage() {
                   footprintName,
                   useSharp5,
                   useSharp4,
+                  chordOverlayEnabled,
+                  chordOverlayMode,
+                  chordOverlayRoot,
+                  chordOverlayName,
+                  chordOverlayNotesGlobal,
+                  chordOverlayModeType,
+                  chordOverlayGlobalFretStart,
+                  chordOverlayGlobalFretEnd,
+                  chordOverlaySegments,
+                  textOverlayEnabled,
+                  textOverlaySegments,
+                  noteColorEnabled,
+                  noteColorSegments,
                 };
                 const items = savedPresets.filter(p => p.name !== presetName.trim());
                 items.push({ name: presetName.trim(), data });
@@ -862,6 +1065,8 @@ export default function AnimatedFretboardGPPage() {
                   const p = savedPresets[selectedPresetIdx];
                   if (!p) return;
                   const data = p.data || {};
+                  if (typeof data.fretCount === 'number') setFretCount(data.fretCount);
+                  if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
@@ -879,6 +1084,19 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.footprintName === 'string') setFootprintName(data.footprintName);
                   if (typeof data.useSharp5 === 'boolean') setUseSharp5(data.useSharp5);
                   if (typeof data.useSharp4 === 'boolean') setUseSharp4(data.useSharp4);
+                  if (typeof data.chordOverlayEnabled === 'boolean') setChordOverlayEnabled(data.chordOverlayEnabled);
+                  if (typeof data.chordOverlayMode === 'string') setChordOverlayMode(data.chordOverlayMode);
+                  if (typeof data.chordOverlayRoot === 'string') setChordOverlayRoot(data.chordOverlayRoot);
+                  if (typeof data.chordOverlayName === 'string') setChordOverlayName(data.chordOverlayName);
+                  if (typeof data.chordOverlayNotesGlobal === 'string') setChordOverlayNotesGlobal(data.chordOverlayNotesGlobal);
+                  if (typeof data.chordOverlayModeType === 'string') setChordOverlayModeType(data.chordOverlayModeType);
+                  if (typeof data.chordOverlayGlobalFretStart === 'number') setChordOverlayGlobalFretStart(data.chordOverlayGlobalFretStart);
+                  if (typeof data.chordOverlayGlobalFretEnd === 'number') setChordOverlayGlobalFretEnd(data.chordOverlayGlobalFretEnd);
+                  if (Array.isArray(data.chordOverlaySegments)) setChordOverlaySegments(data.chordOverlaySegments);
+                  if (typeof data.textOverlayEnabled === 'boolean') setTextOverlayEnabled(data.textOverlayEnabled);
+                  if (Array.isArray(data.textOverlaySegments)) setTextOverlaySegments(data.textOverlaySegments);
+                  if (typeof data.noteColorEnabled === 'boolean') setNoteColorEnabled(data.noteColorEnabled);
+                  if (Array.isArray(data.noteColorSegments)) setNoteColorSegments(data.noteColorSegments);
                   if (typeof data.gpFile === 'string') {
                     const all = [...pentatonicExercises, ...bluesExercises, ...miscSongs, ...arpeggioExercises];
                     const found = all.find(x => x.file === data.gpFile);
@@ -924,6 +1142,271 @@ export default function AnimatedFretboardGPPage() {
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-700">Name</span>
             <input className="border rounded px-2 py-1 text-sm w-32" value={footprintName} onChange={(e) => setFootprintName(e.target.value)} placeholder="e.g. Footprint" />
+          </div>
+        </div>
+      </div>
+
+      {/* Chord Overlay Controls */}
+      <div className="mb-4 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-5 gap-2 items-center p-2 rounded border border-rose-200 bg-rose-50/60">
+        <label className="flex items-center gap-2 text-sm text-gray-800">
+          <input type="checkbox" checked={chordOverlayEnabled} onChange={(e)=>setChordOverlayEnabled(e.target.checked)} />
+          Enable chord overlay
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Type</span>
+          <select className="border rounded px-2 py-1 text-sm" value={chordOverlayModeType} onChange={(e)=>setChordOverlayModeType(e.target.value as any)}>
+            <option value="global">Global</option>
+            <option value="segments">Segments</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Mode</span>
+          <select className="border rounded px-2 py-1 text-sm" value={chordOverlayMode} onChange={(e)=>setChordOverlayMode(e.target.value as any)}>
+            <option value="notes">Note names</option>
+            <option value="intervals">Intervals</option>
+            <option value="blank">Blank</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Root</span>
+          <input className="border rounded px-2 py-1 text-sm w-16" value={chordOverlayRoot} onChange={(e)=>setChordOverlayRoot(e.target.value)} />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Name</span>
+          <input className="border rounded px-2 py-1 text-sm w-40" value={chordOverlayName} onChange={(e)=>setChordOverlayName(e.target.value)} placeholder="e.g. A7" />
+        </div>
+        {chordOverlayModeType === 'global' && (
+          <>
+            <div className="flex items-center gap-2 md:col-span-2">
+              <span className="text-sm text-gray-700">Chord notes (comma)</span>
+              <input className="border rounded px-2 py-1 text-sm flex-1" value={chordOverlayNotesGlobal} onChange={(e)=>setChordOverlayNotesGlobal(e.target.value)} placeholder="e.g. A,C#,E,G" />
+            </div>
+            <div className="md:col-span-5 grid grid-cols-2 md:grid-cols-4 gap-2 items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Fret start</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={chordOverlayGlobalFretStart}
+                  onChange={(e)=>setChordOverlayGlobalFretStart(Math.max(0, parseInt(e.target.value||'0',10)))} />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700">Fret end</span>
+                <input type="number" className="border rounded px-2 py-1 text-sm w-20" value={chordOverlayGlobalFretEnd}
+                  onChange={(e)=>setChordOverlayGlobalFretEnd(Math.max(0, parseInt(e.target.value||`${fretCount}`,10)))} />
+              </div>
+            </div>
+          </>
+        )}
+        {chordOverlayModeType === 'segments' && (
+          <div className="md:col-span-5">
+            <div className="text-sm font-medium text-gray-800 mb-1">Chord overlay segments</div>
+            <div className="space-y-2">
+              {chordOverlaySegments.map((seg, idx) => (
+                <div key={idx} className="grid grid-cols-2 md:grid-cols-12 gap-2 items-center border border-rose-200 rounded p-2 bg-white">
+                  <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Bars</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.startBar}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,startBar:Math.max(0,v)}:s)); }} />
+                    <span className="text-xs">-</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.endBar}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,endBar:Math.max(0,v)}:s)); }} />
+                  </div>
+                  <div className="col-span-1 md:col-span-3 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Name</span>
+                    <input className="border rounded px-1 py-0.5 text-xs w-full" value={seg.name || ''}
+                      onChange={(e)=>setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s, name: e.target.value}:s))} />
+                  </div>
+                  <div className="col-span-1 md:col-span-3 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Notes</span>
+                    <input className="border rounded px-1 py-0.5 text-xs w-full" value={(seg.notes||[]).join(',')}
+                      onChange={(e)=>{
+                        const vals = e.target.value.split(',').map(s=>s.trim()).filter(Boolean);
+                        setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,notes:vals}:s));
+                      }} />
+                  </div>
+                  <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Mode</span>
+                    <select className="border rounded px-1 py-0.5 text-xs" value={seg.mode || 'notes'}
+                      onChange={(e)=>setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,mode:e.target.value as any}:s))}>
+                      <option value="notes">Notes</option>
+                      <option value="intervals">Intervals</option>
+                      <option value="blank">Blank</option>
+                    </select>
+                  </div>
+                  <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Frets</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.fretStart ?? 0}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,fretStart:Math.max(0,v)}:s)); }} />
+                    <span className="text-xs">-</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.fretEnd ?? fretCount}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||`${fretCount}`,10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,fretEnd:Math.max(0,v)}:s)); }} />
+                  </div>
+                  <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                    <span className="text-xs text-gray-600">Diagram</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretStart ?? 0}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretStart:Math.max(0,v)}:s)); }} />
+                    <span className="text-xs">-</span>
+                    <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretEnd ?? fretCount}
+                      onChange={(e)=>{ const v = parseInt(e.target.value||`${fretCount}`,10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretEnd:Math.max(0,v)}:s)); }} />
+                  </div>
+                  <div className="col-span-1 md:col-span-2 flex justify-end">
+                    <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" onClick={()=>setChordOverlaySegments(prev=>prev.filter((_,i)=>i!==idx))}>Remove</button>
+                  </div>
+                </div>
+              ))}
+              <button className="text-xs px-2 py-1 bg-rose-700 text-white rounded"
+                onClick={()=>setChordOverlaySegments(prev=>[...prev, { startBar: 0, endBar: 3, name: chordOverlayName, notes: chordOverlayNotesGlobal.split(',').map(s=>s.trim()).filter(Boolean), mode: chordOverlayMode, fretStart: 0, fretEnd: fretCount }])}
+              >Add chord segment</button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Text Overlay Controls */}
+      <div className="mb-4 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-5 gap-2 items-center p-2 rounded border border-slate-200 bg-slate-50">
+        <label className="flex items-center gap-2 text-sm text-gray-800">
+          <input type="checkbox" checked={textOverlayEnabled} onChange={(e)=>setTextOverlayEnabled(e.target.checked)} />
+          Enable text overlay (segments)
+        </label>
+        <div className="md:col-span-5">
+          <div className="text-sm font-medium text-gray-800 mb-1">Text overlay segments</div>
+          <div className="space-y-2">
+            {textOverlaySegments.map((seg, idx) => (
+              <div key={idx} className={`grid grid-cols-2 md:grid-cols-12 gap-2 items-center border rounded p-2 ${selectedTextSegIdx===idx? 'border-slate-400 bg-slate-50' : 'border-slate-200 bg-white'}`}>
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Bars</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.startBar}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,startBar:Math.max(0,v)}:s)); }} />
+                  <span className="text-xs">-</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.endBar}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,endBar:Math.max(0,v)}:s)); }} />
+                </div>
+                <div className="col-span-1 md:col-span-4 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Text</span>
+                  <input className="border rounded px-1 py-0.5 text-xs w-full" value={seg.text}
+                    onChange={(e)=>setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,text:e.target.value}:s))} placeholder="Plain text or @facebook-cover-universal.png" />
+                </div>
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">dx</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-16" value={seg.dx ?? 0}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,dx:v}:s)); }} />
+                  <span className="text-xs text-gray-600">dy</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-16" value={seg.dy ?? 0}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,dy:v}:s)); }} />
+                </div>
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Font</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-16" value={seg.fontSize ?? 16}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'16',10); setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,fontSize:v}:s)); }} />
+                  <span className="text-xs text-gray-600">Anchor</span>
+                  <select className="border rounded px-1 py-0.5 text-xs" value={seg.anchor || 'middle'}
+                    onChange={(e)=>setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,anchor:e.target.value as any}:s))}>
+                    <option value="start">Start</option>
+                    <option value="middle">Middle</option>
+                    <option value="end">End</option>
+                  </select>
+                  <span className="text-xs text-gray-600">V pos</span>
+                  <select className="border rounded px-1 py-0.5 text-xs" value={(seg as any).vPos || 'middle'}
+                    onChange={(e)=>setTextOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,vPos:e.target.value as any}:s))}>
+                    <option value="top">Top</option>
+                    <option value="middle">Middle</option>
+                    <option value="bottom">Bottom</option>
+                  </select>
+                </div>
+                <div className="col-span-1 md:col-span-2 flex justify-end gap-2">
+                  <button className={`text-xs px-2 py-1 rounded ${selectedTextSegIdx===idx?'bg-slate-700 text-white':'bg-slate-200 text-slate-700'}`} onClick={()=>setSelectedTextSegIdx(selectedTextSegIdx===idx?-1:idx)}>{selectedTextSegIdx===idx?'Unselect':'Select'}</button>
+                  <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" onClick={()=>setTextOverlaySegments(prev=>prev.filter((_,i)=>i!==idx))}>Remove</button>
+                </div>
+              </div>
+            ))}
+            <button className="text-xs px-2 py-1 bg-slate-700 text-white rounded"
+              onClick={()=>setTextOverlaySegments(prev=>[...prev, { startBar: 0, endBar: 0, text: 'Your text', dx: 0, dy: 0, fontSize: 16, anchor: 'middle' }])}
+            >Add text segment</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Note Color Controls */}
+      <div className="mb-4 col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-5 gap-2 items-center p-2 rounded border border-emerald-200 bg-emerald-50/60">
+        <label className="flex items-center gap-2 text-sm text-gray-800">
+          <input type="checkbox" checked={noteColorEnabled} onChange={(e)=>setNoteColorEnabled(e.target.checked)} />
+          Enable note color overlay
+        </label>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Quick presets</span>
+          <button className="text-xs px-2 py-1 bg-emerald-700 text-white rounded"
+            onClick={() => {
+              // Color overlay root note in current overlayRoot for bars 0-3
+              const root = overlayRoot || 'A';
+              setNoteColorSegments(prev => [...prev, { startBar: 0, endBar: 3, notes: [root], color: '#ef4444', target: 'both' }]);
+            }}>Root</button>
+          <button className="text-xs px-2 py-1 bg-emerald-600 text-white rounded"
+            onClick={() => {
+              // Minor pentatonic from overlayRoot (0,3,5,7,10)
+              const r = overlayRoot || 'A';
+              const pent = [0,3,5,7,10].map(s => transpose(r, s));
+              setNoteColorSegments(prev => [...prev, { startBar: 0, endBar: 3, notes: pent, color: '#f59e0b', target: 'overlay' }]);
+            }}>Minor Pent from Root</button>
+          <button className="text-xs px-2 py-1 bg-emerald-500 text-white rounded"
+            onClick={() => {
+              // Chord overlay notes if present
+              const notes = (chordOverlayNotesGlobal || '').split(',').map(s=>s.trim()).filter(Boolean);
+              if (notes.length === 0) return;
+              setNoteColorSegments(prev => [...prev, { startBar: 0, endBar: 3, notes, color: '#10b981', target: 'active' }]);
+            }}>Chord notes</button>
+        </div>
+        <div className="md:col-span-5">
+          <div className="text-sm font-medium text-gray-800 mb-1">Note color segments</div>
+          <div className="space-y-2">
+            {noteColorSegments.map((seg, idx) => (
+              <div key={idx} className="grid grid-cols-2 md:grid-cols-12 gap-2 items-center border border-emerald-200 rounded p-2 bg-white">
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Bars</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.startBar}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,startBar:Math.max(0,v)}:s)); }} />
+                  <span className="text-xs">-</span>
+                  <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.endBar}
+                    onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,endBar:Math.max(0,v)}:s)); }} />
+                </div>
+                <div className="col-span-1 md:col-span-4 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Notes</span>
+                  <input className="border rounded px-1 py-0.5 text-xs w-full" value={(seg.notes||[]).join(',')}
+                    onChange={(e)=>{ const vals = e.target.value.split(',').map(s=>s.trim()).filter(Boolean); setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,notes:vals}:s)); }} />
+                </div>
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Color</span>
+                  <input type="color" className="w-6 h-6 p-0 border border-slate-300 rounded cursor-pointer"
+                    value={/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(seg.color || '') ? seg.color : '#ef4444'}
+                    onChange={(e)=>setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,color:e.target.value}:s))}
+                    title="Pick color" />
+                  <input className="border rounded px-1 py-0.5 text-xs w-28" value={seg.color}
+                    onChange={(e)=>setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,color:e.target.value}:s))} placeholder="#ef4444" />
+                  <div className="flex gap-1 ml-1 overflow-x-auto whitespace-nowrap">
+                    {COLOR_PALETTE.map(c => (
+                      <button key={c}
+                        className="w-5 h-5 rounded border border-slate-300 shrink-0"
+                        style={{ backgroundColor: c }}
+                        title={c}
+                        onClick={()=>setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,color:c}:s))}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="col-span-1 md:col-span-2 flex items-center gap-1">
+                  <span className="text-xs text-gray-600">Target</span>
+                  <select className="border rounded px-1 py-0.5 text-xs" value={seg.target || 'both'}
+                    onChange={(e)=>setNoteColorSegments(prev=>prev.map((s,i)=>i===idx?{...s,target:e.target.value as any}:s))}>
+                    <option value="active">Active</option>
+                    <option value="overlay">Overlay</option>
+                    <option value="both">Both</option>
+                  </select>
+                </div>
+                <div className="col-span-1 md:col-span-2 flex justify-end">
+                  <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" onClick={()=>setNoteColorSegments(prev=>prev.filter((_,i)=>i!==idx))}>Remove</button>
+                </div>
+              </div>
+            ))}
+            <button className="text-xs px-2 py-1 bg-emerald-700 text-white rounded"
+              onClick={()=>setNoteColorSegments(prev=>[...prev, { startBar: 0, endBar: 0, notes: ['A'], color: '#ef4444', target: 'both' }])}
+            >Add note color segment</button>
           </div>
         </div>
       </div>

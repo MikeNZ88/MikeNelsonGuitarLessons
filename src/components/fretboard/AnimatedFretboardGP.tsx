@@ -65,11 +65,56 @@ export interface AnimatedFretboardGPProps {
   diagramGlobalFretEnd?: number;
   overlayGlobalFretStart?: number;
   overlayGlobalFretEnd?: number;
+  // Chord overlay (independent of scale overlay)
+  chordOverlayEnabled?: boolean;
+  chordOverlayMode?: 'notes' | 'intervals' | 'blank';
+  chordOverlayRoot?: string; // for intervals mode
+  chordOverlayName?: string;
+  chordOverlayNotesGlobal?: string[]; // e.g., ['A','C#','E','G']
+  chordOverlayModeType?: 'global' | 'segments';
+  chordOverlayGlobalFretStart?: number;
+  chordOverlayGlobalFretEnd?: number;
+  chordOverlaySegments?: Array<{
+    startBar: number;
+    endBar: number;
+    name?: string;
+    notes: string[];
+    mode?: 'notes' | 'intervals' | 'blank';
+    fretStart?: number;
+    fretEnd?: number;
+    diagramFretStart?: number;
+    diagramFretEnd?: number;
+    useSharp5?: boolean;
+    useSharp4?: boolean;
+  }>;
+  // Note color overlay (per-bar, per-note pitch class)
+  noteColorEnabled?: boolean;
+  noteColorSegments?: Array<{
+    startBar: number;
+    endBar: number;
+    notes: string[]; // e.g., ['A','C#']
+    color: string;   // CSS color/hex
+    target?: 'active' | 'overlay' | 'both';
+  }>;
   // Enharmonic toggles
   useSharp5?: boolean; // b6 vs #5
   useSharp4?: boolean; // b5 vs #4
   // Overlay root highlight
   highlightOverlayRoot?: boolean;
+  // Custom text overlays (user-defined)
+  textOverlayEnabled?: boolean;
+  textOverlaySegments?: Array<{
+    startBar: number;
+    endBar: number;
+    text: string;
+    dx?: number;
+    dy?: number;
+    fontSize?: number;
+    anchor?: 'start' | 'middle' | 'end';
+    vPos?: 'top' | 'middle' | 'bottom';
+    imgW?: number;
+    imgH?: number;
+  }>;
 }
 
 interface ActiveNote {
@@ -111,6 +156,25 @@ const NOTE_TO_INDEX: Record<string, number> = {
   'A#': 10, 'Bb': 10,
   'B': 11, 'Cb': 11
 };
+
+function normalizeNoteName(input: string): string {
+  try {
+    let t = (input || '').trim();
+    if (!t) return '';
+    // Normalize unicode accidentals
+    t = t.replace(/♭/g, 'b').replace(/♯/g, '#');
+    // Capitalize letter only, keep accidental case
+    t = t.length > 1 ? t[0].toUpperCase() + t.slice(1) : t.toUpperCase();
+    // Common enharmonic normalizations
+    if (t === 'B#') return 'C';
+    if (t === 'E#') return 'F';
+    if (t === 'Cb') return 'B';
+    if (t === 'Fb') return 'E';
+    return t;
+  } catch {
+    return '';
+  }
+}
 
 const SCALE_INTERVALS: Record<string, number[]> = {
   major: [0,2,4,5,7,9,11],
@@ -232,13 +296,26 @@ export default function AnimatedFretboardGP({
   diagramGlobalFretEnd,
   overlayGlobalFretStart,
   overlayGlobalFretEnd,
+  chordOverlayEnabled = false,
+  chordOverlayMode = 'intervals',
+  chordOverlayRoot = 'A',
+  chordOverlayName,
+  chordOverlayNotesGlobal,
+  chordOverlayModeType = 'global',
+  chordOverlayGlobalFretStart,
+  chordOverlayGlobalFretEnd,
+  chordOverlaySegments,
+  noteColorEnabled,
+  noteColorSegments,
   footprintEnabled,
   footprintMode,
   footprintName,
   useSharp5,
   useSharp4,
   // Overlay root highlight
-  highlightOverlayRoot
+  highlightOverlayRoot,
+  textOverlayEnabled,
+  textOverlaySegments
 }: AnimatedFretboardGPProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
@@ -1228,8 +1305,10 @@ export default function AnimatedFretboardGP({
       const noteIndex = getNoteIndexForStringFretFrom(tuningHighToLow, n.stringNumber, n.fret, nStrings);
       let label: string = '';
       if (!hideLabels) {
-        if (showIntervals && currentRoot) {
-          label = computeIntervalLabel(currentRoot, noteIndex, accidentalStyle, currentQuality, useSharp5, useSharp4);
+        if (showIntervals) {
+          // Fallback root selection if auto root is unavailable
+          const effectiveRoot = currentRoot || chordOverlayRoot || overlayRoot || 'A';
+          label = computeIntervalLabel(effectiveRoot, noteIndex, accidentalStyle, currentQuality, useSharp5, useSharp4);
         } else {
           // Note names: choose flats/sharps by key signature if enabled
           if (useKeySignatureForNames) {
@@ -1259,9 +1338,26 @@ export default function AnimatedFretboardGP({
       bendUp = !bendUp;
       const bendY1 = bendUp ? (cy - 12) : (cy + 12);
       const bendY2 = bendUp ? (bendY1 - bendLen) : (bendY1 + bendLen);
+      // Per-note color segments (active notes)
+      let fillOverride: string | null = null;
+      try {
+        if (noteColorEnabled && Array.isArray(noteColorSegments) && noteColorSegments.length > 0) {
+          const noteIdxPc = noteIndex; // already 0..11
+          for (const seg of noteColorSegments) {
+            if (currentBarIndex >= seg.startBar && currentBarIndex <= seg.endBar) {
+              const match = (seg.notes || []).some(nn => NOTE_TO_INDEX[normalizeNoteName(nn)] === noteIdxPc);
+              const targetsActive = (seg.target || 'both') === 'active' || (seg.target || 'both') === 'both';
+              if (match && targetsActive && typeof seg.color === 'string' && seg.color) {
+                fillOverride = seg.color;
+                break;
+              }
+            }
+          }
+        }
+      } catch {}
       return (
         <g key={`note-${idx}`}>
-          <circle cx={cx} cy={cy} r={9} fill="#d97706" stroke="#fbbf24" strokeWidth={2} />
+          <circle cx={cx} cy={cy} r={9} fill={fillOverride || "#d97706"} stroke="#fbbf24" strokeWidth={2} />
           {label && (
             <text x={cx} y={cy + 3} textAnchor="middle" fontSize={10} fill="#ffffff" fontWeight={700}>
               {label}
@@ -1390,9 +1486,28 @@ export default function AnimatedFretboardGP({
           const interval = (noteIdx - rootIdx + 12) % 12;
           if (allowed.includes(interval)) {
             const radius = 7;
+            // Per-note color segments (overlay dots)
+            let overlayFill: string | null = null;
+            try {
+              if (noteColorEnabled && Array.isArray(noteColorSegments) && noteColorSegments.length > 0) {
+                const noteIdxPc = noteIdx;
+                for (const seg of noteColorSegments) {
+                  if (currentBarIndex >= seg.startBar && currentBarIndex <= seg.endBar) {
+                    const match = (seg.notes || []).some(nn => NOTE_TO_INDEX[normalizeNoteName(nn)] === noteIdxPc);
+                    const targetsOverlay = (seg.target || 'both') === 'overlay' || (seg.target || 'both') === 'both';
+                    if (match && targetsOverlay && typeof seg.color === 'string' && seg.color) {
+                      overlayFill = seg.color;
+                      break;
+                    }
+                  }
+                }
+              }
+            } catch {}
             let text = '';
             if (activeMode === 'intervals') {
-              text = computeIntervalLabel(activeRoot, noteIdx, accidentalStyle, 'unknown', segmentUseSharp5, segmentUseSharp4);
+              // Fallback to activeRoot or overlay root if no current auto root
+              const eff = activeRoot || overlayRoot || 'A';
+              text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', segmentUseSharp5, segmentUseSharp4);
             } else if (activeMode === 'notes') {
               text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
             }
@@ -1404,7 +1519,8 @@ export default function AnimatedFretboardGP({
                   const isActive = activeNotes.some(n => 
                     stringNumberToRow(n.stringNumber) === row && n.fret === f
                   );
-                  const fillColor = isActive ? (isRoot && highlightOverlayRoot ? "#ef4444" : "#fbbf24") : (isRoot && highlightOverlayRoot ? "#ef4444" : "white");
+                  const fillColorBase = isActive ? (isRoot && highlightOverlayRoot ? "#ef4444" : "#fbbf24") : (isRoot && highlightOverlayRoot ? "#ef4444" : "white");
+                  const fillColor = overlayFill || fillColorBase;
                   const strokeColor = isRoot && highlightOverlayRoot ? "#991b1b" : "#d97706";
                   const textColor = isActive ? (isRoot && highlightOverlayRoot ? "#fee2e2" : "#7c2d12") : (isRoot && highlightOverlayRoot ? "#fee2e2" : "#92400e");
                   return (
@@ -1452,8 +1568,91 @@ export default function AnimatedFretboardGP({
       }
     }
 
-
-
+    // Chord overlay computation (independent layer)
+    const chordOverlayElements: React.ReactElement[] = [];
+    let chordOverlayNamePosition: { x: number; y: number; anchor: 'start' | 'end'; text: string } | null = null;
+    if (chordOverlayEnabled) {
+      let activeNotes: string[] = (chordOverlayNotesGlobal || []).slice();
+      let mode = chordOverlayMode;
+      let fretStart = chordOverlayGlobalFretStart ?? 0;
+      let fretEnd = chordOverlayGlobalFretEnd ?? numFrets;
+      let name = chordOverlayName || '';
+      let segUseSharp5 = useSharp5;
+      let segUseSharp4 = useSharp4;
+      let chordVisibleStart = typeof diagramGlobalFretStart === 'number' ? Math.max(0, Math.min(numFrets, diagramGlobalFretStart)) : visibleStartFret;
+      let chordVisibleEnd = typeof diagramGlobalFretEnd === 'number' ? Math.max(chordVisibleStart, Math.min(numFrets, diagramGlobalFretEnd)) : visibleEndFret;
+      if (chordOverlayModeType === 'segments' && Array.isArray(chordOverlaySegments) && chordOverlaySegments.length > 0) {
+        const seg = chordOverlaySegments.find(sg => currentBarIndex >= sg.startBar && currentBarIndex <= sg.endBar);
+        if (seg) {
+          activeNotes = Array.isArray(seg.notes) ? seg.notes.slice() : activeNotes;
+          mode = seg.mode || mode;
+          fretStart = typeof seg.fretStart === 'number' ? seg.fretStart : fretStart;
+          fretEnd = typeof seg.fretEnd === 'number' ? seg.fretEnd : fretEnd;
+          name = seg.name || name;
+          segUseSharp5 = typeof seg.useSharp5 === 'boolean' ? seg.useSharp5 : segUseSharp5;
+          segUseSharp4 = typeof seg.useSharp4 === 'boolean' ? seg.useSharp4 : segUseSharp4;
+          // Segment can override diagram window for chord overlay too (local to overlay)
+          if (typeof seg.diagramFretStart === 'number') chordVisibleStart = Math.max(0, Math.min(numFrets, seg.diagramFretStart));
+          if (typeof seg.diagramFretEnd === 'number') chordVisibleEnd = Math.max(chordVisibleStart, Math.min(numFrets, seg.diagramFretEnd));
+        }
+      }
+      // Convert active note names to semitone indices
+      const activeIdx = activeNotes
+        .map(n => NOTE_TO_INDEX[(n || '').toUpperCase().replace('B#','C').replace('E#','F')])
+        .filter(v => typeof v === 'number') as number[];
+      const chordRootIdx = NOTE_TO_INDEX[chordOverlayRoot] ?? 9;
+      for (let s = 1; s <= nStrings; s++) {
+        const row = stringNumberToRow(s);
+        const cy = topPadding + row * stringGap;
+        for (let f = Math.max(0, fretStart); f <= Math.min(numFrets, fretEnd); f++) {
+          let cx: number;
+          if (chordVisibleStart === 0) {
+            cx = leftPadding + ((f === 0 ? -0.5 : (f - 0.5)) * cellWidth);
+          } else {
+            cx = leftPadding + (((f - chordVisibleStart) + 0.5) * cellWidth);
+          }
+          const noteIdx = getNoteIndexForStringFretFrom(tuningHighToLow, s, f, nStrings);
+          if (activeIdx.includes(noteIdx)) {
+            const radius = 7;
+            let text = '';
+            if (mode === 'intervals') {
+              text = computeIntervalLabel(chordOverlayRoot, noteIdx, accidentalStyle, 'unknown', segUseSharp5, segUseSharp4);
+            } else if (mode === 'notes') {
+              text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
+            }
+            const isRoot = noteIdx === chordRootIdx;
+            chordOverlayElements.push(
+              <g key={`cov-${s}-${f}`}>
+                <circle cx={cx} cy={cy} r={radius} fill={isRoot ? '#ef4444' : 'white'} opacity={0.9} stroke={isRoot ? '#991b1b' : '#d97706'} strokeWidth={2} />
+                {mode !== 'blank' && (
+                  <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill={isRoot ? '#fee2e2' : '#92400e'} fontWeight={700}>{text}</text>
+                )}
+              </g>
+            );
+          }
+        }
+      }
+      if (name) {
+        // Place chord overlay name similar to scale overlay
+        const xFretLine = (f: number) => leftPadding + ((f - chordVisibleStart) * cellWidth);
+        const start = Math.max(0, fretStart);
+        const end = Math.min(numFrets, fretEnd);
+        let anchor: 'start' | 'end' = 'start';
+        let cxName: number;
+        if (start >= 9) {
+          anchor = 'end';
+          cxName = xFretLine(start) - cellWidth;
+        } else {
+          anchor = 'start';
+          cxName = xFretLine(end) + cellWidth;
+        }
+        const minX = leftPadding - 8;
+        const maxX = leftPadding + (visibleFretSpan * cellWidth) + 8;
+        cxName = Math.max(minX, Math.min(maxX, cxName));
+        const cyName = topPadding + ((nStrings - 1) * stringGap) / 2 + 22;
+        chordOverlayNamePosition = { x: cxName, y: cyName, anchor, text: name };
+      }
+    }
     // Note footprint overlay computation
     const footprintElements: React.ReactElement[] = [];
     let footprintNamePosition: { x: number; y: number; anchor: 'start' | 'end'; text: string } | null = null;
@@ -1662,6 +1861,7 @@ export default function AnimatedFretboardGP({
         <g filter="url(#noteGlow)">{footprintElements}</g>
 
         <g filter="url(#noteGlow)">{overlayElements}</g>
+        <g filter="url(#noteGlow)">{chordOverlayElements}</g>
         <g filter="url(#noteGlow)">{circles}</g>
         
         {/* Scale overlay name - rendered separately without glow filter */}
@@ -1677,6 +1877,21 @@ export default function AnimatedFretboardGP({
             style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.4))' }}
           >
             {overlayNamePosition.text}
+          </text>
+        )}
+        {/* Chord overlay name - rendered separately without glow filter */}
+        {chordOverlayNamePosition && (
+          <text 
+            key="cov-name" 
+            x={chordOverlayNamePosition.x} 
+            y={chordOverlayNamePosition.y} 
+            textAnchor={chordOverlayNamePosition.anchor} 
+            fontSize={16} 
+            fontWeight={700} 
+            fill="#0f172a" 
+            style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.4))' }}
+          >
+            {chordOverlayNamePosition.text}
           </text>
         )}
         
@@ -1709,6 +1924,52 @@ export default function AnimatedFretboardGP({
           >
             {currentChordName}
           </text>
+        )}
+        {/* User text overlay segments (nudgeable) */}
+        {textOverlayEnabled && Array.isArray(textOverlaySegments) && textOverlaySegments.length > 0 && (
+          (() => {
+            const cxCenter = leftPadding + (visibleFretSpan * cellWidth) / 2;
+            const cyCenter = topPadding + ((nStrings - 1) * stringGap) / 2;
+            return (
+              <g key="custom-text-overlays">
+                {textOverlaySegments.filter(seg => currentBarIndex >= seg.startBar && currentBarIndex <= seg.endBar).map((seg, i) => {
+                  const dx = typeof seg.dx === 'number' ? seg.dx : 0;
+                  const dy = typeof seg.dy === 'number' ? seg.dy : 0;
+                  const fs = Math.max(8, Math.min(64, typeof seg.fontSize === 'number' ? seg.fontSize : 16));
+                  const anchor = seg.anchor || 'middle';
+                  const vPos = seg.vPos || 'middle';
+                  const yBase = vPos === 'top'
+                    ? (topPadding + 0)
+                    : (vPos === 'bottom' ? (topPadding + (nStrings - 1) * stringGap) : cyCenter);
+                  // Image support: text beginning with '@' renders an image from public/social
+                  if (seg.text && seg.text.startsWith('@')) {
+                    const file = seg.text.slice(1).trim();
+                    const w = seg.imgW || 240;
+                    const h = seg.imgH || 80;
+                    const xImg = (cxCenter + dx) - (anchor === 'middle' ? w/2 : anchor === 'end' ? w : 0);
+                    const yImg = (yBase + dy) - h/2;
+                    return (
+                      <image key={`img-${i}`} href={`/social/${file}`} x={xImg} y={yImg} width={w} height={h} preserveAspectRatio="xMidYMid meet" />
+                    );
+                  }
+                  return (
+                    <text
+                      key={`txt-${i}`}
+                      x={cxCenter + dx}
+                      y={yBase + dy}
+                      textAnchor={anchor as any}
+                      fontSize={fs}
+                      fontWeight={700}
+                      fill="#0f172a"
+                      style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.4))' }}
+                    >
+                      {seg.text}
+                    </text>
+                  );
+                })}
+              </g>
+            );
+          })()
         )}
         {/* GP Text label (e.g., Shape 1) – centered slightly below chord label */}
         {showTextLabels && currentTextLabel && (
