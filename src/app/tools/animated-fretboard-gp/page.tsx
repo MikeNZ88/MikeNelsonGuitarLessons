@@ -19,7 +19,6 @@ export default function AnimatedFretboardGPPage() {
   const [preferGpFingerings, setPreferGpFingerings] = useState<boolean>(true);
   const [showExtensionsAboveOctave, setShowExtensionsAboveOctave] = useState<boolean>(false);
   const [perStringExtensionBaseline, setPerStringExtensionBaseline] = useState<boolean>(false);
-  const [secondFootprintOnly, setSecondFootprintOnly] = useState<boolean>(false);
   const trackNameByIndex = (idx: number) => availableTracks.find(t => t.index === idx)?.name ?? `Track ${idx}`;
   const [framePreset, setFramePreset] = useState<'none' | 'square' | 'reel'>('none');
   const [showControls, setShowControls] = useState(false);
@@ -499,7 +498,7 @@ export default function AnimatedFretboardGPPage() {
                   hideLabels={blankCircles}
                   showChordNames={showChordNames}
                   trackChordNames={trackChordNames}
-                  overlayEnabled={secondFootprintOnly ? false : overlayEnabled}
+                  overlayEnabled={overlayEnabled}
                   overlayMode={overlayMode}
                   overlayRoot={overlayRoot}
                   overlayScale={overlayScale}
@@ -518,8 +517,7 @@ export default function AnimatedFretboardGPPage() {
                   preferGpFingerings={preferGpFingerings}
                   showExtensionsAboveOctave={showExtensionsAboveOctave}
                   perStringExtensionBaseline={perStringExtensionBaseline}
-                  showActiveNotes={secondFootprintOnly ? false : true}
-                  chordOverlayEnabled={secondFootprintOnly ? false : chordOverlayEnabled}
+                  chordOverlayEnabled={chordOverlayEnabled}
                   chordOverlayMode={chordOverlayMode}
                   chordOverlayRoot={chordOverlayRoot}
                   chordOverlayName={chordOverlayName}
@@ -528,7 +526,7 @@ export default function AnimatedFretboardGPPage() {
                   chordOverlayGlobalFretStart={chordOverlayGlobalFretStart}
                   chordOverlayGlobalFretEnd={chordOverlayGlobalFretEnd}
                   chordOverlaySegments={chordOverlaySegments}
-                  footprintEnabled={true}
+                  footprintEnabled={footprintEnabled}
                   footprintMode={footprintMode}
                   footprintName={footprintName}
                   useSharp5={useSharp5}
@@ -771,13 +769,9 @@ export default function AnimatedFretboardGPPage() {
           {showExtensionsAboveOctave && (
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input type="checkbox" checked={perStringExtensionBaseline} onChange={(e)=>setPerStringExtensionBaseline(e.target.checked)} />
-              Per-string baseline
+              Per-string baseline (prefer lowest root on same string)
             </label>
           )}
-          <label className="flex items-center gap-2 text-sm text-gray-700">
-            <input type="checkbox" checked={secondFootprintOnly} onChange={(e)=>setSecondFootprintOnly(e.target.checked)} />
-            Second diagram footprint-only
-          </label>
         </div>
         <div className="flex items-center gap-2">
           <label className="text-sm text-gray-700">Frame</label>
@@ -1326,14 +1320,10 @@ export default function AnimatedFretboardGPPage() {
                   <div className="col-span-1 md:col-span-2 flex items-center gap-1">
                     <span className="text-xs text-gray-600">Diagram</span>
                     <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretStart ?? 0}
-                      onChange={(e)=>{
-                        const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretStart:Math.max(0,v)}:s));
-                      }} />
+                      onChange={(e)=>{ const v = parseInt(e.target.value||'0',10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretStart:Math.max(0,v)}:s)); }} />
                     <span className="text-xs">-</span>
                     <input type="number" className="border rounded px-1 py-0.5 text-xs w-14" value={seg.diagramFretEnd ?? fretCount}
-                      onChange={(e)=>{
-                        const v = parseInt(e.target.value||`${fretCount}`,10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretEnd:Math.max(0,v)}:s));
-                      }} />
+                      onChange={(e)=>{ const v = parseInt(e.target.value||`${fretCount}`,10); setChordOverlaySegments(prev=>prev.map((s,i)=>i===idx?{...s,diagramFretEnd:Math.max(0,v)}:s)); }} />
                   </div>
                   <div className="col-span-1 md:col-span-2 flex justify-end">
                     <button className="text-xs px-2 py-1 bg-red-600 text-white rounded" onClick={()=>setChordOverlaySegments(prev=>prev.filter((_,i)=>i!==idx))}>Remove</button>

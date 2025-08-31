@@ -121,8 +121,6 @@ export interface AnimatedFretboardGPProps {
     imgW?: number;
     imgH?: number;
   }>;
-  // Visibility toggles
-  showActiveNotes?: boolean; // hide active circles when false (for footprint-only diagrams)
 }
 
 interface ActiveNote {
@@ -403,8 +401,7 @@ export default function AnimatedFretboardGP({
   // Overlay root highlight
   highlightOverlayRoot,
   textOverlayEnabled,
-  textOverlaySegments,
-  showActiveNotes = true
+  textOverlaySegments
 }: AnimatedFretboardGPProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const apiRef = useRef<any>(null);
@@ -454,35 +451,34 @@ export default function AnimatedFretboardGP({
   const lastKnownRootRef = useRef<string | null>(null);
 
   const getCurrentRoot = useCallback((): string | null => {
-    // 1) Manual bar map (from UI) has highest priority when provided
-    if (barToRoot) {
-      const manual = barToRoot[currentBarIndex];
-      if (manual) {
-        lastKnownRootRef.current = manual;
-        return manual;
-      }
-    }
-
-    // 2) Beat-level overrides if provided
+    // Beat-level mapping has priority if provided
     const apiRootFromBeat = (beatToRootKey?: string) =>
       beatToRootKey ? (beatToRootKey in (beatToRoot || {}) ? (beatToRoot as any)[beatToRootKey] : null) : null;
+
+    // Try beat map first
     const beatKey = `${currentBarIndex}:${currentBeatInBar}`;
     const beatRoot = apiRootFromBeat(beatKey);
     if (beatRoot) {
       lastKnownRootRef.current = beatRoot;
-      return beatRoot;
+      return lastKnownRootRef.current;
     }
 
-    // 3) Auto chord-track derived root
+    // Next prefer automatic chord-track derived map
     if (autoBarToRootRef.current) {
-      const auto = autoBarToRootRef.current[currentBarIndex];
-      if (auto) {
-        lastKnownRootRef.current = auto;
-        return auto;
+      const root = autoBarToRootRef.current[currentBarIndex];
+      if (root) {
+        lastKnownRootRef.current = root;
+        return lastKnownRootRef.current;
       }
     }
-
-    // 4) Fallback to last known
+    // Finally, fallback to manual bar map
+    if (barToRoot) {
+      const root = barToRoot[currentBarIndex];
+      if (root) {
+        lastKnownRootRef.current = root;
+        return lastKnownRootRef.current;
+      }
+    }
     return lastKnownRootRef.current;
   }, [barToRoot, beatToRoot, currentBarIndex, currentBeatInBar]);
 
@@ -2238,7 +2234,7 @@ export default function AnimatedFretboardGP({
 
         <g filter="url(#noteGlow)">{overlayElements}</g>
         <g filter="url(#noteGlow)">{chordOverlayElements}</g>
-        {showActiveNotes && <g filter="url(#noteGlow)">{circles}</g>}
+        <g filter="url(#noteGlow)">{circles}</g>
         
         {/* Scale overlay name - rendered separately without glow filter */}
         {overlayNamePosition && (
