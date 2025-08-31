@@ -19,6 +19,7 @@ export interface AnimatedFretboardGPProps {
   useKeySignatureForNames?: boolean; // when showing note names, prefer flats/sharps based on key signature
   preferGpFingerings?: boolean; // when in fingering mode, prefer GP-provided fingerings
   showExtensionsAboveOctave?: boolean; // map 1->8, 2->9, 4->11, 6->13 when above octave
+  perStringExtensionBaseline?: boolean; // if true, compute 12+ threshold per string
   syncId?: string; // synchronize transport with other diagrams having the same id
   isSilent?: boolean; // if true, mute audio output but keep events
   loadOnlySelectedTrack?: boolean; // if true, load only the selected track into this instance
@@ -357,6 +358,7 @@ export default function AnimatedFretboardGP({
   useKeySignatureForNames = false,
   preferGpFingerings = true,
   showExtensionsAboveOctave = false,
+  perStringExtensionBaseline = false,
   barToRoot,
   beatToRoot,
   initialTempoPercent = 100,
@@ -428,6 +430,7 @@ export default function AnimatedFretboardGP({
   const [currentChordName, setCurrentChordName] = useState<string>('');
   const [currentTextLabel, setCurrentTextLabel] = useState<string>('');
   const minRootAbsInBarRef = useRef<number | null>(null);
+  const perStringRootAbsRef = useRef<Record<number, number | null>>({});
   const keySigPrefRef = useRef<Record<number, 'flat' | 'sharp'>>({});
   const [currentKeyPref, setCurrentKeyPref] = useState<'flat' | 'sharp'>('sharp');
   const [numStrings, setNumStrings] = useState<number>(6);
@@ -1330,17 +1333,39 @@ export default function AnimatedFretboardGP({
     return undefined;
   }
 
-  // Compute an absolute-relative pitch number sufficient for ordering within a bar across strings
+  // MIDI base for standard tuning high-to-low: E4, B3, G3, D3, A2, E2
+  const STANDARD_GTR_MIDI_HIGH_TO_LOW = [64, 59, 55, 50, 45, 40];
+
+  // Compute absolute pitch (MIDI-like) for reliable octave detection. Falls back to a rank if tuning is non-standard.
   function getAbsoluteRelativePitch(stringNumber: number, fret: number): number {
-    // Ensure different strings are far apart so ordering is stable across strings
-    // Higher stringNumber (closer to high E) should be higher pitch baseline
-    const stringRank = (numStrings - stringNumber); // 0 for highest string row
-    return stringRank * 100 + fret; // 1 unit per fret
+    try {
+      const isStandard = Array.isArray(tuningHighToLow) && tuningHighToLow.join(',') === STANDARD_TUNING_FROM_HIGH_E.join(',');
+      if (isStandard) {
+        const rowHighToLow = mapAlphaTabStringToHighOrder(stringNumber, numStrings) - 1; // 0..5
+        if (rowHighToLow >= 0 && rowHighToLow < STANDARD_GTR_MIDI_HIGH_TO_LOW.length) {
+          const base = STANDARD_GTR_MIDI_HIGH_TO_LOW[rowHighToLow];
+          return base + Math.max(0, fret);
+        }
+      }
+    } catch {}
+    // Fallback ordering when tuning unknown
+    const stringRank = (numStrings - stringNumber);
+    return stringRank * 100 + fret;
   }
 
-  function mapIntervalToExtensionIfAboveOctave(label: string, absPitch: number, minRootAbs: number | null): string {
+  function mapIntervalToExtensionIfAboveOctave(label: string, absPitch: number, minRootAbs: number | null, stringNumber?: number): string {
     if (minRootAbs == null) return label;
-    if (absPitch < (minRootAbs + 12)) return label;
+    // If per-string baseline is active and we have a string baseline, prefer that
+    if (perStringExtensionBaseline && typeof stringNumber === 'number') {
+      const sBase = perStringRootAbsRef.current?.[stringNumber] ?? null;
+      if (sBase != null) {
+        if (absPitch < (sBase + 12)) return label;
+      } else {
+        if (absPitch < (minRootAbs + 12)) return label;
+      }
+    } else {
+      if (absPitch < (minRootAbs + 12)) return label;
+    }
     // Above (or at) an octave from the lowest root in this bar
     // Root
     if (label === '1') return '8';
@@ -1442,6 +1467,7 @@ export default function AnimatedFretboardGP({
       const effRoot = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
       const rootIdx = NOTE_TO_INDEX[effRoot] ?? 9;
       let minAbs: number | null = null;
+      const perString: Record<number, number | null> = {};
       const voices = bar?.voices || [];
       for (const v of voices) {
         const beats = v?.beats || [];
@@ -1455,13 +1481,15 @@ export default function AnimatedFretboardGP({
               if (idx === rootIdx) {
                 const abs = getAbsoluteRelativePitch(s, f);
                 if (minAbs == null || abs < minAbs) minAbs = abs;
+                if (perString[s] == null || abs < (perString[s] as number)) perString[s] = abs;
               }
             }
           }
         }
       }
       minRootAbsInBarRef.current = minAbs;
-    } catch { minRootAbsInBarRef.current = null; }
+      perStringRootAbsRef.current = perString;
+    } catch { minRootAbsInBarRef.current = null; perStringRootAbsRef.current = {}; }
   }
 
   // SVG-based fretboard for stable layout
@@ -1528,7 +1556,7 @@ export default function AnimatedFretboardGP({
           if (showExtensionsAboveOctave) {
             try {
               const abs = getAbsoluteRelativePitch(n.stringNumber, n.fret);
-              label = mapIntervalToExtensionIfAboveOctave(label, abs, minRootAbsInBarRef.current);
+              label = mapIntervalToExtensionIfAboveOctave(label, abs, minRootAbsInBarRef.current, n.stringNumber);
             } catch {}
           }
         } else if (useMode === 'notes' || (useMode === 'alternateBar' && (currentBarIndex % 2 === 0))) {
@@ -1765,7 +1793,7 @@ export default function AnimatedFretboardGP({
               if (showExtensionsAboveOctave) {
                 try {
                   const abs = getAbsoluteRelativePitch(s, f);
-                  text = mapIntervalToExtensionIfAboveOctave(text, abs, minRootAbsInBarRef.current);
+                  text = mapIntervalToExtensionIfAboveOctave(text, abs, minRootAbsInBarRef.current, s);
                 } catch {}
               }
             } else if (activeMode === 'notes') {
@@ -2003,6 +2031,10 @@ export default function AnimatedFretboardGP({
                       } catch {}
                     }
                     if (footprintMode !== 'blank') {
+                      // Ensure baseline is available for this bar when extensions are enabled
+                      if (showExtensionsAboveOctave && (minRootAbsInBarRef.current == null)) {
+                        try { recomputeMinRootAbsForBar(currentBarIndex); } catch {}
+                      }
                       if (labelMode === 'alternateBar') {
                         const useNotes = (currentBarIndex % 2 === 0);
                         if (useNotes) {
@@ -2011,11 +2043,23 @@ export default function AnimatedFretboardGP({
                         } else {
                           const eff = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
                           text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                          if (showExtensionsAboveOctave) {
+                            try {
+                              const abs = getAbsoluteRelativePitch(s, f);
+                              text = mapIntervalToExtensionIfAboveOctave(text, abs, minRootAbsInBarRef.current, s);
+                            } catch {}
+                          }
                         }
                       } else if (footprintMode === 'intervals') {
                         // Use same fallback logic as active notes so intervals never go blank
                         const eff = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
                         text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                        if (showExtensionsAboveOctave) {
+                          try {
+                            const abs = getAbsoluteRelativePitch(s, f);
+                            text = mapIntervalToExtensionIfAboveOctave(text, abs, minRootAbsInBarRef.current, s);
+                          } catch {}
+                        }
                       } else if (footprintMode === 'notes') {
                         // Prefer key signature from the GP file (per-bar) when choosing flats vs sharps
                         const pref = keySigPrefRef.current?.[currentBarIndex] || currentKeyPref;

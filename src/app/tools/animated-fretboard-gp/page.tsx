@@ -18,6 +18,7 @@ export default function AnimatedFretboardGPPage() {
   const [labelMode, setLabelMode] = useState<'intervals'|'notes'|'fingering'|'gpOrNotes'|'alternateBar'>('intervals');
   const [preferGpFingerings, setPreferGpFingerings] = useState<boolean>(true);
   const [showExtensionsAboveOctave, setShowExtensionsAboveOctave] = useState<boolean>(false);
+  const [perStringExtensionBaseline, setPerStringExtensionBaseline] = useState<boolean>(false);
   const trackNameByIndex = (idx: number) => availableTracks.find(t => t.index === idx)?.name ?? `Track ${idx}`;
   const [framePreset, setFramePreset] = useState<'none' | 'square' | 'reel'>('none');
   const [showControls, setShowControls] = useState(false);
@@ -372,6 +373,7 @@ export default function AnimatedFretboardGPPage() {
                   intervalColorEnabled={intervalColorsEnabled}
                   preferGpFingerings={preferGpFingerings}
                   showExtensionsAboveOctave={showExtensionsAboveOctave}
+                  perStringExtensionBaseline={perStringExtensionBaseline}
                   overlayEnabled={overlayEnabled}
                   overlayMode={overlayMode}
                   overlayRoot={overlayRoot}
@@ -449,6 +451,7 @@ export default function AnimatedFretboardGPPage() {
               textOverlaySegments={textOverlaySegments}
               preferGpFingerings={preferGpFingerings}
               showExtensionsAboveOctave={showExtensionsAboveOctave}
+              perStringExtensionBaseline={perStringExtensionBaseline}
               chordOverlayEnabled={chordOverlayEnabled}
               chordOverlayMode={chordOverlayMode}
               chordOverlayRoot={chordOverlayRoot}
@@ -512,6 +515,8 @@ export default function AnimatedFretboardGPPage() {
                   textOverlayEnabled={textOverlayEnabled}
                   textOverlaySegments={textOverlaySegments}
                   preferGpFingerings={preferGpFingerings}
+                  showExtensionsAboveOctave={showExtensionsAboveOctave}
+                  perStringExtensionBaseline={perStringExtensionBaseline}
                   chordOverlayEnabled={chordOverlayEnabled}
                   chordOverlayMode={chordOverlayMode}
                   chordOverlayRoot={chordOverlayRoot}
@@ -572,6 +577,8 @@ export default function AnimatedFretboardGPPage() {
                   textOverlayEnabled={textOverlayEnabled}
                   textOverlaySegments={textOverlaySegments}
                   preferGpFingerings={preferGpFingerings}
+                  showExtensionsAboveOctave={showExtensionsAboveOctave}
+                  perStringExtensionBaseline={perStringExtensionBaseline}
                   chordOverlayEnabled={chordOverlayEnabled}
                   chordOverlayMode={chordOverlayMode}
                   chordOverlayRoot={chordOverlayRoot}
@@ -759,6 +766,12 @@ export default function AnimatedFretboardGPPage() {
             <input type="checkbox" checked={showExtensionsAboveOctave} onChange={(e) => setShowExtensionsAboveOctave(e.target.checked)} />
             Show extensions above octave (1→8, 2→9, 4→11, 6→13)
           </label>
+          {showExtensionsAboveOctave && (
+            <label className="flex items-center gap-2 text-sm text-gray-700">
+              <input type="checkbox" checked={perStringExtensionBaseline} onChange={(e)=>setPerStringExtensionBaseline(e.target.checked)} />
+              Per-string baseline (prefer lowest root on same string)
+            </label>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <label className="text-sm text-gray-700">Frame</label>
@@ -961,6 +974,8 @@ export default function AnimatedFretboardGPPage() {
                   useCustomFretRange,
                   labelMode,
                   preferGpFingerings,
+                  showExtensionsAboveOctave,
+                  perStringExtensionBaseline,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -1017,6 +1032,8 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
                   if (typeof data.labelMode === 'string') setLabelMode(data.labelMode);
                   if (typeof data.preferGpFingerings === 'boolean') setPreferGpFingerings(data.preferGpFingerings);
+                  if (typeof data.showExtensionsAboveOctave === 'boolean') setShowExtensionsAboveOctave(data.showExtensionsAboveOctave);
+                  if (typeof data.perStringExtensionBaseline === 'boolean') setPerStringExtensionBaseline(data.perStringExtensionBaseline);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
@@ -1070,6 +1087,8 @@ export default function AnimatedFretboardGPPage() {
                   useCustomFretRange,
                   labelMode,
                   preferGpFingerings,
+                  showExtensionsAboveOctave,
+                  perStringExtensionBaseline,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -1124,6 +1143,8 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
                   if (typeof data.labelMode === 'string') setLabelMode(data.labelMode);
                   if (typeof data.preferGpFingerings === 'boolean') setPreferGpFingerings(data.preferGpFingerings);
+                  if (typeof data.showExtensionsAboveOctave === 'boolean') setShowExtensionsAboveOctave(data.showExtensionsAboveOctave);
+                  if (typeof data.perStringExtensionBaseline === 'boolean') setPerStringExtensionBaseline(data.perStringExtensionBaseline);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
