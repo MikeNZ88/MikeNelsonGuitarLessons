@@ -10,12 +10,15 @@ export interface AnimatedFretboardGPProps {
   fretCount?: number; // number of frets to display (from 0)
   useTabStringOrder?: boolean; // true => high E at bottom (TAB style)
   showIntervals?: boolean;
+  labelMode?: 'intervals' | 'notes' | 'fingering' | 'gpOrNotes' | 'alternateBar';
   hideLabels?: boolean; // if true, render blank circles (no text)
   showChordNames?: boolean; // if true, show chord names next to active notes
   trackChordNames?: Record<number, boolean>; // per-track chord name visibility
   hideNotation?: boolean; // if true, hide the AlphaTab visual surface but keep audio/events
   showTransport?: boolean; // if false, hide play/stop/status UI
   useKeySignatureForNames?: boolean; // when showing note names, prefer flats/sharps based on key signature
+  preferGpFingerings?: boolean; // when in fingering mode, prefer GP-provided fingerings
+  showExtensionsAboveOctave?: boolean; // map 1->8, 2->9, 4->11, 6->13 when above octave
   syncId?: string; // synchronize transport with other diagrams having the same id
   isSilent?: boolean; // if true, mute audio output but keep events
   loadOnlySelectedTrack?: boolean; // if true, load only the selected track into this instance
@@ -65,6 +68,8 @@ export interface AnimatedFretboardGPProps {
   diagramGlobalFretEnd?: number;
   overlayGlobalFretStart?: number;
   overlayGlobalFretEnd?: number;
+  // Interval color overlay (Scale Explorer palette)
+  intervalColorEnabled?: boolean;
   // Chord overlay (independent of scale overlay)
   chordOverlayEnabled?: boolean;
   chordOverlayMode?: 'notes' | 'intervals' | 'blank';
@@ -120,6 +125,7 @@ export interface AnimatedFretboardGPProps {
 interface ActiveNote {
   stringNumber: number; // 1..6 (AlphaTab numbering)
   fret: number; // 0..n
+  gpFinger?: number; // 0..4 if present in GP
   bend?: {
     upSemitones: number;
     hasPrebend: boolean;
@@ -187,6 +193,80 @@ const SCALE_INTERVALS: Record<string, number[]> = {
   harmonicMinor: [0,2,3,5,7,8,11],
   melodicMinor: [0,2,3,5,7,9,11],
 };
+
+// Interval color palette from Scale Explorer
+const INTERVAL_COLOR_MAP: Record<string, string> = {
+  // Stable
+  '1': '#000000',
+  'P1': '#FFFFFF',
+  'P8': '#FFFFFF',
+  '3': '#F4D03F',
+  '5': '#5DADE2',
+  // Mild tension
+  '2': '#E67E22',
+  'b2': '#D35400',
+  '6': '#58D68D',
+  'b6': '#85929E',
+  // Strong tension
+  '4': '#E74C3C',
+  '7': '#C0392B',
+  'b7': '#CD6155',
+  'b3': '#8E44AD',
+  // Extreme tension / enharmonics
+  '#4': '#922B21',
+  'b5': '#922B21',
+  '#5': '#85929E',
+  '#1': '#D35400',
+  'bb7': '#58D68D',
+  'b4': '#F4D03F',
+  'bb4': '#F4D03F',
+  '#7': '#FFF5E6',
+  '#2': '#8E44AD',
+  'bb3': '#E67E22',
+  '#6': '#CD6155',
+};
+
+function getIntervalColorFromMap(interval: string): string | null {
+  return INTERVAL_COLOR_MAP[interval] || null;
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  try {
+    const h = hex.replace('#','').trim();
+    if (h.length === 3) {
+      const r = parseInt(h[0] + h[0], 16);
+      const g = parseInt(h[1] + h[1], 16);
+      const b = parseInt(h[2] + h[2], 16);
+      return { r, g, b };
+    }
+    if (h.length === 6) {
+      const r = parseInt(h.slice(0,2), 16);
+      const g = parseInt(h.slice(2,4), 16);
+      const b = parseInt(h.slice(4,6), 16);
+      return { r, g, b };
+    }
+  } catch {}
+  return null;
+}
+
+function getContrastingTextColor(bgHex: string): string {
+  const rgb = hexToRgb(bgHex);
+  if (!rgb) return '#0f172a';
+  // Relative luminance (sRGB)
+  const srgb = [rgb.r/255, rgb.g/255, rgb.b/255].map(v => {
+    return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+  });
+  const L = 0.2126 * (srgb[0] as number) + 0.7152 * (srgb[1] as number) + 0.0722 * (srgb[2] as number);
+  return L > 0.6 ? '#0b1020' : '#ffffff';
+}
+
+function isLightColor(bgHex: string): boolean {
+  const rgb = hexToRgb(bgHex);
+  if (!rgb) return false;
+  const srgb = [rgb.r/255, rgb.g/255, rgb.b/255].map(v => v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4));
+  const L = 0.2126 * (srgb[0] as number) + 0.7152 * (srgb[1] as number) + 0.0722 * (srgb[2] as number);
+  return L > 0.7;
+}
 
 function addSemitones(noteIndex: number, semitones: number): number {
   return (noteIndex + ((semitones % 12) + 12)) % 12;
@@ -263,6 +343,7 @@ export default function AnimatedFretboardGP({
   fretCount = 15,
   useTabStringOrder = true,
   showIntervals = true,
+  labelMode,
   hideLabels = false,
   showChordNames = false,
   trackChordNames = {},
@@ -274,6 +355,8 @@ export default function AnimatedFretboardGP({
   stepMode = false,
   onRegisterStepApi,
   useKeySignatureForNames = false,
+  preferGpFingerings = true,
+  showExtensionsAboveOctave = false,
   barToRoot,
   beatToRoot,
   initialTempoPercent = 100,
@@ -296,6 +379,7 @@ export default function AnimatedFretboardGP({
   diagramGlobalFretEnd,
   overlayGlobalFretStart,
   overlayGlobalFretEnd,
+  intervalColorEnabled,
   chordOverlayEnabled = false,
   chordOverlayMode = 'intervals',
   chordOverlayRoot = 'A',
@@ -326,6 +410,12 @@ export default function AnimatedFretboardGP({
   const [currentBarIndex, setCurrentBarIndex] = useState<number>(0);
   const [currentBeatInBar, setCurrentBeatInBar] = useState<number>(0);
   const [status, setStatus] = useState<string>('Loading...');
+  const fileBaseName = useMemo(() => {
+    try {
+      const parts = (filePath || '').split('/');
+      return parts[parts.length - 1] || '';
+    } catch { return ''; }
+  }, [filePath]);
   const debugPrintCountRef = useRef<number>(0);
   const clearNotesTimerRef = useRef<number | null>(null);
   const stepBeatsRef = useRef<Array<{ bar: number; beat: number; tick: number }>>([]);
@@ -337,6 +427,7 @@ export default function AnimatedFretboardGP({
   const [currentQuality, setCurrentQuality] = useState<ChordQuality>('unknown');
   const [currentChordName, setCurrentChordName] = useState<string>('');
   const [currentTextLabel, setCurrentTextLabel] = useState<string>('');
+  const minRootAbsInBarRef = useRef<number | null>(null);
   const keySigPrefRef = useRef<Record<number, 'flat' | 'sharp'>>({});
   const [currentKeyPref, setCurrentKeyPref] = useState<'flat' | 'sharp'>('sharp');
   const [numStrings, setNumStrings] = useState<number>(6);
@@ -899,10 +990,11 @@ export default function AnimatedFretboardGP({
               for (const n of bn) {
                 const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? (n.stringIndex + 1) : undefined);
                 const f = n?.fret;
+                const gpFinger = extractLeftHandFinger(n);
                 const bend = extractBendFromNote(n);
                 const slide = extractSlideFromNote(n);
                 const hp = extractHPFromNote(n);
-                if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend, slide, hp });
+                if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, gpFinger, bend, slide, hp });
               }
               setActiveNotes(notes);
               if (notes.some(nn => !!nn.bend)) {
@@ -949,13 +1041,40 @@ export default function AnimatedFretboardGP({
             // Update active notes directly for this beat
             const bn = beat?.notes || [];
             const notes: ActiveNote[] = [];
+            // Recompute min root for current bar before mapping labels
+            if (showExtensionsAboveOctave && typeof barIndex === 'number') {
+              recomputeMinRootAbsForBar(barIndex);
+            }
+            // Track the lowest root absolute pitch for this bar when extensions are enabled
+            if (showExtensionsAboveOctave) {
+              try {
+                if (bn.length > 0) {
+                  const effRoot = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
+                  const rootIdx = NOTE_TO_INDEX[effRoot] ?? 9;
+                  for (const n of bn) {
+                    const sTmp = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? n.stringIndex : undefined);
+                    const fTmp = n?.fret;
+                    if (typeof sTmp === 'number' && typeof fTmp === 'number') {
+                      const idx = getNoteIndexForStringFretFrom(tuningHighToLow, sTmp, fTmp, numStrings);
+                      if (idx === rootIdx) {
+                        const abs = getAbsoluteRelativePitch(sTmp, fTmp);
+                        if (minRootAbsInBarRef.current == null || abs < minRootAbsInBarRef.current) {
+                          minRootAbsInBarRef.current = abs;
+                        }
+                      }
+                    }
+                  }
+                }
+              } catch {}
+            }
             for (const n of bn) {
               const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? n.stringIndex : undefined);
               const f = n?.fret;
+              const gpFinger = extractLeftHandFinger(n);
               const bend = extractBendFromNote(n);
               const slide = extractSlideFromNote(n);
               const hp = extractHPFromNote(n);
-              if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, bend, slide, hp });
+              if (typeof s === 'number' && typeof f === 'number') notes.push({ stringNumber: s, fret: f, gpFinger, bend, slide, hp });
             }
             setActiveNotes(notes);
             if (debugPrintCountRef.current < 20) {
@@ -981,11 +1100,12 @@ export default function AnimatedFretboardGP({
               for (const n of bn) {
                 const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number') ? n.stringIndex : undefined; // AlphaTab: 1..6 (1 = high E)
                 const f = n?.fret;
+                const gpFinger = extractLeftHandFinger(n);
                 const bend = extractBendFromNote(n);
                 const slide = extractSlideFromNote(n);
                 const hp = extractHPFromNote(n);
                 if (typeof s === 'number' && typeof f === 'number') {
-                  notes.push({ stringNumber: s, fret: f, bend, slide, hp });
+                  notes.push({ stringNumber: s, fret: f, gpFinger, bend, slide, hp });
                 }
               }
             }
@@ -1048,7 +1168,7 @@ export default function AnimatedFretboardGP({
           } else {
             api.load(buffer);
           }
-          setStatus('File loaded, parsing...');
+          setStatus(`Loaded: ${fileBaseName}`);
         } catch (loadErr) {
           setStatus(`Failed to load file: ${String(loadErr)}`);
         }
@@ -1210,6 +1330,29 @@ export default function AnimatedFretboardGP({
     return undefined;
   }
 
+  // Compute an absolute-relative pitch number sufficient for ordering within a bar across strings
+  function getAbsoluteRelativePitch(stringNumber: number, fret: number): number {
+    // Ensure different strings are far apart so ordering is stable across strings
+    // Higher stringNumber (closer to high E) should be higher pitch baseline
+    const stringRank = (numStrings - stringNumber); // 0 for highest string row
+    return stringRank * 100 + fret; // 1 unit per fret
+  }
+
+  function mapIntervalToExtensionIfAboveOctave(label: string, absPitch: number, minRootAbs: number | null): string {
+    if (minRootAbs == null) return label;
+    if (absPitch < (minRootAbs + 12)) return label;
+    // Above (or at) an octave from the lowest root in this bar
+    // Root
+    if (label === '1') return '8';
+    // 2-family -> 9
+    if (label.endsWith('2')) return label.replace('2', '9'); // keeps b/#
+    // 4-family -> 11
+    if (label.includes('4')) return label.replace('4', '11');
+    // 6-family -> 13
+    if (label.includes('6')) return label.replace('6', '13');
+    return label;
+  }
+
   function extractSlideFromNote(n: any): ActiveNote['slide'] | undefined {
     try {
       const slideAny = n?.slide ?? n?.Slide ?? null;
@@ -1238,6 +1381,23 @@ export default function AnimatedFretboardGP({
     return undefined;
   }
 
+  function extractLeftHandFinger(n: any): number | undefined {
+    try {
+      const f = n?.leftHandFinger ?? n?.finger ?? n?.fingering?.left ?? n?.fingering?.leftHand ?? n?.fingering?.leftHandFinger;
+      if (typeof f === 'number') {
+        // AlphaTab/GP often use -1 for "no finger". Treat only 1..4 as valid for fingering labels.
+        if (f >= 1 && f <= 4) return f;
+        return undefined;
+      }
+      if (typeof f === 'string') {
+        const t = f.trim();
+        const num = parseInt(t, 10);
+        if (!isNaN(num) && num >= 1 && num <= 4) return num;
+      }
+    } catch {}
+    return undefined;
+  }
+
   function formatBendAmount(semitones: number): string {
     // Convert semitones to steps (whole steps) and round to nearest 0.5
     const steps = Math.round((semitones / 2) * 2) / 2;
@@ -1247,6 +1407,61 @@ export default function AnimatedFretboardGP({
     if (Math.abs(steps - 1.5) < 0.01) return '1 1/2';
     if (steps > 1.5) return `${steps} st`;
     return steps > 0 ? `${steps} st` : '';
+  }
+
+  // Heuristic fingering: anchor on minimum fret across the active chord; map frets to 1..4
+  function heuristicFingerFor(active: ActiveNote[], current: ActiveNote): number {
+    try {
+      if (!active || active.length === 0) return current.fret === 0 ? 0 : Math.min(4, Math.max(1, current.fret));
+      const frets = active.map(a => a.fret).filter(f => typeof f === 'number');
+      const minFret = Math.min(...frets);
+      const span = Math.max(...frets) - minFret;
+      const pos = Math.max(1, minFret);
+      if (current.fret === 0) return 0;
+      // compress to 4-fret box from pos..pos+3
+      const rel = current.fret - pos;
+      if (rel <= 0) return 1;
+      if (rel === 1) return 2;
+      if (rel === 2) return 3;
+      if (rel >= 3) return 4;
+      return Math.min(4, Math.max(1, rel + 1));
+    } catch {
+      return current.fret === 0 ? 0 : 1;
+    }
+  }
+
+  function recomputeMinRootAbsForBar(barIdx: number): void {
+    if (!showExtensionsAboveOctave) { minRootAbsInBarRef.current = null; return; }
+    try {
+      const score = lastScoreRef.current;
+      const tracks = score?.tracks || [];
+      const tSel = tracks[trackIndex] || tracks[0];
+      const bars = tSel?.staves?.[0]?.bars || [];
+      const bar = bars?.[barIdx];
+      if (!bar) { minRootAbsInBarRef.current = null; return; }
+      const effRoot = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
+      const rootIdx = NOTE_TO_INDEX[effRoot] ?? 9;
+      let minAbs: number | null = null;
+      const voices = bar?.voices || [];
+      for (const v of voices) {
+        const beats = v?.beats || [];
+        for (const b of beats) {
+          const bn = b?.notes || [];
+          for (const n of bn) {
+            const s = (typeof n?.string === 'number') ? n.string : (typeof n?.stringIndex === 'number' ? n.stringIndex : undefined);
+            const f = n?.fret;
+            if (typeof s === 'number' && typeof f === 'number') {
+              const idx = getNoteIndexForStringFretFrom(tuningHighToLow, s, f, numStrings);
+              if (idx === rootIdx) {
+                const abs = getAbsoluteRelativePitch(s, f);
+                if (minAbs == null || abs < minAbs) minAbs = abs;
+              }
+            }
+          }
+        }
+      }
+      minRootAbsInBarRef.current = minAbs;
+    } catch { minRootAbsInBarRef.current = null; }
   }
 
   // SVG-based fretboard for stable layout
@@ -1305,18 +1520,48 @@ export default function AnimatedFretboardGP({
       const noteIndex = getNoteIndexForStringFretFrom(tuningHighToLow, n.stringNumber, n.fret, nStrings);
       let label: string = '';
       if (!hideLabels) {
-        if (showIntervals) {
+        const useMode = labelMode || (showIntervals ? 'intervals' : 'notes');
+        if (useMode === 'intervals' || (useMode === 'alternateBar' && (currentBarIndex % 2 === 1))) {
           // Fallback root selection if auto root is unavailable
           const effectiveRoot = currentRoot || chordOverlayRoot || overlayRoot || 'A';
           label = computeIntervalLabel(effectiveRoot, noteIndex, accidentalStyle, currentQuality, useSharp5, useSharp4);
-        } else {
+          if (showExtensionsAboveOctave) {
+            try {
+              const abs = getAbsoluteRelativePitch(n.stringNumber, n.fret);
+              label = mapIntervalToExtensionIfAboveOctave(label, abs, minRootAbsInBarRef.current);
+            } catch {}
+          }
+        } else if (useMode === 'notes' || (useMode === 'alternateBar' && (currentBarIndex % 2 === 0))) {
           // Note names: choose flats/sharps by key signature if enabled
           if (useKeySignatureForNames) {
             label = (currentKeyPref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
           } else {
             label = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
           }
+        } else if (useMode === 'fingering') {
+          const gp = preferGpFingerings ? (typeof (n as any).gpFinger === 'number' ? (n as any).gpFinger : n.gpFinger) : undefined;
+          if (typeof gp === 'number') label = String(gp);
+          else label = '';
+        } else if (useMode === 'gpOrNotes') {
+          const gp = typeof (n as any).gpFinger === 'number' ? (n as any).gpFinger : n.gpFinger;
+          if (typeof gp === 'number') {
+            label = String(gp);
+          } else {
+            if (useKeySignatureForNames) label = (currentKeyPref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+            else label = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIndex];
+          }
         }
+      }
+      // Interval color for active notes (independent of overlay), gated by toggle
+      let intervalActiveFill: string | null = null;
+      if (intervalColorEnabled) {
+        try {
+          const effRoot = currentRoot || chordOverlayRoot || overlayRoot || 'A';
+          const intervalLabel = computeIntervalLabel(effRoot, noteIndex, accidentalStyle, currentQuality, useSharp5, useSharp4);
+          let c = getIntervalColorFromMap(intervalLabel || '');
+          if (intervalLabel === '3') c = '#E3B917';
+          if (c) intervalActiveFill = c;
+        } catch {}
       }
       const bend = n.bend;
       const bendLen = bend ? Math.min(26, 8 + (bend.upSemitones || 0) * 8) : 0;
@@ -1357,12 +1602,21 @@ export default function AnimatedFretboardGP({
       } catch {}
       return (
         <g key={`note-${idx}`}>
-          <circle cx={cx} cy={cy} r={9} fill={fillOverride || "#d97706"} stroke="#fbbf24" strokeWidth={2} />
-          {label && (
-            <text x={cx} y={cy + 3} textAnchor="middle" fontSize={10} fill="#ffffff" fontWeight={700}>
-              {label}
-            </text>
-          )}
+          {(() => {
+            const fill = fillOverride || (intervalColorEnabled ? intervalActiveFill : null) || "#d97706";
+            const stroke = intervalColorEnabled ? (intervalActiveFill && isLightColor(intervalActiveFill) ? "#0b1020" : "#0f172a") : "#fbbf24";
+            const textFill = intervalColorEnabled && intervalActiveFill ? getContrastingTextColor(intervalActiveFill) : '#ffffff';
+            return (
+              <>
+                <circle cx={cx} cy={cy} r={9} fill={fill} stroke={stroke} strokeWidth={2} />
+                {label && (
+                  <text x={cx} y={cy + 3} textAnchor="middle" fontSize={10} fill={textFill} fontWeight={700}>
+                    {label}
+                  </text>
+                )}
+              </>
+            );
+          })()}
           {n.hp && (
             <text x={cx + 12} y={cy - 10} textAnchor="middle" fontSize={10} fill="#0f172a" fontWeight={700}>{n.hp}</text>
           )}
@@ -1508,6 +1762,12 @@ export default function AnimatedFretboardGP({
               // Fallback to activeRoot or overlay root if no current auto root
               const eff = activeRoot || overlayRoot || 'A';
               text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', segmentUseSharp5, segmentUseSharp4);
+              if (showExtensionsAboveOctave) {
+                try {
+                  const abs = getAbsoluteRelativePitch(s, f);
+                  text = mapIntervalToExtensionIfAboveOctave(text, abs, minRootAbsInBarRef.current);
+                } catch {}
+              }
             } else if (activeMode === 'notes') {
               text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
             }
@@ -1519,10 +1779,18 @@ export default function AnimatedFretboardGP({
                   const isActive = activeNotes.some(n => 
                     stringNumberToRow(n.stringNumber) === row && n.fret === f
                   );
-                  const fillColorBase = isActive ? (isRoot && highlightOverlayRoot ? "#ef4444" : "#fbbf24") : (isRoot && highlightOverlayRoot ? "#ef4444" : "white");
+                  // Apply interval color if enabled and in intervals mode
+                  let intervalFill: string | null = null;
+                  if (intervalColorEnabled && activeMode !== 'blank') {
+                    const effRoot = activeRoot || overlayRoot || 'A';
+                    const intervalLabel = computeIntervalLabel(effRoot, noteIdx, accidentalStyle, 'unknown', segmentUseSharp5, segmentUseSharp4);
+                    const c = getIntervalColorFromMap(intervalLabel || '');
+                    if (c) intervalFill = c;
+                  }
+                  const fillColorBase = intervalFill || (isActive ? (isRoot && highlightOverlayRoot ? "#ef4444" : "#fbbf24") : (isRoot && highlightOverlayRoot ? "#ef4444" : "white"));
                   const fillColor = overlayFill || fillColorBase;
-                  const strokeColor = isRoot && highlightOverlayRoot ? "#991b1b" : "#d97706";
-                  const textColor = isActive ? (isRoot && highlightOverlayRoot ? "#fee2e2" : "#7c2d12") : (isRoot && highlightOverlayRoot ? "#fee2e2" : "#92400e");
+                  const strokeColor = intervalColorEnabled ? (intervalFill && isLightColor(intervalFill) ? "#0b1020" : "#0f172a") : (isRoot && highlightOverlayRoot ? "#991b1b" : "#d97706");
+                  const textColor = intervalFill ? getContrastingTextColor(intervalFill) : (isActive ? (isRoot && highlightOverlayRoot ? "#fee2e2" : "#7c2d12") : (isRoot && highlightOverlayRoot ? "#fee2e2" : "#92400e"));
                   return (
                     <>
                       <circle cx={cx} cy={cy} r={radius} fill={fillColor} opacity={0.95} stroke={strokeColor} strokeWidth={2} />
@@ -1623,7 +1891,19 @@ export default function AnimatedFretboardGP({
             const isRoot = noteIdx === chordRootIdx;
             chordOverlayElements.push(
               <g key={`cov-${s}-${f}`}>
-                <circle cx={cx} cy={cy} r={radius} fill={isRoot ? '#ef4444' : 'white'} opacity={0.9} stroke={isRoot ? '#991b1b' : '#d97706'} strokeWidth={2} />
+                {(() => {
+                  // Apply Scale Explorer interval palette to chord overlay if enabled
+                  let baseFill = isRoot ? '#ef4444' : 'white';
+                  let baseStroke = isRoot ? '#991b1b' : '#d97706';
+                  if (intervalColorEnabled) {
+                    const c = getIntervalColorFromMap(text || '');
+                    if (c) {
+                      baseFill = c;
+                      baseStroke = '#d97706';
+                    }
+                  }
+                  return <circle cx={cx} cy={cy} r={radius} fill={baseFill} opacity={0.9} stroke={baseStroke} strokeWidth={2} />;
+                })()}
                 {mode !== 'blank' && (
                   <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill={isRoot ? '#fee2e2' : '#92400e'} fontWeight={700}>{text}</text>
                 )}
@@ -1694,23 +1974,71 @@ export default function AnimatedFretboardGP({
                     
                     const radius = 8;
                     let text = '';
-                    if (footprintMode === 'intervals') {
-                      // Use the same root note logic as the main note display
-                      const currentRoot = getCurrentRoot();
-                      if (currentRoot) {
-                        text = computeIntervalLabel(currentRoot, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                    // Apply Note Color Overlay to footprint when targeted at overlay/both
+                    let footprintFill: string | null = null;
+                    try {
+                      if (noteColorEnabled && Array.isArray(noteColorSegments) && noteColorSegments.length > 0) {
+                        const noteIdxPc = noteIdx;
+                        for (const seg of noteColorSegments) {
+                          if (currentBarIndex >= seg.startBar && currentBarIndex <= seg.endBar) {
+                            const match = (seg.notes || []).some(nn => NOTE_TO_INDEX[normalizeNoteName(nn)] === noteIdxPc);
+                            const targetsOverlay = (seg.target || 'both') === 'overlay' || (seg.target || 'both') === 'both';
+                            if (match && targetsOverlay && typeof seg.color === 'string' && seg.color) {
+                              footprintFill = seg.color;
+                              break;
+                            }
+                          }
+                        }
                       }
-                    } else if (footprintMode === 'notes') {
-                      text = (accidentalStyle === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
+                    } catch {}
+                    // Interval palette color for footprint (when Scale Explorer palette is enabled)
+                    let footprintIntervalFill: string | null = null;
+                    if (intervalColorEnabled) {
+                      try {
+                        const eff = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
+                        const ival = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                        let c = getIntervalColorFromMap(ival || '');
+                        if (ival === '3') c = '#E3B917';
+                        if (c) footprintIntervalFill = c;
+                      } catch {}
+                    }
+                    if (footprintMode !== 'blank') {
+                      if (labelMode === 'alternateBar') {
+                        const useNotes = (currentBarIndex % 2 === 0);
+                        if (useNotes) {
+                          const pref = keySigPrefRef.current?.[currentBarIndex] || currentKeyPref;
+                          text = (pref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
+                        } else {
+                          const eff = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
+                          text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                        }
+                      } else if (footprintMode === 'intervals') {
+                        // Use same fallback logic as active notes so intervals never go blank
+                        const eff = getCurrentRoot() || chordOverlayRoot || overlayRoot || 'A';
+                        text = computeIntervalLabel(eff, noteIdx, accidentalStyle, 'unknown', useSharp5, useSharp4);
+                      } else if (footprintMode === 'notes') {
+                        // Prefer key signature from the GP file (per-bar) when choosing flats vs sharps
+                        const pref = keySigPrefRef.current?.[currentBarIndex] || currentKeyPref;
+                        text = (pref === 'flat' ? NOTE_NAMES_FLAT : NOTE_NAMES_SHARP)[noteIdx];
+                      }
                     }
                     
                     // Always render the footprint - let the main note system handle active notes
                     footprintElements.push(
                       <g key={`footprint-${s}-${f}`}>
-                        <circle cx={cx} cy={cy} r={radius} fill="white" opacity={0.95} stroke="#d97706" strokeWidth={2} />
-                        {footprintMode !== 'blank' && (
-                          <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill="#92400e" fontWeight={700}>{text}</text>
-                        )}
+                        {(() => {
+                          const fill = footprintFill || footprintIntervalFill || 'white';
+                          const stroke = (intervalColorEnabled && footprintIntervalFill) ? (isLightColor(footprintIntervalFill) ? '#0b1020' : '#0f172a') : '#d97706';
+                          const textColor = (intervalColorEnabled && footprintIntervalFill) ? getContrastingTextColor(footprintIntervalFill) : '#92400e';
+                          return (
+                            <>
+                              <circle cx={cx} cy={cy} r={radius} fill={fill} opacity={0.95} stroke={stroke} strokeWidth={2} />
+                              {footprintMode !== 'blank' && (
+                                <text x={cx} y={cy + 3} textAnchor="middle" fontSize={9} fill={textColor} fontWeight={700}>{text}</text>
+                              )}
+                            </>
+                          );
+                        })()}
                       </g>
                     );
                   }

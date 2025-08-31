@@ -15,6 +15,9 @@ export default function AnimatedFretboardGPPage() {
   const [diagramCount, setDiagramCount] = useState<number>(1);
   const [secondaryTracks, setSecondaryTracks] = useState<number[]>([1,2]);
   const [useKeySigNames, setUseKeySigNames] = useState(true);
+  const [labelMode, setLabelMode] = useState<'intervals'|'notes'|'fingering'|'gpOrNotes'|'alternateBar'>('intervals');
+  const [preferGpFingerings, setPreferGpFingerings] = useState<boolean>(true);
+  const [showExtensionsAboveOctave, setShowExtensionsAboveOctave] = useState<boolean>(false);
   const trackNameByIndex = (idx: number) => availableTracks.find(t => t.index === idx)?.name ?? `Track ${idx}`;
   const [framePreset, setFramePreset] = useState<'none' | 'square' | 'reel'>('none');
   const [showControls, setShowControls] = useState(false);
@@ -59,6 +62,8 @@ export default function AnimatedFretboardGPPage() {
   // Note color overlay (per-bar pitch color)
   const [noteColorEnabled, setNoteColorEnabled] = useState<boolean>(false);
   const [noteColorSegments, setNoteColorSegments] = useState<Array<{ startBar: number; endBar: number; notes: string[]; color: string; target?: 'active'|'overlay'|'both'; }>>([]);
+  // Interval color overlay (Scale Explorer palette)
+  const [intervalColorsEnabled, setIntervalColorsEnabled] = useState<boolean>(false);
   // Segmented overlay controls
   const [overlayModeType, setOverlayModeType] = useState<'global'|'segments'>('global');
   const [overlayGlobalFretStart, setOverlayGlobalFretStart] = useState<number>(0);
@@ -193,6 +198,10 @@ export default function AnimatedFretboardGPPage() {
   const miscSongs = useMemo(
     () => [
       { id: 'seventh-chord-inversions', name: '7th Chord Inversions', file: '/GP Files/Scale Exercises/BLOG TABS/7th Chord Inversions .gp' },
+      { id: 'seventh-chord-inversions-2', name: '7th Chord Inversions 2', file: '/GP Files/Scale Exercises/BLOG TABS/7th Chord Inversions 2.gp' },
+      { id: 'g-major-scale', name: 'G Major Scale', file: '/GP Files/Scale Exercises/BLOG TABS/G Major Scale.gp' },
+      { id: 'string-notes', name: 'String Notes', file: '/GP Files/Scale Exercises/BLOG TABS/String Notes.gp' },
+      { id: 'intervals', name: 'Intervals', file: '/GP Files/Scale Exercises/BLOG TABS/Intervals.gp' },
       { id: 'opeth-drapery-falls', name: 'Opeth - The Drapery Falls (ver 2)', file: '/GP Files/Scale Exercises/BLOG TABS/Opeth - The Drapery Falls (ver 2).gp' },
       { id: 'bends-ex1', name: 'String Bending Exercise 1', file: '/GP Files/Scale Exercises/BLOG TABS/STRING BENDING/STRING BENDING EXERCISE 1 .gp' },
       { id: 'meshuggah-dancers', name: 'Meshuggah - Dancers To A Discordant System (ver 3)', file: '/GP Files/Scale Exercises/BLOG TABS/Meshuggah - Dancers To A Discordant System (ver 3 by Stuart XIV).gp' },
@@ -353,12 +362,16 @@ export default function AnimatedFretboardGPPage() {
                   fretCount={fretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
+                  labelMode={labelMode}
                   hideLabels={blankCircles}
                   showChordNames={showChordNames}
                   textOverlayEnabled={textOverlayEnabled}
                   textOverlaySegments={textOverlaySegments}
                   noteColorEnabled={noteColorEnabled}
                   noteColorSegments={noteColorSegments}
+                  intervalColorEnabled={intervalColorsEnabled}
+                  preferGpFingerings={preferGpFingerings}
+                  showExtensionsAboveOctave={showExtensionsAboveOctave}
                   overlayEnabled={overlayEnabled}
                   overlayMode={overlayMode}
                   overlayRoot={overlayRoot}
@@ -415,6 +428,7 @@ export default function AnimatedFretboardGPPage() {
               fretCount={effectiveFretCount}
               useTabStringOrder={false}
               showIntervals={showIntervals}
+              labelMode={labelMode}
               hideLabels={blankCircles}
               showChordNames={showChordNames}
               trackChordNames={trackChordNames}
@@ -433,6 +447,8 @@ export default function AnimatedFretboardGPPage() {
               noteColorSegments={noteColorSegments}
               textOverlayEnabled={textOverlayEnabled}
               textOverlaySegments={textOverlaySegments}
+              preferGpFingerings={preferGpFingerings}
+              showExtensionsAboveOctave={showExtensionsAboveOctave}
               chordOverlayEnabled={chordOverlayEnabled}
               chordOverlayMode={chordOverlayMode}
               chordOverlayRoot={chordOverlayRoot}
@@ -475,6 +491,7 @@ export default function AnimatedFretboardGPPage() {
                   fretCount={effectiveFretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
+                  labelMode={labelMode}
                   hideLabels={blankCircles}
                   showChordNames={showChordNames}
                   trackChordNames={trackChordNames}
@@ -491,8 +508,10 @@ export default function AnimatedFretboardGPPage() {
                   overlaySegments={overlaySegments}
                   noteColorEnabled={noteColorEnabled}
                   noteColorSegments={noteColorSegments}
+                  intervalColorEnabled={intervalColorsEnabled}
                   textOverlayEnabled={textOverlayEnabled}
                   textOverlaySegments={textOverlaySegments}
+                  preferGpFingerings={preferGpFingerings}
                   chordOverlayEnabled={chordOverlayEnabled}
                   chordOverlayMode={chordOverlayMode}
                   chordOverlayRoot={chordOverlayRoot}
@@ -532,6 +551,7 @@ export default function AnimatedFretboardGPPage() {
                   fretCount={effectiveFretCount}
                   useTabStringOrder={false}
                   showIntervals={showIntervals}
+                  labelMode={labelMode}
                   hideLabels={blankCircles}
                   showChordNames={showChordNames}
                   trackChordNames={trackChordNames}
@@ -548,8 +568,10 @@ export default function AnimatedFretboardGPPage() {
                   overlaySegments={overlaySegments}
                   noteColorEnabled={noteColorEnabled}
                   noteColorSegments={noteColorSegments}
+                  intervalColorEnabled={intervalColorsEnabled}
                   textOverlayEnabled={textOverlayEnabled}
                   textOverlaySegments={textOverlaySegments}
+                  preferGpFingerings={preferGpFingerings}
                   chordOverlayEnabled={chordOverlayEnabled}
                   chordOverlayMode={chordOverlayMode}
                   chordOverlayRoot={chordOverlayRoot}
@@ -671,6 +693,22 @@ export default function AnimatedFretboardGPPage() {
           <input type="checkbox" checked={showIntervals} onChange={(e) => setShowIntervals(e.target.checked)} />
           Show intervals (off = note names)
         </label>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-700">Labels</span>
+          <select value={labelMode} onChange={(e)=>setLabelMode(e.target.value as any)} className="border border-gray-300 rounded-md px-2 py-1 text-sm">
+            <option value="intervals">Intervals</option>
+            <option value="notes">Note names</option>
+            <option value="fingering">Fingering</option>
+            <option value="gpOrNotes">GP fingering or Note names</option>
+            <option value="alternateBar">Alternate per bar (Notes/Intervals)</option>
+          </select>
+          {labelMode === 'fingering' && (
+            <label className="flex items-center gap-2 text-sm text-gray-700 ml-2">
+              <input type="checkbox" checked={preferGpFingerings} onChange={(e)=>setPreferGpFingerings(e.target.checked)} />
+              Prefer GP fingerings
+            </label>
+          )}
+        </div>
         {!showIntervals && (
           <label className="flex items-center gap-2 text-sm text-gray-700">
             <input type="checkbox" checked={useKeySigNames} onChange={(e) => setUseKeySigNames(e.target.checked)} />
@@ -712,6 +750,14 @@ export default function AnimatedFretboardGPPage() {
           <label className="flex items-center gap-2 text-sm text-gray-700">
             <input type="checkbox" checked={showControls} onChange={(e) => setShowControls(e.target.checked)} />
             Show play controls
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={intervalColorsEnabled} onChange={(e) => setIntervalColorsEnabled(e.target.checked)} />
+            Interval colors (Scale Explorer palette)
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input type="checkbox" checked={showExtensionsAboveOctave} onChange={(e) => setShowExtensionsAboveOctave(e.target.checked)} />
+            Show extensions above octave (1→8, 2→9, 4→11, 6→13)
           </label>
         </div>
         <div className="flex items-center gap-2">
@@ -913,6 +959,8 @@ export default function AnimatedFretboardGPPage() {
                   // diagram sizing
                   fretCount,
                   useCustomFretRange,
+                  labelMode,
+                  preferGpFingerings,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -930,6 +978,7 @@ export default function AnimatedFretboardGPPage() {
                   footprintName,
                   useSharp5,
                   useSharp4,
+                  intervalColorsEnabled,
                   // chord overlay
                   chordOverlayEnabled,
                   chordOverlayMode,
@@ -966,6 +1015,8 @@ export default function AnimatedFretboardGPPage() {
                   const data = JSON.parse(txt || '{}');
                   if (typeof data.fretCount === 'number') setFretCount(data.fretCount);
                   if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
+                  if (typeof data.labelMode === 'string') setLabelMode(data.labelMode);
+                  if (typeof data.preferGpFingerings === 'boolean') setPreferGpFingerings(data.preferGpFingerings);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
@@ -983,6 +1034,7 @@ export default function AnimatedFretboardGPPage() {
                   if (typeof data.footprintName === 'string') setFootprintName(data.footprintName);
                   if (typeof data.useSharp5 === 'boolean') setUseSharp5(data.useSharp5);
                   if (typeof data.useSharp4 === 'boolean') setUseSharp4(data.useSharp4);
+                  if (typeof data.intervalColorsEnabled === 'boolean') setIntervalColorsEnabled(data.intervalColorsEnabled);
                   // chord overlay
                   if (typeof data.chordOverlayEnabled === 'boolean') setChordOverlayEnabled(data.chordOverlayEnabled);
                   if (typeof data.chordOverlayMode === 'string') setChordOverlayMode(data.chordOverlayMode);
@@ -1016,6 +1068,8 @@ export default function AnimatedFretboardGPPage() {
                   gpFile: selectedFile,
                   fretCount,
                   useCustomFretRange,
+                  labelMode,
+                  preferGpFingerings,
                   overlayEnabled,
                   overlayMode,
                   overlayRoot,
@@ -1033,6 +1087,7 @@ export default function AnimatedFretboardGPPage() {
                   footprintName,
                   useSharp5,
                   useSharp4,
+                  intervalColorsEnabled,
                   chordOverlayEnabled,
                   chordOverlayMode,
                   chordOverlayRoot,
@@ -1067,6 +1122,8 @@ export default function AnimatedFretboardGPPage() {
                   const data = p.data || {};
                   if (typeof data.fretCount === 'number') setFretCount(data.fretCount);
                   if (typeof data.useCustomFretRange === 'boolean') setUseCustomFretRange(data.useCustomFretRange);
+                  if (typeof data.labelMode === 'string') setLabelMode(data.labelMode);
+                  if (typeof data.preferGpFingerings === 'boolean') setPreferGpFingerings(data.preferGpFingerings);
                   if (typeof data.overlayEnabled === 'boolean') setOverlayEnabled(data.overlayEnabled);
                   if (typeof data.overlayMode === 'string') setOverlayMode(data.overlayMode);
                   if (typeof data.overlayRoot === 'string') setOverlayRoot(data.overlayRoot);
