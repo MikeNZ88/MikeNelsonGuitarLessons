@@ -59,7 +59,7 @@ const Footer = () => {
                 <Facebook className="h-6 w-6" />
               </a>
               <a
-                href="https://www.instagram.com/ill_teach_you_a_lesson"
+                href="https://www.instagram.com/mike_nelson_guitar_lessons"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-amber-200 transition-colors"
@@ -68,7 +68,7 @@ const Footer = () => {
                 <Instagram className="h-6 w-6" />
               </a>
               <a
-                href="https://www.youtube.com/@guitarbeginnerwinner3768"
+                href="https://www.youtube.com/@MikeNelsonGuitarLessons"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-amber-200 transition-colors"
