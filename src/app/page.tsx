@@ -116,7 +116,7 @@ export default function Home() {
                   </svg>
                 </a>
                 <a
-                  href="https://www.instagram.com/ill_teach_you_a_lesson"
+                  href="https://www.instagram.com/mike_nelson_guitar_lessons?igsh=MXRrZmp1a3ZoM2Y3Ng=="
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white/20 backdrop-blur-sm p-3 rounded-full hover:bg-white/30 transition-all duration-200 hover:scale-110"
