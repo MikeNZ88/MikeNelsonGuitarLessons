@@ -184,9 +184,9 @@ export default function YourFirstGuitarChords() {
                   }}
                 />
                 <ul className="list-disc list-inside text-amber-700 space-y-2">
-                  <li>Place your 2nd finger on the 2nd fret of the D string</li>
-                  <li>Place your 3rd finger on the 2nd fret of the G string</li>
-                  <li>Place your 1st finger on the 2nd fret of the B string</li>
+                  <li>Place your 1st finger on the 2nd fret of the D string</li>
+                  <li>Place your 2nd finger on the 2nd fret of the G string</li>
+                  <li>Place your 3rd finger on the 2nd fret of the B string</li>
                   <li>Strum from the A string down</li>
                 </ul>
               </div>
